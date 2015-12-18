@@ -7,7 +7,7 @@ In Italia sempre più giovani e adulti si dedicano all'attività fisica per mant
 L'obiettivo di questa applicazione è di aiutare gli utenti a monitorare i propri miglioramenti, fornendo consigli e programmi di allenamento adeguati alle proprie capacità ed esigenze.
 
 ## ANALISI DEL PROBLEMA ##
-Per perseguire gli obiettivi prefissati abbiamo svolto un'attenta analisi dei requisiti (?) e abbiamo deciso si sviluppare le seguenti funzionalità
+Per perseguire gli obiettivi prefissati abbiamo svolto un'attenta analisi dei requisiti e abbiamo deciso si sviluppare le seguenti funzionalità
 
 * Creazione di un allenamento personalizzato da parte dell'utente sulla base delle proprie capacità e caratteristiche fisiche
 * Calcolo dell'indice di massa corporea ([BMI](https://en.wikipedia.org/wiki/Body_mass_index))
@@ -24,7 +24,7 @@ Per perseguire gli obiettivi prefissati abbiamo svolto un'attenta analisi dei re
 
 ### CHALLENGE ###
 * Creazione di un API pubblica per il recupero e l'inserimento di dati in un DBMS non relazionale ([MongoDB](https://www.mongodb.org))
-* Rierca e inserimento dei vari esercizi per la composizione dell'allenamento
+* Ricerca e inserimento dei vari esercizi per la composizione dell'allenamento
 * Creazione dei relativi grafici con libreria ancora da identificare
 
 ## SUDDIVISIONE DEL LAVORO ##
