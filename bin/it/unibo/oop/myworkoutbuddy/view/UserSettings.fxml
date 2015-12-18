@@ -3,6 +3,6 @@
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.AccessHandler">
+	fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.UserSettingsHandler">
 	<!-- TODO Add Nodes -->
 </BorderPane>
