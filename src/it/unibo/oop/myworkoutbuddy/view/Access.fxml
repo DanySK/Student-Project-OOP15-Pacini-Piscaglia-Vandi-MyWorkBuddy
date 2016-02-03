@@ -1,8 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.AccessHandler">
-	<!-- TODO Add Nodes -->
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <TextField fx:id="txtPWD" maxWidth="200.0" promptText="Insert your password" BorderPane.alignment="CENTER" />
+         </center>
+         <top>
+            <TextField fx:id="txtID" maxWidth="200.0" promptText="Insert your ID" translateY="60.0" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
+   </center>
+   <top>
+      <Label id="mainTitle" alignment="CENTER" prefHeight="82.0" prefWidth="608.0" text="MyWorkoutBuddy" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+   </top>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Register" translateX="100.0">
+               <effect>
+                  <Reflection />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnLogin" lineSpacing="5.0" mnemonicParsing="false" text="Login" textAlignment="JUSTIFY" translateX="190.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Reflection />
+               </effect>
+            </Button>
+            <SplitMenuButton id="selectTheme" fx:id="selectTheme" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" text="Select App Theme" textAlignment="JUSTIFY" translateX="250.0">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+                <MenuItem mnemonicParsing="false" text="Action 2" />
+              </items>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Reflection />
+               </effect>
+            </SplitMenuButton>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
