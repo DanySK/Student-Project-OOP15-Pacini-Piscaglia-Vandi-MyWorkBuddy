@@ -1,5 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-public class AccessHandler {
+public class AccessHandler{
 
 }
