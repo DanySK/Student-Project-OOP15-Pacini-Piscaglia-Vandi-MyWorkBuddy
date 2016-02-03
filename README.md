@@ -28,6 +28,6 @@ Per perseguire gli obiettivi prefissati abbiamo svolto un'attenta analisi dei re
 * Creazione dei relativi grafici con libreria ancora da identificare
 
 ## SUDDIVISIONE DEL LAVORO ##
-* Mattia Vandi: Model e creazione API per interazione con MongoDB
+* Mattia Vandi: Controller e creazione API per interazione con MongoDB
 * Nicola Piscaglia: View e creazione dei grafici
-* Lorenzo Pacini: Controller e statistiche
+* Lorenzo Pacini: Model
