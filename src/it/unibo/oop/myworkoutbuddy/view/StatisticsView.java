@@ -12,7 +12,7 @@ public interface StatisticsView {
      * @return user BMI
      */
     double getBMI();
-    
+
     /**
      * 
      * @return user height
@@ -24,5 +24,5 @@ public interface StatisticsView {
      * @return user weight
      */
     int getWeight();
-    
+
 }

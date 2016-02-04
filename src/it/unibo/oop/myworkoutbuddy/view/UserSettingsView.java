@@ -24,7 +24,7 @@ public interface UserSettingsView {
      * @return new user age
      */
     int getNewAge();
-    
+
     /**
      * Get the new email for the user.
      * 
@@ -32,12 +32,11 @@ public interface UserSettingsView {
      */
     String getNewEmail();
 
-    
     /**
      * Get the new password for the user.
      * 
      * @return new Password
      */
     String getNewPassword();
-    
+
 }

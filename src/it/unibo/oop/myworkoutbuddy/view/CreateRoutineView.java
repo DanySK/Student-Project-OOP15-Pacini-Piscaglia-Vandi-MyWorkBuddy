@@ -10,8 +10,10 @@ import java.util.Set;
 public interface CreateRoutineView {
 
     /**
-     * save the names of the exercises of the chosen routine by the user
+     * Save the names of the exercises of the chosen routine by the user.
+     * 
+     * @return a set of string with exercise names
      */
     Set<String> getRoutine();
-    
+
 }

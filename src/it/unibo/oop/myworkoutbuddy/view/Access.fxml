@@ -11,12 +11,19 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <center>
-            <TextField fx:id="txtPWD" maxWidth="200.0" promptText="Insert your password" BorderPane.alignment="CENTER" />
-         </center>
          <top>
-            <TextField fx:id="txtID" maxWidth="200.0" promptText="Insert your ID" translateY="60.0" BorderPane.alignment="CENTER" />
+            <TextField fx:id="txtID" maxWidth="200.0" promptText="Insert your ID" translateY="60.0" BorderPane.alignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
          </top>
+         <center>
+            <PasswordField fx:id="txtPassword" maxWidth="200.0" prefHeight="25.0" prefWidth="275.0" promptText="Insert your password" BorderPane.alignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </PasswordField>
+         </center>
       </BorderPane>
    </center>
    <top>
@@ -29,7 +36,7 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Register" translateX="100.0">
+            <Button fx:id="btnRegister" mnemonicParsing="false" text="Register" translateX="100.0">
                <effect>
                   <Reflection />
                </effect>
@@ -45,18 +52,15 @@
                   <Reflection />
                </effect>
             </Button>
-            <SplitMenuButton id="selectTheme" fx:id="selectTheme" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="RIGHT" text="Select App Theme" textAlignment="JUSTIFY" translateX="250.0">
+            <MenuButton id="selectTheme" fx:id="btnSelect" mnemonicParsing="false" text="Select App Theme" translateX="260.0">
               <items>
-                <MenuItem mnemonicParsing="false" text="Action 1" />
-                <MenuItem mnemonicParsing="false" text="Action 2" />
+                <MenuItem mnemonicParsing="false" text="Original" />
+                <MenuItem mnemonicParsing="false" text="Dark" />
               </items>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
                <effect>
                   <Reflection />
                </effect>
-            </SplitMenuButton>
+            </MenuButton>
          </children>
       </HBox>
    </bottom>

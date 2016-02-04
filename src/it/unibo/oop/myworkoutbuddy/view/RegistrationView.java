@@ -7,7 +7,7 @@ package it.unibo.oop.myworkoutbuddy.view;
  *
  */
 public interface RegistrationView {
-    
+
     /**
      * 
      * @return user name
@@ -25,7 +25,7 @@ public interface RegistrationView {
      * @return user age
      */
     int getAge();
-    
+
     /**
      * Get the new email for the user.
      * 
@@ -33,7 +33,6 @@ public interface RegistrationView {
      */
     String getEmail();
 
-    
     /**
      * Get the password for the new user.
      * 

@@ -6,26 +6,26 @@ package it.unibo.oop.myworkoutbuddy.view;
  * 
  */
 public interface AccessView {
-    
+
     /**
      * 
      * @return UserID.
      * 
      */
     String getID();
-    
+
     /**
      * 
      * @return UserPassword.
      * 
      */
     String getPassword();
-    
+
     /**
      * 
      * @return the chosen style for the GUI.
      * 
      */
     String getStyle();
-    
+
 }
