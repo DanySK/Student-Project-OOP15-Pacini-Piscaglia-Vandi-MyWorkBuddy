@@ -10,13 +10,13 @@ public interface RegistrationView {
 
     /**
      * 
-     * @return user name
+     * @return user Name
      */
     String getName();
 
     /**
      * 
-     * @return user surname
+     * @return user Surname
      */
     String getSurname();
 
@@ -27,16 +27,39 @@ public interface RegistrationView {
     int getAge();
 
     /**
-     * Get the new email for the user.
+     * Get the new email of the user.
      * 
      * @return email
      */
     String getEmail();
 
     /**
-     * Get the password for the new user.
+     * Get the password of the new user.
      * 
      * @return password
      */
     String getPassword();
+
+    /**
+     * 
+     * Get the ID of the new user.
+     * 
+     * @return username
+     */
+    String getUsername();
+
+    /**
+     * 
+     * Get the height for the new user.
+     * 
+     * @return height
+     */
+    int getHeight();
+
+    /**
+     * Get the weight of the new user.
+     * 
+     * @return weight
+     */
+    double getWeight();
 }

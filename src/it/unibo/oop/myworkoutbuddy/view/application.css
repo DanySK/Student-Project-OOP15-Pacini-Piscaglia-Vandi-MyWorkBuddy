@@ -14,5 +14,6 @@
 #mainTitle{
 	    -fx-background-color: orange;
 		-fx-font: bold italic 20pt "Serif";
-		-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 );
+		-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 0 , 0 );
+		-fx-padding: 12
 }
