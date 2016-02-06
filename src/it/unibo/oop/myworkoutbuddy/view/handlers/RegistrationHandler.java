@@ -1,15 +1,11 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import java.io.IOException;
-
+import it.unibo.oop.myworkoutbuddy.view.FxStageWindow;
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -90,24 +86,15 @@ public class RegistrationHandler implements RegistrationView {
     }
 
     @FXML
-    void register(final ActionEvent event) {
+    private void register(final ActionEvent event) {
         returnLogin(null);
     }
 
     @FXML
-    void returnLogin(final ActionEvent event) {
+    private void returnLogin(final ActionEvent event) {
         /* Opening login window */
-        try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("../Access.fxml"));
-            final Stage stageRegister = new Stage();
-            final BorderPane root = (BorderPane) loader.load();
-            final Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("../application.css").toExternalForm());
-            stageRegister.setScene(scene);
-            stageRegister.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FxStageWindow window = new FxStageWindow();
+        window.openWindow("Access.fxml", "application.css", false);
 
         /* Closing registration window */
         final Stage stageAccess = (Stage) btnRegister.getScene().getWindow();
