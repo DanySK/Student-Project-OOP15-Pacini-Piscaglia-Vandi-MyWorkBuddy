@@ -1,11 +1,12 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -52,41 +53,44 @@ public class MongoDBTest {
 
     private class PersonBuilder {
 
-        final Map<String, Object> map;
+        final Map<String, Optional<?>> map;
 
         public PersonBuilder() {
             map = new HashMap<>();
-            map.put("firstName", new Object());
-            map.put("lastName", new Object());
-            map.put("age", new Object());
-            map.put("married", new Object());
+            map.put("firstName", Optional.empty());
+            map.put("lastName", Optional.empty());
+            map.put("age", Optional.empty());
+            map.put("married", Optional.empty());
         }
 
         public PersonBuilder set(String key, Object value) {
             if (map.get(key) == null) {
                 throw new IllegalArgumentException();
             }
-            map.merge(key, value, (o, n) -> n);
+            map.merge(key, Optional.of(value), (o, n) -> n);
 
             return this;
         }
 
         public Map<String, Object> toMap() {
             checkFields();
-            return Collections.unmodifiableMap(map);
+            return map.entrySet().stream()
+                    .collect(Collectors.toMap(
+                            Entry::getKey,
+                            e -> e.getValue().get()));
         }
 
         public Person build() {
             checkFields();
             return new Person(
-                    (String) map.get("firstName"),
-                    (String) map.get("lastName"),
-                    (int) map.get("age"),
-                    (boolean) map.get("married"));
+                    (String) map.get("firstName").get(),
+                    (String) map.get("lastName").get(),
+                    (int) map.get("age").get(),
+                    (boolean) map.get("married").get());
         }
 
         private void checkFields() {
-            if (map.values().stream().anyMatch(o -> o == null)) {
+            if (map.values().stream().anyMatch(o -> !o.isPresent())) {
                 throw new IllegalArgumentException();
             }
         }
