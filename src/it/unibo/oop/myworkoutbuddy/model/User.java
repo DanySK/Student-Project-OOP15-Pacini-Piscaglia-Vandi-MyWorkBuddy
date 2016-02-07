@@ -2,89 +2,80 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.List;
 
+import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
+
+
+/**
+ * 
+ * Informations about User's activities :
+ * Account, Data, Measure, Training, TrainingCard.
+ * -------------------------------------------------------------
+ */
 public interface User {
-
     /**
      * 
-     * @return
+     * @return the Account of User
      */
-    String getUsername();
-
+    Account getAccount();
     /**
      * 
-     * @return
+     * @return avatar of User
      */
-    String getFirstName();
-
+    String getAvatar();
     /**
      * 
-     * @param firstName
+     * @return the specific Data of User
      */
-    void setFirstName(String firstName);
-
+    UserData getUserData();
     /**
      * 
-     * @return
+     * @return the body data for a specific user
      */
-    String getLastName();
-
+    List<BodyData> getMeasureList();
     /**
      * 
-     * @param lastName
+     * @return the training list for a specific user
      */
-    void setLastName(String lastName);
-
+    List<Training> getTrainingList(); // workoutRoutine
     /**
      * 
-     * @return
+     * @return the trainingCard list for a specific user
      */
-    double getWeight();
-
+    List<TrainingCard> getTrainingCardList();
     /**
      * 
-     * @param height
+     * @param bodyMeasure of User
      */
-    void setHeight(int height);
-
+    void addMesure(BodyData bodyMeasure);
     /**
      * 
-     * @return
+     * @param training of User
      */
-    int getHeight();
-
+    void addTraining(Training training);
     /**
      * 
-     * @param weight
+     * @param trainingCard of User
      */
-    void setWeight(double weight);
-
+    void addTrainingCard(TrainingCard trainingCard);
     /**
-     * 
-     * @return
+     * Update the Status of User's trainings.
      */
-    String getPassword();
-
+    void upDateStatus();
     /**
-     * 
-     * @param newPassword
+     * Class to access system.
+     * -------------------------------------------------------------
      */
-    void setPassword(String newPassword);
+    public interface Account {
+        /**
+         * 
+         * @return userName
+         */
+        String getUserName();
 
-    /**
-     * 
-     */
-    void addPersonalRoutine(WorkoutRoutine routine);
-
-    /**
-     * 
-     * @return
-     */
-    WorkoutRoutine getCurrentRoutine();
-
-    /**
-     * 
-     * @return
-     */
-    List<WorkoutRoutine> getRoutines();
-
+        /**
+         * 
+         * @return userPassword
+         */
+        String getPassword();
+    }
 }
