@@ -1,27 +1,38 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
-
+/**
+ * 
+ * User's data of a single training session. (WorkOut)
+ * -------------------------------------------------------------
+ */
+ 
 public interface Workout {
-
     /**
      * 
-     * @return
+     * @return data of Training
      */
-    List<ExerciseSet> getExercises();
-
+    LocalDate getData();
     /**
      * 
-     * @return
+     * @return time of Training
      */
-    String getName();
-
+    LocalTime getTime();
     /**
      * 
-     * @author nik
-     *
+     * @return if the exercise is done
      */
-    public static interface Builder {
-    }
-
+    boolean getState();
+    /**
+     * 
+     * @return training card of an exercise
+     */
+    TrainingCard getCard();
+    /**
+     * 
+     * @return all the scores got for an exercise
+     */
+    List<Integer> getScoreList();
 }
