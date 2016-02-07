@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * 
- *  it contains body data :
+ *  this contains body data :
  *  BodyZone    : enum of body zone for mapping;
  *  BodyPart    : enum of body parts/muscles;
  *  BodyMeasure : enum of body parts for measurement data;
