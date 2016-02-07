@@ -3,52 +3,48 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Set;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
- * Single exercise for a TrainingCard. 
- * -------------------------------------------------------------
+ * 
+ *
  */
 public interface Exercise {
-
     /**
      * 
-     * @return the description of Exercise
+     * @return description of Exercise
      */
     String getDescription();
     /**
      * 
-     * @return the GymTool used in that GymExercise
+     * @return the GymTool used in a Exercise
      */
     GymTool getGymTool();
     /**
      * 
-     * @return the difficulty grade of a single GymExercise
+     * @return the difficulty grade of an Exercise
      */
     int getSettingValue();
     /**
      * 
-     * @return time of repetition x a single exercise
+     * @return the number of times to repeat
      */
     int getRepetition();
     /**
      * 
-     * @return the duration of a single exercise
+     * @return the duration in minutes
      */
     int getTime();
     /**
      * 
-     * @return the number of Session
+     * @return the number of Sessions to repeat
      */
     int getNumSession();
     /**
      * 
-     * @return time of Pause
+     * @return the minutes 
      */
     int getPause();
-
     /**
-     * 
-     * @return the Set of BodyParts
+     * @return the set of body parts
      */
     Set<BodyPart> getBodyParts();
 }
