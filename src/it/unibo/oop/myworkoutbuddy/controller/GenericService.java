@@ -2,9 +2,6 @@ package it.unibo.oop.myworkoutbuddy.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-
-import org.bson.types.ObjectId;
 
 public interface GenericService<T> {
 
@@ -26,27 +23,18 @@ public interface GenericService<T> {
 
     /**
      * 
-     * @param id
-     *            The identifier
-     * @return an {@link Optional#empty} if an user with the given ID was't found. An {@link Optional#of} if the user
-     *         was found.
-     */
-    Optional<T> getById(ObjectId id);
-
-    /**
-     * 
      * @param params
-     *            The Fields to look for.
+     *            The fields to look for.
      * @return an {@link Collections#emptyList} if no user was found. An unmodifiable list if something was found.
      */
     List<T> getByParams(Map<String, Object> params);
 
     /**
      * 
-     * @param id
-     *            The identifier
-     * @return True deleted, false otherwise.
+     * @param params
+     *            The fields to look for.
+     * @return True if at least one element was deleted, false otherwise.
      */
-    boolean deleteById(ObjectId id);
+    long deleteByParams(Map<String, Object> params);
 
 }
