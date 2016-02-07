@@ -1,31 +1,30 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.bson.Document;
 
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
 
 import it.unibo.oop.myworkoutbuddy.controller.GenericService;
 import it.unibo.oop.myworkoutbuddy.controller.db.util.MongoDBUtils;
 
 public abstract class AbstractGenericService<T> implements GenericService<T> {
 
-    protected abstract MongoCollection<Document> getMongoCollection();
+    private final Class<? extends T> clazz;
 
-    private final Class<T> clazz;
-
-    protected AbstractGenericService(final Class<T> clazz) {
+    protected AbstractGenericService(final Class<? extends T> clazz) {
         this.clazz = clazz;
     }
 
     @Override
     public boolean create(Map<String, Object> fields) {
         try {
-            getMongoCollection()
+            getCollection()
                     .insertOne(new Document(fields));
         } catch (final MongoException e) {
             return false;
@@ -35,19 +34,38 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 
     @Override
     public List<T> getAll() {
-        return MongoDBUtils.getAllDocuments(getMongoCollection(), clazz);
+        return getByParams(new HashMap<>());
     }
 
     @Override
     public List<T> getByParams(Map<String, Object> params) {
-        return MongoDBUtils.getDocumentsByParams(getMongoCollection(), params, clazz);
+        return MongoDBUtils.getDocumentsByParams(
+                getCollection(),
+                params,
+                clazz);
     }
 
     @Override
     public long deleteByParams(Map<String, Object> params) {
-        return getMongoCollection()
-                .deleteMany(Filters.and(MongoDBUtils.toBsonFilters(params)))
+        return getCollection()
+                .deleteMany(Objects.requireNonNull(params).size() > 0
+                        ? MongoDBUtils.toBson(params)
+                        : new Document())
                 .getDeletedCount();
+    }
+
+    @Override
+    public long deleteAll() {
+        return deleteByParams(new HashMap<>());
+    }
+
+    /**
+     * @return The name of the collection to use.
+     */
+    protected abstract String getCollectionName();
+
+    private MongoCollection<Document> getCollection() {
+        return MongoDriver.getCollection(getCollectionName());
     }
 
 }

@@ -30,11 +30,19 @@ public interface GenericService<T> {
     List<T> getByParams(Map<String, Object> params);
 
     /**
+     * Deletes all the elements which match all the params.
      * 
      * @param params
      *            The fields to look for.
-     * @return True if at least one element was deleted, false otherwise.
+     * @return The number of deleted elements.
      */
     long deleteByParams(Map<String, Object> params);
+
+    /**
+     * Deletes all the elements in database.
+     * 
+     * @return The number of deleted elements.
+     */
+    long deleteAll();
 
 }

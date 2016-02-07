@@ -1,14 +1,17 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.bson.Document;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.mongodb.client.MongoCollection;
-
-import it.unibo.oop.myworkoutbuddy.util.ReflectionUtils;
+import it.unibo.oop.myworkoutbuddy.controller.Builder;
 
 public class MongoDBTest {
 
@@ -19,33 +22,61 @@ public class MongoDBTest {
         }
 
         @Override
-        protected MongoCollection<Document> getMongoCollection() {
-            return MongoDriver.getMongoClient()
-                    .getDatabase("myworkoutbuddy")
-                    .getCollection("testing");
+        protected String getCollectionName() {
+            return "people";
         }
 
     }
 
     private final PersonService service = new PersonService(Person.class);
 
-    @Test
+    @Before
     public void testCreate() {
-        System.out.println(ReflectionUtils.getConstructorShape(Person.class));
-        // Test creatiion of new documents here...
+        service.create(new Builder<>(Person.class)
+                .set("firstName", "Mattia")
+                .set("lastName", "Vandi")
+                .set("age", 20)
+                .set("married", false)
+                .toMap());
+        service.create(new Builder<>(Person.class)
+                .set("firstName", "Lorenzo")
+                .set("lastName", "Pacini")
+                .set("age", 20)
+                .set("married", false)
+                .toMap());
+        service.create(new Builder<>(Person.class)
+                .set("firstName", "Nicola")
+                .set("lastName", "Piscaglia")
+                .set("age", 20)
+                .set("married", false)
+                .toMap());
+
+        System.out.println("Inserted sample data.");
+    }
+
+    @After
+    public void testDelete() {
+        System.out.println(service.deleteAll());
     }
 
     @Test
     public void testGetByParams() throws Exception {
         final Map<String, Object> params = new HashMap<>();
-        params.put("lastName", "Vandi");
-        System.out.println(service.getByParams(params));
+        params.put("lastName", "ia");
+        final List<Person> people = service.getByParams(params);
+        System.out.println(people);
+        assertTrue(people.containsAll(Arrays.asList(
+                new Person("Nicola", "Piscaglia", false, 20))));
     }
 
     @Test
-    public void testDeleteByParams() throws Exception {
-        final Map<String, Object> params = new HashMap<>();
-        // System.out.println(service.deleteByParams(params));
+    public void testGetAll() throws Exception {
+        final List<Person> people = service.getAll();
+        System.out.println(people);
+        assertTrue(people.containsAll(Arrays.asList(
+                new Person("Mattia", "Vandi", false, 20),
+                new Person("Nicola", "Piscaglia", false, 20),
+                new Person("Lorenzo", "Pacini", false, 20))));
     }
 
 }

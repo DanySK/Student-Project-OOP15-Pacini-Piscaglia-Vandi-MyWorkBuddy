@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,7 +20,7 @@ import it.unibo.oop.myworkoutbuddy.util.Preconditions;
  */
 public class Builder<T> {
 
-    private final Class<T> clazz;
+    private final Class<? extends T> clazz;
 
     private final Class<?>[] fieldTypes;
 
@@ -27,13 +28,18 @@ public class Builder<T> {
 
     private boolean built;
 
-    public Builder(Class<T> clazz) {
+    public Builder(Class<? extends T> clazz) {
+        this(clazz, new HashSet<>());
+    }
+
+    public Builder(Class<? extends T> clazz, Set<String> excludedFields) {
         built = false;
         this.clazz = clazz;
         final List<Class<?>> declaredFields = new ArrayList<>();
 
         fields = Arrays.stream(clazz.getDeclaredFields())
                 .filter(f -> !f.getName().contains("this"))
+                .filter(f -> !excludedFields.contains(f.getName()))
                 .peek(f -> declaredFields.add(f.getType()))
                 .collect(Collectors.toMap(f -> f.getName(), f -> Optional.empty()));
 
