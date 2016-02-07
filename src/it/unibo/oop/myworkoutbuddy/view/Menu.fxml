@@ -8,10 +8,10 @@
    <left>
       <VBox prefHeight="544.0" prefWidth="129.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#setCreateRoutineView" prefHeight="25.0" prefWidth="130.0" text="Create Routine" />
-            <Button mnemonicParsing="false" onAction="#setSelectRoutineView" prefHeight="25.0" prefWidth="130.0" text="Select Routine" />
-            <Button mnemonicParsing="false" onAction="#setStatisticsView" prefHeight="25.0" prefWidth="130.0" text="Statistics" />
-            <Button mnemonicParsing="false" onAction="#setUserSettingsView" prefHeight="25.0" prefWidth="130.0" text="User Settings" />
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" prefHeight="25.0" prefWidth="130.0" text="Create Routine" translateY="110.0" />
+            <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" prefHeight="25.0" prefWidth="130.0" text="Select Routine" translateY="140.0" />
+            <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" prefHeight="25.0" prefWidth="130.0" text="Statistics" translateY="170.0" />
+            <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" prefHeight="25.0" prefWidth="130.0" text="User Settings" translateY="200.0" />
          </children>
       </VBox>
    </left>
