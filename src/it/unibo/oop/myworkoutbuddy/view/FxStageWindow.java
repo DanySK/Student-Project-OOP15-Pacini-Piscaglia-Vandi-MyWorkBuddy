@@ -19,6 +19,8 @@ public final class FxStageWindow {
      * 
      * @param fxmlPath
      * @param cssPath
+     * @param inside
+     * @return root
      */
     public BorderPane openWindow(final String fxmlPath, final String cssPath, boolean inside) {
         try {
