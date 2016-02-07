@@ -1,6 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 
     @Override
     public List<T> getAll() {
-        return getByParams(new HashMap<>());
+        return MongoDBUtils.getAllDocuments(getMongoCollection(), clazz);
     }
 
     @Override

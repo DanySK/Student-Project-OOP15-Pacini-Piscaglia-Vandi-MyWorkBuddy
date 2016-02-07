@@ -16,6 +16,16 @@ import it.unibo.oop.myworkoutbuddy.controller.Builder;
 
 public final class MongoDBUtils {
 
+    public static <T> List<T> getAllDocuments(
+            MongoCollection<Document> collection,
+            Class<T> clazz) {
+        final List<T> list = new ArrayList<>();
+        collection
+                .find()
+                .forEach(toList(list, clazz));
+        return list;
+    }
+
     public static <T> List<T> getDocumentsByParams(
             MongoCollection<Document> collection,
             Map<String, Object> params,
@@ -23,20 +33,7 @@ public final class MongoDBUtils {
         final List<T> list = new ArrayList<>();
         collection
                 .find(Filters.and(toBsonFilters(params)))
-                .forEach(new Block<Document>() {
-                    public void apply(final Document document) {
-                        final Builder<T> builder = new Builder<>(clazz);
-                        document.forEach((f, v) -> {
-                            if (!f.contains("_id")) {
-                                builder.set(f, v);
-                            }
-                        });
-                        try {
-                            list.add(builder.build());
-                        } catch (final Exception e) {
-                        }
-                    }
-                });
+                .forEach(toList(list, clazz));
         return list;
     }
 
@@ -44,6 +41,23 @@ public final class MongoDBUtils {
         return params.entrySet().stream()
                 .map(e -> Filters.eq(e.getKey(), e.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    private static <T> Block<? super Document> toList(List<T> list, Class<T> clazz) {
+        return new Block<Document>() {
+            public void apply(final Document document) {
+                final Builder<T> builder = new Builder<>(clazz);
+                document.forEach((f, v) -> {
+                    if (!f.contains("_id")) {
+                        builder.set(f, v);
+                    }
+                });
+                try {
+                    list.add(builder.build());
+                } catch (final Exception e) {
+                }
+            }
+        };
     }
 
     private MongoDBUtils() {
