@@ -1,5 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget;
@@ -22,6 +23,8 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
     public WorkoutRoutineImpl(final String name, final BodyTarget target) {
         this.setName(name);
         this.setTarget(target);
+        this.dayAweek = new ArrayList<>();
+        this.exerciseList = new ArrayList<>();
     }
 
     private void setName(final String name) {

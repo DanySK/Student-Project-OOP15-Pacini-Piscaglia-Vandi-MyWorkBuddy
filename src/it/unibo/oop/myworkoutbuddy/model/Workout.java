@@ -12,12 +12,12 @@ import java.util.List;
 public interface Workout {
     /**
      * 
-     * @return data of Training
+     * @return data of Workout
      */
-    LocalDate getData();
+    LocalDate getDate();
     /**
      * 
-     * @return time of Training
+     * @return time of Workout
      */
     LocalTime getTime();
     /**
@@ -30,6 +30,14 @@ public interface Workout {
      * @return training card of an exercise
      */
     WorkoutRoutine getCard();
+
+    /**
+     * 
+     * @param indExercise int
+     * @param score Integer
+     */
+    void addScore(final int indExercise, Integer score);
+
     /**
      * 
      * @return all the scores got for an exercise

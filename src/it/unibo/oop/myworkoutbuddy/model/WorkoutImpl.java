@@ -54,12 +54,13 @@ public class WorkoutImpl implements Workout {
      * 
      * @param scoreTraining Integer
      */
-    public void addScore(final Integer scoreTraining) {
-        this.scoreList.add(scoreTraining);
+    @Override
+    public void addScore(final int indExercise, final Integer scoreTraining) {
+        this.scoreList.add(indExercise, scoreTraining);
     }
 
     @Override
-    public LocalDate getData() {
+    public LocalDate getDate() {
         // TODO Auto-generated method stub
         return this.date;
     }

@@ -11,7 +11,6 @@ import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
  * Account, Data, Measure, Training, TrainingCard.
  * -------------------------------------------------------------
  */
- 
 public class UserImpl implements User {
 
     private Account account;

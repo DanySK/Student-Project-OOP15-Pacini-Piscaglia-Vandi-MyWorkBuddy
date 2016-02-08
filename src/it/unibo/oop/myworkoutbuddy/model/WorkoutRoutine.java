@@ -26,7 +26,7 @@ public interface WorkoutRoutine {
     String getName();
     /**
      * 
-     * @return the aim of Training
+     * @return the scope of Workout
      */
     BodyTarget getTarget();
     /**
@@ -36,7 +36,7 @@ public interface WorkoutRoutine {
     List<DayInWeek> getDayAweek();
     /**
      * 
-     * @return list of gymExercise in a training
+     * @return list of gymExercise in a Workout
      */
     List<Exercise> getExerciseList();
 
