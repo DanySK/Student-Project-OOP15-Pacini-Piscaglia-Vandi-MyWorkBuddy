@@ -4,8 +4,8 @@
   <enumeration id="1" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyPart" 
     project="oop2015-myworkoutbuddy" file="/oop2015-myworkoutbuddy/src/it/unibo/oop/myworkoutbuddy/model/Body.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="219" y="98"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="158" width="160" x="139" y="44"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -14,8 +14,8 @@
   <enumeration id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyZone" 
     project="oop2015-myworkoutbuddy" file="/oop2015-myworkoutbuddy/src/it/unibo/oop/myworkoutbuddy/model/Body.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="419" y="44"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="161" width="160" x="335" y="43"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -24,8 +24,8 @@
   <enumeration id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyMeasure" 
     project="oop2015-myworkoutbuddy" file="/oop2015-myworkoutbuddy/src/it/unibo/oop/myworkoutbuddy/model/Body.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="624" y="89"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="165" width="171" x="537" y="41"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -34,8 +34,8 @@
   <enumeration id="4" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget" 
     project="oop2015-myworkoutbuddy" file="/oop2015-myworkoutbuddy/src/it/unibo/oop/myworkoutbuddy/model/Body.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="834" y="44"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="161" width="169" x="747" y="43"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -43,8 +43,8 @@
   </enumeration>  
   <class id="5" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyData" project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1086" y="62"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="163" width="176" x="959" y="42"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -61,23 +61,27 @@
   </class>  
   <association id="7">    
     <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="8" name="bodyMap"/>      
-      <multiplicity id="9" minimum="0" maximum="2147483647"/>    
+      <attribute id="8" name="bodyMap">        
+        <position height="0" width="0" x="-4" y="82"/>      
+      </attribute>      
+      <multiplicity id="9" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="-4" y="82"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <nesting id="10">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="3"/>  
+    <end type="TARGET" refId="4"/>  
   </nesting>  
   <nesting id="11">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
+    <end type="TARGET" refId="3"/>  
   </nesting>  
   <nesting id="12">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="TARGET" refId="5"/>  
   </nesting>  
   <nesting id="13">    
     <end type="SOURCE" refId="6"/>    
