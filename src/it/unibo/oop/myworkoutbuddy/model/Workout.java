@@ -29,7 +29,7 @@ public interface Workout {
      * 
      * @return training card of an exercise
      */
-    TrainingCard getCard();
+    WorkoutRoutine getCard();
     /**
      * 
      * @return all the scores got for an exercise

@@ -19,8 +19,13 @@ public class UserImpl implements User {
     private String avatar;
 
     private List<BodyData> measureList;     // list of body periodic measure
-    private List<Training> trainingList;    // list of training sessions done/to do
-    private List<TrainingCard> trainingCardList;    // list of available Cards
+    private List<Workout> trainingList;    // list of training sessions done/to do
+    private List<WorkoutRoutine> trainingCardList;    // list of available Cards
+    /**
+     * 
+     */
+    public UserImpl() {
+    }
 
     /**
      * 
@@ -62,7 +67,7 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public List<Training> getTrainingList() {
+    public List<Workout> getTrainingList() {
         // TODO Auto-generated method stub
         return this.trainingList;
     }
@@ -70,7 +75,7 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public List<TrainingCard> getTrainingCardList() {
+    public List<WorkoutRoutine> getTrainingCardList() {
         // TODO Auto-generated method stub
         return this.trainingCardList;
     }
@@ -92,12 +97,12 @@ public class UserImpl implements User {
         this.measureList.add(bodyMeasure);
     }
     @Override
-    public void addTraining(final Training training) {
+    public void addTraining(final Workout training) {
         // TODO Auto-generated method stub
         this.trainingList.add(training);
     }
     @Override
-    public void addTrainingCard(final TrainingCard trainingCard) {
+    public void addTrainingCard(final WorkoutRoutine trainingCard) {
         // TODO Auto-generated method stub
         this.trainingCardList.add(trainingCard);
     }

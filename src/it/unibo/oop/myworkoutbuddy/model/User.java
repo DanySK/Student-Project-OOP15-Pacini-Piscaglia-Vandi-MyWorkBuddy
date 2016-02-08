@@ -36,12 +36,12 @@ public interface User {
      * 
      * @return the training list for a specific user
      */
-    List<Training> getTrainingList(); // workoutRoutine
+    List<Workout> getTrainingList(); // workoutRoutine
     /**
      * 
      * @return the trainingCard list for a specific user
      */
-    List<TrainingCard> getTrainingCardList();
+    List<WorkoutRoutine> getTrainingCardList();
     /**
      * 
      * @param bodyMeasure of User
@@ -51,12 +51,12 @@ public interface User {
      * 
      * @param training of User
      */
-    void addTraining(Training training);
+    void addTraining(Workout training);
     /**
      * 
      * @param trainingCard of User
      */
-    void addTrainingCard(TrainingCard trainingCard);
+    void addTrainingCard(WorkoutRoutine trainingCard);
     /**
      * Update the Status of User's trainings.
      */
