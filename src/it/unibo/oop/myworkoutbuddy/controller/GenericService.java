@@ -21,17 +21,16 @@ public interface GenericService<T> {
     boolean create(Map<String, Object> fields);
 
     /**
-     * Retrieves all the elements stored in the database.
+     * Retrieves all the elements stored.
      * 
-     * @return all the elements stored in the database
+     * @return all the elements stored.
      */
     List<T> getAll();
 
     /**
-     * 
      * @param params
-     *            The fields to look for.
-     * @return an {@link Collections#emptyList} if no user was found. An unmodifiable list if something was found.
+     *            The filters to apply.
+     * @return an {@link Collections#emptyList} if no element was found. A non-empty {@link List} otherwise.
      */
     List<T> getByParams(Map<String, Object> params);
 
@@ -46,7 +45,7 @@ public interface GenericService<T> {
      * Deletes all the elements which match the given parameters.
      * 
      * @param params
-     *            The fields to look for.
+     *            The filters to apply.
      * @return The number of deleted elements.
      */
     long deleteByParams(Map<String, Object> params);

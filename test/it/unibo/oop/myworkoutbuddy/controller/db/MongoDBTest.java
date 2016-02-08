@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.unibo.oop.myworkoutbuddy.controller.Builder;
+import it.unibo.oop.myworkoutbuddy.util.Builder;
 
 public class MongoDBTest {
 

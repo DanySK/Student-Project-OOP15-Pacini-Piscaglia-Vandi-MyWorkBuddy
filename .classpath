@@ -7,6 +7,7 @@
 	<classpathentry kind="lib" path="libs/mongodb/bson-3.0.4.jar" sourcepath="libs/mongodb/bson-3.0.4-sources.jar"/>
 	<classpathentry kind="lib" path="libs/mongodb/mongodb-driver-3.0.4.jar" sourcepath="libs/mongodb/mongodb-driver-3.0.4-sources.jar"/>
 	<classpathentry kind="lib" path="libs/mongodb/mongodb-driver-core-3.0.4.jar" sourcepath="libs/mongodb/mongodb-driver-core-3.0.4-sources.jar"/>
+	<classpathentry kind="lib" path="libs/apache-commons/commons-lang3-3.4.jar" sourcepath="libs/apache-commons/commons-lang3-3.4-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="libs/yamlbeans/yamlbeans-1.09.jar" sourcepath="libs/yamlbeans/yamlbeans-1.09-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>

@@ -14,7 +14,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.client.MongoCollection;
 
-import it.unibo.oop.myworkoutbuddy.controller.Builder;
+import it.unibo.oop.myworkoutbuddy.util.Builder;
 
 /**
  * Utility class for CRUD operations.
@@ -23,9 +23,9 @@ public final class CRUDOperations {
 
     /**
      * @param collection
-     *            The collection to use for get the data.
+     *            The collection to use.
      * @param params
-     *            The filters to apply
+     *            The query filters
      * @param clazz
      *            The class of the object to retrieve.
      * @return A list of elements which satisfy the given filters.
@@ -36,35 +36,52 @@ public final class CRUDOperations {
             final MongoCollection<Document> collection,
             final Map<String, Object> params,
             final Class<? extends T> clazz) {
-        final List<T> list = new ArrayList<>();
+        final List<T> l = new ArrayList<>();
         collection
                 .find(toBson(params, true))
-                .forEach(addToList(list, clazz));
-        return list;
+                .forEach(addToList(l, clazz));
+        return l;
     }
 
     /**
-     * Converts a {@link java.util.Map} to a {@link org.bson.conversions.Bson} object.
-     * This operation trasforms each string in a {@link java.util.regex.Pattern}.
+     * Deletes all the documents that satisfy the specified parameters.
+     * 
+     * @param collection
+     *            The collection to use.
+     * @param params
+     *            The delete filters
+     * @return The number of deleted elements.
+     */
+    public static long deleteDocumentsByParams(
+            final MongoCollection<Document> collection,
+            final Map<String, Object> params) {
+        return collection
+                .deleteMany(toBson(params, false))
+                .getDeletedCount();
+    }
+
+    /**
+     * Converts a {@link Map} to a {@link Bson} object.
      * 
      * @param params
      *            The map to convert to a BSON query
      * @param stringToRegex
-     *            Whether a string should be compiled as a regular expression
+     *            if {@code true} each string will be compiled as a {@link Pattern}.
      * @return The BSON query to perform.
      */
-    public static Bson toBson(final Map<String, Object> params, final boolean stringToRegex) {
+    private static Bson toBson(final Map<String, Object> params, final boolean stringToRegex) {
         return new BasicDBObject(params.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, e -> {
                     final Object v = e.getValue();
                     return (stringToRegex && v instanceof String)
-                            ? Pattern.compile(v.toString())
+                            ? Pattern.compile(String.valueOf(v))
                             : v;
                 })));
     }
 
     private static <T> Block<? super Document> addToList(final List<T> list, final Class<? extends T> clazz) {
         return new Block<Document>() {
+            @Override
             public void apply(final Document document) {
                 final Builder<T> builder = new Builder<>(clazz);
                 document.forEach((f, v) -> {
@@ -82,7 +99,7 @@ public final class CRUDOperations {
     }
 
     private CRUDOperations() {
-        throw new IllegalAccessError();
+        throw new IllegalAccessError("No instances for " + getClass().getName());
     }
 
 }

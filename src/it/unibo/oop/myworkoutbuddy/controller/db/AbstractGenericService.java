@@ -14,7 +14,10 @@ import it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations;
 import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 
 /**
+ * A generic service to make Create Read Update Delete operations.
+ * 
  * @param <T>
+ *            the type of the element used by this service.
  */
 public abstract class AbstractGenericService<T> implements GenericService<T> {
 
@@ -34,8 +37,7 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
     public boolean create(final Map<String, Object> fields) {
         Preconditions.checkArgument(!fields.values().contains(null));
         try {
-            getCollection()
-                    .insertOne(new Document(fields));
+            getCollection().insertOne(new Document(fields));
         } catch (final MongoException e) {
             return false;
         }
@@ -49,17 +51,7 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
 
     @Override
     public List<T> getByParams(final Map<String, Object> params) {
-        return CRUDOperations.getDocumentsByParams(
-                getCollection(),
-                params,
-                clazz);
-    }
-
-    @Override
-    public long deleteByParams(final Map<String, Object> params) {
-        return getCollection()
-                .deleteMany(CRUDOperations.toBson(params, false))
-                .getDeletedCount();
+        return CRUDOperations.getDocumentsByParams(getCollection(), params, clazz);
     }
 
     @Override
@@ -67,11 +59,19 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
         return deleteByParams(new HashMap<>());
     }
 
+    @Override
+    public long deleteByParams(final Map<String, Object> params) {
+        return CRUDOperations.deleteDocumentsByParams(getCollection(), params);
+    }
+
     /**
      * @return The name of the collection to use.
      */
     protected abstract String getCollectionName();
 
+    /**
+     * @return The {@link MongoCollection} used.
+     */
     private MongoCollection<Document> getCollection() {
         return MongoDriver.getCollection(getCollectionName());
     }
