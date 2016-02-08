@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import it.unibo.oop.myworkoutbuddy.view.FxWindow;
-import javafx.event.ActionEvent;
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -38,8 +37,8 @@ public class MenuHandler {
     private String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
 
     @FXML
-    private void setCreateRoutineView() {
-        mainPane.setCenter(new FxWindow().openWindow("CreateRoutine.fxml", "application.css", true));
+    public void setCreateRoutineView() {
+        mainPane.setCenter(new FxWindowFactory().openWindow("CreateRoutine.fxml", true));
         menuTitle.setText("Create Routine");
         btnCreate.setStyle(cssSelectStyle);
         resetStyle();
@@ -47,8 +46,8 @@ public class MenuHandler {
     }
 
     @FXML
-    private void setSelectRoutineView() {
-        mainPane.setCenter(new FxWindow().openWindow("SelectRoutine.fxml", "application.css", true));
+    public void setSelectRoutineView() {
+        mainPane.setCenter(new FxWindowFactory().openWindow("SelectRoutine.fxml", true));
         menuTitle.setText("Select Routine");
         btnSelect.setStyle(cssSelectStyle);
         resetStyle();
@@ -56,8 +55,8 @@ public class MenuHandler {
     }
 
     @FXML
-    private void setStatisticsView() {
-        mainPane.setCenter(new FxWindow().openWindow("Statistics.fxml", "application.css", true));
+    public void setStatisticsView() {
+        mainPane.setCenter(new FxWindowFactory().openWindow("Statistics.fxml", true));
         menuTitle.setText("Statistics");
         btnStatistics.setStyle(cssSelectStyle);
         resetStyle();
@@ -65,8 +64,8 @@ public class MenuHandler {
     }
 
     @FXML
-    private void setUserSettingsView() {
-        mainPane.setCenter(new FxWindow().openWindow("UserSettings.fxml", "application.css", true));
+    public void setUserSettingsView() {
+        mainPane.setCenter(new FxWindowFactory().openWindow("UserSettings.fxml", true));
         menuTitle.setText("User Settings");
         btnSettings.setStyle(cssSelectStyle);
         resetStyle();
@@ -80,14 +79,14 @@ public class MenuHandler {
 
     @FXML
     void logout() {
-        new FxWindow().openWindow("Access.fxml", "application.css", false);
+        new FxWindowFactory().openWindow("Access.fxml", false);
         final Stage stageAccess = (Stage) menuTitle.getScene().getWindow();
         stageAccess.close();
     }
 
     private void resetStyle() {
         if (lastPressed != null) {
-            lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10; -fx-background-color: orange;");
+            lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
         }
     }
 

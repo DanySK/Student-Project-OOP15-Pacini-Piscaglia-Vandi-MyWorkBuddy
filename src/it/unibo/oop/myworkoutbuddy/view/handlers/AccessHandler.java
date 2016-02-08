@@ -1,11 +1,12 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.FxWindow;
-import javafx.event.ActionEvent;
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import it.unibo.oop.myworkoutbuddy.view.factory.StyleSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -35,19 +36,28 @@ public class AccessHandler implements AccessView {
 
     @FXML
     private void login() {
-        final FxWindow window = new FxWindow();
-        window.openWindow("Menu.fxml", "application.css", false);
+        new FxWindowFactory().openWindow("Menu.fxml", false);
         closeWindow();
     }
 
     @FXML
     private void register() {
-
         /* Opening registration window */
-        final FxWindow window = new FxWindow();
-        window.openWindow("Registration.fxml", "application.css", false);
+        new FxWindowFactory().openWindow("Registration.fxml", false);
+        closeWindow();
+    }
 
-        /* Closing login window */
+    @FXML
+    void setOriginalStyle() {
+        StyleSingleton.setCssStyle("original.css");
+        new FxWindowFactory().openWindow("Access.fxml", false);
+        closeWindow();
+    }
+
+    @FXML
+    void setDarkStyle() {
+        StyleSingleton.setCssStyle("dark.css");
+        new FxWindowFactory().openWindow("Access.fxml", false);
         closeWindow();
     }
 

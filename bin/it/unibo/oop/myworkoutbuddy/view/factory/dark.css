@@ -1,0 +1,19 @@
+.button{
+    -fx-font: 13px "Serif";
+    -fx-padding: 10;
+    -fx-background-color: grey;
+}
+
+#selectTheme{
+	-fx-font: 13px "Serif";
+    -fx-padding: 6;
+    -fx-background-color: grey;
+	
+}
+
+#mainTitle{
+	    -fx-background-color: grey;
+		-fx-font: bold italic 20pt "Serif";
+		-fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 0 , 0 );
+		-fx-padding: 12
+}

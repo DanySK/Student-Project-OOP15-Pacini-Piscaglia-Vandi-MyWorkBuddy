@@ -1,8 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import it.unibo.oop.myworkoutbuddy.view.FxWindow;
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
-import javafx.event.ActionEvent;
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -93,7 +92,7 @@ public class RegistrationHandler implements RegistrationView {
     @FXML
     public void returnLogin() {
         /* Opening login window */
-        new FxWindow().openWindow("Access.fxml", "application.css", false);
+        new FxWindowFactory().openWindow("Access.fxml", false);
 
         /* Closing registration window */
         final Stage stageAccess = (Stage) btnRegister.getScene().getWindow();
