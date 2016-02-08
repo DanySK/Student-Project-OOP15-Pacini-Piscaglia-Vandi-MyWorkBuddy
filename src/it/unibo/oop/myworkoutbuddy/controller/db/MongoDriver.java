@@ -33,8 +33,7 @@ public final class MongoDriver {
         try {
             @SuppressWarnings("unchecked")
             final Map<String, Object> config = (Map<String, Object>) new YamlReader(
-                    new BufferedReader(new FileReader(CONFIG_FILE)))
-                            .read();
+                    new BufferedReader(new FileReader(CONFIG_FILE))).read();
             url = config.get("url").toString();
             dbName = config.get("db_name").toString();
             uri = new MongoClientURI(url);
@@ -59,7 +58,7 @@ public final class MongoDriver {
      *            the name of the collection to return
      * @return the specified collection.
      */
-    public static MongoCollection<Document> getCollection(String databaseName, String collectionName) {
+    public static MongoCollection<Document> getCollection(final String databaseName, final String collectionName) {
         return getMongoClient()
                 .getDatabase(databaseName)
                 .getCollection(collectionName);
@@ -72,7 +71,7 @@ public final class MongoDriver {
      *            the name of the collection to return
      * @return the specified collection.
      */
-    public static MongoCollection<Document> getCollection(String collectionName) {
+    public static MongoCollection<Document> getCollection(final String collectionName) {
         return getCollection(getDatabaseName(), collectionName);
     }
 

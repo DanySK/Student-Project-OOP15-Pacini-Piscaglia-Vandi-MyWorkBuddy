@@ -17,7 +17,7 @@ public class MongoDBTest {
 
     private class PersonService extends AbstractGenericService<Person> {
 
-        public PersonService(Class<Person> clazz) {
+        public PersonService(final Class<Person> clazz) {
             super(clazz);
         }
 
@@ -56,7 +56,7 @@ public class MongoDBTest {
 
     @After
     public void testDelete() {
-        System.out.println(service.deleteAll());
+        System.out.println("Deleted " + service.deleteAll() + " document(s).");
     }
 
     @Test

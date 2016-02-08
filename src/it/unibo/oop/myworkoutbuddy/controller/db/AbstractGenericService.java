@@ -3,7 +3,6 @@ package it.unibo.oop.myworkoutbuddy.controller.db;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.bson.Document;
 
@@ -11,18 +10,29 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 
 import it.unibo.oop.myworkoutbuddy.controller.GenericService;
-import it.unibo.oop.myworkoutbuddy.controller.db.util.MongoDBUtils;
+import it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations;
+import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 
+/**
+ * @param <T>
+ */
 public abstract class AbstractGenericService<T> implements GenericService<T> {
 
     private final Class<? extends T> clazz;
 
+    /**
+     * Creates a new instance of an abstract service.
+     * 
+     * @param clazz
+     *            The class to retrieve.
+     */
     protected AbstractGenericService(final Class<? extends T> clazz) {
         this.clazz = clazz;
     }
 
     @Override
-    public boolean create(Map<String, Object> fields) {
+    public boolean create(final Map<String, Object> fields) {
+        Preconditions.checkArgument(!fields.values().contains(null));
         try {
             getCollection()
                     .insertOne(new Document(fields));
@@ -38,19 +48,17 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
     }
 
     @Override
-    public List<T> getByParams(Map<String, Object> params) {
-        return MongoDBUtils.getDocumentsByParams(
+    public List<T> getByParams(final Map<String, Object> params) {
+        return CRUDOperations.getDocumentsByParams(
                 getCollection(),
                 params,
                 clazz);
     }
 
     @Override
-    public long deleteByParams(Map<String, Object> params) {
+    public long deleteByParams(final Map<String, Object> params) {
         return getCollection()
-                .deleteMany(Objects.requireNonNull(params).size() > 0
-                        ? MongoDBUtils.toBson(params)
-                        : new Document())
+                .deleteMany(CRUDOperations.toBson(params, false))
                 .getDeletedCount();
     }
 
