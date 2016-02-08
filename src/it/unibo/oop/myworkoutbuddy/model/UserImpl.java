@@ -19,8 +19,8 @@ public class UserImpl implements User {
     private String avatar;
 
     private List<BodyData> measureList;     // list of body periodic measure
-    private List<Workout> trainingList;    // list of training sessions done/to do
-    private List<WorkoutRoutine> trainingCardList;    // list of available Cards
+    private List<Workout> workoutList;    // list of training sessions done/to do
+    private List<WorkoutRoutine> workoutRoutineList;    // list of available Cards
     /**
      * 
      */
@@ -38,8 +38,8 @@ public class UserImpl implements User {
         this.setUserData(data);
         this.setAvatar(avatar);
         this.measureList = new ArrayList<>();
-        this.trainingList = new ArrayList<>();
-        this.trainingCardList = new ArrayList<>();
+        this.workoutList = new ArrayList<>();
+        this.workoutRoutineList = new ArrayList<>();
     }
     @Override
     public Account getAccount() {
@@ -67,17 +67,17 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public List<Workout> getTrainingList() {
+    public List<Workout> getWorkoutList() {
         // TODO Auto-generated method stub
-        return this.trainingList;
+        return this.workoutList;
     }
     /**
      * 
      */
     @Override
-    public List<WorkoutRoutine> getTrainingCardList() {
+    public List<WorkoutRoutine> getWorkoutRoutineList() {
         // TODO Auto-generated method stub
-        return this.trainingCardList;
+        return this.workoutRoutineList;
     }
 
     private void setAccount(final Account account) {
@@ -97,14 +97,14 @@ public class UserImpl implements User {
         this.measureList.add(bodyMeasure);
     }
     @Override
-    public void addTraining(final Workout training) {
+    public void addWorkout(final Workout workout) {
         // TODO Auto-generated method stub
-        this.trainingList.add(training);
+        this.workoutList.add(workout);
     }
     @Override
-    public void addTrainingCard(final WorkoutRoutine trainingCard) {
+    public void addWorkoutRoutine(final WorkoutRoutine workoutRoutine) {
         // TODO Auto-generated method stub
-        this.trainingCardList.add(trainingCard);
+        this.workoutRoutineList.add(workoutRoutine);
     }
     @Override
     public void upDateStatus() {

@@ -11,6 +11,16 @@ import it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget;
 public interface WorkoutRoutine {
     /**
      * 
+     * @param day DayInWeek
+     */
+    void addDay(final DayInWeek day);
+    /**
+     * 
+     * @param exercise Exercise
+     */
+    void addGymExcercise(final Exercise exercise);
+    /**
+     * 
      * @return nameCard
      */
     String getName();
