@@ -5,12 +5,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.CreateRoutineHandler">
    <bottom>
       <HBox prefHeight="51.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Save Routine" translateX="250.0" translateY="15.0" />
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Insert Exercise" translateX="-70.0" translateY="-40.0" />
+            <Button fx:id="btnSaveRoutine" mnemonicParsing="false" onAction="#viewExercises" text="Save Routine" translateX="250.0" translateY="15.0" />
+            <Button fx:id="btnInsertExercise" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Insert Exercise" translateX="-70.0" translateY="-40.0" />
          </children>
       </HBox>
    </bottom>
@@ -40,7 +40,7 @@
         <tabs>
           <Tab text="Sezione">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="anchorEx" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ScrollPane prefHeight="320.0" prefWidth="200.0" />
                      </children>
