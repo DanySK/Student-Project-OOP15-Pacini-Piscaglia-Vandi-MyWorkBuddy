@@ -23,9 +23,6 @@ public class AccessHandler implements AccessView {
     private TextField txtID;
 
     @FXML
-    private Button btnLogin;
-
-    @FXML
     private MenuButton btnSelect;
 
     @FXML
@@ -34,19 +31,28 @@ public class AccessHandler implements AccessView {
     @FXML
     private PasswordField txtPassword;
 
+    /**
+     * Open menuView.
+     */
     @FXML
-    private void login() {
+    public void login() {
         new FxWindowFactory().openWindow("Menu.fxml", false);
         closeWindow();
     }
 
+    /**
+     * Open registration view.
+     */
     @FXML
-    private void register() {
+    public void register() {
         /* Opening registration window */
         new FxWindowFactory().openWindow("Registration.fxml", false);
         closeWindow();
     }
 
+    /**
+     * Change cssSheet with original one.
+     */
     @FXML
     void setOriginalStyle() {
         StyleSingleton.setCssStyle("original.css");
@@ -54,8 +60,11 @@ public class AccessHandler implements AccessView {
         closeWindow();
     }
 
+    /**
+     * Change cssSheet with dark one.
+     */
     @FXML
-    void setDarkStyle() {
+    public void setDarkStyle() {
         StyleSingleton.setCssStyle("dark.css");
         new FxWindowFactory().openWindow("Access.fxml", false);
         closeWindow();

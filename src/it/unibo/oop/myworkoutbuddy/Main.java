@@ -25,7 +25,7 @@ public class Main extends Application {
      * 
      * @param args
      *            not used.
-     */
+    */
     public static void main(final String... args) {
         launch(args);
     }

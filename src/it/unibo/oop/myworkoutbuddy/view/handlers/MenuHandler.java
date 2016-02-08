@@ -36,6 +36,9 @@ public class MenuHandler {
 
     private String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
 
+    /**
+     * Set createRoutine view in the menu center.
+     */
     @FXML
     public void setCreateRoutineView() {
         mainPane.setCenter(new FxWindowFactory().openWindow("CreateRoutine.fxml", true));
@@ -45,6 +48,9 @@ public class MenuHandler {
         lastPressed = btnCreate;
     }
 
+    /**
+     * Set selectRoutine view in the menu center.
+     */
     @FXML
     public void setSelectRoutineView() {
         mainPane.setCenter(new FxWindowFactory().openWindow("SelectRoutine.fxml", true));
@@ -54,6 +60,9 @@ public class MenuHandler {
         lastPressed = btnSelect;
     }
 
+    /**
+     * Set user statistics view in the menu center.
+     */
     @FXML
     public void setStatisticsView() {
         mainPane.setCenter(new FxWindowFactory().openWindow("Statistics.fxml", true));
@@ -63,6 +72,9 @@ public class MenuHandler {
         lastPressed = btnStatistics;
     }
 
+    /**
+     * Set user settings view in the menu center.
+     */
     @FXML
     public void setUserSettingsView() {
         mainPane.setCenter(new FxWindowFactory().openWindow("UserSettings.fxml", true));
@@ -77,8 +89,11 @@ public class MenuHandler {
         System.exit(0);
     }
 
+    /**
+     * Return to login view.
+     */
     @FXML
-    void logout() {
+    public void logout() {
         new FxWindowFactory().openWindow("Access.fxml", false);
         final Stage stageAccess = (Stage) menuTitle.getScene().getWindow();
         stageAccess.close();
