@@ -12,7 +12,7 @@ import javafx.stage.Stage;
  * Utility class to open JavaFx windows.
  *
  */
-public final class FxStageWindow {
+public final class FxWindow {
 
     /**
      * Load a new window. If inside is set, the method return the root of the new scene.
@@ -22,16 +22,16 @@ public final class FxStageWindow {
      * @param inside
      * @return root
      */
-    public BorderPane openWindow(final String fxmlPath, final String cssPath, boolean inside) {
+    public BorderPane openWindow(final String fxmlPath, final String cssPath, final boolean inside) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            final Stage stage = new Stage();
             final BorderPane root = (BorderPane) loader.load();
-            final Scene scene = new Scene(root);
             // final AccessHandler access = loader.getController();
             if (inside) {
                 return root;
             }
+            final Stage stage = new Stage();
+            final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
             stage.setScene(scene);
             stage.show();

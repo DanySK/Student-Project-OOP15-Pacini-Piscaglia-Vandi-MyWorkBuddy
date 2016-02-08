@@ -1,7 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.FxStageWindow;
+import it.unibo.oop.myworkoutbuddy.view.FxWindow;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,17 +34,17 @@ public class AccessHandler implements AccessView {
     private PasswordField txtPassword;
 
     @FXML
-    private void login(final ActionEvent event) {
-        final FxStageWindow window = new FxStageWindow();
+    private void login() {
+        final FxWindow window = new FxWindow();
         window.openWindow("Menu.fxml", "application.css", false);
         closeWindow();
     }
 
     @FXML
-    private void register(final ActionEvent event) {
+    private void register() {
 
         /* Opening registration window */
-        final FxStageWindow window = new FxStageWindow();
+        final FxWindow window = new FxWindow();
         window.openWindow("Registration.fxml", "application.css", false);
 
         /* Closing login window */

@@ -2,7 +2,7 @@ package it.unibo.oop.myworkoutbuddy;
 
 import java.io.IOException;
 
-import it.unibo.oop.myworkoutbuddy.view.FxStageWindow;
+import it.unibo.oop.myworkoutbuddy.view.FxWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -17,7 +17,7 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage stage) throws IOException {
-        final FxStageWindow window = new FxStageWindow();
+        final FxWindow window = new FxWindow();
         window.openWindow("Access.fxml", "application.css", false);
     }
 
