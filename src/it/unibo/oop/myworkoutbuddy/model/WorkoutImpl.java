@@ -15,16 +15,16 @@ public class WorkoutImpl implements Workout {
     private LocalDate date;     // session date
     private LocalTime time;  // hour of start session
     private boolean state;  // session state (done/to do)
-    private TrainingCard card;  // training card used
+    private WorkoutRoutine card;  // training card used
     private List<Integer> scoreList;    // list of got scores with card in session
 
     /**
      * 
      * @param date LocalDate
      * @param time LocalTime
-     * @param card TrainingCard
+     * @param card WorkoutRoutine
      */
-    public TrainingImpl(final LocalDate date, final LocalTime time, final TrainingCard card) {
+    public WorkoutImpl(final LocalDate date, final LocalTime time, final WorkoutRoutine card) {
         this.setDate(date);
         this.setTime(time);
         this.setCard(card);
@@ -47,19 +47,20 @@ public class WorkoutImpl implements Workout {
         this.state = state;
     }
 
-    private void setCard(final TrainingCard card) {
+    private void setCard(final WorkoutRoutine card) {
         this.card = card;
     }
     /**
      * 
      * @param scoreTraining Integer
      */
-    public void addScore(final Integer scoreTraining) {
-        this.scoreList.add(scoreTraining);
+    @Override
+    public void addScore(final int indExercise, final Integer scoreTraining) {
+        this.scoreList.add(indExercise, scoreTraining);
     }
 
     @Override
-    public LocalDate getData() {
+    public LocalDate getDate() {
         // TODO Auto-generated method stub
         return this.date;
     }
@@ -82,7 +83,7 @@ public class WorkoutImpl implements Workout {
     }
 
     @Override
-    public TrainingCard getCard() {
+    public WorkoutRoutine getCard() {
         // TODO Auto-generated method stub
         return this.card;
     }

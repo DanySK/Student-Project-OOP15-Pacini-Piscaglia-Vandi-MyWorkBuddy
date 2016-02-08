@@ -34,14 +34,14 @@ public interface User {
     List<BodyData> getMeasureList();
     /**
      * 
-     * @return the training list for a specific user
+     * @return the Workout list for a specific user
      */
-    List<Training> getTrainingList(); // workoutRoutine
+    List<Workout> getWorkoutList(); // workoutRoutine
     /**
      * 
-     * @return the trainingCard list for a specific user
+     * @return the WorkoutRoutine list for a specific user
      */
-    List<TrainingCard> getTrainingCardList();
+    List<WorkoutRoutine> getWorkoutRoutineList();
     /**
      * 
      * @param bodyMeasure of User
@@ -49,16 +49,16 @@ public interface User {
     void addMesure(BodyData bodyMeasure);
     /**
      * 
-     * @param training of User
+     * @param workout of User
      */
-    void addTraining(Training training);
+    void addWorkout(Workout workout);
     /**
      * 
-     * @param trainingCard of User
+     * @param workoutRoutine of User
      */
-    void addTrainingCard(TrainingCard trainingCard);
+    void addWorkoutRoutine(WorkoutRoutine workoutRoutine);
     /**
-     * Update the Status of User's trainings.
+     * Update the Status of User's workout.
      */
     void upDateStatus();
     /**

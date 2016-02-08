@@ -12,26 +12,32 @@ import javafx.util.Pair;
  */
 public class GymToolImpl implements GymTool {
 
+    private String code;
     private String name;
     private String imageFile;
     private Pair<Integer, Integer> rangeValue;
-    private int numMax;
+    private int numTools;
     private Map<BodyPart, Double> bodyMap;
 
     /**
-     * 
+     * @param code String
      * @param name String
      * @param path String
      * @param max int
      * @param min int
-     * @param numMax int
+     * @param num int
      */
-    public GymToolImpl(final String name, final String path, final int max, final int min, final int numMax) {
+    public GymToolImpl(final String code, final String name, final String path, final int max, final int min, final int num) {
+        this.setCode(code);
         this.setString(name);
         this.setImageFile(imageFile);
         this.rangeValue = new Pair<>(max, min);
-        this.setNumMax(numMax);
+        this.setNumTools(num);
         this.bodyMap = new HashMap<>();
+    }
+
+    private void setCode(final String code) {
+        this.code = code;
     }
 
     private void setString(final String name) {
@@ -42,16 +48,13 @@ public class GymToolImpl implements GymTool {
         this.imageFile = imageFile;
     }
 
-    private void setNumMax(final int numMax) {
-        this.numMax = numMax;
+    private void setNumTools(final int num) {
+        this.numTools = num;
     }
-    /**
-     * 
-     * @param bodyPart BodyPart
-     * @param value Double
-     */
-    public void addBodyPart(final BodyPart bodyPart, final Double value) {
-        this.bodyMap.put(bodyPart, value);
+
+    @Override
+    public String getCode() {
+        return this.code;
     }
 
     @Override
@@ -75,9 +78,19 @@ public class GymToolImpl implements GymTool {
     }
 
     @Override
-    public int getNumMax() {
+    public int getNumTools() {
         // TODO Auto-generated method stub
-        return this.numMax;
+        return this.numTools;
+    }
+
+    /**
+     * 
+     * @param bodyPart BodyPart
+     * @param value Double
+     */
+    @Override
+    public void addBodyPart(final BodyPart bodyPart, final Double value) {
+        this.bodyMap.put(bodyPart, value);
     }
 
     @Override
@@ -85,5 +98,4 @@ public class GymToolImpl implements GymTool {
         // TODO Auto-generated method stub
         return this.bodyMap;
     }
-
 }
