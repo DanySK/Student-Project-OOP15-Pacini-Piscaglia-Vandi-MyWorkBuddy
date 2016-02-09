@@ -24,21 +24,24 @@ public final class FxWindowFactory {
     }
 
     /**
-     * Load a new window. If inside is set, the method return the root of the
-     * new scene.
+     * Load a new window. If it is contained in a menu, the method return the
+     * root
+     * of the new scene.
      * 
-     * @param fxmlPath.
+     * @param fxmlPath
+     *            path of the GUI structure file FXML.
      * 
-     * @param inside.
+     * @param isContained
+     *            true if the window is set in a other container.
      * 
      * @return root.
      */
-    public BorderPane openWindow(final String fxmlPath, final boolean inside) {
+    public BorderPane openWindow(final String fxmlPath, final boolean isContained) {
         try {
             final FXMLLoader loader = new FXMLLoader(getClass().getResource("../structure/" + fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
             // final AccessHandler access = loader.getController();
-            if (inside) {
+            if (isContained) {
                 return root;
             }
             final Stage stage = new Stage();

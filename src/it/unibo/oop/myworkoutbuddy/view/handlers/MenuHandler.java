@@ -41,13 +41,7 @@ public class MenuHandler {
      */
     @FXML
     private void setCreateRoutineView() {
-        if (lastPressed != btnCreate) {
-            mainPane.setCenter(new FxWindowFactory().openWindow("CreateRoutine.fxml", true));
-            menuTitle.setText("Create Routine");
-            btnCreate.setStyle(cssSelectStyle);
-            resetStyle();
-            lastPressed = btnCreate;
-        }
+        sceneSwitch("CreateRoutine.fxml", btnCreate, "Create your routine");
     }
 
     /**
@@ -55,13 +49,7 @@ public class MenuHandler {
      */
     @FXML
     private void setSelectRoutineView() {
-        if (lastPressed != btnSelect) {
-            mainPane.setCenter(new FxWindowFactory().openWindow("SelectRoutine.fxml", true));
-            menuTitle.setText("Select Routine");
-            btnSelect.setStyle(cssSelectStyle);
-            resetStyle();
-            lastPressed = btnSelect;
-        }
+        sceneSwitch("SelectRoutine.fxml", btnSelect, "Select your routine");
     }
 
     /**
@@ -69,13 +57,7 @@ public class MenuHandler {
      */
     @FXML
     private void setStatisticsView() {
-        if (lastPressed != btnStatistics) {
-            mainPane.setCenter(new FxWindowFactory().openWindow("Statistics.fxml", true));
-            menuTitle.setText("Statistics");
-            btnStatistics.setStyle(cssSelectStyle);
-            resetStyle();
-            lastPressed = btnStatistics;
-        }
+        sceneSwitch("Statistics.fxml", btnStatistics, "Statistics");
     }
 
     /**
@@ -83,13 +65,7 @@ public class MenuHandler {
      */
     @FXML
     private void setUserSettingsView() {
-        if (lastPressed != btnSettings) {
-            mainPane.setCenter(new FxWindowFactory().openWindow("UserSettings.fxml", true));
-            menuTitle.setText("User Settings");
-            btnSettings.setStyle(cssSelectStyle);
-            resetStyle();
-            lastPressed = btnSettings;
-        }
+        sceneSwitch("UserSettings.fxml", btnSettings, "User Settings");
     }
 
     /**
@@ -111,12 +87,42 @@ public class MenuHandler {
     }
 
     /**
+     * Animation when user move mouse on a button
+     */
+    @FXML
+    private void moveMouseAnimation() {
+        btnCreate.setStyle("-fx-font-weight: bold");
+        btnCreate.setMaxWidth(170.0);
+    }
+
+    /**
+     * Animation when user move mouse on a button
+     */
+    @FXML
+    private void exitMouseAnimation() {
+        btnCreate.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+        btnCreate.setMaxWidth(135.0);
+    }
+
+    /**
      * Set the initial style.
      */
-    private void resetStyle() {
+    private void resetButtonStyle() {
         if (lastPressed != null) {
             lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
         }
     }
 
+    /**
+     * Factored code of scene switch and button management.
+     */
+    private void sceneSwitch(final String fxmlFile, final Button btnPressed, final String menuLabel) {
+        if (lastPressed != btnPressed) {
+            mainPane.setCenter(new FxWindowFactory().openWindow(fxmlFile, true));
+            menuTitle.setText(menuLabel);
+            btnPressed.setStyle(cssSelectStyle);
+            resetButtonStyle();
+            lastPressed = btnPressed;
+        }
+    }
 }
