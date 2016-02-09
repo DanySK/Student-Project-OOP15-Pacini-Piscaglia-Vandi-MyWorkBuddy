@@ -34,58 +34,69 @@ public class MenuHandler {
 
     private Button lastPressed;
 
-    private String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+    private final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
 
     /**
      * Set createRoutine view in the menu center.
      */
     @FXML
-    public void setCreateRoutineView() {
-        mainPane.setCenter(new FxWindowFactory().openWindow("CreateRoutine.fxml", true));
-        menuTitle.setText("Create Routine");
-        btnCreate.setStyle(cssSelectStyle);
-        resetStyle();
-        lastPressed = btnCreate;
+    private void setCreateRoutineView() {
+        if (lastPressed != btnCreate) {
+            mainPane.setCenter(new FxWindowFactory().openWindow("CreateRoutine.fxml", true));
+            menuTitle.setText("Create Routine");
+            btnCreate.setStyle(cssSelectStyle);
+            resetStyle();
+            lastPressed = btnCreate;
+        }
     }
 
     /**
      * Set selectRoutine view in the menu center.
      */
     @FXML
-    public void setSelectRoutineView() {
-        mainPane.setCenter(new FxWindowFactory().openWindow("SelectRoutine.fxml", true));
-        menuTitle.setText("Select Routine");
-        btnSelect.setStyle(cssSelectStyle);
-        resetStyle();
-        lastPressed = btnSelect;
+    private void setSelectRoutineView() {
+        if (lastPressed != btnSelect) {
+            mainPane.setCenter(new FxWindowFactory().openWindow("SelectRoutine.fxml", true));
+            menuTitle.setText("Select Routine");
+            btnSelect.setStyle(cssSelectStyle);
+            resetStyle();
+            lastPressed = btnSelect;
+        }
     }
 
     /**
      * Set user statistics view in the menu center.
      */
     @FXML
-    public void setStatisticsView() {
-        mainPane.setCenter(new FxWindowFactory().openWindow("Statistics.fxml", true));
-        menuTitle.setText("Statistics");
-        btnStatistics.setStyle(cssSelectStyle);
-        resetStyle();
-        lastPressed = btnStatistics;
+    private void setStatisticsView() {
+        if (lastPressed != btnStatistics) {
+            mainPane.setCenter(new FxWindowFactory().openWindow("Statistics.fxml", true));
+            menuTitle.setText("Statistics");
+            btnStatistics.setStyle(cssSelectStyle);
+            resetStyle();
+            lastPressed = btnStatistics;
+        }
     }
 
     /**
      * Set user settings view in the menu center.
      */
     @FXML
-    public void setUserSettingsView() {
-        mainPane.setCenter(new FxWindowFactory().openWindow("UserSettings.fxml", true));
-        menuTitle.setText("User Settings");
-        btnSettings.setStyle(cssSelectStyle);
-        resetStyle();
-        lastPressed = btnSettings;
+    private void setUserSettingsView() {
+        if (lastPressed != btnSettings) {
+            mainPane.setCenter(new FxWindowFactory().openWindow("UserSettings.fxml", true));
+            menuTitle.setText("User Settings");
+            btnSettings.setStyle(cssSelectStyle);
+            resetStyle();
+            lastPressed = btnSettings;
+        }
     }
 
+    /**
+     * Terminates application.
+     */
     @FXML
-    void quitApp() {
+    private void quitApp() {
         System.exit(0);
     }
 
@@ -93,12 +104,15 @@ public class MenuHandler {
      * Return to login view.
      */
     @FXML
-    public void logout() {
+    private void logout() {
         new FxWindowFactory().openWindow("Access.fxml", false);
         final Stage stageAccess = (Stage) menuTitle.getScene().getWindow();
         stageAccess.close();
     }
 
+    /**
+     * Set the initial style.
+     */
     private void resetStyle() {
         if (lastPressed != null) {
             lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");

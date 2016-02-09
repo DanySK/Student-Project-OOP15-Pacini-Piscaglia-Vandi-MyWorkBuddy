@@ -85,12 +85,12 @@ public class RegistrationHandler implements RegistrationView {
     }
 
     @FXML
-    public void register() {
+    private void register() {
         returnLogin();
     }
 
     @FXML
-    public void returnLogin() {
+    private void returnLogin() {
         /* Opening login window */
         new FxWindowFactory().openWindow("Access.fxml", false);
 

@@ -35,7 +35,7 @@ public class AccessHandler implements AccessView {
      * Open menuView.
      */
     @FXML
-    public void login() {
+    private void login() {
         new FxWindowFactory().openWindow("Menu.fxml", false);
         closeWindow();
     }
@@ -44,7 +44,7 @@ public class AccessHandler implements AccessView {
      * Open registration view.
      */
     @FXML
-    public void register() {
+    private void register() {
         /* Opening registration window */
         new FxWindowFactory().openWindow("Registration.fxml", false);
         closeWindow();
@@ -54,7 +54,7 @@ public class AccessHandler implements AccessView {
      * Change cssSheet with original one.
      */
     @FXML
-    void setOriginalStyle() {
+    private void setOriginalStyle() {
         StyleSingleton.setCssStyle("original.css");
         new FxWindowFactory().openWindow("Access.fxml", false);
         closeWindow();
@@ -64,7 +64,7 @@ public class AccessHandler implements AccessView {
      * Change cssSheet with dark one.
      */
     @FXML
-    public void setDarkStyle() {
+    private void setDarkStyle() {
         StyleSingleton.setCssStyle("dark.css");
         new FxWindowFactory().openWindow("Access.fxml", false);
         closeWindow();

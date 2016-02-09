@@ -35,7 +35,7 @@ public final class FxWindowFactory {
      */
     public BorderPane openWindow(final String fxmlPath, final boolean inside) {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("../" + fxmlPath));
+            final FXMLLoader loader = new FXMLLoader(getClass().getResource("../structure/" + fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
             // final AccessHandler access = loader.getController();
             if (inside) {
