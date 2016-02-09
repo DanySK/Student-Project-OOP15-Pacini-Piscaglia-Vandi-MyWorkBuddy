@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.AccessHandler">
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <TextField fx:id="txtID" maxWidth="200.0" promptText="Insert your ID" translateY="60.0" BorderPane.alignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor></TextField>
+         </top>
+         <center>
+            <PasswordField fx:id="txtPassword" maxWidth="200.0" prefHeight="25.0" prefWidth="275.0" promptText="Insert your password" BorderPane.alignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="TEXT" />
+               </cursor>
+            </PasswordField>
+         </center>
+      </BorderPane>
+   </center>
+   <top>
+      <Label id="mainTitle" alignment="CENTER" prefHeight="82.0" prefWidth="608.0" text="MyWorkoutBuddy" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+   </top>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" text="Register" translateX="100.0">
+               <effect>
+                  <Reflection />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnLogin" lineSpacing="5.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="JUSTIFY" translateX="190.0">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <effect>
+                  <Reflection />
+               </effect>
+            </Button>
+            <MenuButton id="selectTheme" fx:id="btnSelect" mnemonicParsing="false" text="Select App Theme" translateX="260.0">
+              <items>
+                <MenuItem fx:id="styleOriginal" mnemonicParsing="false" onAction="#setOriginalStyle" text="Original" />
+                <MenuItem fx:id="styleDark" mnemonicParsing="false" onAction="#setDarkStyle" text="Dark" />
+              </items>
+               <effect>
+                  <Reflection />
+               </effect>
+            </MenuButton>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
