@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -12,9 +13,11 @@ import org.bson.conversions.Bson;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
+import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 
-import it.unibo.oop.myworkoutbuddy.util.Builder;
+import it.unibo.oop.myworkoutbuddy.util.Preconditions;
+import it.unibo.oop.myworkoutbuddy.util.json.JSONObject;
 
 /**
  * Utility class for CRUD operations.
@@ -22,39 +25,109 @@ import it.unibo.oop.myworkoutbuddy.util.Builder;
 public final class CRUDOperations {
 
     /**
+     * Creates a document to insert in the database.
+     * 
      * @param collection
-     *            The collection to use.
-     * @param params
-     *            The query filters
-     * @param clazz
-     *            The class of the object to retrieve.
-     * @return A list of elements which satisfy the given filters.
-     * @param <T>
-     *            the type of the element to retrieve.
+     *            the collection to use
+     * @param fields
+     *            the fields of the element to insert
+     * @return True if the element is successfully created, false if some errors occurs.
+     */
+    public static boolean createNewDocument(
+            final MongoCollection<Document> collection,
+            final Map<String, Object> fields) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(fields);
+        Preconditions.checkArgument(!fields.values().contains(null));
+        try {
+            collection.insertOne(new Document(fields));
+            return true;
+        } catch (final MongoException e) { // Insertion fail.
+            return false;
+        }
+    }
+
+    /**
+     * Creates as many documents as the elements and inserts them in the database.
+     * 
+     * @param collection
+     *            the collection to use
+     * @param elements
+     *            the elements insert
+     * @return True if the element is successfully created, false if some errors occurs.
+     */
+    public static boolean createNewDocuments(
+            final MongoCollection<Document> collection,
+            final List<? extends Map<String, Object>> elements) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(elements);
+        Preconditions.checkArgument(!elements.contains(null));
+        try {
+            collection.insertMany(elements.stream()
+                    .map(Document::new)
+                    .collect(Collectors.toList()));
+            return true;
+        } catch (final MongoException e) { // Insertion fail.
+            return false;
+        }
+    }
+
+    /**
+     * @param collection
+     *            the collection to use
+     * @param queryParams
+     *            the query filters
+     * @return a list of elements which satisfy the given filters
      */
     public static List<Map<String, Object>> getDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> params) {
+            final Map<String, Object> queryParams) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(queryParams);
         final List<Map<String, Object>> l = new ArrayList<>();
         collection
-                .find(toBson(params, true));
+                .find(toBson(queryParams, true))
+                .forEach(addToList(l));
         return l;
+    }
+
+    /**
+     * @param collection
+     *            the collection to use
+     * @param queryParams
+     *            the query filters
+     * @param updateParams
+     *            the fields to update with the new value.
+     * @return the number of modified documents
+     */
+    public static long updateDocumentsByParams(
+            final MongoCollection<Document> collection,
+            final Map<String, Object> queryParams,
+            final Map<String, Object> updateParams) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(queryParams);
+        Objects.requireNonNull(updateParams);
+        return collection
+                .updateMany(
+                        toBson(queryParams, false),
+                        new Document("$set", new Document(updateParams)))
+                .getModifiedCount();
     }
 
     /**
      * Deletes all the documents that satisfy the specified parameters.
      * 
      * @param collection
-     *            The collection to use.
-     * @param params
-     *            The delete filters
-     * @return The number of deleted elements.
+     *            the collection to use
+     * @param deleteParams
+     *            the delete filter
+     * @return the number of deleted documents
      */
     public static long deleteDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> params) {
+            final Map<String, Object> deleteParams) {
         return collection
-                .deleteMany(toBson(params, false))
+                .deleteMany(toBson(deleteParams, false))
                 .getDeletedCount();
     }
 
@@ -62,10 +135,10 @@ public final class CRUDOperations {
      * Converts a {@link Map} to a {@link Bson} object.
      * 
      * @param params
-     *            The map to convert to a BSON query
+     *            the map to convert to a BSON query
      * @param stringToRegex
-     *            if {@code true} each string will be compiled as a {@link Pattern}.
-     * @return The BSON query to perform.
+     *            if {@code true} each string will be compiled as a {@link Pattern}
+     * @return fhe BSON query to perform
      */
     private static Bson toBson(final Map<String, Object> params, final boolean stringToRegex) {
         return new BasicDBObject(params.entrySet().stream()
@@ -77,17 +150,12 @@ public final class CRUDOperations {
                 })));
     }
 
-    private static <T> Block<? super Document> addToList(final List<T> l, final Class<? extends T> clazz) {
+    private static <T> Block<? super Document> addToList(final List<Map<String, Object>> l) {
         return new Block<Document>() {
             @Override
             public void apply(final Document document) {
-                final Builder<T> builder = new Builder<>(clazz);
-                document.forEach((f, v) -> {
-                    if (!f.contains("_id")) {
-                        builder.set(f, v);
-                    }
-                });
-                l.add(builder.build());
+                document.remove("_id"); // We don't want the MongoDB ObjectId field as a JSON document field.
+                l.add(new JSONObject(document));
             }
         };
     }

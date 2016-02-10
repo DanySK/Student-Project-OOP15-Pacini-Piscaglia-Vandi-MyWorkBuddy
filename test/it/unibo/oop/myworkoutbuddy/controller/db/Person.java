@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
+import it.unibo.oop.myworkoutbuddy.util.Preconditions;
+
 public class Person {
 
     private final String lastName;
@@ -7,7 +9,57 @@ public class Person {
     private final boolean married;
     private final int age;
 
-    public Person(final String firstName, final String lastName, final boolean married, final int age) {
+    public static class PersonBuilder {
+
+        private String firstName;
+        private String lastName;
+        private boolean married;
+        private int age = -1;
+
+        private boolean built;
+
+        public PersonBuilder() {
+            built = false;
+        }
+
+        public PersonBuilder firstName(final String firstName) {
+            Preconditions.checkState(!built);
+            Preconditions.checkArgument(firstName != null && firstName != "");
+            this.firstName = firstName;
+            return this;
+        }
+
+        public PersonBuilder lastName(final String lastName) {
+            Preconditions.checkState(!built);
+            Preconditions.checkArgument(lastName != null && lastName != "");
+            this.lastName = lastName;
+            return this;
+        }
+
+        public PersonBuilder age(final int age) {
+            Preconditions.checkState(!built);
+            Preconditions.checkArgument(age > 0);
+            this.age = age;
+            return this;
+        }
+
+        public PersonBuilder married(final boolean married) {
+            Preconditions.checkState(!built);
+            this.married = married;
+            return this;
+        }
+
+        public Person build() {
+            Preconditions.checkState(!built);
+            Preconditions.checkArgument(firstName != null && firstName != "");
+            Preconditions.checkArgument(lastName != null && lastName != "");
+            Preconditions.checkArgument(age > 0);
+            return new Person(firstName, lastName, married, age);
+        }
+
+    }
+
+    private Person(final String firstName, final String lastName, final boolean married, final int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.married = married;

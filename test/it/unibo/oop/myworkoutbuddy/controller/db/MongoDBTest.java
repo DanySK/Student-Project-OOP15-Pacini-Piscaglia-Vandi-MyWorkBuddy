@@ -1,48 +1,45 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.unibo.oop.myworkoutbuddy.util.Builder;
+import it.unibo.oop.myworkoutbuddy.controller.Service;
+import it.unibo.oop.myworkoutbuddy.util.json.JSONObject;
 
 public class MongoDBTest {
 
-    private class PersonService extends AbstractGenericService<Person> {
-
-        public PersonService(final Class<Person> clazz) {
-            super(clazz);
-        }
-
-        @Override
-        protected String getCollectionName() {
-            return "people";
-        }
-
-    }
-
-    private final PersonService service = new PersonService(Person.class);
+    private final Service service = new MongoService("people");
 
     @Before
     public void testCreate() {
-        service.create(new Builder<>(Person.class)
-                .set("firstName", "Mattia")
-                .set("lastName", "Vandi")
-                .set("age", 20)
-                .set("married", false)
-                .toMap());
-        service.create(new Builder<>(Person.class)
-                .set("firstName", "Lorenzo")
-                .set("lastName", "Pacini")
-                .set("age", 20)
-                .set("married", false)
-                .toMap());
-        service.create(new Builder<>(Person.class)
-                .set("firstName", "Nicola")
-                .set("lastName", "Piscaglia")
-                .set("age", 20)
-                .set("married", false)
-                .toMap());
+        final List<Map<String, Object>> toInsert = Arrays.asList(
+                new JSONObject(new Person.PersonBuilder()
+                        .firstName("Mattia")
+                        .lastName("Vandi")
+                        .age(20)
+                        .married(false)
+                        .build()),
+                new JSONObject(new Person.PersonBuilder()
+                        .firstName("Nicola")
+                        .lastName("Piscaglia")
+                        .age(21)
+                        .married(false)
+                        .build()),
+                new JSONObject(new Person.PersonBuilder()
+                        .firstName("Lorenzo")
+                        .lastName("Pacini")
+                        .age(20)
+                        .married(false)
+                        .build()));
+
+        toInsert.forEach(System.out::println);
+
+        service.create(toInsert);
 
         System.out.println("Inserted sample data.");
     }
@@ -54,12 +51,14 @@ public class MongoDBTest {
 
     @Test
     public void testGetByParams() throws Exception {
-
+        System.out.println(service.getAll());
     }
 
     @Test
     public void testGetAll() throws Exception {
-
+        final JSONObject params = new JSONObject();
+        params.put("age", 21);
+        System.out.println(service.getByParams(params));
     }
 
 }
