@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.StatisticsHandler">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.StatisticsHandler">
    <bottom>
-      <PieChart fx:id="pieChart" onMouseEntered="#viewPie" prefHeight="291.0" prefWidth="604.0" BorderPane.alignment="CENTER" />
+      <PieChart fx:id="pieChart" onMouseEntered="#viewPie" prefHeight="260.0" prefWidth="641.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <LineChart fx:id="weightChart" prefHeight="233.0" prefWidth="636.0" title="Weight" BorderPane.alignment="CENTER">
+      <LineChart fx:id="weightChart" onMouseEntered="#viewWeightChart" prefHeight="320.0" prefWidth="641.0" title="Weight Line" BorderPane.alignment="CENTER">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -21,21 +21,4 @@
         </yAxis>
       </LineChart>
    </center>
-   <top>
-      <GridPane prefHeight="117.0" prefWidth="604.0" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="76.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label alignment="CENTER" text="Insert your weight" textAlignment="JUSTIFY" translateX="100.0" />
-            <TextField promptText="...." GridPane.columnIndex="1" />
-         </children>
-      </GridPane>
-   </top>
 </BorderPane>

@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.TextField;
 
 /**
  * 
@@ -14,13 +17,16 @@ import javafx.scene.chart.PieChart;
 public class StatisticsHandler implements StatisticsView {
 
     @FXML
-    private LineChart<?, ?> weightChart;
+    private TextField txtWeight;
+
+    @FXML
+    private LineChart<String, String> weightChart;
 
     @FXML
     private PieChart pieChart;
 
     @FXML
-    void viewPie() {
+    private void viewPie() {
         pieChart.setTitle("Exercises distribution");
         pieChart.setLabelLineLength(10);
         pieChart.setLegendSide(Side.LEFT);
@@ -32,9 +38,28 @@ public class StatisticsHandler implements StatisticsView {
                 new PieChart.Data("Crunch", 30)));
     }
 
-      @Override
+    @FXML
+    private void viewWeightChart() {
+        Series<String, String> series = new XYChart.Series();
+        series.setName("Serie");
+        series.getData().add(new XYChart.Data("Jan", 23));
+        series.getData().add(new XYChart.Data("Feb", 14));
+        series.getData().add(new XYChart.Data("Mar", 15));
+        series.getData().add(new XYChart.Data("Apr", 24));
+        series.getData().add(new XYChart.Data("May", 34));
+        series.getData().add(new XYChart.Data("Jun", 36));
+        series.getData().add(new XYChart.Data("Jul", 22));
+        series.getData().add(new XYChart.Data("Aug", 45));
+        series.getData().add(new XYChart.Data("Sep", 43));
+        series.getData().add(new XYChart.Data("Oct", 17));
+        series.getData().add(new XYChart.Data("Nov", 29));
+        series.getData().add(new XYChart.Data("Dec", 25));
+        weightChart.getData().add(series);
+    }
+
+    @Override
     public int getWeight() {
-        return 0;
+        return Integer.parseInt(txtWeight.getText());
     }
 
 }

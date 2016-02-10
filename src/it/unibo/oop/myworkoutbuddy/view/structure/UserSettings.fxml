@@ -13,21 +13,28 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="127.0" minHeight="1.0" prefHeight="45.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="337.0" minHeight="0.0" prefHeight="46.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="337.0" minHeight="10.0" prefHeight="62.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="337.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="337.0" minHeight="10.0" prefHeight="160.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Name" />
-            <Label text="Surname" GridPane.rowIndex="1" />
-            <Label text="Age" GridPane.rowIndex="2" />
-            <TextField GridPane.columnIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Name" translateX="100.0" />
+            <Label text="Surname" translateX="100.0" GridPane.rowIndex="1" />
+            <Label text="Age" translateX="100.0" GridPane.rowIndex="2" />
+            <TextField fx:id="txtName" GridPane.columnIndex="1" />
+            <TextField fx:id="txtSurname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtAge" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Email" translateX="100.0" GridPane.rowIndex="3" />
+            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Password" translateX="100.0" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
    <bottom>
-      <Button mnemonicParsing="false" text="Save changes" translateY="-30.0" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" text="Save changes" translateY="-80.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

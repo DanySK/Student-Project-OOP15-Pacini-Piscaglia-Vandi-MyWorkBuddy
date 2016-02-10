@@ -49,7 +49,7 @@ public final class FxWindowFactory {
             final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource(cssStyle).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
-            stage.getIcons().add(new Image("file:res/workoutIcon.png"));
+            stage.getIcons().add(new Image("file:res/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

@@ -1,6 +1,8 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 /**
  * 
@@ -9,29 +11,44 @@ import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
  */
 public class UserSettingsHandler implements UserSettingsView {
 
+    @FXML
+    private TextField txtSurname;
+
+    @FXML
+    private TextField txtName;
+
+    @FXML
+    private TextField txtEmail;
+
+    @FXML
+    private TextField txtAge;
+
+    @FXML
+    private TextField txtPassword;
+
     @Override
     public String getNewName() {
-        return null;
+        return txtName.getText();
     }
 
     @Override
     public String getNewSurname() {
-        return null;
+        return txtSurname.getText();
     }
 
     @Override
     public int getNewAge() {
-        return 0;
+        return Integer.parseInt(txtAge.getText());
     }
 
     @Override
     public String getNewEmail() {
-        return null;
+        return txtEmail.getText();
     }
 
     @Override
     public String getNewPassword() {
-        return null;
+        return txtPassword.getText();
     }
 
 }
