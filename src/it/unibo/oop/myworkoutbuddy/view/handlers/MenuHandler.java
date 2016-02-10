@@ -36,15 +36,23 @@ public class MenuHandler {
     @FXML
     private VBox btnContainer;
 
+    @FXML
+    private Button btnQuit;
+
+    @FXML
+    private Button btnLogout;
+
     private Button lastPressed;
 
-    private static final double WIDTH_BUTTON_ANIMATION = 170.0;
+    private static final double WIDTH_BUTTON_ANIMATION = 250;
 
-    private static final double WIDTH_BUTTON_NORMAL = 135.0;
+    private static final double WIDTH_BUTTON_NORMAL = 200.0;
 
     private static final double HIDE_MENU_DELTA_WIDTH = 100.0;
 
-    private final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+    private static final double SHOW_MENU_DELTA_WIDTH = 80;
+
+    private static final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
 
     /**
      * Set createRoutine view in the menu center.
@@ -143,8 +151,28 @@ public class MenuHandler {
     }
 
     @FXML
+    private void moveLogoutMouseAnimation() {
+        setMouseAnimation(btnLogout);
+    }
+
+    @FXML
+    private void exitLogoutMouseAnimation() {
+        unSetMouseAnimation(btnLogout);
+    }
+
+    @FXML
+    private void moveQuitMouseAnimation() {
+        setMouseAnimation(btnQuit);
+    }
+
+    @FXML
+    private void exitQuitMouseAnimation() {
+        unSetMouseAnimation(btnQuit);
+    }
+
+    @FXML
     private void openMenu() {
-        btnContainer.setTranslateX(80);
+        btnContainer.setTranslateX(SHOW_MENU_DELTA_WIDTH);
     }
 
     @FXML
@@ -157,7 +185,9 @@ public class MenuHandler {
      */
     private void setMouseAnimation(final Button btn) {
         btn.setStyle("-fx-font-weight: bold");
-        btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+        if (btn != btnQuit && btn != btnLogout) {
+            btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+        }
     }
 
     /**
@@ -165,7 +195,9 @@ public class MenuHandler {
      */
     private void unSetMouseAnimation(final Button btn) {
         btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
+        if (btn != btnQuit && btn != btnLogout) {
+            btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
+        }
     }
 
     /**

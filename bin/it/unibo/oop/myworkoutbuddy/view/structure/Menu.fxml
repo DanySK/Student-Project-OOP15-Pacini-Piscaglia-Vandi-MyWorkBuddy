@@ -7,14 +7,14 @@
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="818.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.MenuHandler">
    <left>
-      <VBox fx:id="btnContainer" onMouseEntered="#openMenu" onMouseExited="#hideMenu" prefHeight="569.0" prefWidth="201.0" translateX="-100.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="btnContainer" onMouseEntered="#openMenu" onMouseExited="#hideMenu" prefHeight="656.0" prefWidth="199.0" translateX="-100.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" onMouseEntered="#moveCreateMouseAnimation" onMouseExited="#exitCreateMouseAnimation" prefHeight="26.0" prefWidth="200.0" text="Create Routine" translateX="-80.0" translateY="110.0" BorderPane.alignment="TOP_LEFT" />
             <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" onMouseEntered="#moveSelectMouseAnimation" onMouseExited="#exitSelectMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="Select Routine" translateX="-80.0" translateY="140.0" BorderPane.alignment="CENTER_LEFT" />
             <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" onMouseEntered="#moveStatisticsMouseAnimation" onMouseExited="#exitStatisticsMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="Statistics" translateX="-80.0" translateY="170.0" BorderPane.alignment="CENTER_LEFT" />
             <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" onMouseEntered="#moveSettingsMouseAnimation" onMouseExited="#exitSettingsMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="User Settings" translateX="-80.0" translateY="200.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="139.0" text="Logout" translateX="-80.0" translateY="390.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button mnemonicParsing="false" onAction="#quitApp" prefHeight="25.0" prefWidth="140.0" text="Quit" translateX="-80.0" translateY="400.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" onMouseEntered="#moveLogoutMouseAnimation" onMouseExited="#exitLogoutMouseAnimation" prefHeight="25.0" prefWidth="139.0" text="Logout" translateX="-80.0" translateY="390.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#quitApp" onMouseEntered="#moveQuitMouseAnimation" onMouseExited="#exitQuitMouseAnimation" prefHeight="25.0" prefWidth="140.0" text="Quit" translateX="-80.0" translateY="400.0" BorderPane.alignment="CENTER_LEFT" />
          </children>
       </VBox>
    </left>
@@ -22,6 +22,6 @@
       <Label id="mainTitle" fx:id="menuTitle" alignment="CENTER" prefHeight="40.0" prefWidth="447.0" text="MyWorkoutBuddy Menù" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
    </top>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <HBox prefHeight="25.0" prefWidth="818.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
