@@ -14,6 +14,22 @@ public class Person {
         this.age = age;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public boolean isMarried() {
+        return married;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
     @Override
     public String toString() {
         return "Person [lastName=" + lastName + ", firstName=" + firstName + ", married=" + married + ", age=" + age

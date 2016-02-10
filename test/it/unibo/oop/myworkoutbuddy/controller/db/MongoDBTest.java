@@ -1,12 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -61,22 +54,12 @@ public class MongoDBTest {
 
     @Test
     public void testGetByParams() throws Exception {
-        final Map<String, Object> params = new HashMap<>();
-        params.put("lastName", "ia");
-        final List<Person> people = service.getByParams(params);
-        System.out.println(people);
-        assertTrue(people.containsAll(Arrays.asList(
-                new Person("Nicola", "Piscaglia", false, 20))));
+
     }
 
     @Test
     public void testGetAll() throws Exception {
-        final List<Person> people = service.getAll();
-        System.out.println(people);
-        assertTrue(people.containsAll(Arrays.asList(
-                new Person("Mattia", "Vandi", false, 20),
-                new Person("Nicola", "Piscaglia", false, 20),
-                new Person("Lorenzo", "Pacini", false, 20))));
+
     }
 
 }

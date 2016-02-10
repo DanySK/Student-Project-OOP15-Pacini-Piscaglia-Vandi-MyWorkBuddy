@@ -25,14 +25,14 @@ public interface GenericService<T> {
      * 
      * @return all the elements stored.
      */
-    List<T> getAll();
+    List<Map<String, Object>> getAll();
 
     /**
      * @param params
      *            The filters to apply.
      * @return an {@link Collections#emptyList} if no element was found. A non-empty {@link List} otherwise.
      */
-    List<T> getByParams(Map<String, Object> params);
+    List<Map<String, Object>> getByParams(Map<String, Object> params);
 
     /**
      * Deletes all the elements in database.

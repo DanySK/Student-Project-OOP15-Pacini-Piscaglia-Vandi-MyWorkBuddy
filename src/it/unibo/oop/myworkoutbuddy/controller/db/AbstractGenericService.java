@@ -45,13 +45,13 @@ public abstract class AbstractGenericService<T> implements GenericService<T> {
     }
 
     @Override
-    public List<T> getAll() {
+    public List<Map<String, Object>> getAll() {
         return getByParams(new HashMap<>());
     }
 
     @Override
-    public List<T> getByParams(final Map<String, Object> params) {
-        return CRUDOperations.getDocumentsByParams(getCollection(), params, clazz);
+    public List<Map<String, Object>> getByParams(final Map<String, Object> params) {
+        return CRUDOperations.getDocumentsByParams(getCollection(), params);
     }
 
     @Override

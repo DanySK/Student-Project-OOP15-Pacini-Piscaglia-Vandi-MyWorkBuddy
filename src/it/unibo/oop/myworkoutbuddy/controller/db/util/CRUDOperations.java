@@ -32,14 +32,12 @@ public final class CRUDOperations {
      * @param <T>
      *            the type of the element to retrieve.
      */
-    public static <T> List<T> getDocumentsByParams(
+    public static List<Map<String, Object>> getDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> params,
-            final Class<? extends T> clazz) {
-        final List<T> l = new ArrayList<>();
+            final Map<String, Object> params) {
+        final List<Map<String, Object>> l = new ArrayList<>();
         collection
-                .find(toBson(params, true))
-                .forEach(addToList(l, clazz));
+                .find(toBson(params, true));
         return l;
     }
 
@@ -79,7 +77,7 @@ public final class CRUDOperations {
                 })));
     }
 
-    private static <T> Block<? super Document> addToList(final List<T> list, final Class<? extends T> clazz) {
+    private static <T> Block<? super Document> addToList(final List<T> l, final Class<? extends T> clazz) {
         return new Block<Document>() {
             @Override
             public void apply(final Document document) {
@@ -89,11 +87,7 @@ public final class CRUDOperations {
                         builder.set(f, v);
                     }
                 });
-                try {
-                    list.add(builder.build());
-                } catch (final Exception e) {
-                    throw new UnsupportedOperationException();
-                }
+                l.add(builder.build());
             }
         };
     }
