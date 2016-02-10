@@ -52,7 +52,7 @@ public class MenuHandler {
 
     private static final double SHOW_MENU_DELTA_WIDTH = 80;
 
-    private static final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+    private static final String CSS_SELECT_STYLE = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
 
     /**
      * Set createRoutine view in the menu center.
@@ -216,7 +216,7 @@ public class MenuHandler {
         if (lastPressed != btnPressed) {
             mainPane.setCenter(new FxWindowFactory().openWindow(fxmlFile, true));
             menuTitle.setText(menuLabel);
-            btnPressed.setStyle(cssSelectStyle);
+            btnPressed.setStyle(CSS_SELECT_STYLE);
             resetButtonStyle();
             lastPressed = btnPressed;
         }
