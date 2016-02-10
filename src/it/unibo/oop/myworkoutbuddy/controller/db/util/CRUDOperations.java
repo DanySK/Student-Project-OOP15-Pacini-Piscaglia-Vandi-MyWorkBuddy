@@ -126,6 +126,8 @@ public final class CRUDOperations {
     public static long deleteDocumentsByParams(
             final MongoCollection<Document> collection,
             final Map<String, Object> deleteParams) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(deleteParams);
         return collection
                 .deleteMany(toBson(deleteParams, false))
                 .getDeletedCount();
@@ -140,7 +142,7 @@ public final class CRUDOperations {
      *            if {@code true} each string will be compiled as a {@link Pattern}
      * @return fhe BSON query to perform
      */
-    private static Bson toBson(final Map<String, Object> params, final boolean stringToRegex) {
+    private static Bson toBson(final Map<? extends String, ?> params, final boolean stringToRegex) {
         return new BasicDBObject(params.entrySet().stream()
                 .collect(Collectors.toMap(Entry::getKey, e -> {
                     final Object v = e.getValue();
