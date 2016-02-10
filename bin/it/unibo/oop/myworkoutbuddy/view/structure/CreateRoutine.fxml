@@ -9,8 +9,8 @@
    <bottom>
       <HBox prefHeight="51.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnSaveRoutine" mnemonicParsing="false" text="Save Routine" translateX="250.0" translateY="15.0" />
-            <Button fx:id="btnInsertExercise" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Insert Exercise" translateX="-70.0" translateY="-40.0" />
+            <Button fx:id="btnSaveRoutine" mnemonicParsing="false" text="Save Routine" translateX="350.0" translateY="10.0" />
+            <Button fx:id="btnInsertExercise" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="Insert Exercise" translateX="-70.0" translateY="10.0" />
          </children>
       </HBox>
    </bottom>
@@ -42,7 +42,7 @@
             <content>
               <AnchorPane fx:id="anchorEx" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ScrollPane prefHeight="320.0" prefWidth="200.0" />
+                        <ScrollPane prefHeight="369.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>
             </content>

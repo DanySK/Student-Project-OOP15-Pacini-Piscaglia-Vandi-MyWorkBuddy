@@ -34,7 +34,17 @@ public class MenuHandler {
 
     private Button lastPressed;
 
+    private final static double WIDTH_BUTTON_ANIMATION = 135.0;
+
     private final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+
+    /*
+     * private final EventHandler<ActionEvent> mouseAnimationHandler = i -> {
+     * Button btn = (Button) i.getSource();
+     * btn.setStyle("-fx-font-weight: bold");
+     * btn.setMaxWidth(170.0);
+     * };
+     */
 
     /**
      * Set createRoutine view in the menu center.
@@ -91,8 +101,6 @@ public class MenuHandler {
      */
     @FXML
     private void moveMouseAnimation() {
-        btnCreate.setStyle("-fx-font-weight: bold");
-        btnCreate.setMaxWidth(170.0);
     }
 
     /**
@@ -101,7 +109,7 @@ public class MenuHandler {
     @FXML
     private void exitMouseAnimation() {
         btnCreate.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        btnCreate.setMaxWidth(135.0);
+        btnCreate.setMaxWidth(WIDTH_BUTTON_ANIMATION);
     }
 
     /**

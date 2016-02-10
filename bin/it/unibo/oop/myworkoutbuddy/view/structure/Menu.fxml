@@ -6,12 +6,12 @@
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="818.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.MenuHandler">
    <left>
-      <VBox prefHeight="543.0" prefWidth="156.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="506.0" prefWidth="156.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" onMouseExited="#exitMouseAnimation" onMouseMoved="#moveMouseAnimation" prefHeight="25.0" prefWidth="130.0" text="Create Routine" translateY="110.0" />
-            <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" prefHeight="25.0" prefWidth="130.0" text="Select Routine" translateY="140.0" />
-            <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" prefHeight="25.0" prefWidth="130.0" text="Statistics" translateY="170.0" />
-            <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" prefHeight="25.0" prefWidth="130.0" text="User Settings" translateY="200.0" />
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" onMouseEntered="#moveMouseAnimation" onMouseExited="#exitMouseAnimation" prefHeight="25.0" prefWidth="130.0" text="Create Routine" translateY="110.0" />
+            <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" onMouseEntered="#moveMouseAnimation" prefHeight="25.0" prefWidth="130.0" text="Select Routine" translateY="140.0" />
+            <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" onMouseEntered="#moveMouseAnimation" prefHeight="25.0" prefWidth="130.0" text="Statistics" translateY="170.0" />
+            <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" onMouseEntered="#moveMouseAnimation" prefHeight="25.0" prefWidth="130.0" text="User Settings" translateY="200.0" />
          </children>
       </VBox>
    </left>
@@ -21,8 +21,8 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#logout" text="Logout" translateX="200.0" translateY="50.0" />
-            <Button mnemonicParsing="false" onAction="#quitApp" text="Quit" translateX="400.0" translateY="50.0" />
+            <Button mnemonicParsing="false" onAction="#logout" text="Logout" translateX="30.0" />
+            <Button mnemonicParsing="false" onAction="#quitApp" text="Quit" translateX="-30.0" translateY="50.0" />
          </children>
       </HBox>
    </bottom>

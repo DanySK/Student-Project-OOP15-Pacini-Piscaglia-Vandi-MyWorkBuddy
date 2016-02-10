@@ -9,18 +9,6 @@ public interface StatisticsView {
 
     /**
      * 
-     * @return user BMI
-     */
-    double getBMI();
-
-    /**
-     * 
-     * @return user height
-     */
-    int getHeight();
-
-    /**
-     * 
      * @return user weight
      */
     int getWeight();
