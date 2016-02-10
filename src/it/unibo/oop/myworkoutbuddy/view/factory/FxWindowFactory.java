@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -47,6 +48,8 @@ public final class FxWindowFactory {
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource(cssStyle).toExternalForm());
+            stage.setTitle("MyWorkoutBuddy");
+            stage.getIcons().add(new Image("file:res/workoutIcon.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
