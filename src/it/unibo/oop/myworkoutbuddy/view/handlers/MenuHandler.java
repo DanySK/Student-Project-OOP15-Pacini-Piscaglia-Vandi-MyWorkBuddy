@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -32,19 +33,18 @@ public class MenuHandler {
     @FXML
     private Label menuTitle;
 
+    @FXML
+    private VBox btnContainer;
+
     private Button lastPressed;
 
-    private final static double WIDTH_BUTTON_ANIMATION = 135.0;
+    private static final double WIDTH_BUTTON_ANIMATION = 170.0;
+
+    private static final double WIDTH_BUTTON_NORMAL = 135.0;
+
+    private static final double HIDE_MENU_DELTA_WIDTH = 100.0;
 
     private final String cssSelectStyle = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
-
-    /*
-     * private final EventHandler<ActionEvent> mouseAnimationHandler = i -> {
-     * Button btn = (Button) i.getSource();
-     * btn.setStyle("-fx-font-weight: bold");
-     * btn.setMaxWidth(170.0);
-     * };
-     */
 
     /**
      * Set createRoutine view in the menu center.
@@ -100,16 +100,72 @@ public class MenuHandler {
      * Animation when user move mouse on a button
      */
     @FXML
-    private void moveMouseAnimation() {
+    private void moveCreateMouseAnimation() {
+        setMouseAnimation(btnCreate);
     }
 
     /**
      * Animation when user move mouse on a button
      */
     @FXML
-    private void exitMouseAnimation() {
-        btnCreate.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        btnCreate.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+    private void exitCreateMouseAnimation() {
+        unSetMouseAnimation(btnCreate);
+    }
+
+    @FXML
+    private void moveSelectMouseAnimation() {
+        setMouseAnimation(btnSelect);
+    }
+
+    @FXML
+    private void exitSelectMouseAnimation() {
+        unSetMouseAnimation(btnSelect);
+    }
+
+    @FXML
+    private void moveStatisticsMouseAnimation() {
+        setMouseAnimation(btnStatistics);
+    }
+
+    @FXML
+    private void exitStatisticsMouseAnimation() {
+        unSetMouseAnimation(btnStatistics);
+    }
+
+    @FXML
+    private void moveSettingsMouseAnimation() {
+        setMouseAnimation(btnSettings);
+    }
+
+    @FXML
+    private void exitSettingsMouseAnimation() {
+        unSetMouseAnimation(btnSettings);
+    }
+
+    @FXML
+    private void openMenu() {
+        btnContainer.setTranslateX(80);
+    }
+
+    @FXML
+    private void hideMenu() {
+        btnContainer.setTranslateX(-HIDE_MENU_DELTA_WIDTH);
+    }
+
+    /**
+     * Factored code of mouse animation.
+     */
+    private void setMouseAnimation(final Button btn) {
+        btn.setStyle("-fx-font-weight: bold");
+        btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+    }
+
+    /**
+     * Factored code to unSet mouse animation.
+     */
+    private void unSetMouseAnimation(final Button btn) {
+        btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+        btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
     }
 
     /**
