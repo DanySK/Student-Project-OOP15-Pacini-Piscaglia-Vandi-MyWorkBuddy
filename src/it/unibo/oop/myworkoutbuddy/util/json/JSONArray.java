@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.util.json;
 
 import static it.unibo.oop.myworkoutbuddy.util.json.JSONObject.wrap;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ import org.apache.commons.lang3.ClassUtils;
  * <code>true</code>, <code>false</code>, or <code>null</code>.</li>
  * </ul>
  */
-public class JSONArray implements List<Object>, Serializable {
+public class JSONArray implements List<Object>, JSONValue<Integer> {
 
     private static final long serialVersionUID = -5249787827311904965L;
 
@@ -120,7 +119,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONArray> getJSONArray(final int index) {
+    public Optional<JSONArray> getJSONArray(final Integer index) {
         final Object o = get(index);
         return (o instanceof JSONArray)
                 ? Optional.of((JSONArray) o)
@@ -138,7 +137,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONObject> getJSONObject(final int index) {
+    public Optional<JSONObject> getJSONObject(final Integer index) {
         final Object o = get(index);
         return (o instanceof JSONObject)
                 ? Optional.of((JSONObject) o)
@@ -156,7 +155,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Boolean> getBoolean(final int index) {
+    public Optional<Boolean> getBoolean(final Integer index) {
         return getIfAssignable(index, Boolean.class);
     }
 
@@ -171,7 +170,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Byte> getByte(final int index) {
+    public Optional<Byte> getByte(final Integer index) {
         return getIfAssignable(index, Byte.class);
     }
 
@@ -186,44 +185,8 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Short> getShort(final int index) {
+    public Optional<Short> getShort(final Integer index) {
         return getIfAssignable(index, Short.class);
-    }
-
-    /**
-     * Returns an {@link OptionalInt#of(Int)} if the element at the specified position in list is an instance of
-     * {@link Integer}. {@link OptionalInt#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalInt#of(Int)} if the element at the specified position in list is an instance of
-     *         {@link Integer}. {@link OptionalInt#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalInt getInteger(final int index) {
-        final Object o = get(index);
-        return (o instanceof Integer)
-                ? OptionalInt.of((int) o)
-                : OptionalInt.empty();
-    }
-
-    /**
-     * Returns an {@link OptionalLong#of(Long)} if the element at the specified position in list is an instance of
-     * {@link Long}. {@link OptionalLong#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalLong#of(Long)} if the element at the specified position in list is an instance of
-     *         {@link Long}. {@link OptionalLong#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalLong getLong(final int index) {
-        final Object o = get(index);
-        return (o instanceof Long)
-                ? OptionalLong.of((long) o)
-                : OptionalLong.empty();
     }
 
     /**
@@ -237,7 +200,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigInteger> getBigInteger(final int index) {
+    public Optional<BigInteger> getBigInteger(final Integer index) {
         return getIfAssignable(index, BigInteger.class);
     }
 
@@ -252,26 +215,8 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Float> getFloat(final int index) {
+    public Optional<Float> getFloat(final Integer index) {
         return getIfAssignable(index, Float.class);
-    }
-
-    /**
-     * Returns an {@link OptionalDouble#of(Double)} if the element at the specified position in list is an instance of
-     * {@link Double}. {@link OptionalDouble#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalDouble#of(Double)} if the element at the specified position in list is an instance of
-     *         {@link Double}. {@link OptionalDouble#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalDouble getDouble(final int index) {
-        final Object o = get(index);
-        return (o instanceof Double)
-                ? OptionalDouble.of((double) o)
-                : OptionalDouble.empty();
     }
 
     /**
@@ -285,7 +230,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigDecimal> getBigDecimal(final int index) {
+    public Optional<BigDecimal> getBigDecimal(final Integer index) {
         return getIfAssignable(index, BigDecimal.class);
     }
 
@@ -300,7 +245,7 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Character> getCharacter(final int index) {
+    public Optional<Character> getCharacter(final Integer index) {
         return getIfAssignable(index, Character.class);
     }
 
@@ -315,8 +260,68 @@ public class JSONArray implements List<Object>, Serializable {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<String> getString(final int index) {
+    public Optional<String> getString(final Integer index) {
         return getIfAssignable(index, String.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     * {@link Integer}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Integer}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalInt getInteger(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Integer)
+                ? OptionalInt.of((int) o)
+                : OptionalInt.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     * {@link Long}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Long}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalLong getLong(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Long)
+                ? OptionalLong.of((long) o)
+                : OptionalLong.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     * {@link Double}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Double}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalDouble getDouble(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Double)
+                ? OptionalDouble.of((double) o)
+                : OptionalDouble.empty();
     }
 
     @Override

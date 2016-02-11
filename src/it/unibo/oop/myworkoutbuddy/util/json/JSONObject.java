@@ -1,6 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.util.json;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -53,7 +52,7 @@ import org.apache.commons.lang3.ClassUtils;
  * <li>Strings will be quoted with <code>"</code>&nbsp;<small>(double quote)</small>.
  * </ul>
  */
-public class JSONObject implements Map<String, Object>, Serializable {
+public class JSONObject implements Map<String, Object>, JSONValue<Object> {
 
     private static final long serialVersionUID = 8132214257960166022L;
 
@@ -100,15 +99,15 @@ public class JSONObject implements Map<String, Object>, Serializable {
             if (NULL.equals(o)) {
                 return NULL;
             }
-            if (o instanceof JSONArray || o instanceof JSONObject || o instanceof Boolean
-                    || o instanceof Byte || o instanceof Short || o instanceof Integer
-                    || o instanceof Long || o instanceof BigInteger || o instanceof Float
-                    || o instanceof Double || o instanceof BigDecimal || o instanceof Character) {
+            if (o instanceof Boolean || o instanceof Byte || o instanceof Short
+                    || o instanceof Integer || o instanceof Long || o instanceof BigInteger
+                    || o instanceof Float || o instanceof Double || o instanceof BigDecimal
+                    || o instanceof Character || o instanceof JSONValue) {
                 return o;
             }
             if (o instanceof String) {
                 final String str = (String) o;
-                return tryParseNumber(str);
+                return tryParse(str);
             }
             if (o.getClass().isArray()) {
                 final Object[] arr = (Object[]) o;
@@ -275,46 +274,6 @@ public class JSONObject implements Map<String, Object>, Serializable {
     }
 
     /**
-     * Returns an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
-     * {@link Integer}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
-     *         {@link Integer}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public OptionalInt getInteger(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Integer)
-                ? OptionalInt.of((int) o)
-                : OptionalInt.empty();
-    }
-
-    /**
-     * Returns an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
-     * {@link Long}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
-     *         {@link Long}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public OptionalLong getLong(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Long)
-                ? OptionalLong.of((long) o)
-                : OptionalLong.empty();
-    }
-
-    /**
      * Returns an {@link Optional#of(BigInteger)} if the value to which the specified key is mapped and is an instance
      * of
      * {@link BigInteger}, {@link Optional#empty()} otherwise.
@@ -348,26 +307,6 @@ public class JSONObject implements Map<String, Object>, Serializable {
      */
     public Optional<Float> getFloat(final Object key) {
         return getIfAssignable(key, Float.class);
-    }
-
-    /**
-     * Returns an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
-     * {@link Double}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
-     *         {@link Double}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public OptionalDouble getDouble(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Double)
-                ? OptionalDouble.of((double) o)
-                : OptionalDouble.empty();
     }
 
     /**
@@ -421,6 +360,66 @@ public class JSONObject implements Map<String, Object>, Serializable {
      */
     public Optional<String> getString(final Object key) {
         return getIfAssignable(key, String.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     * {@link Integer}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Integer}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalInt getInteger(final Object key) {
+        final Object o = get(key);
+        return (o instanceof Integer)
+                ? OptionalInt.of((int) o)
+                : OptionalInt.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     * {@link Long}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Long}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalLong getLong(final Object key) {
+        final Object o = get(key);
+        return (o instanceof Long)
+                ? OptionalLong.of((long) o)
+                : OptionalLong.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     * {@link Double}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Double}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalDouble getDouble(final Object key) {
+        final Object o = get(key);
+        return (o instanceof Double)
+                ? OptionalDouble.of((double) o)
+                : OptionalDouble.empty();
     }
 
     @Override
@@ -638,7 +637,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *            The string that we are trying to parse
      * @return the parsed string into a {@link Number}, the given string otherwise
      */
-    private static Object tryParseNumber(final String s) {
+    private static Object tryParse(final String s) {
         try {
             return Integer.parseInt(s);
         } catch (final NumberFormatException e1) {
