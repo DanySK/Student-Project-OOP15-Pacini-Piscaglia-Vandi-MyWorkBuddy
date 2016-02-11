@@ -5,17 +5,17 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import it.unibo.oop.myworkoutbuddy.controller.db.Person;
+
 public class JSONTest {
 
-    class MapBuilder<K, V> {
+    private class MapBuilder<K, V> {
 
-        @SuppressWarnings("rawtypes")
-        private final Class<? extends Map> clazz;
+        private final Class<? extends Map<? extends K, ? extends V>> clazz;
 
         private Map<K, V> m;
 
-        @SuppressWarnings("rawtypes")
-        MapBuilder(final Class<? extends Map> clazz) {
+        MapBuilder(final Class<? extends Map<? extends K, ? extends V>> clazz) {
             this.clazz = clazz;
             m = new HashMap<>();
         }
@@ -43,17 +43,13 @@ public class JSONTest {
 
     @Test
     public void test() {
-        final Map<String, Object> people = new HashMap<>();
-        people.put("String", "s");
-        people.put("JSONArray", new JSONArray(1, 2, 3, 4, 5));
-        people.put("byte", new Byte((byte) 50));
-        people.put("char", new Character('A'));
-        JSONObject json = new JSONObject(people);
+        final JSONObject json = new JSONObject(new Person.Builder()
+                .age(20)
+                .firstName("Mattia")
+                .lastName("Vandi")
+                .build());
         System.out.println(json);
-        System.out.println(json.getJSONArray("JSONArray").isPresent());
-        System.out.println(json.getString("String").isPresent());
-        System.out.println(json.getByte("byte").isPresent());
-        System.out.println(json.getCharacter("char").isPresent());
+        System.out.println(json.getString("firstName").get() + " " + json.getString("lastName").get());
     }
 
 }

@@ -1,13 +1,13 @@
 package it.unibo.oop.myworkoutbuddy.util.json;
 
 import static it.unibo.oop.myworkoutbuddy.util.json.JSONObject.wrap;
-import static it.unibo.oop.myworkoutbuddy.util.json.JSONObject.wrapCollection;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +23,8 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a string wrapped in square brackets with
@@ -52,7 +54,9 @@ import java.util.stream.Stream;
  * <code>true</code>, <code>false</code>, or <code>null</code>.</li>
  * </ul>
  */
-public class JSONArray implements List<Object> {
+public class JSONArray implements List<Object>, JSONValue<Integer> {
+
+    private static final long serialVersionUID = -5249787827311904965L;
 
     private final List<Object> list;
 
@@ -70,7 +74,11 @@ public class JSONArray implements List<Object> {
      *            the {@link Collection} that will be used to create the JSONArray
      */
     public JSONArray(final Collection<?> c) {
-        list = new ArrayList<>(wrapCollection(c));
+        list = new ArrayList<>(Objects.isNull(c)
+                ? Collections.emptyList()
+                : c.stream()
+                        .map(JSONObject::wrap)
+                        .collect(Collectors.toList()));
     }
 
     /**
@@ -111,7 +119,7 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONArray> getJSONArray(final int index) {
+    public Optional<JSONArray> getJSONArray(final Integer index) {
         final Object o = get(index);
         return (o instanceof JSONArray)
                 ? Optional.of((JSONArray) o)
@@ -129,7 +137,7 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONObject> getJSONObject(final int index) {
+    public Optional<JSONObject> getJSONObject(final Integer index) {
         final Object o = get(index);
         return (o instanceof JSONObject)
                 ? Optional.of((JSONObject) o)
@@ -147,11 +155,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Boolean> getBoolean(final int index) {
-        final Object o = get(index);
-        return (o instanceof Boolean)
-                ? Optional.of((Boolean) o)
-                : Optional.empty();
+    public Optional<Boolean> getBoolean(final Integer index) {
+        return getIfAssignable(index, Boolean.class);
     }
 
     /**
@@ -165,11 +170,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Byte> getByte(final int index) {
-        final Object o = get(index);
-        return (o instanceof Byte)
-                ? Optional.of((Byte) o)
-                : Optional.empty();
+    public Optional<Byte> getByte(final Integer index) {
+        return getIfAssignable(index, Byte.class);
     }
 
     /**
@@ -183,47 +185,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Short> getShort(final int index) {
-        final Object o = get(index);
-        return (o instanceof Short)
-                ? Optional.of((Short) o)
-                : Optional.empty();
-    }
-
-    /**
-     * Returns an {@link OptionalInt#of(Int)} if the element at the specified position in list is an instance of
-     * {@link Integer}. {@link OptionalInt#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalInt#of(Int)} if the element at the specified position in list is an instance of
-     *         {@link Integer}. {@link OptionalInt#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalInt getInteger(final int index) {
-        final Object o = get(index);
-        return (o instanceof Integer)
-                ? OptionalInt.of((int) o)
-                : OptionalInt.empty();
-    }
-
-    /**
-     * Returns an {@link OptionalLong#of(Long)} if the element at the specified position in list is an instance of
-     * {@link Long}. {@link OptionalLong#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalLong#of(Long)} if the element at the specified position in list is an instance of
-     *         {@link Long}. {@link OptionalLong#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalLong getLong(final int index) {
-        final Object o = get(index);
-        return (o instanceof Long)
-                ? OptionalLong.of((long) o)
-                : OptionalLong.empty();
+    public Optional<Short> getShort(final Integer index) {
+        return getIfAssignable(index, Short.class);
     }
 
     /**
@@ -237,11 +200,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigInteger> getBigInteger(final int index) {
-        final Object o = get(index);
-        return (o instanceof BigInteger)
-                ? Optional.of((BigInteger) o)
-                : Optional.empty();
+    public Optional<BigInteger> getBigInteger(final Integer index) {
+        return getIfAssignable(index, BigInteger.class);
     }
 
     /**
@@ -255,29 +215,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Float> getFloat(final int index) {
-        final Object o = get(index);
-        return (o instanceof Float)
-                ? Optional.of((Float) o)
-                : Optional.empty();
-    }
-
-    /**
-     * Returns an {@link OptionalDouble#of(Double)} if the element at the specified position in list is an instance of
-     * {@link Double}. {@link OptionalDouble#empty()} otherwise.
-     *
-     * @param index
-     *            index of the element to return
-     * @return an {@link OptionalDouble#of(Double)} if the element at the specified position in list is an instance of
-     *         {@link Double}. {@link OptionalDouble#empty()} otherwise
-     * @throws IndexOutOfBoundsException
-     *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
-     */
-    public OptionalDouble getDouble(final int index) {
-        final Object o = get(index);
-        return (o instanceof Double)
-                ? OptionalDouble.of((double) o)
-                : OptionalDouble.empty();
+    public Optional<Float> getFloat(final Integer index) {
+        return getIfAssignable(index, Float.class);
     }
 
     /**
@@ -291,11 +230,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigDecimal> getBigDecimal(final int index) {
-        final Object o = get(index);
-        return (o instanceof BigDecimal)
-                ? Optional.of((BigDecimal) o)
-                : Optional.empty();
+    public Optional<BigDecimal> getBigDecimal(final Integer index) {
+        return getIfAssignable(index, BigDecimal.class);
     }
 
     /**
@@ -309,11 +245,8 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Character> getCharacter(final int index) {
-        final Object o = get(index);
-        return (o instanceof Character)
-                ? Optional.of((Character) o)
-                : Optional.empty();
+    public Optional<Character> getCharacter(final Integer index) {
+        return getIfAssignable(index, Character.class);
     }
 
     /**
@@ -327,11 +260,68 @@ public class JSONArray implements List<Object> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<String> getString(final int index) {
-        final Object o = get(index);
-        return (o instanceof String)
-                ? Optional.of((String) o)
-                : Optional.empty();
+    public Optional<String> getString(final Integer index) {
+        return getIfAssignable(index, String.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     * {@link Integer}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Integer)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Integer}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalInt getInteger(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Integer)
+                ? OptionalInt.of((int) o)
+                : OptionalInt.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     * {@link Long}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Long)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Long}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalLong getLong(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Long)
+                ? OptionalLong.of((long) o)
+                : OptionalLong.empty();
+    }
+
+    /**
+     * Returns an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     * {@link Double}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Double}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public OptionalDouble getDouble(final Integer key) {
+        final Object o = get(key);
+        return (o instanceof Double)
+                ? OptionalDouble.of((double) o)
+                : OptionalDouble.empty();
     }
 
     @Override
@@ -407,12 +397,12 @@ public class JSONArray implements List<Object> {
 
     @Override
     public boolean addAll(final Collection<?> c) {
-        return list.addAll(wrapCollection(c));
+        return list.addAll(new JSONArray(c));
     }
 
     @Override
     public boolean addAll(final int index, final Collection<?> c) {
-        return list.addAll(index, wrapCollection(c));
+        return list.addAll(index, new JSONArray(c));
     }
 
     @Override
@@ -503,6 +493,14 @@ public class JSONArray implements List<Object> {
     @Override
     public Spliterator<Object> spliterator() {
         return list.spliterator();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Optional<T> getIfAssignable(final int index, final Class<? extends T> clazz) {
+        final Object v = get(index);
+        return v != null && ClassUtils.isAssignable(v.getClass(), clazz)
+                ? Optional.of((T) v)
+                : Optional.empty();
     }
 
 }

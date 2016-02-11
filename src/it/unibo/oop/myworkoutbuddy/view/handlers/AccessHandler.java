@@ -3,11 +3,9 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 /**
  * 

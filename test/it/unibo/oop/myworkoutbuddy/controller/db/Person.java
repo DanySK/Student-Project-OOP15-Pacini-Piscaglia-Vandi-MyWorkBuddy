@@ -9,7 +9,7 @@ public class Person {
     private final boolean married;
     private final int age;
 
-    public static class PersonBuilder {
+    public static final class Builder {
 
         private String firstName;
         private String lastName;
@@ -18,32 +18,32 @@ public class Person {
 
         private boolean built;
 
-        public PersonBuilder() {
+        public Builder() {
             built = false;
         }
 
-        public PersonBuilder firstName(final String firstName) {
+        public Builder firstName(final String firstName) {
             Preconditions.checkState(!built);
             Preconditions.checkArgument(firstName != null && firstName != "");
             this.firstName = firstName;
             return this;
         }
 
-        public PersonBuilder lastName(final String lastName) {
+        public Builder lastName(final String lastName) {
             Preconditions.checkState(!built);
             Preconditions.checkArgument(lastName != null && lastName != "");
             this.lastName = lastName;
             return this;
         }
 
-        public PersonBuilder age(final int age) {
+        public Builder age(final int age) {
             Preconditions.checkState(!built);
             Preconditions.checkArgument(age > 0);
             this.age = age;
             return this;
         }
 
-        public PersonBuilder married(final boolean married) {
+        public Builder married(final boolean married) {
             Preconditions.checkState(!built);
             this.married = married;
             return this;

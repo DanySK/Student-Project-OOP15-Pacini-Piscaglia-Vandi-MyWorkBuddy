@@ -18,19 +18,19 @@ public class MongoDBTest {
     @Before
     public void testCreate() {
         final List<Map<String, Object>> toInsert = Arrays.asList(
-                new JSONObject(new Person.PersonBuilder()
+                new JSONObject(new Person.Builder()
                         .firstName("Mattia")
                         .lastName("Vandi")
                         .age(20)
                         .married(false)
                         .build()),
-                new JSONObject(new Person.PersonBuilder()
+                new JSONObject(new Person.Builder()
                         .firstName("Nicola")
                         .lastName("Piscaglia")
                         .age(21)
                         .married(false)
                         .build()),
-                new JSONObject(new Person.PersonBuilder()
+                new JSONObject(new Person.Builder()
                         .firstName("Lorenzo")
                         .lastName("Pacini")
                         .age(20)

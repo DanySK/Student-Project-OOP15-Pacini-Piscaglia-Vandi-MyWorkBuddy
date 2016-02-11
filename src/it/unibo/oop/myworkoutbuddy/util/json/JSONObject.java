@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,6 +19,8 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * A JSONObject is an unordered collection of key/value pairs. Its external form is a string wrapped in curly braces
@@ -49,9 +52,11 @@ import java.util.stream.Collectors;
  * <li>Strings will be quoted with <code>"</code>&nbsp;<small>(double quote)</small>.
  * </ul>
  */
-public class JSONObject implements Map<String, Object> {
+public class JSONObject implements Map<String, Object>, JSONValue<Object> {
 
-    // Null instance of an JSONObject
+    private static final long serialVersionUID = 8132214257960166022L;
+
+    // Null instance of a JSONObject
     private static final Object NULL = new Object() {
 
         @Override
@@ -66,8 +71,7 @@ public class JSONObject implements Map<String, Object> {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
-            return prime + super.hashCode();
+            return super.hashCode();
         }
 
         @Override
@@ -81,9 +85,8 @@ public class JSONObject implements Map<String, Object> {
 
     /**
      * Wraps an object, if necessary. If the object is {@code null}, return the NULL object. If it is an array or
-     * collection, wrap it in a JSONArray. If it is a map, wrap it in a JSONObject. If it is a standard property
-     * (Double, String, etc...) then it is already wrapped. Otherwise, if it comes from one of the java packages, turn
-     * it into a string.
+     * collection, wrap it in a JSONArray. If it is a map, wrap it in a JSONObject. If it is an Optional tries to get
+     * its value. If it is a standard property (Double, String, etc...) then it is already wrapped.
      * If it doesn't, try to wrap it in a JSONObject. If the wrapping fails, then {@code null} is returned.
      *
      * @param o
@@ -93,71 +96,51 @@ public class JSONObject implements Map<String, Object> {
     @SuppressWarnings("unchecked")
     public static Object wrap(final Object o) {
         try {
-            if (o == null) {
+            if (NULL.equals(o)) {
                 return NULL;
             }
-            if (o instanceof JSONArray || o instanceof JSONObject || NULL.equals(o)
-                    || o instanceof Boolean || o instanceof Byte || o instanceof Short
+            if (o instanceof Boolean || o instanceof Byte || o instanceof Short
                     || o instanceof Integer || o instanceof Long || o instanceof BigInteger
                     || o instanceof Float || o instanceof Double || o instanceof BigDecimal
-                    || o instanceof Character || o instanceof String) {
+                    || o instanceof Character || o instanceof JSONValue) {
                 return o;
             }
-
+            if (o instanceof String) {
+                final String str = (String) o;
+                return tryParse(str);
+            }
+            if (o.getClass().isArray()) {
+                final Object[] arr = (Object[]) o;
+                return new JSONArray(Arrays.asList(arr));
+            }
             if (o instanceof Collection) {
                 final Collection<?> coll = (Collection<?>) o;
-                return wrapCollection(coll);
+                return new JSONArray(coll);
             }
             if (o instanceof Map) {
                 final Map<String, ?> map = (Map<String, ?>) o;
-                return wrapMap(map);
+                return new JSONObject(map);
             }
-
-            final Package objectPackage = o.getClass().getPackage();
-            final String objectPackageName = objectPackage != null ? objectPackage
-                    .getName() : "";
-            if (objectPackageName.startsWith("java.")
-                    || objectPackageName.startsWith("javax.")
-                    || o.getClass().getClassLoader() == null) {
-                return o.toString();
+            if (o instanceof Optional) {
+                final Optional<?> opt = (Optional<?>) o;
+                return opt.get();
+            }
+            if (o instanceof OptionalDouble) {
+                final OptionalDouble opt = (OptionalDouble) o;
+                return opt.getAsDouble();
+            }
+            if (o instanceof OptionalInt) {
+                final OptionalInt opt = (OptionalInt) o;
+                return opt.getAsInt();
+            }
+            if (o instanceof OptionalLong) {
+                final OptionalLong opt = (OptionalLong) o;
+                return opt.getAsLong();
             }
             return new JSONObject(o);
         } catch (final Exception exception) {
             return null;
         }
-    }
-
-    /**
-     * Wraps a collection, if necessary. If the object is {@code null}, return an empty collection. If the wrapping
-     * fails, then {@code null} is returned.
-     *
-     * @param c
-     *            the collection to wrap
-     * @return The wrapped value
-     */
-    public static Collection<Object> wrapCollection(final Collection<?> c) {
-        return Objects.isNull(c)
-                ? Collections.emptyList()
-                : c.stream()
-                        .map(JSONObject::wrap)
-                        .collect(Collectors.toList());
-    }
-
-    /**
-     * Wraps a map, if necessary. If the map is {@code null}, return an empty map. If the wrapping fails, then
-     * {@code null} is returned.
-     *
-     * @param m
-     *            the map to wrap
-     * @return The wrapped value
-     */
-    public static Map<String, Object> wrapMap(final Map<? extends String, ?> m) {
-        return Objects.isNull(m)
-                ? Collections.emptyMap()
-                : m.entrySet().stream()
-                        .collect(Collectors.toMap(
-                                Entry::getKey,
-                                e -> wrap(e.getValue())));
     }
 
     /**
@@ -185,7 +168,12 @@ public class JSONObject implements Map<String, Object> {
      *            the {@link Map} that will be used to create the JSONObject.
      */
     public JSONObject(final Map<? extends String, ?> m) {
-        map = wrapMap(m);
+        map = new JSONObject(Objects.isNull(m)
+                ? Collections.emptyMap()
+                : m.entrySet().stream()
+                        .collect(Collectors.toMap(
+                                Entry::getKey,
+                                e -> wrap(e.getValue()))));
     }
 
     /**
@@ -212,10 +200,7 @@ public class JSONObject implements Map<String, Object> {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<JSONArray> getJSONArray(final Object key) {
-        final Object o = get(key);
-        return (o instanceof JSONArray)
-                ? Optional.of((JSONArray) o)
-                : Optional.empty();
+        return getIfAssignable(key, JSONArray.class);
     }
 
     /**
@@ -234,10 +219,7 @@ public class JSONObject implements Map<String, Object> {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<JSONObject> getJSONObject(final Object key) {
-        final Object o = get(key);
-        return (o instanceof JSONObject)
-                ? Optional.of((JSONObject) o)
-                : Optional.empty();
+        return getIfAssignable(key, JSONObject.class);
     }
 
     /**
@@ -254,10 +236,7 @@ public class JSONObject implements Map<String, Object> {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Boolean> getBoolean(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Boolean)
-                ? Optional.of((Boolean) o)
-                : Optional.empty();
+        return getIfAssignable(key, Boolean.class);
     }
 
     /**
@@ -274,10 +253,7 @@ public class JSONObject implements Map<String, Object> {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Byte> getByte(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Byte)
-                ? Optional.of((Byte) o)
-                : Optional.empty();
+        return getIfAssignable(key, Byte.class);
     }
 
     /**
@@ -294,10 +270,96 @@ public class JSONObject implements Map<String, Object> {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Short> getShort(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Short)
-                ? Optional.of((Short) o)
-                : Optional.empty();
+        return getIfAssignable(key, Short.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(BigInteger)} if the value to which the specified key is mapped and is an instance
+     * of
+     * {@link BigInteger}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(BigInteger)} if the value to which the specified key is mapped and is an instance
+     *         of
+     *         {@link BigInteger}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public Optional<BigInteger> getBigInteger(final Object key) {
+        return getIfAssignable(key, BigInteger.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(Float)} if the value to which the specified key is mapped and is an instance of
+     * {@link Float}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Float)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Float}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public Optional<Float> getFloat(final Object key) {
+        return getIfAssignable(key, Float.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(BigDecimal)} if the value to which the specified key is mapped and is an instance
+     * of
+     * {@link BigDecimal}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(BigDecimal)} if the value to which the specified key is mapped and is an instance
+     *         of
+     *         {@link BigDecimal}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public Optional<BigDecimal> getBigDecimal(final Object key) {
+        return getIfAssignable(key, BigDecimal.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(Character)} if the value to which the specified key is mapped and is an instance of
+     * {@link Character}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(Character)} if the value to which the specified key is mapped and is an instance of
+     *         {@link Character}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public Optional<Character> getCharacter(final Object key) {
+        return getIfAssignable(key, Character.class);
+    }
+
+    /**
+     * Returns an {@link Optional#of(String)} if the value to which the specified key is mapped and is an instance of
+     * {@link String}, {@link Optional#empty()} otherwise.
+     * 
+     * @param key
+     *            the key whose associated value is to be returned
+     * @return an {@link Optional#of(String)} if the value to which the specified key is mapped and is an instance of
+     *         {@link String}, {@link Optional#empty()} otherwise
+     * @throws ClassCastException
+     *             if the key is of an inappropriate type for this map
+     * @throws NullPointerException
+     *             if the specified key is null and this map does not permit null keys
+     */
+    public Optional<String> getString(final Object key) {
+        return getIfAssignable(key, String.class);
     }
 
     /**
@@ -341,48 +403,6 @@ public class JSONObject implements Map<String, Object> {
     }
 
     /**
-     * Returns an {@link Optional#of(BigInteger)} if the value to which the specified key is mapped and is an instance
-     * of
-     * {@link BigInteger}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(BigInteger)} if the value to which the specified key is mapped and is an instance
-     *         of
-     *         {@link BigInteger}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public Optional<BigInteger> getBigInteger(final Object key) {
-        final Object o = get(key);
-        return (o instanceof BigInteger)
-                ? Optional.of((BigInteger) o)
-                : Optional.empty();
-    }
-
-    /**
-     * Returns an {@link Optional#of(Float)} if the value to which the specified key is mapped and is an instance of
-     * {@link Float}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(Float)} if the value to which the specified key is mapped and is an instance of
-     *         {@link Float}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public Optional<Float> getFloat(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Float)
-                ? Optional.of((Float) o)
-                : Optional.empty();
-    }
-
-    /**
      * Returns an {@link Optional#of(Double)} if the value to which the specified key is mapped and is an instance of
      * {@link Double}, {@link Optional#empty()} otherwise.
      * 
@@ -402,68 +422,6 @@ public class JSONObject implements Map<String, Object> {
                 : OptionalDouble.empty();
     }
 
-    /**
-     * Returns an {@link Optional#of(BigDecimal)} if the value to which the specified key is mapped and is an instance
-     * of
-     * {@link BigDecimal}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(BigDecimal)} if the value to which the specified key is mapped and is an instance
-     *         of
-     *         {@link BigDecimal}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public Optional<BigDecimal> getBigDecimal(final Object key) {
-        final Object o = get(key);
-        return (o instanceof BigDecimal)
-                ? Optional.of((BigDecimal) o)
-                : Optional.empty();
-    }
-
-    /**
-     * Returns an {@link Optional#of(Character)} if the value to which the specified key is mapped and is an instance of
-     * {@link Character}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(Character)} if the value to which the specified key is mapped and is an instance of
-     *         {@link Character}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public Optional<Character> getCharacter(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Character)
-                ? Optional.of((Character) o)
-                : Optional.empty();
-    }
-
-    /**
-     * Returns an {@link Optional#of(String)} if the value to which the specified key is mapped and is an instance of
-     * {@link String}, {@link Optional#empty()} otherwise.
-     * 
-     * @param key
-     *            the key whose associated value is to be returned
-     * @return an {@link Optional#of(String)} if the value to which the specified key is mapped and is an instance of
-     *         {@link String}, {@link Optional#empty()} otherwise
-     * @throws ClassCastException
-     *             if the key is of an inappropriate type for this map
-     * @throws NullPointerException
-     *             if the specified key is null and this map does not permit null keys
-     */
-    public Optional<String> getString(final Object key) {
-        final Object o = get(key);
-        return (o instanceof String)
-                ? Optional.of((String) o)
-                : Optional.empty();
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -480,9 +438,9 @@ public class JSONObject implements Map<String, Object> {
 
     @Override
     public String toString() {
-        return map.isEmpty()
+        return isEmpty()
                 ? "{}"
-                : map.entrySet().stream()
+                : entrySet().stream()
                         .map(e -> {
                             final Object v = e.getValue();
                             return new StringBuilder()
@@ -536,7 +494,7 @@ public class JSONObject implements Map<String, Object> {
 
     @Override
     public void putAll(final Map<? extends String, ?> m) {
-        map.putAll(wrapMap(m));
+        map.putAll(new JSONObject(m));
     }
 
     @Override
@@ -626,14 +584,15 @@ public class JSONObject implements Map<String, Object> {
     private void populateMap(final Object bean) {
         if (bean instanceof Map) {
             throw new UncheckedJSONException(
-                    new JSONException("Map key value differs form " + String.class.getName()));
+                    new JSONException("Invalid key/value pair"));
         }
 
         final Class<?> clazz = bean.getClass();
 
-        // If clazz is a System class then includeSuperClass is set to false.
-        final boolean includeSuperClass = clazz.getClassLoader() != null;
-        for (final Method method : includeSuperClass ? clazz.getMethods() : clazz.getDeclaredMethods()) {
+        // If clazz is a System class then return only the methods declared by clazz, all the declared methods if
+        // its not.
+        final Method[] methods = clazz.getClassLoader() != null ? clazz.getMethods() : clazz.getDeclaredMethods();
+        for (final Method method : methods) {
             try {
                 if (Modifier.isPublic(method.getModifiers())) {
                     final String name = method.getName();
@@ -664,9 +623,46 @@ public class JSONObject implements Map<String, Object> {
                     }
                 }
             } catch (final Exception ignore) {
-                // Thrown exceptions will be ignored.
+                // Thrown exceptions will be ignored. BTW exceptions should not be thrown.
             }
         }
+    }
+
+    /**
+     * Tries to convert a {@link String} into an {@link Integer}, {@link Long}, {@link Float} or a {@link Double}. If
+     * the operation succeedes (at least one parsing operation doesn't throw a {@link NumberFormatException}) then
+     * returns the parsed value. If the string is impossible to parse then returns the given string.
+     * 
+     * @param s
+     *            The string that we are trying to parse
+     * @return the parsed string into a {@link Number}, the given string otherwise
+     */
+    private static Object tryParse(final String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (final NumberFormatException e1) {
+            try {
+                return Long.parseLong(s);
+            } catch (final NumberFormatException e2) {
+                try {
+                    return Float.parseFloat(s);
+                } catch (final NumberFormatException e3) {
+                    try {
+                        return Double.parseDouble(s);
+                    } catch (final NumberFormatException e4) {
+                        return s;
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Optional<T> getIfAssignable(final Object key, final Class<? extends T> clazz) {
+        final Object v = get(key);
+        return v != null && ClassUtils.isAssignable(v.getClass(), clazz)
+                ? Optional.of((T) v)
+                : Optional.empty();
     }
 
 }
