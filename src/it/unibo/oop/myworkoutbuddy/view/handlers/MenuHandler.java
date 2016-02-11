@@ -46,29 +46,23 @@ public class MenuHandler {
 
     private Button lastPressed;
 
-    private static final double WIDTH_BUTTON_ANIMATION = 250;
-
-    private static final double WIDTH_BUTTON_NORMAL = 200.0;
-
     private static final double HIDE_MENU_DELTA_WIDTH = 100.0;
 
-    private static final double SHOW_MENU_DELTA_WIDTH = 80;
+    private static final double SHOW_MENU_DELTA_WIDTH = 25;
 
-    private static final String CSS_SELECT_STYLE = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+    private static final String CSS_SELECT_STYLE = "-fx-background-color: lightBlue; -fx-font: bold 14px 'Serif';";
 
     private EventHandler<MouseEvent> enteredAnimation = i -> {
         final Button btn = (Button) i.getSource();
-        btn.setStyle("-fx-font-weight: bold");
-        if (btn != btnQuit && btn != btnLogout) {
-            btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+        if (lastPressed != btn) {
+            btn.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color:DarkOrange;");
         }
     };
 
     private EventHandler<MouseEvent> exitedAnimation = i -> {
         final Button btn = (Button) i.getSource();
-        btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        if (btn != btnQuit && btn != btnLogout) {
-            btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
+        if (lastPressed != btn) {
+            btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
         }
     };
 
@@ -117,9 +111,7 @@ public class MenuHandler {
      */
     @FXML
     private void logout() {
-        new FxWindowFactory().openWindow("Access.fxml", false);
-        final Stage stageAccess = (Stage) menuTitle.getScene().getWindow();
-        stageAccess.close();
+        FxWindowFactory.replaceWindow("Access.fxml", btnLogout.getScene());
     }
 
     /**
@@ -128,10 +120,8 @@ public class MenuHandler {
      */
     public void initialize() {
         btnContainer.getChildren().forEach(i -> {
-
             /* Animation when user move mouse on a button */
             i.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, enteredAnimation);
-
             /* Animation when user move mouse on a button */
             i.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, exitedAnimation);
         });
@@ -148,24 +138,24 @@ public class MenuHandler {
     }
 
     /**
+     * Factored code of scene switch and button management.
+     */
+    private void sceneSwitch(final String fxmlFile, final Button btnPressed, final String menuLabel) {
+        if (lastPressed != btnPressed) {
+            mainPane.setCenter(FxWindowFactory.openWindow(fxmlFile, true));
+            menuTitle.setText(menuLabel);
+            resetButtonStyle();
+            btnPressed.setStyle(CSS_SELECT_STYLE);
+            lastPressed = btnPressed;
+        }
+    }
+
+    /**
      * Set the initial style.
      */
     private void resetButtonStyle() {
         if (lastPressed != null) {
             lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        }
-    }
-
-    /**
-     * Factored code of scene switch and button management.
-     */
-    private void sceneSwitch(final String fxmlFile, final Button btnPressed, final String menuLabel) {
-        if (lastPressed != btnPressed) {
-            mainPane.setCenter(new FxWindowFactory().openWindow(fxmlFile, true));
-            menuTitle.setText(menuLabel);
-            btnPressed.setStyle(CSS_SELECT_STYLE);
-            resetButtonStyle();
-            lastPressed = btnPressed;
         }
     }
 

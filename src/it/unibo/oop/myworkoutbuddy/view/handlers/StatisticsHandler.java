@@ -1,6 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import it.unibo.oop.myworkoutbuddy.view.StatisticsView;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -8,16 +7,12 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.TextField;
 
 /**
  * 
  * Handler of the accessView. It show user statistics fetched from the database.
  */
-public class StatisticsHandler implements StatisticsView {
-
-    @FXML
-    private TextField txtWeight;
+public class StatisticsHandler {
 
     @FXML
     private LineChart<String, String> weightChart;
@@ -40,7 +35,7 @@ public class StatisticsHandler implements StatisticsView {
 
     @FXML
     private void viewWeightChart() {
-        Series<String, String> series = new XYChart.Series();
+        Series<String, String> series = new XYChart.Series<>();
         series.setName("Serie");
         series.getData().add(new XYChart.Data("Jan", 23));
         series.getData().add(new XYChart.Data("Feb", 14));
@@ -57,17 +52,13 @@ public class StatisticsHandler implements StatisticsView {
         weightChart.getData().add(series);
     }
 
-    @Override
-    public int getWeight() {
-        return Integer.parseInt(txtWeight.getText());
-    }
-
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
      */
     public void initialize() {
         viewPie();
+        viewWeightChart();
     }
 
 }

@@ -10,18 +10,20 @@ import javafx.stage.Stage;
 
 /**
  *
- * Utility class to create JavaFx windows using pattern SimpleFactory.
+ * Utility class to create JavaFx windows using pattern Static Factory.
  *
  */
 public final class FxWindowFactory {
 
-    private static String cssStyle;
+    private static String cssSheetPath = "original.css";
 
     /**
-     * Set window style.
+     * 
+     * @param sheetPath
+     *            set the path of cssSheet.
      */
-    public FxWindowFactory() {
-        cssStyle = StyleSingleton.getCssStyle();
+    public static void setCssStyle(final String sheetPath) {
+        cssSheetPath = sheetPath;
     }
 
     /**
@@ -37,17 +39,16 @@ public final class FxWindowFactory {
      * 
      * @return root.
      */
-    public BorderPane openWindow(final String fxmlPath, final boolean isContained) {
+    public static BorderPane openWindow(final String fxmlPath, final boolean isContained) {
         try {
-            final FXMLLoader loader = new FXMLLoader(getClass().getResource("../structure/" + fxmlPath));
+            final FXMLLoader loader = new FXMLLoader(FxWindowFactory.class.getResource("../structure/" + fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
-            // final AccessHandler access = loader.getController();
             if (isContained) {
                 return root;
             }
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource(cssStyle).toExternalForm());
+            scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
             stage.getIcons().add(new Image("file:res/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
             stage.setScene(scene);
@@ -56,6 +57,31 @@ public final class FxWindowFactory {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Close a JavaFx window.
+     * 
+     * @param sceneToClose
+     *            link to the window to close.
+     */
+    public static void closeWindow(final Scene sceneToClose) {
+        final Stage sceneStage = (Stage) sceneToClose.getWindow();
+        sceneStage.close();
+    }
+
+    /**
+     * Replace a old window with a new one.
+     * 
+     * @param fxmlPath
+     *            path of the GUI structure file FXML to open.
+     * 
+     * @param sceneToClose
+     *            link to the window to close.
+     */
+    public static void replaceWindow(final String fxmlPath, final Scene sceneToClose) {
+        FxWindowFactory.openWindow(fxmlPath, false);
+        FxWindowFactory.closeWindow(sceneToClose);
     }
 
 }

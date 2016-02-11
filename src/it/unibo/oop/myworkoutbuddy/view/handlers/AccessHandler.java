@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
-import it.unibo.oop.myworkoutbuddy.view.factory.StyleSingleton;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
@@ -25,9 +24,6 @@ public class AccessHandler implements AccessView {
     private MenuButton btnSelect;
 
     @FXML
-    private Button btnRegister;
-
-    @FXML
     private PasswordField txtPassword;
 
     /**
@@ -35,8 +31,7 @@ public class AccessHandler implements AccessView {
      */
     @FXML
     private void login() {
-        new FxWindowFactory().openWindow("Menu.fxml", false);
-        closeWindow();
+        FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
     }
 
     /**
@@ -45,8 +40,7 @@ public class AccessHandler implements AccessView {
     @FXML
     private void register() {
         /* Opening registration window */
-        new FxWindowFactory().openWindow("Registration.fxml", false);
-        closeWindow();
+        FxWindowFactory.replaceWindow("Registration.fxml", txtPassword.getScene());
     }
 
     /**
@@ -54,9 +48,8 @@ public class AccessHandler implements AccessView {
      */
     @FXML
     private void setOriginalStyle() {
-        StyleSingleton.setCssStyle("original.css");
-        new FxWindowFactory().openWindow("Access.fxml", false);
-        closeWindow();
+        FxWindowFactory.setCssStyle("original.css");
+        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     /**
@@ -64,9 +57,8 @@ public class AccessHandler implements AccessView {
      */
     @FXML
     private void setDarkStyle() {
-        StyleSingleton.setCssStyle("dark.css");
-        new FxWindowFactory().openWindow("Access.fxml", false);
-        closeWindow();
+        FxWindowFactory.setCssStyle("dark.css");
+        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     @Override
@@ -82,12 +74,6 @@ public class AccessHandler implements AccessView {
     @Override
     public String getStyle() {
         return btnSelect.getText();
-    }
-
-    /* Close a JavaFx window */
-    private void closeWindow() {
-        final Stage stageAccess = (Stage) btnRegister.getScene().getWindow();
-        stageAccess.close();
     }
 
 }
