@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  *
@@ -67,36 +66,45 @@ public class MenuHandler {
     };
 
     /**
-     * Set createRoutine view in the menu center.
+     * Factored code of scene switch and button management.
      */
-    @FXML
-    private void setCreateRoutineView() {
-        sceneSwitch("CreateRoutine.fxml", btnCreate, "Create your routine");
-    }
+    private EventHandler<MouseEvent> setView = i -> {
+        final Button btnPressed = (Button) i.getSource();
+        String fxmlToLoad = "";
+        String labelToSet = "";
+        if (lastPressed != btnPressed) {
+            switch (btnPressed.getId()) {
+            case "btnCreate":
+                labelToSet = "Create your routine";
+                fxmlToLoad = "CreateRoutine.fxml";
+                break;
 
-    /**
-     * Set selectRoutine view in the menu center.
-     */
-    @FXML
-    private void setSelectRoutineView() {
-        sceneSwitch("SelectRoutine.fxml", btnSelect, "Select your routine");
-    }
+            case "btnSelect":
+                labelToSet = "Select your routine";
+                fxmlToLoad = "SelectRoutine.fxml";
+                break;
 
-    /**
-     * Set user statistics view in the menu center.
-     */
-    @FXML
-    private void setStatisticsView() {
-        sceneSwitch("Statistics.fxml", btnStatistics, "Statistics");
-    }
+            case "btnStatistics":
+                labelToSet = "Statistics";
+                fxmlToLoad = "Statistics.fxml";
+                break;
 
-    /**
-     * Set user settings view in the menu center.
-     */
-    @FXML
-    private void setUserSettingsView() {
-        sceneSwitch("UserSettings.fxml", btnSettings, "User Settings");
-    }
+            case "btnSettings":
+                labelToSet = "User Settings";
+                fxmlToLoad = "UserSettings.fxml";
+                break;
+
+            default:
+                new IllegalStateException();
+                break;
+            }
+            mainPane.setCenter(FxWindowFactory.openWindow(fxmlToLoad, true));
+            menuTitle.setText(labelToSet);
+            resetButtonStyle(lastPressed);
+            btnPressed.setStyle(CSS_SELECT_STYLE);
+            lastPressed = btnPressed;
+        }
+    };
 
     /**
      * Terminates application.
@@ -124,6 +132,9 @@ public class MenuHandler {
             i.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, enteredAnimation);
             /* Animation when user move mouse on a button */
             i.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, exitedAnimation);
+            if (i != btnLogout && i != btnQuit) {
+                i.addEventHandler(MouseEvent.MOUSE_CLICKED, setView);
+            }
         });
     }
 
@@ -138,24 +149,11 @@ public class MenuHandler {
     }
 
     /**
-     * Factored code of scene switch and button management.
-     */
-    private void sceneSwitch(final String fxmlFile, final Button btnPressed, final String menuLabel) {
-        if (lastPressed != btnPressed) {
-            mainPane.setCenter(FxWindowFactory.openWindow(fxmlFile, true));
-            menuTitle.setText(menuLabel);
-            resetButtonStyle();
-            btnPressed.setStyle(CSS_SELECT_STYLE);
-            lastPressed = btnPressed;
-        }
-    }
-
-    /**
      * Set the initial style.
      */
-    private void resetButtonStyle() {
-        if (lastPressed != null) {
-            lastPressed.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+    private void resetButtonStyle(final Button btn) {
+        if (btn != null) {
+            btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
         }
     }
 

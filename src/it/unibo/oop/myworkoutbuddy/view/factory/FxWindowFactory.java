@@ -17,6 +17,18 @@ public final class FxWindowFactory {
 
     private static String cssSheetPath = "original.css";
 
+    private static FXMLLoader loader;
+
+    /**
+     * 
+     * @return reference to view handler.
+     */
+    public static <T> Object getController() {
+        return loader == null
+                ? null
+                : loader.getController();
+    }
+
     /**
      * 
      * @param sheetPath
