@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.controller.db.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +18,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 
 import it.unibo.oop.myworkoutbuddy.util.Preconditions;
+import it.unibo.oop.myworkoutbuddy.util.json.JSONObject;
 
 /**
  * Utility class for CRUD operations.
@@ -24,7 +26,7 @@ import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 public final class CRUDOperations {
 
     /**
-     * Creates a document to insert in the database.
+     * Creates a new document to insert in the database.
      * 
      * @param collection
      *            the collection to use
@@ -41,13 +43,14 @@ public final class CRUDOperations {
         try {
             collection.insertOne(new Document(fields));
             return true;
-        } catch (final MongoException e) { // Insertion fail.
+        } catch (final MongoException e) {
+            // Insert fail.
             return false;
         }
     }
 
     /**
-     * Creates as many documents as the elements and inserts them in the database.
+     * Creates as many new documents as the elements and inserts them in the database.
      * 
      * @param collection
      *            the collection to use
@@ -57,7 +60,7 @@ public final class CRUDOperations {
      */
     public static boolean createNewDocuments(
             final MongoCollection<Document> collection,
-            final List<? extends Map<String, Object>> elements) {
+            final Collection<? extends Map<String, Object>> elements) {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(elements);
         Preconditions.checkArgument(!elements.contains(null));
@@ -66,7 +69,8 @@ public final class CRUDOperations {
                     .map(Document::new)
                     .collect(Collectors.toList()));
             return true;
-        } catch (final MongoException e) { // Insertion fail.
+        } catch (final MongoException e) {
+            // Insert fail.
             return false;
         }
     }
@@ -80,7 +84,7 @@ public final class CRUDOperations {
      */
     public static List<Map<String, Object>> getDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> queryParams) {
+            final Map<? extends String, ?> queryParams) {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(queryParams);
         final List<Map<String, Object>> l = new ArrayList<>();
@@ -101,7 +105,7 @@ public final class CRUDOperations {
      */
     public static long updateDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> queryParams,
+            final Map<? extends String, ?> queryParams,
             final Map<String, Object> updateParams) {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(queryParams);
@@ -124,7 +128,7 @@ public final class CRUDOperations {
      */
     public static long deleteDocumentsByParams(
             final MongoCollection<Document> collection,
-            final Map<String, Object> deleteParams) {
+            final Map<? extends String, ?> deleteParams) {
         Objects.requireNonNull(collection);
         Objects.requireNonNull(deleteParams);
         return collection

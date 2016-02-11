@@ -1,5 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.controller;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import java.util.Map;
 public interface Service {
 
     /**
-     * Creates a new element to insert in the database.
+     * Inserts a new element in the database.
      * 
      * @param fields
      *            the element fields to insert
@@ -18,29 +19,33 @@ public interface Service {
     boolean create(Map<String, Object> fields);
 
     /**
-     * Creates as many elements as the fields in the given list and inserts them in the database.
+     * Inserts new elements in the database.
      * 
      * @param elements
      *            the elements to insert
      * @return true if the element is successfully created, false if some errors occurs
      */
-    boolean create(List<Map<String, Object>> elements);
+    boolean create(Collection<? extends Map<String, Object>> elements);
 
     /**
-     * Retrieves all the elements stored.
+     * Retrieves all the elements stored in the database.
      * 
-     * @return all the elements stored.
+     * @return all the elements stored in the database
      */
     List<Map<String, Object>> getAll();
 
     /**
+     * Retrieves an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise.
+     * 
      * @param params
      *            The filters to apply.
-     * @return an {@link Collections#emptyList} if no element was found. A non-empty {@link List} otherwise.
+     * @return an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise
      */
     List<Map<String, Object>> getByParams(Map<String, Object> params);
 
     /**
+     * Updates all the elements that match the specified parameters with the new ones.
+     * 
      * @param queryParams
      *            the query filters
      * @param updateParams
@@ -57,7 +62,7 @@ public interface Service {
     long deleteAll();
 
     /**
-     * Deletes all the elements which match the given parameters.
+     * Deletes all the elements which match the specified parameters.
      * 
      * @param params
      *            The filters to apply.
