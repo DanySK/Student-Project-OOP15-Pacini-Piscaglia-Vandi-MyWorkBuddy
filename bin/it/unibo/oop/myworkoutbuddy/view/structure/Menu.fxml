@@ -19,7 +19,7 @@
       </VBox>
    </left>
    <top>
-      <Label id="mainTitle" fx:id="menuTitle" alignment="CENTER" prefHeight="40.0" prefWidth="447.0" text="MyWorkoutBuddy Menù" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
+      <Label id="mainTitle" fx:id="menuTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="847.0" text="MyWorkoutBuddy Menù" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
    </top>
    <bottom>
       <HBox prefHeight="25.0" prefWidth="818.0" BorderPane.alignment="CENTER" />

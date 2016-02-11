@@ -40,7 +40,7 @@
       </VBox>
    </center>
    <top>
-      <Label id="mainTitle" prefHeight="44.0" prefWidth="223.0" text="Registration" translateY="10.0" BorderPane.alignment="CENTER">
+      <Label id="mainTitle" alignment="CENTER" prefHeight="41.0" prefWidth="600.0" text="Registration" textAlignment="JUSTIFY" BorderPane.alignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
