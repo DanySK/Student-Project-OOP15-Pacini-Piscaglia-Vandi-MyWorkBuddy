@@ -21,6 +21,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ClassUtils;
+
 /**
  * A JSONObject is an unordered collection of key/value pairs. Its external form is a string wrapped in curly braces
  * with colons between the names and values, and commas between the values and names. The internal form is an object
@@ -95,24 +97,30 @@ public class JSONObject implements Map<String, Object>, Serializable {
     @SuppressWarnings("unchecked")
     public static Object wrap(final Object o) {
         try {
-            if (o == null) {
+            if (NULL.equals(o)) {
                 return NULL;
             }
-            if (o instanceof JSONArray || o instanceof JSONObject || NULL.equals(o)
-                    || o instanceof Boolean || o instanceof Byte || o instanceof Short
-                    || o instanceof Integer || o instanceof Long || o instanceof BigInteger
-                    || o instanceof Float || o instanceof Double || o instanceof BigDecimal
-                    || o instanceof Character || o instanceof String) {
+            if (o instanceof JSONArray || o instanceof JSONObject || o instanceof Boolean
+                    || o instanceof Byte || o instanceof Short || o instanceof Integer
+                    || o instanceof Long || o instanceof BigInteger || o instanceof Float
+                    || o instanceof Double || o instanceof BigDecimal || o instanceof Character) {
                 return o;
             }
-
+            if (o instanceof String) {
+                final String str = (String) o;
+                return tryParseNumber(str);
+            }
+            if (o.getClass().isArray()) {
+                final Object[] arr = (Object[]) o;
+                return new JSONArray(Arrays.asList(arr));
+            }
             if (o instanceof Collection) {
                 final Collection<?> coll = (Collection<?>) o;
-                return wrapCollection(coll);
+                return new JSONArray(coll);
             }
             if (o instanceof Map) {
                 final Map<String, ?> map = (Map<String, ?>) o;
-                return wrapMap(map);
+                return new JSONObject(map);
             }
             if (o instanceof Optional) {
                 final Optional<?> opt = (Optional<?>) o;
@@ -130,48 +138,10 @@ public class JSONObject implements Map<String, Object>, Serializable {
                 final OptionalLong opt = (OptionalLong) o;
                 return opt.getAsLong();
             }
-            if (o.getClass().isArray()) {
-                final Object[] arr = (Object[]) o;
-                return new JSONArray(Arrays.asList(arr));
-            }
-
             return new JSONObject(o);
         } catch (final Exception exception) {
             return null;
         }
-    }
-
-    /**
-     * Wraps a collection, if necessary. If the object is {@code null}, return an empty collection. If the wrapping
-     * fails, then {@code null} is returned.
-     *
-     * @param c
-     *            the collection to wrap
-     * @return The wrapped value
-     */
-    public static Collection<Object> wrapCollection(final Collection<?> c) {
-        return Objects.isNull(c)
-                ? Collections.emptyList()
-                : c.stream()
-                        .map(JSONObject::wrap)
-                        .collect(Collectors.toList());
-    }
-
-    /**
-     * Wraps a map, if necessary. If the map is {@code null}, return an empty map. If the wrapping fails, then
-     * {@code null} is returned.
-     *
-     * @param m
-     *            the map to wrap
-     * @return The wrapped value
-     */
-    public static Map<String, Object> wrapMap(final Map<? extends String, ?> m) {
-        return Objects.isNull(m)
-                ? Collections.emptyMap()
-                : m.entrySet().stream()
-                        .collect(Collectors.toMap(
-                                Entry::getKey,
-                                e -> wrap(e.getValue())));
     }
 
     /**
@@ -199,7 +169,12 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *            the {@link Map} that will be used to create the JSONObject.
      */
     public JSONObject(final Map<? extends String, ?> m) {
-        map = wrapMap(m);
+        map = new JSONObject(Objects.isNull(m)
+                ? Collections.emptyMap()
+                : m.entrySet().stream()
+                        .collect(Collectors.toMap(
+                                Entry::getKey,
+                                e -> wrap(e.getValue()))));
     }
 
     /**
@@ -226,10 +201,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<JSONArray> getJSONArray(final Object key) {
-        final Object o = get(key);
-        return (o instanceof JSONArray)
-                ? Optional.of((JSONArray) o)
-                : Optional.empty();
+        return getIfAssignable(key, JSONArray.class);
     }
 
     /**
@@ -248,10 +220,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<JSONObject> getJSONObject(final Object key) {
-        final Object o = get(key);
-        return (o instanceof JSONObject)
-                ? Optional.of((JSONObject) o)
-                : Optional.empty();
+        return getIfAssignable(key, JSONObject.class);
     }
 
     /**
@@ -268,10 +237,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Boolean> getBoolean(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Boolean)
-                ? Optional.of((Boolean) o)
-                : Optional.empty();
+        return getIfAssignable(key, Boolean.class);
     }
 
     /**
@@ -288,10 +254,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Byte> getByte(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Byte)
-                ? Optional.of((Byte) o)
-                : Optional.empty();
+        return getIfAssignable(key, Byte.class);
     }
 
     /**
@@ -308,10 +271,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Short> getShort(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Short)
-                ? Optional.of((Short) o)
-                : Optional.empty();
+        return getIfAssignable(key, Short.class);
     }
 
     /**
@@ -370,10 +330,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<BigInteger> getBigInteger(final Object key) {
-        final Object o = get(key);
-        return (o instanceof BigInteger)
-                ? Optional.of((BigInteger) o)
-                : Optional.empty();
+        return getIfAssignable(key, BigInteger.class);
     }
 
     /**
@@ -390,10 +347,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Float> getFloat(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Float)
-                ? Optional.of((Float) o)
-                : Optional.empty();
+        return getIfAssignable(key, Float.class);
     }
 
     /**
@@ -432,10 +386,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<BigDecimal> getBigDecimal(final Object key) {
-        final Object o = get(key);
-        return (o instanceof BigDecimal)
-                ? Optional.of((BigDecimal) o)
-                : Optional.empty();
+        return getIfAssignable(key, BigDecimal.class);
     }
 
     /**
@@ -452,10 +403,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<Character> getCharacter(final Object key) {
-        final Object o = get(key);
-        return (o instanceof Character)
-                ? Optional.of((Character) o)
-                : Optional.empty();
+        return getIfAssignable(key, Character.class);
     }
 
     /**
@@ -472,10 +420,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
      *             if the specified key is null and this map does not permit null keys
      */
     public Optional<String> getString(final Object key) {
-        final Object o = get(key);
-        return (o instanceof String)
-                ? Optional.of((String) o)
-                : Optional.empty();
+        return getIfAssignable(key, String.class);
     }
 
     @Override
@@ -494,9 +439,9 @@ public class JSONObject implements Map<String, Object>, Serializable {
 
     @Override
     public String toString() {
-        return map.isEmpty()
+        return isEmpty()
                 ? "{}"
-                : map.entrySet().stream()
+                : entrySet().stream()
                         .map(e -> {
                             final Object v = e.getValue();
                             return new StringBuilder()
@@ -550,7 +495,7 @@ public class JSONObject implements Map<String, Object>, Serializable {
 
     @Override
     public void putAll(final Map<? extends String, ?> m) {
-        map.putAll(wrapMap(m));
+        map.putAll(new JSONObject(m));
     }
 
     @Override
@@ -682,6 +627,43 @@ public class JSONObject implements Map<String, Object>, Serializable {
                 // Thrown exceptions will be ignored. BTW exceptions should not be thrown.
             }
         }
+    }
+
+    /**
+     * Tries to convert a {@link String} into an {@link Integer}, {@link Long}, {@link Float} or a {@link Double}. If
+     * the operation succeedes (at least one parsing operation doesn't throw a {@link NumberFormatException}) then
+     * returns the parsed value. If the string is impossible to parse then returns the given string.
+     * 
+     * @param s
+     *            The string that we are trying to parse
+     * @return the parsed string into a {@link Number}, the given string otherwise
+     */
+    private static Object tryParseNumber(final String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (final NumberFormatException e1) {
+            try {
+                return Long.parseLong(s);
+            } catch (final NumberFormatException e2) {
+                try {
+                    return Float.parseFloat(s);
+                } catch (final NumberFormatException e3) {
+                    try {
+                        return Double.parseDouble(s);
+                    } catch (final NumberFormatException e4) {
+                        return s;
+                    }
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Optional<T> getIfAssignable(final Object key, final Class<? extends T> clazz) {
+        final Object v = get(key);
+        return v != null && ClassUtils.isAssignable(v.getClass(), clazz)
+                ? Optional.of((T) v)
+                : Optional.empty();
     }
 
 }

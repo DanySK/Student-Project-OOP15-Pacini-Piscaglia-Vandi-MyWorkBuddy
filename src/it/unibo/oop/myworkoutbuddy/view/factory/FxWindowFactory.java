@@ -9,9 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- *
  * Utility class to create JavaFx windows using pattern Static Factory.
- *
  */
 public final class FxWindowFactory {
 

@@ -1,13 +1,14 @@
 package it.unibo.oop.myworkoutbuddy.util.json;
 
 import static it.unibo.oop.myworkoutbuddy.util.json.JSONObject.wrap;
-import static it.unibo.oop.myworkoutbuddy.util.json.JSONObject.wrapCollection;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ClassUtils;
 
 /**
  * A JSONArray is an ordered sequence of values. Its external text form is a string wrapped in square brackets with
@@ -52,7 +55,9 @@ import java.util.stream.Stream;
  * <code>true</code>, <code>false</code>, or <code>null</code>.</li>
  * </ul>
  */
-public class JSONArray implements List<Object> {
+public class JSONArray implements List<Object>, Serializable {
+
+    private static final long serialVersionUID = -5249787827311904965L;
 
     private final List<Object> list;
 
@@ -70,7 +75,11 @@ public class JSONArray implements List<Object> {
      *            the {@link Collection} that will be used to create the JSONArray
      */
     public JSONArray(final Collection<?> c) {
-        list = new ArrayList<>(wrapCollection(c));
+        list = new ArrayList<>(Objects.isNull(c)
+                ? Collections.emptyList()
+                : c.stream()
+                        .map(JSONObject::wrap)
+                        .collect(Collectors.toList()));
     }
 
     /**
@@ -148,10 +157,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<Boolean> getBoolean(final int index) {
-        final Object o = get(index);
-        return (o instanceof Boolean)
-                ? Optional.of((Boolean) o)
-                : Optional.empty();
+        return getIfAssignable(index, Boolean.class);
     }
 
     /**
@@ -166,10 +172,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<Byte> getByte(final int index) {
-        final Object o = get(index);
-        return (o instanceof Byte)
-                ? Optional.of((Byte) o)
-                : Optional.empty();
+        return getIfAssignable(index, Byte.class);
     }
 
     /**
@@ -184,10 +187,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<Short> getShort(final int index) {
-        final Object o = get(index);
-        return (o instanceof Short)
-                ? Optional.of((Short) o)
-                : Optional.empty();
+        return getIfAssignable(index, Short.class);
     }
 
     /**
@@ -238,10 +238,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<BigInteger> getBigInteger(final int index) {
-        final Object o = get(index);
-        return (o instanceof BigInteger)
-                ? Optional.of((BigInteger) o)
-                : Optional.empty();
+        return getIfAssignable(index, BigInteger.class);
     }
 
     /**
@@ -256,10 +253,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<Float> getFloat(final int index) {
-        final Object o = get(index);
-        return (o instanceof Float)
-                ? Optional.of((Float) o)
-                : Optional.empty();
+        return getIfAssignable(index, Float.class);
     }
 
     /**
@@ -292,10 +286,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<BigDecimal> getBigDecimal(final int index) {
-        final Object o = get(index);
-        return (o instanceof BigDecimal)
-                ? Optional.of((BigDecimal) o)
-                : Optional.empty();
+        return getIfAssignable(index, BigDecimal.class);
     }
 
     /**
@@ -310,10 +301,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<Character> getCharacter(final int index) {
-        final Object o = get(index);
-        return (o instanceof Character)
-                ? Optional.of((Character) o)
-                : Optional.empty();
+        return getIfAssignable(index, Character.class);
     }
 
     /**
@@ -328,10 +316,7 @@ public class JSONArray implements List<Object> {
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
     public Optional<String> getString(final int index) {
-        final Object o = get(index);
-        return (o instanceof String)
-                ? Optional.of((String) o)
-                : Optional.empty();
+        return getIfAssignable(index, String.class);
     }
 
     @Override
@@ -407,12 +392,12 @@ public class JSONArray implements List<Object> {
 
     @Override
     public boolean addAll(final Collection<?> c) {
-        return list.addAll(wrapCollection(c));
+        return list.addAll(new JSONArray(c));
     }
 
     @Override
     public boolean addAll(final int index, final Collection<?> c) {
-        return list.addAll(index, wrapCollection(c));
+        return list.addAll(index, new JSONArray(c));
     }
 
     @Override
@@ -503,6 +488,14 @@ public class JSONArray implements List<Object> {
     @Override
     public Spliterator<Object> spliterator() {
         return list.spliterator();
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> Optional<T> getIfAssignable(final int index, final Class<? extends T> clazz) {
+        final Object v = get(index);
+        return v != null && ClassUtils.isAssignable(v.getClass(), clazz)
+                ? Optional.of((T) v)
+                : Optional.empty();
     }
 
 }
