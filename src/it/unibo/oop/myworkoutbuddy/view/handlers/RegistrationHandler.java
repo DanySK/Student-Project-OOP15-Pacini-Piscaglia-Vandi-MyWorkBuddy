@@ -91,12 +91,7 @@ public class RegistrationHandler implements RegistrationView {
 
     @FXML
     private void returnLogin() {
-        /* Opening login window */
-        new FxWindowFactory().openWindow("Access.fxml", false);
-
-        /* Closing registration window */
-        final Stage stageAccess = (Stage) btnRegister.getScene().getWindow();
-        stageAccess.close();
+        FxWindowFactory.replaceWindow("Access.fxml", btnReturnLogin.getScene());
     }
 
 }

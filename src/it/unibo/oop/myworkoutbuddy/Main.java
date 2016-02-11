@@ -17,7 +17,7 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage stage) throws IOException {
-        new FxWindowFactory().openWindow("Access.fxml", false);
+        FxWindowFactory.openWindow("Access.fxml", false);
     }
 
     /**
@@ -25,7 +25,7 @@ public class Main extends Application {
      * 
      * @param args
      *            not used.
-    */
+     */
     public static void main(final String... args) {
         launch(args);
     }
