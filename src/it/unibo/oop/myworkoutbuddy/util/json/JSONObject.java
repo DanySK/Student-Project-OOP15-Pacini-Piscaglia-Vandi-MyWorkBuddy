@@ -1,9 +1,11 @@
 package it.unibo.oop.myworkoutbuddy.util.json;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -49,9 +51,11 @@ import java.util.stream.Collectors;
  * <li>Strings will be quoted with <code>"</code>&nbsp;<small>(double quote)</small>.
  * </ul>
  */
-public class JSONObject implements Map<String, Object> {
+public class JSONObject implements Map<String, Object>, Serializable {
 
-    // Null instance of an JSONObject
+    private static final long serialVersionUID = 8132214257960166022L;
+
+    // Null instance of a JSONObject
     private static final Object NULL = new Object() {
 
         @Override
@@ -66,8 +70,7 @@ public class JSONObject implements Map<String, Object> {
 
         @Override
         public int hashCode() {
-            final int prime = 31;
-            return prime + super.hashCode();
+            return super.hashCode();
         }
 
         @Override
@@ -81,9 +84,8 @@ public class JSONObject implements Map<String, Object> {
 
     /**
      * Wraps an object, if necessary. If the object is {@code null}, return the NULL object. If it is an array or
-     * collection, wrap it in a JSONArray. If it is a map, wrap it in a JSONObject. If it is a standard property
-     * (Double, String, etc...) then it is already wrapped. Otherwise, if it comes from one of the java packages, turn
-     * it into a string.
+     * collection, wrap it in a JSONArray. If it is a map, wrap it in a JSONObject. If it is an Optional tries to get
+     * its value. If it is a standard property (Double, String, etc...) then it is already wrapped.
      * If it doesn't, try to wrap it in a JSONObject. If the wrapping fails, then {@code null} is returned.
      *
      * @param o
@@ -112,15 +114,27 @@ public class JSONObject implements Map<String, Object> {
                 final Map<String, ?> map = (Map<String, ?>) o;
                 return wrapMap(map);
             }
-
-            final Package objectPackage = o.getClass().getPackage();
-            final String objectPackageName = objectPackage != null ? objectPackage
-                    .getName() : "";
-            if (objectPackageName.startsWith("java.")
-                    || objectPackageName.startsWith("javax.")
-                    || o.getClass().getClassLoader() == null) {
-                return o.toString();
+            if (o instanceof Optional) {
+                final Optional<?> opt = (Optional<?>) o;
+                return opt.get();
             }
+            if (o instanceof OptionalDouble) {
+                final OptionalDouble opt = (OptionalDouble) o;
+                return opt.getAsDouble();
+            }
+            if (o instanceof OptionalInt) {
+                final OptionalInt opt = (OptionalInt) o;
+                return opt.getAsInt();
+            }
+            if (o instanceof OptionalLong) {
+                final OptionalLong opt = (OptionalLong) o;
+                return opt.getAsLong();
+            }
+            if (o.getClass().isArray()) {
+                final Object[] arr = (Object[]) o;
+                return new JSONArray(Arrays.asList(arr));
+            }
+
             return new JSONObject(o);
         } catch (final Exception exception) {
             return null;
@@ -626,14 +640,15 @@ public class JSONObject implements Map<String, Object> {
     private void populateMap(final Object bean) {
         if (bean instanceof Map) {
             throw new UncheckedJSONException(
-                    new JSONException("Map key value differs form " + String.class.getName()));
+                    new JSONException("Invalid key/value pair"));
         }
 
         final Class<?> clazz = bean.getClass();
 
-        // If clazz is a System class then includeSuperClass is set to false.
-        final boolean includeSuperClass = clazz.getClassLoader() != null;
-        for (final Method method : includeSuperClass ? clazz.getMethods() : clazz.getDeclaredMethods()) {
+        // If clazz is a System class then return only the methods declared by clazz, all the declared methods if
+        // its not.
+        final Method[] methods = clazz.getClassLoader() != null ? clazz.getMethods() : clazz.getDeclaredMethods();
+        for (final Method method : methods) {
             try {
                 if (Modifier.isPublic(method.getModifiers())) {
                     final String name = method.getName();
@@ -664,7 +679,7 @@ public class JSONObject implements Map<String, Object> {
                     }
                 }
             } catch (final Exception ignore) {
-                // Thrown exceptions will be ignored.
+                // Thrown exceptions will be ignored. BTW exceptions should not be thrown.
             }
         }
     }

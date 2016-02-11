@@ -17,7 +17,7 @@ public final class JSONUtils {
         return new UnmodifiableJSONArray(a);
     }
 
-    private final static class UnmodifiableJSONArray extends JSONArray {
+    private static final class UnmodifiableJSONArray extends JSONArray {
 
         /**
          * Constructs a UnmodifiableJSONArray from a JSONArray.
@@ -86,7 +86,7 @@ public final class JSONUtils {
 
     }
 
-    private final static class UnmodifiableJSONObject extends JSONObject {
+    private static final class UnmodifiableJSONObject extends JSONObject {
 
         /**
          * Constructs a UnmodifiableJSONObject from a JSONObject.

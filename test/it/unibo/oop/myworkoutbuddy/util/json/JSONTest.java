@@ -2,6 +2,7 @@ package it.unibo.oop.myworkoutbuddy.util.json;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -45,15 +46,12 @@ public class JSONTest {
     public void test() {
         final Map<String, Object> people = new HashMap<>();
         people.put("String", "s");
-        people.put("JSONArray", new JSONArray(1, 2, 3, 4, 5));
+        people.put("JSONArray", new JSONArray(1, 2, 3, 4, 5).toArray());
         people.put("byte", new Byte((byte) 50));
         people.put("char", new Character('A'));
+        people.put("optional", Optional.of("String"));
         JSONObject json = new JSONObject(people);
         System.out.println(json);
-        System.out.println(json.getJSONArray("JSONArray").isPresent());
-        System.out.println(json.getString("String").isPresent());
-        System.out.println(json.getByte("byte").isPresent());
-        System.out.println(json.getCharacter("char").isPresent());
     }
 
 }
