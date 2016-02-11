@@ -1,9 +1,11 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -53,6 +55,22 @@ public class MenuHandler {
     private static final double SHOW_MENU_DELTA_WIDTH = 80;
 
     private static final String CSS_SELECT_STYLE = "-fx-background-color: yellow; -fx-font: bold 10pt 'Serif';";
+
+    private EventHandler<MouseEvent> enteredAnimation = i -> {
+        final Button btn = (Button) i.getSource();
+        btn.setStyle("-fx-font-weight: bold");
+        if (btn != btnQuit && btn != btnLogout) {
+            btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
+        }
+    };
+
+    private EventHandler<MouseEvent> exitedAnimation = i -> {
+        final Button btn = (Button) i.getSource();
+        btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+        if (btn != btnQuit && btn != btnLogout) {
+            btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
+        }
+    };
 
     /**
      * Set createRoutine view in the menu center.
@@ -105,69 +123,18 @@ public class MenuHandler {
     }
 
     /**
-     * Animation when user move mouse on a button
+     * Called to initialize a controller after its root element has been
+     * completely processed.
      */
-    @FXML
-    private void moveCreateMouseAnimation() {
-        setMouseAnimation(btnCreate);
-    }
+    public void initialize() {
+        btnContainer.getChildren().forEach(i -> {
 
-    /**
-     * Animation when user move mouse on a button
-     */
-    @FXML
-    private void exitCreateMouseAnimation() {
-        unSetMouseAnimation(btnCreate);
-    }
+            /* Animation when user move mouse on a button */
+            i.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, enteredAnimation);
 
-    @FXML
-    private void moveSelectMouseAnimation() {
-        setMouseAnimation(btnSelect);
-    }
-
-    @FXML
-    private void exitSelectMouseAnimation() {
-        unSetMouseAnimation(btnSelect);
-    }
-
-    @FXML
-    private void moveStatisticsMouseAnimation() {
-        setMouseAnimation(btnStatistics);
-    }
-
-    @FXML
-    private void exitStatisticsMouseAnimation() {
-        unSetMouseAnimation(btnStatistics);
-    }
-
-    @FXML
-    private void moveSettingsMouseAnimation() {
-        setMouseAnimation(btnSettings);
-    }
-
-    @FXML
-    private void exitSettingsMouseAnimation() {
-        unSetMouseAnimation(btnSettings);
-    }
-
-    @FXML
-    private void moveLogoutMouseAnimation() {
-        setMouseAnimation(btnLogout);
-    }
-
-    @FXML
-    private void exitLogoutMouseAnimation() {
-        unSetMouseAnimation(btnLogout);
-    }
-
-    @FXML
-    private void moveQuitMouseAnimation() {
-        setMouseAnimation(btnQuit);
-    }
-
-    @FXML
-    private void exitQuitMouseAnimation() {
-        unSetMouseAnimation(btnQuit);
+            /* Animation when user move mouse on a button */
+            i.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, exitedAnimation);
+        });
     }
 
     @FXML
@@ -178,26 +145,6 @@ public class MenuHandler {
     @FXML
     private void hideMenu() {
         btnContainer.setTranslateX(-HIDE_MENU_DELTA_WIDTH);
-    }
-
-    /**
-     * Factored code of mouse animation.
-     */
-    private void setMouseAnimation(final Button btn) {
-        btn.setStyle("-fx-font-weight: bold");
-        if (btn != btnQuit && btn != btnLogout) {
-            btn.setMaxWidth(WIDTH_BUTTON_ANIMATION);
-        }
-    }
-
-    /**
-     * Factored code to unSet mouse animation.
-     */
-    private void unSetMouseAnimation(final Button btn) {
-        btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        if (btn != btnQuit && btn != btnLogout) {
-            btn.setMaxWidth(WIDTH_BUTTON_NORMAL);
-        }
     }
 
     /**
@@ -221,4 +168,5 @@ public class MenuHandler {
             lastPressed = btnPressed;
         }
     }
+
 }

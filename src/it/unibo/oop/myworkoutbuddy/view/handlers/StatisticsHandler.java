@@ -62,4 +62,12 @@ public class StatisticsHandler implements StatisticsView {
         return Integer.parseInt(txtWeight.getText());
     }
 
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     */
+    public void initialize() {
+        viewPie();
+    }
+
 }

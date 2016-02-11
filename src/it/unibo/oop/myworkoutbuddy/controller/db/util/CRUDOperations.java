@@ -17,7 +17,6 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 
 import it.unibo.oop.myworkoutbuddy.util.Preconditions;
-import it.unibo.oop.myworkoutbuddy.util.json.JSONObject;
 
 /**
  * Utility class for CRUD operations.

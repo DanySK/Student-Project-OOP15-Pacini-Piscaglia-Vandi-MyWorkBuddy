@@ -9,12 +9,12 @@
    <left>
       <VBox fx:id="btnContainer" onMouseEntered="#openMenu" onMouseExited="#hideMenu" prefHeight="656.0" prefWidth="199.0" translateX="-100.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" onMouseEntered="#moveCreateMouseAnimation" onMouseExited="#exitCreateMouseAnimation" prefHeight="26.0" prefWidth="200.0" text="Create Routine" translateX="-80.0" translateY="110.0" BorderPane.alignment="TOP_LEFT" />
-            <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" onMouseEntered="#moveSelectMouseAnimation" onMouseExited="#exitSelectMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="Select Routine" translateX="-80.0" translateY="140.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" onMouseEntered="#moveStatisticsMouseAnimation" onMouseExited="#exitStatisticsMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="Statistics" translateX="-80.0" translateY="170.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" onMouseEntered="#moveSettingsMouseAnimation" onMouseExited="#exitSettingsMouseAnimation" prefHeight="25.0" prefWidth="200.0" text="User Settings" translateX="-80.0" translateY="200.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" onMouseEntered="#moveLogoutMouseAnimation" onMouseExited="#exitLogoutMouseAnimation" prefHeight="25.0" prefWidth="139.0" text="Logout" translateX="-80.0" translateY="390.0" BorderPane.alignment="CENTER_LEFT" />
-            <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#quitApp" onMouseEntered="#moveQuitMouseAnimation" onMouseExited="#exitQuitMouseAnimation" prefHeight="25.0" prefWidth="140.0" text="Quit" translateX="-80.0" translateY="400.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnCreate" mnemonicParsing="false" onAction="#setCreateRoutineView" prefHeight="26.0" prefWidth="200.0" text="Create Routine" translateX="-80.0" translateY="110.0" BorderPane.alignment="TOP_LEFT" />
+            <Button fx:id="btnSelect" mnemonicParsing="false" onAction="#setSelectRoutineView" prefHeight="25.0" prefWidth="200.0" text="Select Routine" translateX="-80.0" translateY="140.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnStatistics" mnemonicParsing="false" onAction="#setStatisticsView" prefHeight="25.0" prefWidth="200.0" text="Statistics" translateX="-80.0" translateY="170.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnSettings" mnemonicParsing="false" onAction="#setUserSettingsView" prefHeight="25.0" prefWidth="200.0" text="User Settings" translateX="-80.0" translateY="200.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="139.0" text="Logout" translateX="-80.0" translateY="390.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#quitApp" prefHeight="25.0" prefWidth="140.0" text="Quit" translateX="-80.0" translateY="400.0" BorderPane.alignment="CENTER_LEFT" />
          </children>
       </VBox>
    </left>
