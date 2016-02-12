@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
+import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
@@ -23,6 +24,8 @@ public final class AccessHandler implements AccessView {
 
     @FXML
     private PasswordField txtPassword;
+
+    private ViewsObserver observer = ViewsHandler.getObserver();
 
     /**
      * Open menuView.

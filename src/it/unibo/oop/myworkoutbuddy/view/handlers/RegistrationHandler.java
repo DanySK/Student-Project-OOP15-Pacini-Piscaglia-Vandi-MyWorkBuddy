@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
+import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,6 +43,8 @@ public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private Button btnReturnLogin;
+
+    private ViewsObserver observer = ViewsHandler.getObserver();
 
     @Override
     public String getName() {

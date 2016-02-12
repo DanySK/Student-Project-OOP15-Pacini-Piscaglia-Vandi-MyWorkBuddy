@@ -1,8 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.AppViews;
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
@@ -19,7 +16,7 @@ import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
  */
 public final class ViewsHandler implements AppViews {
 
-    private final static Set<ViewsObserver> observers = new TreeSet<>();
+    private static ViewsObserver observer;
 
     @Override
     public AccessView getAccessView() {
@@ -47,15 +44,18 @@ public final class ViewsHandler implements AppViews {
     }
 
     @Override
-    public void addViewsObserver(final ViewsObserver view) {
-        ViewsHandler.observers.add(view);
+    public void setViewsObserver(final ViewsObserver viewObserver) {
+        observer = viewObserver;
     }
 
-    /*
+    /**
      * Allows each GUI to get Controller reference.
+     * 
+     * @return view
+     *         observer.
      */
-    public static Set<ViewsObserver> getObservers() {
-        return observers;
+    public static ViewsObserver getObserver() {
+        return observer;
     }
 
 }

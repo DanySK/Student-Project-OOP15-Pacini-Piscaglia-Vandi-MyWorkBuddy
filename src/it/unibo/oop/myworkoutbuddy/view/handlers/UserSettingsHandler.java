@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
+import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -25,6 +26,8 @@ public final class UserSettingsHandler implements UserSettingsView {
 
     @FXML
     private TextField txtPassword;
+
+    private ViewsObserver observer = ViewsHandler.getObserver();
 
     @Override
     public String getNewName() {

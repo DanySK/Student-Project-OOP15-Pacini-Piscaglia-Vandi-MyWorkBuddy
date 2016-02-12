@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
+import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import javafx.fxml.FXML;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +19,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     @FXML
     private TabPane tabRoutine;
 
+    private ViewsObserver observer = ViewsHandler.getObserver();
     
     @Override
     public int getRoutineIndex() {
