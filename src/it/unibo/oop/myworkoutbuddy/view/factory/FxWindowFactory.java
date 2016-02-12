@@ -17,11 +17,14 @@ public final class FxWindowFactory {
 
     private static FXMLLoader loader;
 
+    private FxWindowFactory() {
+    }
+
     /**
      * 
      * @return reference to view handler.
      */
-    public static <T> Object getController() {
+    public static Object getController() {
         return loader == null
                 ? null
                 : loader.getController();

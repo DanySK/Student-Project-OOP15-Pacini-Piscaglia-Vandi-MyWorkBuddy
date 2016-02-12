@@ -9,10 +9,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="641.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.StatisticsHandler">
    <bottom>
-      <PieChart fx:id="pieChart" onMouseEntered="#viewPie" prefHeight="260.0" prefWidth="641.0" BorderPane.alignment="CENTER" />
+      <PieChart fx:id="pieChart" onMouseEntered="#viewPie" prefHeight="261.0" prefWidth="641.0" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <LineChart fx:id="weightChart" onMouseEntered="#viewWeightChart" prefHeight="320.0" prefWidth="641.0" title="Weight Line" BorderPane.alignment="CENTER">
+      <LineChart fx:id="weightChart" onMouseEntered="#viewWeightChart" prefHeight="265.0" prefWidth="641.0" BorderPane.alignment="CENTER">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -21,4 +21,11 @@
         </yAxis>
       </LineChart>
    </center>
+   <top>
+      <Label id="borderedLabel" text="Weight Line" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+   </top>
 </BorderPane>

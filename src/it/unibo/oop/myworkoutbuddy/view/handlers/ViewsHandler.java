@@ -19,7 +19,7 @@ import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
  */
 public final class ViewsHandler implements AppViews {
 
-    private final Set<ViewsObserver> observers = new TreeSet<>();
+    private final static Set<ViewsObserver> observers = new TreeSet<>();
 
     @Override
     public AccessView getAccessView() {
@@ -47,8 +47,15 @@ public final class ViewsHandler implements AppViews {
     }
 
     @Override
-    public void addViewsObserver(ViewsObserver view) {
-        this.observers.add(view);
+    public void addViewsObserver(final ViewsObserver view) {
+        ViewsHandler.observers.add(view);
+    }
+
+    /*
+     * Allows each GUI to get Controller reference.
+     */
+    public static Set<ViewsObserver> getObservers() {
+        return observers;
     }
 
 }

@@ -5,12 +5,17 @@
     -fx-cursor: hand;
 }
 
+#borderedLabel{
+	-fx-background-radius: 20.0;
+	-fx-background-color:orange;
+	-fx-padding: 5.0;
+}
+
 #selectTheme{
 	-fx-font: 13.0px "Serif";
     -fx-padding: 6.0;
     -fx-background-color: orange;
     -fx-cursor: hand;
-	
 }
 
 #mainTitle{
@@ -20,10 +25,6 @@
 	-fx-padding: 12.0
 }
 
-#menuPane{
-	-fx-background-image: url("http://bodybychristina.com/wp-content/uploads/2013/05/Gym-Floor-Background.jpg");
-    -fx-background-repeat: stretch;   
-    -fx-background-size: 900 506;
-    -fx-background-position: center center;
-    -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0); 
+.root{
+	-fx-background-image: url("http://charltonpark.org.uk/wp-content/uploads/2014/04/GYM_1_SLIDER.jpg");
 }

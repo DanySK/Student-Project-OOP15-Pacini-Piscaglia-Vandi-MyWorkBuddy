@@ -22,7 +22,6 @@ public final class StatisticsHandler {
 
     @FXML
     private void viewPie() {
-        pieChart.setTitle("Exercises distribution");
         pieChart.setLabelLineLength(10);
         pieChart.setLegendSide(Side.LEFT);
         pieChart.setData(FXCollections.observableArrayList(

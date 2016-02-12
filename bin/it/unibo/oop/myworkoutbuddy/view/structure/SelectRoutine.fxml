@@ -8,7 +8,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="652.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.SelectRoutineHandler">
    <center>
-      <TabPane fx:id="tabRoutine" prefHeight="527.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tabRoutine" prefHeight="295.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" translateY="50.0" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Routine 1">
             <content>
@@ -46,18 +46,18 @@
       </TabPane>
    </center>
    <top>
-      <Label prefHeight="104.0" prefWidth="294.0" text="Insert your daily results!" BorderPane.alignment="CENTER">
+      <Label id="borderedLabel" alignment="CENTER" prefHeight="40.0" prefWidth="320.0" text="Insert your daily results!" translateY="30.0" BorderPane.alignment="CENTER">
          <font>
-            <Font size="24.0" />
+            <Font size="22.0" />
          </font>
       </Label>
    </top>
    <bottom>
-      <VBox prefHeight="225.0" prefWidth="652.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="222.0" prefWidth="652.0" BorderPane.alignment="CENTER">
          <children>
-            <Label prefHeight="60.0" prefWidth="256.0" text="Excercise description" translateX="200.0">
+            <Label id="borderedLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="290.0" text="Excercise description" textAlignment="JUSTIFY" translateX="200.0">
                <font>
-                  <Font size="24.0" />
+                  <Font size="22.0" />
                </font>
             </Label>
             <HBox fx:id="exerciseBox" prefHeight="155.0" prefWidth="652.0">
