@@ -17,7 +17,7 @@ import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
  * All views of the application to pass to Controller.
  *
  */
-public class ViewsHandler implements AppViews {
+public final class ViewsHandler implements AppViews {
 
     private final Set<ViewsObserver> observers = new TreeSet<>();
 

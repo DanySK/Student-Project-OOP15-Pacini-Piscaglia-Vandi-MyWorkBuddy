@@ -11,7 +11,7 @@ import javafx.scene.control.TextField;
  * Handler of the RegistrationView. It handles the events captured by the GUI
  * and collects user personal information.
  */
-public class RegistrationHandler implements RegistrationView {
+public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private TextField txtWeight;

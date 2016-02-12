@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
  * Handler of the SelectRoutineView. It handles the events captured by the GUI
  * selecting the chosen routine.
  */
-public class SelectRoutineHandler implements SelectRoutineView {
+public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private HBox exerciseBox;

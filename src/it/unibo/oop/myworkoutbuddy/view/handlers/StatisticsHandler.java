@@ -12,7 +12,7 @@ import javafx.scene.chart.XYChart.Series;
  * 
  * Handler of the accessView. It show user statistics fetched from the database.
  */
-public class StatisticsHandler {
+public final class StatisticsHandler {
 
     @FXML
     private LineChart<String, String> weightChart;

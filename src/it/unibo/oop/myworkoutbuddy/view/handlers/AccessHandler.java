@@ -13,7 +13,7 @@ import javafx.scene.control.TextField;
  * collects user input
  *
  */
-public class AccessHandler implements AccessView {
+public final class AccessHandler implements AccessView {
 
     @FXML
     private TextField txtID;

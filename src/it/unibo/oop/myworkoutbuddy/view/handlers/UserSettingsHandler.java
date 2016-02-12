@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
  * Handler of the accessView. It handles the events captured by the GUI
  * collecting user changes.
  */
-public class UserSettingsHandler implements UserSettingsView {
+public final class UserSettingsHandler implements UserSettingsView {
 
     @FXML
     private TextField txtSurname;

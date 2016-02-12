@@ -11,7 +11,7 @@ import javafx.scene.layout.AnchorPane;
  * 
  * Handler of the CreateRoutineView. It collects user routine.
  */
-public class CreateRoutineHandler implements CreateRoutineView {
+public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private Button btnInsertExercise;

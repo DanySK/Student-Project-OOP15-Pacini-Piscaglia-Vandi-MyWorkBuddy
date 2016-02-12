@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
  * Handler of the view menu, it allows user to switch view.
  *
  */
-public class MenuHandler {
+public final class MenuHandler {
 
     @FXML
     private BorderPane mainPane;
