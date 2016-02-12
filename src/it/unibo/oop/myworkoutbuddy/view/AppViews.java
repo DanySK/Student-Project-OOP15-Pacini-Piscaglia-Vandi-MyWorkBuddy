@@ -30,4 +30,10 @@ public interface AppViews {
      */
     UserSettingsView getUserSettingsView();
 
+    /**
+     * @param view
+     *            to observe.
+     */
+    void addViewsObserver(ViewsObserver view);
+
 }
