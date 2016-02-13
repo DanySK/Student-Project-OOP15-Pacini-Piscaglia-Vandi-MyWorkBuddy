@@ -63,11 +63,6 @@ public final class AccessHandler implements AccessView {
     }
 
     @Override
-    public String getID() {
-        return txtID.getText();
-    }
-
-    @Override
     public String getPassword() {
         return txtPassword.getText();
     }
@@ -75,6 +70,11 @@ public final class AccessHandler implements AccessView {
     @Override
     public String getStyle() {
         return btnSelect.getText();
+    }
+
+    @Override
+    public String getUsername() {
+        return txtID.getText();
     }
 
 }

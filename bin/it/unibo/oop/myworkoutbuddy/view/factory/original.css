@@ -27,4 +27,8 @@
 
 .root{
 	-fx-background-image: url("http://charltonpark.org.uk/wp-content/uploads/2014/04/GYM_1_SLIDER.jpg");
+	-fx-background-repeat: stretch;
+    -fx-background-size:1500.0;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(three-pass-box, black, 30.0, 0.5, 0.0, 0.0); 
 }

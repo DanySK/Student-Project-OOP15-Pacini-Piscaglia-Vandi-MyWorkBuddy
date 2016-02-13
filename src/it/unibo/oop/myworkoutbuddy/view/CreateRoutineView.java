@@ -16,7 +16,8 @@ public interface CreateRoutineView {
      * Save the names of the exercises of the chosen routine by the user.
      * 
      * @return routine map
-     *        composed by <Routine name, <Workout name, <Exercise name, <Repetitions>>>
+     *         composed by <Routine index, Routine description, <Workout name,
+     *         <Exercise name, <Repetitions>>>
      */
     Triple<Integer, String, Map<String, Map<String, List<Integer>>>> getRoutine();
 
