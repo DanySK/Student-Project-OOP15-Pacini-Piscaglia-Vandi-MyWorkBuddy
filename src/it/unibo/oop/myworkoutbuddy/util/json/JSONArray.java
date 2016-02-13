@@ -54,7 +54,7 @@ import org.apache.commons.lang3.ClassUtils;
  * <code>true</code>, <code>false</code>, or <code>null</code>.</li>
  * </ul>
  */
-public class JSONArray implements List<Object>, JSONValue<Integer> {
+public class JSONArray implements List<Object>, JSONValue {
 
     private static final long serialVersionUID = -5249787827311904965L;
 
@@ -119,7 +119,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONArray> getJSONArray(final Integer index) {
+    public Optional<JSONArray> getJSONArray(final int index) {
         final Object o = get(index);
         return (o instanceof JSONArray)
                 ? Optional.of((JSONArray) o)
@@ -137,7 +137,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<JSONObject> getJSONObject(final Integer index) {
+    public Optional<JSONObject> getJSONObject(final int index) {
         final Object o = get(index);
         return (o instanceof JSONObject)
                 ? Optional.of((JSONObject) o)
@@ -155,7 +155,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Boolean> getBoolean(final Integer index) {
+    public Optional<Boolean> getBoolean(final int index) {
         return getIfAssignable(index, Boolean.class);
     }
 
@@ -170,7 +170,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Byte> getByte(final Integer index) {
+    public Optional<Byte> getByte(final int index) {
         return getIfAssignable(index, Byte.class);
     }
 
@@ -185,7 +185,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Short> getShort(final Integer index) {
+    public Optional<Short> getShort(final int index) {
         return getIfAssignable(index, Short.class);
     }
 
@@ -200,7 +200,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigInteger> getBigInteger(final Integer index) {
+    public Optional<BigInteger> getBigInteger(final int index) {
         return getIfAssignable(index, BigInteger.class);
     }
 
@@ -215,7 +215,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Float> getFloat(final Integer index) {
+    public Optional<Float> getFloat(final int index) {
         return getIfAssignable(index, Float.class);
     }
 
@@ -230,7 +230,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<BigDecimal> getBigDecimal(final Integer index) {
+    public Optional<BigDecimal> getBigDecimal(final int index) {
         return getIfAssignable(index, BigDecimal.class);
     }
 
@@ -245,7 +245,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<Character> getCharacter(final Integer index) {
+    public Optional<Character> getCharacter(final int index) {
         return getIfAssignable(index, Character.class);
     }
 
@@ -260,7 +260,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws IndexOutOfBoundsException
      *             if the index is out of range (<tt>index &lt; 0 || index &gt;= size()</tt>)
      */
-    public Optional<String> getString(final Integer index) {
+    public Optional<String> getString(final int index) {
         return getIfAssignable(index, String.class);
     }
 
@@ -277,7 +277,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws NullPointerException
      *             if the specified key is null and this map does not permit null keys
      */
-    public OptionalInt getInteger(final Integer key) {
+    public OptionalInt getInteger(final int key) {
         final Object o = get(key);
         return (o instanceof Integer)
                 ? OptionalInt.of((int) o)
@@ -297,7 +297,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws NullPointerException
      *             if the specified key is null and this map does not permit null keys
      */
-    public OptionalLong getLong(final Integer key) {
+    public OptionalLong getLong(final int key) {
         final Object o = get(key);
         return (o instanceof Long)
                 ? OptionalLong.of((long) o)
@@ -317,7 +317,7 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
      * @throws NullPointerException
      *             if the specified key is null and this map does not permit null keys
      */
-    public OptionalDouble getDouble(final Integer key) {
+    public OptionalDouble getDouble(final int key) {
         final Object o = get(key);
         return (o instanceof Double)
                 ? OptionalDouble.of((double) o)
@@ -336,6 +336,11 @@ public class JSONArray implements List<Object>, JSONValue<Integer> {
                 || (obj != null
                         && obj instanceof JSONArray
                         && list.equals(((JSONArray) obj).list));
+    }
+
+    @Override
+    public String toJSONString() {
+        return toString();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.util.json;
 
+import static java.util.Objects.requireNonNull;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
@@ -52,7 +54,7 @@ import org.apache.commons.lang3.ClassUtils;
  * <li>Strings will be quoted with <code>"</code>&nbsp;<small>(double quote)</small>.
  * </ul>
  */
-public class JSONObject implements Map<String, Object>, JSONValue<Object> {
+public class JSONObject implements Map<String, Object>, JSONValue {
 
     private static final long serialVersionUID = 8132214257960166022L;
 
@@ -136,6 +138,13 @@ public class JSONObject implements Map<String, Object>, JSONValue<Object> {
             if (o instanceof OptionalLong) {
                 final OptionalLong opt = (OptionalLong) o;
                 return opt.getAsLong();
+            }
+            final Package objectPackage = o.getClass().getPackage();
+            final String objectPackageName = objectPackage != null ? objectPackage.getName() : "";
+            if (objectPackageName.startsWith("java.")
+                    || objectPackageName.startsWith("javax.")
+                    || o.getClass().getClassLoader() == null) {
+                return o.toString();
             }
             return new JSONObject(o);
         } catch (final Exception exception) {
@@ -437,22 +446,25 @@ public class JSONObject implements Map<String, Object>, JSONValue<Object> {
     }
 
     @Override
+    public String toJSONString() {
+        return toJSONString();
+    }
+
+    @Override
     public String toString() {
-        return isEmpty()
-                ? "{}"
-                : entrySet().stream()
-                        .map(e -> {
-                            final Object v = e.getValue();
-                            return new StringBuilder()
-                                    .append("\"")
-                                    .append(e.getKey())
-                                    .append("\": ")
-                                    .append(v instanceof String || v instanceof Character
-                                            ? "\"" + v + "\""
-                                            : v)
-                                    .toString();
-                        })
-                        .collect(Collectors.joining(", ", "{ ", " }"));
+        return entrySet().stream()
+                .map(e -> {
+                    final Object v = e.getValue();
+                    return new StringBuilder()
+                            .append("\"")
+                            .append(e.getKey())
+                            .append("\": ")
+                            .append(v instanceof String || v instanceof Character
+                                    ? "\"" + v + "\""
+                                    : v)
+                            .toString();
+                })
+                .collect(Collectors.joining(", ", "{", "}"));
     }
 
     // Delegate methods
@@ -584,10 +596,17 @@ public class JSONObject implements Map<String, Object>, JSONValue<Object> {
     private void populateMap(final Object bean) {
         if (bean instanceof Map) {
             throw new UncheckedJSONException(
-                    new JSONException("Invalid key/value pair"));
+                    new JSONException("Maps cannot be encoded as JSON objects"));
         }
-
-        final Class<?> clazz = bean.getClass();
+        if (bean instanceof Collection) {
+            throw new UncheckedJSONException(
+                    new JSONException("Collections cannot be encoded as JSON objects"));
+        }
+        final Class<?> clazz = requireNonNull(bean).getClass();
+        if (clazz.isArray()) {
+            throw new UncheckedJSONException(
+                    new JSONException("Arrays cannot be encoded as JSON objects"));
+        }
 
         // If clazz is a System class then return only the methods declared by clazz, all the declared methods if
         // its not.
