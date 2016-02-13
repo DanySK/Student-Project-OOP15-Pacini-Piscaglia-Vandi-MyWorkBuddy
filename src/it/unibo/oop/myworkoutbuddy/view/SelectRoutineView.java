@@ -8,7 +8,6 @@ package it.unibo.oop.myworkoutbuddy.view;
 public interface SelectRoutineView {
 
     /**
-     * 
      * @return index of the saved routines of the user.
      */
     int getRoutineIndex();

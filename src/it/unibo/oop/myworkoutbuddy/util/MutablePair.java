@@ -2,11 +2,22 @@ package it.unibo.oop.myworkoutbuddy.util;
 
 import java.util.Objects;
 
+/**
+ * Models an unmutable pair of two generic objects.
+ *
+ * @param <X>
+ * @param <Y>
+ */
 public class MutablePair<X, Y> implements Pair<X, Y> {
 
     private X x;
     private Y y;
 
+    /**
+     * 
+     * @param x
+     * @param y
+     */
     public MutablePair(final X x, final Y y) {
         this.x = x;
         this.y = y;

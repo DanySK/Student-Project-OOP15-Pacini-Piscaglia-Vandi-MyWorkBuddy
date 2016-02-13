@@ -1,7 +1,9 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
+import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import javafx.fxml.FXML;
@@ -24,9 +26,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private Button btnSaveRoutine;
 
     private ViewsObserver observer = ViewsHandler.getObserver();
-    
+
     @Override
-    public Set<String> getRoutine() {
+    public Triple<Integer, String, Map<String, Map<String, List<Integer>>>> getRoutine() {
         return null;
     }
 

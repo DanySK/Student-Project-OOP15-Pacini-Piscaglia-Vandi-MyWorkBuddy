@@ -1,9 +1,10 @@
 package it.unibo.oop.myworkoutbuddy.view;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import it.unibo.oop.myworkoutbuddy.util.Pair;
+import it.unibo.oop.myworkoutbuddy.util.Triple;
 
 /**
  * Provided by Controller and used by the View to update data in the GUI.
@@ -12,23 +13,17 @@ public interface ViewsObserver {
 
     /**
      * 
-     * @param username
-     *            to insert in login view.
-     * @param password
-     *            to insert in login view.
      * @return true
      *         if credentials are correct.
      */
-    boolean checkLogin(String username, String password);
+    boolean loginUser();
 
     /**
      * 
-     * @param registerData
-     *            map (description with registration details of the new user.
      * @return true
      *         if registration process has been completed successfully.
      */
-    boolean registerUser(Map<String, String> registerData);
+    boolean registerUser();
 
     /**
      * 
@@ -47,38 +42,29 @@ public interface ViewsObserver {
     /**
      * 
      * @return a map of workout exercises
-     *         with Routine name like key and a set of workout training
+     *         with section name like key and a set of workout training
      *         composed by exercise name and its related description.
      * 
      */
-    Map<String, Set<Pair<String, String>>> getWorkoutExercises();
+    Set<Map<String, Object>> getExercises();
 
     /**
-     * 
-     * @param routine
-     *            to save.
-     *            Map key is workout's name and the related value is the set of
-     *            exercises.
-     * 
+     * Ask Controller to save routine in the database.
      */
-    void saveRoutine(Map<String, Set<String>> routine);
+    void saveRoutine();
 
     /**
      * 
      * @return the set of routines to show to user.
-     *         Map key is workout's name and the related value is the set of
-     *         exercises.
+     * 
      */
-    Set<Map<String, Set<String>>> getRoutines();
+    Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines();
 
     /**
      * 
-     * @param chartName
-     *            to select the correct chart.
-     * 
      * @return a series of data in a map to show in the chart.
      */
-    Map<String, Number> getChartData(String chartName);
+    Map<String, Map<String, Number>> getChartsData();
 
     /**
      * 
@@ -86,14 +72,14 @@ public interface ViewsObserver {
      *         Map key is the data description and the related value is the
      *         effective data.
      */
-    Map<String, String> getUserData();
+    Map<String, Object> getUserData();
 
     /**
+     * Ask Controller to save user data modified.
      * 
-     * @param modifiedData
-     *            Map key is the data description and the related value is the
-     *            effective data.
+     * @return true
+     *         if data are correct, false otherwise.
      */
-    void setUserData(Map<String, String> modifiedData);
+    boolean setUserData();
 
 }
