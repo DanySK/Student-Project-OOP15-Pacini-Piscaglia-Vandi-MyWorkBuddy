@@ -61,6 +61,7 @@ public final class FxWindowFactory {
             }
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
+            stage.setResizable(false);
             scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
             stage.getIcons().add(new Image("file:res/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
