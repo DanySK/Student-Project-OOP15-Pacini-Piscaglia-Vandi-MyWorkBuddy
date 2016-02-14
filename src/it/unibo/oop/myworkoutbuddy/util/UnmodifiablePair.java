@@ -1,31 +1,27 @@
 package it.unibo.oop.myworkoutbuddy.util;
 
 /**
- * Models an unmodifiable {@link Triple} of three generic objects.
+ * Models an unmodifiable {@link Pair} of two generic objects.
  *
  * @param <X>
  *            the {@code x} value type
  * @param <Y>
  *            the {@code y} value type
- * @param <Z>
- *            the {@code z} value type
  */
-public class UnmodifiableTriple<X, Y, Z> extends MutableTriple<X, Y, Z> {
+public class UnmodifiablePair<X, Y> extends MutablePair<X, Y> {
 
     /**
-     * Constructs a new {@code UnmodifiableTriple} from the {@code x}, {@code y} and {@code z} values.
+     * Constructs a new {@code UmmodifiablePair} from the {@code x} and {@code y} values.
      * 
      * @param x
      *            the {@code x} value
      * @param y
      *            the {@code y} value
-     * @param z
-     *            the {@code z} value
      * @throws NullPointerException
-     *             if {@code x}, {@code y} or {@code z} is {@code null}
+     *             if {@code x} or {@code y} is {@code null}
      */
-    public UnmodifiableTriple(final X x, final Y y, final Z z) {
-        super(x, y, z);
+    public UnmodifiablePair(final X x, final Y y) {
+        super(x, y);
     }
 
     @Override
@@ -36,11 +32,6 @@ public class UnmodifiableTriple<X, Y, Z> extends MutableTriple<X, Y, Z> {
     @Override
     public void setY(final Y y) {
         throw new UnsupportedOperationException("setX");
-    }
-
-    @Override
-    public void setZ(final Z z) {
-        throw new UnsupportedOperationException("setZ");
     }
 
     @Override
