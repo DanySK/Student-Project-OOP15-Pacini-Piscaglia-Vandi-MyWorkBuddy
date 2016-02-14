@@ -19,6 +19,8 @@ public final class JSONUtils {
 
     private static final class UnmodifiableJSONArray extends JSONArray {
 
+        private static final long serialVersionUID = 4707520406742461953L;
+
         /**
          * Constructs a UnmodifiableJSONArray from a JSONArray.
          *
@@ -87,6 +89,8 @@ public final class JSONUtils {
     }
 
     private static final class UnmodifiableJSONObject extends JSONObject {
+
+        private static final long serialVersionUID = 7935239133966066650L;
 
         /**
          * Constructs a UnmodifiableJSONObject from a JSONObject.

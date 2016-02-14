@@ -3,21 +3,30 @@ package it.unibo.oop.myworkoutbuddy.util;
 import java.util.Objects;
 
 /**
- * Models a mutable triple of generic objects.
+ * Models a mutable {@link Triple} of three generic objects.
  *
  * @param <X>
+ *            the {@code x} value type
  * @param <Y>
+ *            the {@code y} value type
  * @param <Z>
+ *            the {@code z} value type
  */
 public class MutableTriple<X, Y, Z> extends MutablePair<X, Y> implements Triple<X, Y, Z> {
 
     private Z z;
 
     /**
+     * Constructs a new {@code MutableTriple} from the {@code x}, {@code y} and {@code z} values.
      * 
      * @param x
+     *            the {@code x} value
      * @param y
+     *            the {@code y} value
      * @param z
+     *            the {@code z} value
+     * @throws NullPointerException
+     *             if {@code x}, {@code y} or {@code z} is {@code null}
      */
     public MutableTriple(final X x, final Y y, final Z z) {
         super(x, y);

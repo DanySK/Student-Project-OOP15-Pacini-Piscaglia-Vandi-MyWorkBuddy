@@ -1,3 +1,14 @@
 syntax: glob
+
+# Java bytecode files
 */bin/*
 *.class
+
+# Backup files
+.*.sw*
+*~
+*.bak
+
+# Eclipse
+.classpath
+.project

@@ -1,12 +1,16 @@
 package it.unibo.oop.myworkoutbuddy.util;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Objects;
 
 /**
- * Models an unmutable pair of two generic objects.
+ * Models a mutable {@link Pair} of two generic objects.
  *
  * @param <X>
+ *            the {@code x} value type
  * @param <Y>
+ *            the {@code y} value type
  */
 public class MutablePair<X, Y> implements Pair<X, Y> {
 
@@ -14,13 +18,18 @@ public class MutablePair<X, Y> implements Pair<X, Y> {
     private Y y;
 
     /**
+     * Constructs a new {@code MutablePair} from the {@code x} and {@code y} values.
      * 
      * @param x
+     *            the {@code x} value
      * @param y
+     *            the {@code y} value
+     * @throws NullPointerException
+     *             if {@code x} or {@code y} is {@code null}
      */
     public MutablePair(final X x, final Y y) {
-        this.x = x;
-        this.y = y;
+        this.x = requireNonNull(x);
+        this.y = requireNonNull(y);
     }
 
     @Override
@@ -34,12 +43,12 @@ public class MutablePair<X, Y> implements Pair<X, Y> {
     }
 
     @Override
-    public void setX(X x) {
+    public void setX(final X x) {
         this.x = Objects.requireNonNull(x);
     }
 
     @Override
-    public void setY(Y y) {
+    public void setY(final Y y) {
         this.y = Objects.requireNonNull(y);
     }
 
@@ -52,17 +61,16 @@ public class MutablePair<X, Y> implements Pair<X, Y> {
         return result;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null || !(obj instanceof Pair)) {
             return false;
         }
-        final MutablePair other = (MutablePair) obj;
-        return Objects.equals(x, other.x) && Objects.equals(y, other.y);
+        final Pair<?, ?> other = (Pair<?, ?>) obj;
+        return Objects.equals(x, other.getX()) && Objects.equals(y, other.getY());
     }
 
     @Override
