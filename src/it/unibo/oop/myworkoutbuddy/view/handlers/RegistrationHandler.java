@@ -39,9 +39,6 @@ public final class RegistrationHandler implements RegistrationView {
     private TextField txtPassword;
 
     @FXML
-    private Button btnRegister;
-
-    @FXML
     private Button btnReturnLogin;
 
     private ViewsObserver observer = ViewsHandler.getObserver();
@@ -88,7 +85,13 @@ public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private void register() {
+        // if (observer.registerUser()) {
+        FxWindowFactory.showDialog("User registered!",
+                "Congratulations " + getUsername() + ", you are now registered!");
         returnLogin();
+        // }else{
+
+        // }
     }
 
     @FXML

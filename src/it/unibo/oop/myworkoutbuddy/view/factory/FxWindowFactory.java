@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -96,6 +98,20 @@ public final class FxWindowFactory {
     public static void replaceWindow(final String fxmlPath, final Scene sceneToClose) {
         FxWindowFactory.openWindow(fxmlPath, false);
         FxWindowFactory.closeWindow(sceneToClose);
+    }
+
+    /**
+     * Show a simple info dialog.
+     * 
+     * @param title
+     * @param message
+     */
+    public static void showDialog(final String title, final String message) {
+        final Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

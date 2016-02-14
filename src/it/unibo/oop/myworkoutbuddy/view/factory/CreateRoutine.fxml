@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.CreateRoutineHandler">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.CreateRoutineHandler">
    <bottom>
       <HBox prefHeight="51.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,4 +38,12 @@
    <center>
       <VBox fx:id="workoutBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
    </center>
+   <top>
+      <HBox prefHeight="121.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label id="borderedLabel" alignment="CENTER" prefHeight="28.0" prefWidth="231.0" text="Insert your routine description" translateX="70.0" translateY="50.0" />
+            <TextField fx:id="txtDescription" prefHeight="52.0" prefWidth="205.0" translateX="100.0" translateY="35.0" />
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

@@ -2,6 +2,7 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -52,6 +53,15 @@ public final class UserSettingsHandler implements UserSettingsView {
     @Override
     public String getNewPassword() {
         return txtPassword.getText();
+    }
+
+    @FXML
+    private void saveChanges() {
+        // if (observer.setUserData()) {
+
+        // } else {
+        FxWindowFactory.showDialog("Wrong data", "You have inserted wrong data");
+        // }
     }
 
 }

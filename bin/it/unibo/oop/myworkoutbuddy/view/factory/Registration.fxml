@@ -57,14 +57,14 @@
             <Label id="borderedLabel" text="Username" translateX="100.0" underline="true" GridPane.rowIndex="2" />
             <Label id="borderedLabel" text="Surname" translateX="100.0" underline="true" GridPane.rowIndex="1" />
             <Label id="borderedLabel" text="Name" translateX="100.0" underline="true" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="txtName" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" />
+            <TextField fx:id="txtSurname" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtUser" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtEmail" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtPassword" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtAge" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField fx:id="txtWeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="txtHeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="7" />
          </children>
       </GridPane>
    </center>

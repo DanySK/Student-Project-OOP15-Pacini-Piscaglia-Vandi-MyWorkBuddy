@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="577.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.UserSettingsHandler">
    <center>
       <GridPane maxHeight="400.0" prefHeight="400.0" prefWidth="645.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -35,6 +35,6 @@
       </GridPane>
    </center>
    <bottom>
-      <Button mnemonicParsing="false" text="Save changes" translateY="-80.0" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#saveChanges" text="Save changes" translateY="-80.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>

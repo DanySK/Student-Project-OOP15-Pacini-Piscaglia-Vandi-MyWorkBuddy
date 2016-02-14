@@ -20,10 +20,10 @@ public final class AccessHandler implements AccessView {
     private TextField txtID;
 
     @FXML
-    private MenuButton btnSelect;
+    private PasswordField txtPassword;
 
     @FXML
-    private PasswordField txtPassword;
+    private MenuButton btnSelect;
 
     private ViewsObserver observer = ViewsHandler.getObserver();
 
@@ -32,7 +32,12 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void login() {
+        // if (observer.loginUser()) {
         FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
+        // }
+        // else{
+        FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct");
+        // }
     }
 
     /**
