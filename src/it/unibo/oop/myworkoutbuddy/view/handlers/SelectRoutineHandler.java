@@ -1,10 +1,28 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeMap;
+
+import it.unibo.oop.myworkoutbuddy.util.MutableTriple;
+import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * 
@@ -14,16 +32,64 @@ import javafx.scene.layout.HBox;
 public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
-    private HBox exerciseBox;
-
-    @FXML
     private TabPane tabRoutine;
 
+    @FXML
+    private TextArea txtDescription;
+
     private ViewsObserver observer = ViewsHandler.getObserver();
-    
+
+    @FXML
+    private void insertData() {
+        String message;
+        String title;
+        // if (observer.setUserData()) {
+        message = "Your data has been successfully inserted!";
+        title = "Data inserted!";
+        // } else {
+        // message = "There was an error!";
+        // title = "Error!";
+        // }
+        FxWindowFactory.showDialog(title, message, Optional.empty());
+    }
+
     @Override
     public int getRoutineIndex() {
         return 0;
+    }
+
+    /**
+     * Show all saved Routines.
+     */
+    public void initialize() {
+        Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
+        Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0, "routine1",
+                new TreeMap<>());
+        Map<String, List<Integer>> map = new TreeMap<>();
+        map.put("Exercise - ", new LinkedList<>(Arrays.asList(8, 10, 12)));
+        Map<String, Map<String, List<Integer>>> map2 = new TreeMap<>();
+        map2.put("Workout", map);
+        rou.setZ(map2);
+        set.add(rou);
+        set.forEach(i -> {
+            final int routineIndex = i.getX();
+            final String routineDescription = i.getY();
+            txtDescription.setText(routineDescription);
+            final Tab newRoutine = new Tab("Routine " + routineIndex);
+            tabRoutine.getTabs().add(newRoutine);
+            final VBox workout = new VBox();
+            i.getZ().forEach((workName, exercises) -> {
+                final VBox exercisesList = new VBox();
+                exercises.forEach((exName, repetitions) -> {
+                    HBox box = new HBox();
+                    box.getChildren().add(new Label(exName + "Repetitions: "));
+                    box.getChildren().add(new TextField("" + repetitions));
+                    exercisesList.getChildren().add(box);
+                });
+                workout.getChildren().add(new TitledPane(workName, exercisesList));
+            });
+            newRoutine.setContent(workout);
+        });
     }
 
 }

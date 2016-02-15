@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Optional;
+
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
@@ -36,7 +38,7 @@ public final class AccessHandler implements AccessView {
         FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
         // }
         // else{
-        FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct");
+        FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty());
         // }
     }
 

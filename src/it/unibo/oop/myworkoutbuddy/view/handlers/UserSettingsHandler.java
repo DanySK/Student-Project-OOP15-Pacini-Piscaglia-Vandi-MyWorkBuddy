@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Optional;
+
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
@@ -60,7 +62,7 @@ public final class UserSettingsHandler implements UserSettingsView {
         // if (observer.setUserData()) {
 
         // } else {
-        FxWindowFactory.showDialog("Wrong data", "You have inserted wrong data");
+        FxWindowFactory.showDialog("Wrong data", "You have inserted wrong data", Optional.empty());
         // }
     }
 

@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Optional;
+
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
@@ -87,7 +89,7 @@ public final class RegistrationHandler implements RegistrationView {
     private void register() {
         // if (observer.registerUser()) {
         FxWindowFactory.showDialog("User registered!",
-                "Congratulations " + getUsername() + ", you are now registered!");
+                "Congratulations " + getUsername() + ", you are now registered!", Optional.empty());
         returnLogin();
         // }else{
 

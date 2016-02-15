@@ -8,42 +8,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="652.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.SelectRoutineHandler">
    <center>
-      <TabPane fx:id="tabRoutine" prefHeight="295.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" translateY="50.0" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab text="Routine 1">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="511.0" prefWidth="652.0">
-                     <children>
-                        <Accordion>
-                          <panes>
-                            <TitledPane animated="false" text="Workout A">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Workout B">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="Workout C">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-          <Tab text="Routine 2">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
+      <TabPane fx:id="tabRoutine" prefHeight="479.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" translateY="50.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
       <Label id="borderedLabel" alignment="CENTER" prefHeight="40.0" prefWidth="320.0" text="Insert your daily results!" translateY="30.0" BorderPane.alignment="CENTER">
@@ -53,18 +18,15 @@
       </Label>
    </top>
    <bottom>
-      <VBox prefHeight="222.0" prefWidth="652.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="106.0" prefWidth="652.0" BorderPane.alignment="CENTER">
          <children>
-            <Label id="borderedLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="290.0" text="Excercise description" textAlignment="JUSTIFY" translateX="200.0">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <HBox fx:id="exerciseBox" prefHeight="155.0" prefWidth="652.0">
+            <HBox prefHeight="50.0" prefWidth="652.0">
                <children>
-                  <TextArea editable="false" prefHeight="114.0" prefWidth="333.0" text="Exercise description................" translateX="320.0" />
+                  <Label id="borderedLabel" text="Description" translateX="80.0" translateY="20.0" />
+                  <TextArea fx:id="txtDescription" prefHeight="26.0" prefWidth="200.0" translateX="250.0" />
                </children>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#insertData" text="Insert data !" translateX="280.0" translateY="15.0" />
          </children>
       </VBox>
    </bottom>

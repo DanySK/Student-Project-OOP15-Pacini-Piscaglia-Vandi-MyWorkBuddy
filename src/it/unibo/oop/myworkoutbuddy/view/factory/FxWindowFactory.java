@@ -1,12 +1,14 @@
 package it.unibo.oop.myworkoutbuddy.view.factory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -66,7 +68,7 @@ public final class FxWindowFactory {
             stage.setResizable(false);
             scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
-            stage.getIcons().add(new Image("file:res/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
+            stage.getIcons().add(new Image("/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -101,16 +103,24 @@ public final class FxWindowFactory {
     }
 
     /**
-     * Show a simple info dialog.
+     * Show a simple info dialog with a optional image.
      * 
      * @param title
+     *            header of the show dialog.
      * @param message
+     *            content of the dialog.
+     * @param imagePath
+     *            to load the image.
      */
-    public static void showDialog(final String title, final String message) {
+    public static void showDialog(final String title, final String message, final Optional<String> imagePath) {
         final Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        if (imagePath.isPresent()) {
+            final ImageView imageView = new ImageView(new Image(imagePath.get()));
+            alert.setGraphic(imageView);
+        }
         alert.showAndWait();
     }
 
