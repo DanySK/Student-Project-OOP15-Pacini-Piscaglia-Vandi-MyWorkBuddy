@@ -47,7 +47,7 @@ public interface ViewsObserver {
      * 
      */
     Map<String, Set<String>> getExercises();
-
+    
     /**
      * Ask Controller to save routine in the database.
      */

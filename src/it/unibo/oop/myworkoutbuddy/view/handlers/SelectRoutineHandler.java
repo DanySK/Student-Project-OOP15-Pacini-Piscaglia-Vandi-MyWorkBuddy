@@ -52,6 +52,11 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         // }
         FxWindowFactory.showDialog(title, message, Optional.empty());
     }
+    
+    @Override
+    public Map<String, List<Integer>> getUserResults() {
+        return null;
+    }
 
     @Override
     public int getRoutineIndex() {
