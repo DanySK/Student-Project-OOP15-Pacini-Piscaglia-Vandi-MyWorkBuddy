@@ -20,4 +20,7 @@ public final class DateUtils {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
+    private DateUtils() {
+        throw new IllegalAccessError();
+    }
 }

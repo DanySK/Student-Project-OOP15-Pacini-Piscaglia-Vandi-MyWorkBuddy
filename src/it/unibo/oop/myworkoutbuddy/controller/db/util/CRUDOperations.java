@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,23 @@ public final class CRUDOperations {
             // Insert fail.
             return false;
         }
+    }
+
+    /**
+     * @param collection
+     *            the collection to use
+     * @param queryParams
+     *            the query filters
+     * @return a list of elements which satisfy the given filters
+     */
+    public static Optional<Map<String, Object>> getOneDocumentByParams(
+            final MongoCollection<Document> collection,
+            final Map<? extends String, ?> queryParams) {
+        Objects.requireNonNull(collection);
+        Objects.requireNonNull(queryParams);
+        return Optional.ofNullable(collection
+                .find(toBson(queryParams, false))
+                .first());
     }
 
     /**

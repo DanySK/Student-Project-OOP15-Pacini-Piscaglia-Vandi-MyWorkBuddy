@@ -4,12 +4,14 @@ import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.crea
 import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.createNewDocuments;
 import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.deleteDocumentsByParams;
 import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.getDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.getOneDocumentByParams;
 import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.updateDocumentsByParams;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.bson.Document;
 
@@ -48,13 +50,18 @@ public class MongoService implements Service {
     }
 
     @Override
+    public Optional<Map<String, Object>> getOneByParams(final Map<String, Object> queryParams) {
+        return getOneDocumentByParams(collection, queryParams);
+    }
+
+    @Override
     public List<Map<String, Object>> getAll() {
         return getByParams(new HashMap<>());
     }
 
     @Override
-    public List<Map<String, Object>> getByParams(final Map<String, Object> params) {
-        return getDocumentsByParams(collection, params);
+    public List<Map<String, Object>> getByParams(final Map<String, Object> queryParams) {
+        return getDocumentsByParams(collection, queryParams);
     }
 
     @Override
