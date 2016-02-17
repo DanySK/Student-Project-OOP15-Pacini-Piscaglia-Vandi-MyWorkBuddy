@@ -87,13 +87,13 @@ public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private void register() {
-       // if (observer.registerUser()) {
+        if (ViewsHandler.getObserver().registerUser()) {
             FxWindowFactory.showDialog("User registered!",
                     "Congratulations " + getUsername() + ", you are now registered!", Optional.empty());
             returnLogin();
-       // } else {
+        } else {
 
-        //}
+        }
     }
 
     @FXML

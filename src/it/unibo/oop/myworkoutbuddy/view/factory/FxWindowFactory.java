@@ -27,8 +27,10 @@ public final class FxWindowFactory {
     /**
      * 
      * @return reference to view handler.
+     * @param <T>
+     *            type of the handler
      */
-    public static Object getController() {
+    public static <T> T getHandler() {
         return loader == null
                 ? null
                 : loader.getController();
@@ -58,7 +60,7 @@ public final class FxWindowFactory {
      */
     public static BorderPane openWindow(final String fxmlPath, final boolean isContained) {
         try {
-            final FXMLLoader loader = new FXMLLoader(FxWindowFactory.class.getResource(fxmlPath));
+            loader = new FXMLLoader(FxWindowFactory.class.getResource(fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
             if (isContained) {
                 return root;

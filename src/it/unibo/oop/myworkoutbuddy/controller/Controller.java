@@ -40,7 +40,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean loginUser() {
-        checkIfUserIsNotLoggedIn();
+        // checkIfUserIsNotLoggedIn();
         final Map<String, Object> loginTry = new HashMap<>();
         loginTry.put("username", views.getAccessView().getUsername());
         final Optional<Map<String, Object>> user = services.get("userDataService")
@@ -58,7 +58,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean registerUser() {
-        checkIfUserIsNotLoggedIn();
+        // checkIfUserIsNotLoggedIn();
         final Map<String, Object> userData = new HashMap<>();
         userData.put("username", views.getRegistrationView().getUsername());
         userData.put("password", views.getRegistrationView().getPassword());

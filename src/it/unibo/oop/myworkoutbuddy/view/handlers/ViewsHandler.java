@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Objects;
+
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.AppViews;
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
@@ -20,32 +22,32 @@ public final class ViewsHandler implements AppViews {
 
     @Override
     public AccessView getAccessView() {
-        return (AccessView) FxWindowFactory.getController();
+        return FxWindowFactory.getHandler();
     }
 
     @Override
     public CreateRoutineView getCreateRoutineView() {
-        return (CreateRoutineView) FxWindowFactory.getController();
+        return FxWindowFactory.getHandler();
     }
 
     @Override
     public RegistrationView getRegistrationView() {
-        return (RegistrationView) FxWindowFactory.getController();
+        return FxWindowFactory.getHandler();
     }
 
     @Override
     public SelectRoutineView getSelectRoutineView() {
-        return (SelectRoutineView) FxWindowFactory.getController();
+        return FxWindowFactory.getHandler();
     }
 
     @Override
     public UserSettingsView getUserSettingsView() {
-        return (UserSettingsView) FxWindowFactory.getController();
+        return FxWindowFactory.getHandler();
     }
 
     @Override
     public void setViewsObserver(final ViewsObserver viewObserver) {
-        observer = viewObserver;
+        observer = Objects.requireNonNull(viewObserver);
     }
 
     /**

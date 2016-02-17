@@ -34,11 +34,11 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void login() {
-        //if (observer.loginUser()) {
+        if (ViewsHandler.getObserver().loginUser()) {
             FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
-        //} else {
+        } else {
             FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty());
-        //}
+        }
     }
 
     /**
