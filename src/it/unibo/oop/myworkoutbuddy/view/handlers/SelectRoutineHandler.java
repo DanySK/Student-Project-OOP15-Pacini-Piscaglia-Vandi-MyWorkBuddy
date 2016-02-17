@@ -62,6 +62,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
      * Show all saved Routines.
      */
     public void initialize() {
+        //only for testing
         Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
         Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0, "routine1",
                 new TreeMap<>());
@@ -71,6 +72,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         map2.put("Workout", map);
         rou.setZ(map2);
         set.add(rou);
+        //
         set.forEach(i -> {
             final int routineIndex = i.getX();
             final String routineDescription = i.getY();
@@ -81,9 +83,9 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             i.getZ().forEach((workName, exercises) -> {
                 final VBox exercisesList = new VBox();
                 exercises.forEach((exName, repetitions) -> {
-                    HBox box = new HBox();
+                    final HBox box = new HBox();
                     box.getChildren().add(new Label(exName + "Repetitions: "));
-                    box.getChildren().add(new TextField("" + repetitions));
+                    box.getChildren().add(new TextField(repetitions.toString()));
                     exercisesList.getChildren().add(box);
                 });
                 workout.getChildren().add(new TitledPane(workName, exercisesList));

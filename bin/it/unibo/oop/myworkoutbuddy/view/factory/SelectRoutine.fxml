@@ -23,7 +23,7 @@
             <HBox prefHeight="50.0" prefWidth="652.0">
                <children>
                   <Label id="borderedLabel" text="Description" translateX="80.0" translateY="20.0" />
-                  <TextArea fx:id="txtDescription" prefHeight="26.0" prefWidth="200.0" translateX="250.0" />
+                  <TextArea fx:id="txtDescription" editable="false" prefHeight="26.0" prefWidth="200.0" translateX="250.0" />
                </children>
             </HBox>
             <Button mnemonicParsing="false" onAction="#insertData" text="Insert data !" translateX="280.0" translateY="15.0" />

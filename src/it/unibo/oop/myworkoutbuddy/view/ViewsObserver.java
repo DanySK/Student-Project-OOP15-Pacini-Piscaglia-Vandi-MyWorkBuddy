@@ -41,12 +41,12 @@ public interface ViewsObserver {
 
     /**
      * 
-     * @return a map of workout exercises
+     * @return a map of Workout exercises
      *         with section name like key and a set of workout training
      *         composed by exercise name and its related description.
      * 
      */
-    Set<Map<String, Object>> getExercises();
+    Map<String, Set<String>> getExercises();
 
     /**
      * Ask Controller to save routine in the database.
