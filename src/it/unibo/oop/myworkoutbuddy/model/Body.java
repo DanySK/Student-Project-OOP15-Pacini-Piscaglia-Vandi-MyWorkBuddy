@@ -2,7 +2,9 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -14,38 +16,51 @@ import java.util.Map;
  *
  *  BodyData : class for body parts measurement.
  */
-public class Body {
+public final class Body {
 
-    private Map<BodyPart, BodyZone> bodyMap;  // mapping muscles -> zones
+    private static Map<BodyZone, Set<String>> bodyMap;  // mapping muscles -> zones
+
     /**
      * 
+     * @return a new Body
      */
-    public Body() {
-        this.bodyMap = new HashMap<>();
+    public static Body build() {
+        return new Body();
     }
 
+    private Body() {
+    }
+
+    private static void initBodyMap() {
+        bodyMap = new HashMap<>();
+
+        for (BodyPart muscle : BodyPart.values()) {
+            final Set<String> setBodyPart = new HashSet<>();
+            setBodyPart.add(muscle.name);
+            bodyMap.merge(muscle.bodyZone, setBodyPart, (sS1, sS2) -> { 
+                setBodyPart.addAll(bodyMap.get(muscle.bodyZone)); 
+                return setBodyPart; 
+            });
+        }
+    }
     /**
-     * add new mapping muscle -> zone.
-     * @param muscle BodyMuscle
+     * 
      * @param part BodyPart
+     * @return the key for muscle
      */
-    public void addMapping(final BodyPart muscle, final BodyZone part) {
-        this.bodyMap.put(muscle, part);
-    }
+    public static BodyZone getBodyZone(final String part) {
+        if (bodyMap == null) {
+            initBodyMap();
+        }
 
-    /**
-     * 
-     * @return the mapping for each zone of human body
-     */
-    public Map<BodyPart, BodyZone> getMapping() {
-        return this.bodyMap;
+        return bodyMap.keySet().stream().filter(i -> bodyMap.get(i).contains(part)).findAny().get();
     }
 
     /**
      * 
      *
      */
-    public enum BodyTarget {
+    public enum Target {
         /**
          * the aim of a single exercise.
          */
@@ -80,11 +95,82 @@ public class Body {
         /**
          * 
          */
-        CHEST, BACK, BICEPS, TRICEPS, QUADRICEPS, HAMSTRINGS, CALVES, FOREARMS, SHOULDERS, TRAPS;
+        PECTORALIS_MAJOR("Pectoralis_Major", BodyZone.CHEST),
+        /**
+         * 
+         */
+        PECTORALIS_MINOR("Pectoralis_Minor", BodyZone.CHEST),
+        /**
+         * 
+         */
+        SHOULDERS("Shoulder", BodyZone.CHEST),
 
+        /**
+         * 
+         */
+        BICEPS("Biceps", BodyZone.ARM),
+        /**
+         * 
+         */
+        TRICEPS("Triceps", BodyZone.ARM),
+        /**
+         * 
+         */
+        FOREARMS("ForeArms", BodyZone.ARM),
+
+        /**
+         * 
+         */
+        TRAPEZIUS("Trapezius", BodyZone.BACK),
+        /**
+         * 
+         */
+        LOWER_BACK("Lower_Back", BodyZone.BACK),
+        /**
+         * 
+         */
+        QUADRICEPS("Quadriceps", BodyZone.LEG),
+
+        /**
+         * 
+         */
+        HAMSTRINGS("Hamstrings", BodyZone.LEG),
+        /**
+         * 
+         */
+        CALVES("Calves", BodyZone.LEG);
+
+        private final String name;
+        private final BodyZone bodyZone;
+
+        BodyPart(final String name, final BodyZone bodyZone) {
+            this.name = name;
+            this.bodyZone = bodyZone;
+        }
+
+        /**
+         * 
+         * @return the name of BodyPart
+         */
+        public String getName() {
+            return this.name;
+        }
+
+        /**
+         * 
+         * @return the BodyZone of BodyPart
+         */
+        public BodyZone getBodyZone() {
+            return this.bodyZone;
+        }
+
+        /**
+         * 
+         * @return toString of a BodyPart
+         */
         @Override
         public String toString() {
-            return name().substring(0, 1).toUpperCase() + name().substring(1).toLowerCase();
+            return "" + this.getName();
         }
     }
 
@@ -92,7 +178,7 @@ public class Body {
      * 
      *
      */
-    public enum BodyMeasure {
+    public enum Measure {
         /**
          * parts of human body.
          */
@@ -110,7 +196,7 @@ public class Body {
      */
     public class BodyData {
         private LocalDate data;     // date of measurement
-        private Map<BodyMeasure, Double> bodyMeasure;  // value measure for each body measure
+        private Map<Measure, Double> bodyMeasure;  // value measure for each body measure
 
         /**
          * 
@@ -134,13 +220,19 @@ public class Body {
          */
         public Double getBodyMass() {
             // to calculate second BodyMeasure values
-            return 0.00;
+
+            final Double mass, height;
+
+            mass = this.bodyMeasure.get(Body.Measure.WEIGHT);
+            height = this.bodyMeasure.get(Body.Measure.HEIGHT);
+
+            return (mass / (height * height));
         }
         /**
          * 
          * @return measureData
          */
-        public Map<BodyMeasure, Double> getBodyMeasure() {
+        public Map<Body.Measure, Double> getBodyMeasure() {
             return this.bodyMeasure;
         }
         /**
@@ -148,7 +240,7 @@ public class Body {
          * @param bodyMeasure BodyMeasure
          * @param measure Double
          */
-        public void addBodyMeasure(final BodyMeasure bodyMeasure, final Double measure) {
+        public void addBodyMeasure(final Body.Measure bodyMeasure, final Double measure) {
             this.bodyMeasure.put(bodyMeasure, measure);
         }
 
@@ -158,6 +250,11 @@ public class Body {
          */
         private void setData(final LocalDate data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "\n BodyData " + "[data = " + this.getDate() + " bodyMeasure = " + this.getBodyMeasure() + "]";
         }
     }
 }
