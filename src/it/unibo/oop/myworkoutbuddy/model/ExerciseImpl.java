@@ -8,7 +8,7 @@ import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
  * 
  *
  */
-public class ExerciseImpl implements Exercise {
+public final class ExerciseImpl implements Exercise {
 
     private String description;
     private GymTool gymTool;
@@ -17,6 +17,10 @@ public class ExerciseImpl implements Exercise {
     private int time;
     private int pause;
     private int numSession;
+
+    /*
+     * to make private x use of builder
+     */
     /**
      * @param description String
      * @param gymTool GymTool
@@ -27,42 +31,128 @@ public class ExerciseImpl implements Exercise {
      * @param pause int 
      */
     public ExerciseImpl(final String description, final GymTool gymTool, final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
-        this.setDescription(description);
-        this.setGymTool(gymTool);
-        this.setSettingValue(settingValue);
-        this.setRepetition(repetition);
-        this.setTime(time);
-        this.setPause(pause);
-        this.setNumSession(numSession);
-    }
-
-    private void setDescription(final String description) {
         this.description = description;
-    }
-
-    private void setGymTool(final GymTool gymTool) {
         this.gymTool = gymTool;
-    }
-
-    private void setSettingValue(final int settingValue) {
         this.settingValue = settingValue;
-    }
-
-    private void setRepetition(final int repetition) {
         this.repetition = repetition;
-    }
-
-    private void setTime(final int time) {
         this.time = time;
-    }
-
-    private void setNumSession(final int numSession) {
+        this.pause = pause;
         this.numSession = numSession;
     }
 
-    private void setPause(final int pause) {
-        this.pause = pause;
+    /**
+     * 
+     *
+     */
+    public static class Builder {
+        private String description;
+        private GymTool gymTool;
+        private int settingValue;
+        private int repetition;
+        private int time;
+        private int pause;
+        private int numSession;
+
+        /**
+         * 
+         * @param description String
+         * @return a builder
+         */
+        public Builder description(final String description) {
+            this.description = description;
+            return this;
+        }
+
+        /**
+         * 
+         * @param gymTool GymTool
+         * @return a builder
+         */
+        public Builder gymTool(final GymTool gymTool) {
+            this.gymTool = gymTool;
+            return this;
+        }
+
+        /**
+         * 
+         * @param settingValue integer
+         * @return a builder
+         */
+        public Builder settingValue(final int settingValue) {
+            this.settingValue = settingValue;
+            return this;
+        }
+
+        /**
+         * 
+         * @param repetition integer
+         * @return a builder
+         */
+        public Builder repetition(final int repetition) {
+            this.repetition = repetition;
+            return this;
+        }
+
+        /**
+         * 
+         * @param time integer
+         * @return a builder
+         */
+        public Builder time(final int time) {
+            this.time = time;
+            return this;
+        }
+
+        /**
+         * 
+         * @param pause integer
+         * @return a builder
+         */
+        public Builder pause(final int pause) {
+            this.pause = pause;
+            return this;
+        }
+
+        /**
+         * 
+         * @param numSession integer
+         * @return a builder
+         */
+        public Builder numSession(final int numSession) {
+            this.numSession = numSession;
+            return this;
+        }
+
+        private void checkNotNull(final Object object) throws NullPointerException {
+            if (object == null) {
+                throw new NullPointerException();
+            }
+        }
+
+        private void checkNotNegative(final int num) throws IllegalStateException {
+            if (num < 0) {
+                throw new IllegalStateException();
+            }
+        }
+
+        /**
+         * 
+         * @return Builder
+         * @throws IllegalStateException exception
+         */
+        public ExerciseImpl build() throws IllegalStateException {
+            this.checkNotNull(this.description);
+            this.checkNotNull(this.gymTool);
+            this.checkNotNegative(this.numSession);
+            this.checkNotNegative(this.pause);
+            this.checkNotNegative(this.repetition);
+            this.checkNotNegative(this.settingValue);
+            this.checkNotNegative(this.time);
+
+            return new ExerciseImpl(this.description, this.gymTool, this.numSession, this.pause, this.repetition, this.settingValue, this.time);
+        }
     }
+
     /**
      * 
      * @return the description of Exercise
@@ -110,5 +200,27 @@ public class ExerciseImpl implements Exercise {
     @Override
     public Set<BodyPart> getBodyParts() {
         return this.gymTool.getBodyMap().keySet();
+    }
+
+    /**
+     * 
+     * @param score Double
+     * @return calculate the normalized score for an exercise
+     */
+    @Override
+    public Double getNormalizedScore(final Double score) {
+        final int max = this.getGymTool().getMaxValue();
+        final int min = this.getGymTool().getMinValue();
+        final double delta = (max - min);
+        return (double) ((score - min) / delta);
+    }
+
+    @Override
+    public String toString() {
+        return "\n\n ExerciseImpl " 
+                + " [description = " + this.getDescription() 
+                + "\n gymTool = " + this.getGymTool().getCode() + ", settingValue = " + this.getSettingValue()
+                + ", repetition = " + this.getRepetition() + ", time = " + this.getTime() + ", pause = " + this.getPause() + ", numSession = " + this.getNumSession()
+                + "]";
     }
 }
