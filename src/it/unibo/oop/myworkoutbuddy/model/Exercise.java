@@ -47,4 +47,11 @@ public interface Exercise {
      * @return the set of body parts
      */
     Set<BodyPart> getBodyParts();
+
+    /**
+     * 
+     * @param score Double
+     * @return the normalized score for an exercise
+     */
+    Double getNormalizedScore(final Double score);
 }
