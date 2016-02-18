@@ -44,7 +44,7 @@ public interface RegistrationView {
      * 
      * @return password confirmation.
      */
-    String getPassConfirm();
+    String getPasswordConfirm();
 
     /**
      * 

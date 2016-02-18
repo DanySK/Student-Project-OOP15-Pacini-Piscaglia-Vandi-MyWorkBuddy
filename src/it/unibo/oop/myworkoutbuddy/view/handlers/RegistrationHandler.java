@@ -75,7 +75,7 @@ public final class RegistrationHandler implements RegistrationView {
     }
 
     @Override
-    public String getPassConfirm() {
+    public String getPasswordConfirm() {
         return txtPassConfirm.getText();
     }
 

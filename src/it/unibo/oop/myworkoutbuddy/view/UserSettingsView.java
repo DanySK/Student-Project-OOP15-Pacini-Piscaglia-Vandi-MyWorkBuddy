@@ -44,6 +44,6 @@ public interface UserSettingsView {
      * 
      * @return password confirm.
      */
-    String getPassConfirm();
+    String getPasswordConfirm();
 
 }

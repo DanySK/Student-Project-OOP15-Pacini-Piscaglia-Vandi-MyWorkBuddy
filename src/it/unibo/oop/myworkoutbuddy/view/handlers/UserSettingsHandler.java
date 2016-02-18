@@ -61,7 +61,7 @@ public final class UserSettingsHandler implements UserSettingsView {
     }
 
     @Override
-    public String getPassConfirm() {
+    public String getPasswordConfirm() {
         return txtPassConfirm.getText();
     }
 

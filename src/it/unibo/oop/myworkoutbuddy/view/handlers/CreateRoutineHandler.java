@@ -10,14 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -148,7 +146,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private void showExercise() {
         if (exerciseSelected.isPresent()) {
             showDialog(exerciseSelected.get().getText(),
-                    ViewsHandler.getObserver().getExInfo(exerciseSelected.get().getText()).get(0), Optional
+                    ViewsHandler.getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
                             .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"),
                     AlertType.INFORMATION);
         } else {
@@ -244,8 +242,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         prova.put("Massa", new HashSet<>(Arrays.asList("alzate", "panca")));
         prova.put("Forza", new HashSet<>(Arrays.asList("crunch", "elastici")));
         //
-        // ViewsHandler.getObserver().getExercises()
-        prova.forEach((section, exs) -> {
+        ViewsHandler.getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
             exercisePane.getTabs().add(newSection);
             final VBox workout = new VBox();

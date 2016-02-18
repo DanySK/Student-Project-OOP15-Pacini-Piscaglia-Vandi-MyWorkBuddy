@@ -33,11 +33,7 @@ public final class MenuHandler {
 
     private Button lastPressed;
 
-    private static final double HIDE_MENU_DELTA_WIDTH = 100.0;
-
     private static final double SHOW_MENU_DELTA_WIDTH = 25;
-
-    private static final int EXIT_MENU_TIME_DURATION = 2000;
 
     private static final String CSS_SELECT_STYLE = "-fx-background-color: lightBlue; -fx-font: bold 14px 'Serif';";
 
@@ -136,7 +132,7 @@ public final class MenuHandler {
 
     @FXML
     private void hideMenu() {
-        new Agent().start();
+        new MenuBarAgent(btnContainer).start();
     }
 
     /**
@@ -145,23 +141,6 @@ public final class MenuHandler {
     private void resetButtonStyle(final Button btn) {
         if (btn != null) {
             btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
-        }
-    }
-
-    /**
-     * Models a background thread created to handle the exit animation in the
-     * menu bar.
-     */
-    public class Agent extends Thread {
-
-        @Override
-        public void run() {
-            try {
-                Thread.sleep(EXIT_MENU_TIME_DURATION);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            btnContainer.setTranslateX(-HIDE_MENU_DELTA_WIDTH);
         }
     }
 
