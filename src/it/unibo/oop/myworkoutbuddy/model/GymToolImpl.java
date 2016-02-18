@@ -2,54 +2,43 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import javafx.util.Pair;
 
 /**
  * 
  *
  */
-public class GymToolImpl implements GymTool {
+public final class GymToolImpl implements GymTool {
 
     private String code;
     private String name;
-    private String imageFile;
-    private Pair<Integer, Integer> rangeValue;
+    private Optional<String> imageFile = Optional.empty();
     private int numTools;
-    private Map<BodyPart, Double> bodyMap;
+    private final int valueMin;
+    private final int valueMax;
+
+    private Map<BodyPart, Double> bodyMap; // map of body parts and percentage values
 
     /**
+     * 
      * @param code String
      * @param name String
-     * @param path String
-     * @param max int
-     * @param min int
-     * @param num int
+     * @param imageFile String
+     * @param numTools integer
+     * @param valueMin integer
+     * @param valueMax integer
      */
-    public GymToolImpl(final String code, final String name, final String path, final int max, final int min, final int num) {
-        this.setCode(code);
-        this.setString(name);
-        this.setImageFile(imageFile);
-        this.rangeValue = new Pair<>(max, min);
-        this.setNumTools(num);
-        this.bodyMap = new HashMap<>();
-    }
-
-    private void setCode(final String code) {
+    public GymToolImpl(final String code, final String name, final String imageFile, final int numTools, final int valueMin, final int valueMax) {
         this.code = code;
-    }
-
-    private void setString(final String name) {
         this.name = name;
-    }
+        this.imageFile = Optional.of(imageFile);
+        this.numTools = numTools;
+        this.valueMin = valueMin;
+        this.valueMax = valueMax;
 
-    private void setImageFile(final String imageFile) {
-        this.imageFile = imageFile;
-    }
-
-    private void setNumTools(final int num) {
-        this.numTools = num;
+        this.bodyMap = new HashMap<>(); // map to create with the specific add function
     }
 
     @Override
@@ -59,32 +48,40 @@ public class GymToolImpl implements GymTool {
 
     @Override
     public String getNameTool() {
-        // TODO Auto-generated method stub
         return this.name;
     }
 
     @Override
     public String getImageFile() {
-        // TODO Auto-generated method stub
-        return this.imageFile;
+        return this.imageFile.orElse("none");
     }
 
     /**
      * 
-     * @return 2 values for a gymTool : maximum difficulty, minimum difficulty
+     * @return the Max value for that exercise
      */
-    public Pair<Integer, Integer> getRangeValue() {
-        return this.rangeValue;
+    @Override
+    public int getMinValue() {
+        return this.valueMin;
+    }
+
+    /**
+     * 
+     * @return the Max value for that exercise
+     */
+    @Override
+    public int getMaxValue() {
+        return this.valueMax;
     }
 
     @Override
     public int getNumTools() {
-        // TODO Auto-generated method stub
         return this.numTools;
     }
 
     /**
-     * 
+     * Add to list of GymTool BodyMap a specific body part with relative value of percentage
+     * Example : TapisRoulant = <m1, 20%>, <m2,30%>, <m5,20%>, ...
      * @param bodyPart BodyPart
      * @param value Double
      */
@@ -95,7 +92,110 @@ public class GymToolImpl implements GymTool {
 
     @Override
     public Map<BodyPart, Double> getBodyMap() {
-        // TODO Auto-generated method stub
         return this.bodyMap;
+    }
+
+    @Override
+    public String toString() {
+        return "\n\n GymToolImpl" 
+                + "\n [code = " + code + ", name = " + name + ", imageFile = " + imageFile 
+                + "\n numTools = " + numTools + ", valueMin = " + this.valueMin + ", valueMax = " + this.valueMax
+                + "\n bodyMap = " + bodyMap
+                + "]";
+    }
+
+    /**
+     * 
+     *
+     */
+    public static class Builder {
+        private String code;
+        private String name;
+        private String imageFile;
+        private int numTools;
+        private int valueMin;
+        private int valueMax;
+
+        /**
+         * 
+         * @param code String
+         * @return a builder of GymTool
+         */
+        public Builder code(final String code) {
+            this.code = code;
+            return this;
+        }
+        /**
+         * 
+         * @param name String
+         * @return a builder of GymTool
+         */
+        public Builder name(final String name) {
+            this.name = name;
+            return this;
+        }
+
+        /**
+         * 
+         * @param imageFile String
+         * @return a builder of GymTool
+         */
+        public Builder imageFile(final String imageFile) {
+            this.imageFile = imageFile;
+            return this;
+        }
+
+        /**
+         * 
+         * @param numTools integer
+         * @return a builder of GymTool
+         */
+        public Builder numTools(final int numTools) {
+            this.numTools = numTools;
+            return this;
+        }
+
+        /**
+         * 
+         * @param valueMin integer
+         * @return a builder of GymTool
+         */
+        public Builder valueMin(final int valueMin) {
+            this.valueMin = valueMin;
+            return this;
+        }
+
+        /**
+         * 
+         * @param valueMax integer
+         * @return a builder of GymTool
+         */
+        public Builder valueMax(final int valueMax) {
+            this.valueMax = valueMax;
+            return this;
+        }
+
+        private void checkNotNull(final Object object) throws NullPointerException {
+            if (object == null) {
+                throw new NullPointerException();
+            }
+        }
+
+        /**
+         * 
+         * @return Builder
+         * @throws IllegalStateException exception
+         */
+        public GymToolImpl build() throws IllegalStateException {
+            this.checkNotNull(this.code);
+            this.checkNotNull(this.name);
+            this.checkNotNull(this.imageFile);
+
+            if (this.numTools < 0) {
+                throw new IllegalStateException();
+            }
+
+            return new GymToolImpl(this.code, this.name, this.imageFile, this.numTools, this.valueMin, this.valueMax);
+        }
     }
 }
