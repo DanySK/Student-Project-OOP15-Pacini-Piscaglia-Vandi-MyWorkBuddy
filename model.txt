@@ -1,0 +1,10 @@
+BMI: indice di massa corporea
+Forza fisica muscolo: tiene conto 
+Calcolo del metabolismo basale
+Calcolo dell'indice di massa grassa
+Calcolo dell'indice di massa magra
+Performance score (ritorna l'andamento degli score per ogni allenamento fatto, ogni score è calcolato in modo normalizzato, il punteggio ottenuto viene diviso tra la differenza tra il massimo punteggio ottenibile e il minimo punteggio ottenibile)
+Performance body part (ritorna gli score normalizzati per ogni parte del corpo)
+Performance body zone (ritorna per ogni zona del corpo lo score relativo normalizzato)
+Body measure (restituisce il miglioramento globale del proprio corpo)
+Performance time (restituisce quanto ogni singola parte del corpo ha lavorato in tutti gli allenamenti)

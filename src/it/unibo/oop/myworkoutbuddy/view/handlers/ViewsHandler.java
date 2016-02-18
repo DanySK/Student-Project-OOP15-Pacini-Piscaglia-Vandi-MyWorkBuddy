@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Objects;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.AppViews;
@@ -10,7 +9,7 @@ import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.getHandler;;
 
 /**
  * 
@@ -19,43 +18,46 @@ import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
  */
 public final class ViewsHandler implements AppViews {
 
-    private final static Set<ViewsObserver> observers = new TreeSet<>();
+    private static ViewsObserver observer;
 
     @Override
     public AccessView getAccessView() {
-        return (AccessView) FxWindowFactory.getController();
+        return getHandler();
     }
 
     @Override
     public CreateRoutineView getCreateRoutineView() {
-        return (CreateRoutineView) FxWindowFactory.getController();
+        return getHandler();
     }
 
     @Override
     public RegistrationView getRegistrationView() {
-        return (RegistrationView) FxWindowFactory.getController();
+        return getHandler();
     }
 
     @Override
     public SelectRoutineView getSelectRoutineView() {
-        return (SelectRoutineView) FxWindowFactory.getController();
+        return getHandler();
     }
 
     @Override
     public UserSettingsView getUserSettingsView() {
-        return (UserSettingsView) FxWindowFactory.getController();
+        return getHandler();
     }
 
     @Override
-    public void addViewsObserver(final ViewsObserver view) {
-        ViewsHandler.observers.add(view);
+    public void setViewsObserver(final ViewsObserver viewObserver) {
+        observer = Objects.requireNonNull(viewObserver);
     }
 
-    /*
+    /**
      * Allows each GUI to get Controller reference.
+     * 
+     * @return view
+     *         observer.
      */
-    public static Set<ViewsObserver> getObservers() {
-        return observers;
+    public static ViewsObserver getObserver() {
+        return observer;
     }
 
 }

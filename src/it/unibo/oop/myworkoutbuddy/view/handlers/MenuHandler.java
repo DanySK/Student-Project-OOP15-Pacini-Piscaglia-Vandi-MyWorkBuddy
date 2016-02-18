@@ -20,18 +20,6 @@ public final class MenuHandler {
     private BorderPane mainPane;
 
     @FXML
-    private Button btnSelect;
-
-    @FXML
-    private Button btnStatistics;
-
-    @FXML
-    private Button btnSettings;
-
-    @FXML
-    private Button btnCreate;
-
-    @FXML
     private Label menuTitle;
 
     @FXML
@@ -45,20 +33,18 @@ public final class MenuHandler {
 
     private Button lastPressed;
 
-    private static final double HIDE_MENU_DELTA_WIDTH = 100.0;
-
     private static final double SHOW_MENU_DELTA_WIDTH = 25;
 
     private static final String CSS_SELECT_STYLE = "-fx-background-color: lightBlue; -fx-font: bold 14px 'Serif';";
 
-    private EventHandler<MouseEvent> enteredAnimation = i -> {
+    private final EventHandler<MouseEvent> enteredAnimation = i -> {
         final Button btn = (Button) i.getSource();
         if (lastPressed != btn) {
             btn.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color:DarkOrange;");
         }
     };
 
-    private EventHandler<MouseEvent> exitedAnimation = i -> {
+    private final EventHandler<MouseEvent> exitedAnimation = i -> {
         final Button btn = (Button) i.getSource();
         if (lastPressed != btn) {
             btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
@@ -68,7 +54,7 @@ public final class MenuHandler {
     /**
      * Factored code of scene switch and button management.
      */
-    private EventHandler<MouseEvent> setView = i -> {
+    private final EventHandler<MouseEvent> setView = i -> {
         final Button btnPressed = (Button) i.getSource();
         String fxmlToLoad = "";
         String labelToSet = "";
@@ -119,6 +105,7 @@ public final class MenuHandler {
      */
     @FXML
     private void logout() {
+        ViewsHandler.getObserver().logoutUser();
         FxWindowFactory.replaceWindow("Access.fxml", btnLogout.getScene());
     }
 
@@ -145,7 +132,7 @@ public final class MenuHandler {
 
     @FXML
     private void hideMenu() {
-        btnContainer.setTranslateX(-HIDE_MENU_DELTA_WIDTH);
+        new MenuBarAgent(btnContainer).start();
     }
 
     /**

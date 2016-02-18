@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -12,8 +13,16 @@ public interface CreateRoutineView {
     /**
      * Save the names of the exercises of the chosen routine by the user.
      * 
-     * @return a set of string with exercise names
+     * @return routine map
+     *         composed by <Routine description, List<<Exercise name,
+     *         <Repetitions>>>
      */
-    Set<String> getRoutine();
+    Map<String, Map<String, List<Integer>>> getRoutine();
 
+    /**
+     * 
+     * @return routine
+     *         description.
+     */
+    String getRoutineDescription();
 }

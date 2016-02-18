@@ -9,10 +9,10 @@ public interface AccessView {
 
     /**
      * 
-     * @return UserID.
+     * @return Username.
      * 
      */
-    String getID();
+    String getUsername();
 
     /**
      * 
@@ -27,5 +27,5 @@ public interface AccessView {
      * 
      */
     String getStyle();
-
+    
 }

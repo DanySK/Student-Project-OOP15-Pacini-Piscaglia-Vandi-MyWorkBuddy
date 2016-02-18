@@ -39,4 +39,11 @@ public interface UserSettingsView {
      */
     String getNewPassword();
 
+    /**
+     * Get the password confirm.
+     * 
+     * @return password confirm.
+     */
+    String getPasswordConfirm();
+
 }

@@ -1,8 +1,14 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.setCssStyle;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+
+import java.util.Optional;
+
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -19,17 +25,22 @@ public final class AccessHandler implements AccessView {
     private TextField txtID;
 
     @FXML
-    private MenuButton btnSelect;
+    private PasswordField txtPassword;
 
     @FXML
-    private PasswordField txtPassword;
+    private MenuButton btnSelect;
 
     /**
      * Open menuView.
      */
     @FXML
     private void login() {
-        FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
+        if (ViewsHandler.getObserver().loginUser()) {
+            replaceWindow("Menu.fxml", txtID.getScene());
+        } else {
+            showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
+                    AlertType.ERROR);
+        }
     }
 
     /**
@@ -38,7 +49,7 @@ public final class AccessHandler implements AccessView {
     @FXML
     private void register() {
         /* Opening registration window */
-        FxWindowFactory.replaceWindow("Registration.fxml", txtPassword.getScene());
+        replaceWindow("Registration.fxml", txtPassword.getScene());
     }
 
     /**
@@ -46,8 +57,8 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void setOriginalStyle() {
-        FxWindowFactory.setCssStyle("original.css");
-        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
+        setCssStyle("original.css");
+        replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     /**
@@ -55,13 +66,8 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void setDarkStyle() {
-        FxWindowFactory.setCssStyle("dark.css");
-        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
-    }
-
-    @Override
-    public String getID() {
-        return txtID.getText();
+        setCssStyle("dark.css");
+        replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     @Override
@@ -72,6 +78,11 @@ public final class AccessHandler implements AccessView {
     @Override
     public String getStyle() {
         return btnSelect.getText();
+    }
+
+    @Override
+    public String getUsername() {
+        return txtID.getText();
     }
 
 }

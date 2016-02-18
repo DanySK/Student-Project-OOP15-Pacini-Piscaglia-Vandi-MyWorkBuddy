@@ -9,7 +9,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 
 /**
- * 
  * Handler of the accessView. It show user statistics fetched from the database.
  */
 public final class StatisticsHandler {
@@ -34,7 +33,7 @@ public final class StatisticsHandler {
 
     @FXML
     private void viewWeightChart() {
-        Series<String, String> series = new XYChart.Series<>();
+        final Series<String, String> series = new XYChart.Series<>();
         series.setName("Serie");
         series.getData().add(new XYChart.Data("Jan", 23));
         series.getData().add(new XYChart.Data("Feb", 14));

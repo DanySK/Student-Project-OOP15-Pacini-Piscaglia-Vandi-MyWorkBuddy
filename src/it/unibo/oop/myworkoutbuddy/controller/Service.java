@@ -1,8 +1,10 @@
 package it.unibo.oop.myworkoutbuddy.controller;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A service to interact with the database.
@@ -28,6 +30,15 @@ public interface Service {
     boolean create(Collection<? extends Map<String, Object>> elements);
 
     /**
+     * Retrieves a document that satisfies the query parameters.
+     * 
+     * @param queryParams
+     *            The filters to apply.
+     * @return all the elements stored in the database
+     */
+    Optional<Map<String, Object>> getOneByParams(Map<String, Object> queryParams);
+
+    /**
      * Retrieves all the elements stored in the database.
      * 
      * @return all the elements stored in the database
@@ -37,11 +48,11 @@ public interface Service {
     /**
      * Retrieves an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise.
      * 
-     * @param params
+     * @param queryParams
      *            The filters to apply.
      * @return an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise
      */
-    List<Map<String, Object>> getByParams(Map<String, Object> params);
+    List<Map<String, Object>> getByParams(Map<String, Object> queryParams);
 
     /**
      * Updates all the elements that match the specified parameters with the new ones.

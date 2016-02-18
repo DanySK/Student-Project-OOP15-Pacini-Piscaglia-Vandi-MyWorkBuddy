@@ -1,10 +1,15 @@
 package it.unibo.oop.myworkoutbuddy.view.factory;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -23,8 +28,10 @@ public final class FxWindowFactory {
     /**
      * 
      * @return reference to view handler.
+     * @param <T>
+     *            type of the handler
      */
-    public static Object getController() {
+    public static <T> T getHandler() {
         return loader == null
                 ? null
                 : loader.getController();
@@ -54,16 +61,17 @@ public final class FxWindowFactory {
      */
     public static BorderPane openWindow(final String fxmlPath, final boolean isContained) {
         try {
-            final FXMLLoader loader = new FXMLLoader(FxWindowFactory.class.getResource("../structure/" + fxmlPath));
+            loader = new FXMLLoader(FxWindowFactory.class.getResource(fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
             if (isContained) {
                 return root;
             }
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
+            stage.setResizable(false);
             scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
-            stage.getIcons().add(new Image("file:res/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
+            stage.getIcons().add(new Image("/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -95,6 +103,58 @@ public final class FxWindowFactory {
     public static void replaceWindow(final String fxmlPath, final Scene sceneToClose) {
         FxWindowFactory.openWindow(fxmlPath, false);
         FxWindowFactory.closeWindow(sceneToClose);
+    }
+
+    /**
+     * Show a simple info dialog with a optional image.
+     * 
+     * @param title
+     *            header of the show dialog.
+     * @param message
+     *            content of the dialog.
+     * @param imagePath
+     *            to load the image.
+     * @param alertType
+     *            to select the type of dialog.
+     */
+    public static void showDialog(final String title, final String message, final Optional<String> imagePath,
+            final AlertType alertType) {
+        final Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        imagePath.ifPresent(i -> {
+            final ImageView imageView = new ImageView(new Image(i));
+            alert.setGraphic(imageView);
+        });
+        alert.showAndWait();
+    }
+
+    /**
+     * 
+     * @param title
+     *            of dialog window.
+     * @param message
+     *            to user.
+     * @param inputText
+     *            to show in input text field.
+     * @return input string
+     *         written by user.
+     */
+    public static String createInputDialog(final String title, final String message, final String inputText) {
+        final TextInputDialog dialog = new TextInputDialog(inputText);
+        dialog.setTitle(title);
+        dialog.setHeaderText("You have to input the requested data!");
+        dialog.setContentText(message);
+
+        final Optional<String> result = dialog.showAndWait();
+        String input = "";
+        if (result.isPresent()) {
+            input = result.get();
+        } else {
+            createInputDialog(title, message, inputText);
+        }
+        return input;
     }
 
 }
