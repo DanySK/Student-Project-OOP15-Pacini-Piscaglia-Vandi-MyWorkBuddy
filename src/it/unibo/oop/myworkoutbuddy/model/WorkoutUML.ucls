@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <interface id="1" language="java" name="it.unibo.oop.myworkoutbuddy.model.Workout" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Workout.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="271" width="213" x="74" y="-109"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.WorkoutRoutine" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/WorkoutRoutine.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="200" width="311" x="389" y="-118"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <enumeration id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.WorkoutRoutine.DayInWeek" 
+    project="ProgettoProva01" file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/WorkoutRoutine.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="193" x="877" y="70"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="4" language="java" name="it.unibo.oop.myworkoutbuddy.model.WorkoutImpl" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/WorkoutImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="481" width="291" x="35" y="206"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="it.unibo.oop.myworkoutbuddy.model.WorkoutRoutineImpl" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/WorkoutRoutineImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="286" width="270" x="410" y="303"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="6">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="7">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="8" name="routine"/>      
+      <multiplicity id="9" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="10">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="11" name="dayAweek"/>      
+      <multiplicity id="12" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="13">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
+  <realization id="14">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
