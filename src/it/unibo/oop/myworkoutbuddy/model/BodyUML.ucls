@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <enumeration id="1" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.Target" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="178" width="160" x="32" y="39"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyZone" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="180" width="160" x="687" y="38"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.Measure" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="265" width="160" x="263" y="-4"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="4" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="160" width="217" x="414" y="-261"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="5" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyPart" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="355" width="181" x="1006" y="-49"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="6" language="java" name="it.unibo.oop.myworkoutbuddy.model.Body.BodyData" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/Body.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="232" width="182" x="470" y="12"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="7">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="8" name="bodyZone"/>      
+      <multiplicity id="9" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
+  </nesting>  
+  <nesting id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <nesting id="12">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <nesting id="13">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <nesting id="14">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
