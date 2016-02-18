@@ -2,7 +2,7 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.List;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget;
+import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
  * Training card : composed by an exercises list (Exercise list).
  * -------------------------------------------------------------
@@ -28,7 +28,7 @@ public interface WorkoutRoutine {
      * 
      * @return the scope of Workout
      */
-    BodyTarget getTarget();
+    Target getTarget();
     /**
      * 
      * @return list of Day in a week
@@ -40,6 +40,11 @@ public interface WorkoutRoutine {
      */
     List<Exercise> getExerciseList();
 
+    /**
+     * funzione temporanea.
+     * @return indicizzate string
+     */
+    String getNumExercise();
     /**
      * 
     *
