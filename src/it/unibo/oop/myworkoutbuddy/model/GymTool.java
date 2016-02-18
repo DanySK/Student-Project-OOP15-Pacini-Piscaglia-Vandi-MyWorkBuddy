@@ -3,7 +3,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Map;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import javafx.util.Pair;;
 
 /**
  * GymTool available for training.
@@ -31,9 +30,15 @@ public interface GymTool {
 
     /**
      * 
-     * @return the maximum and the minimum levels of difficulty
+     * @return the Max value for that exercise
      */
-    Pair<Integer, Integer> getRangeValue();
+    int getMaxValue();
+
+    /**
+     * 
+     * @return the Max value for that exercise
+     */
+    int getMinValue();
 
     /**
      * 
