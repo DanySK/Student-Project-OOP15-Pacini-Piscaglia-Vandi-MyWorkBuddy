@@ -28,7 +28,7 @@ public class MongoService implements Service {
     private final MongoCollection<Document> collection;
 
     /**
-     * Creates a new instance of an abstract service.
+     * Creates a new instance of a service.
      * 
      * @param collectionName
      *            the name of the collection to use

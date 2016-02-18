@@ -19,7 +19,6 @@ import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
 
 import it.unibo.oop.myworkoutbuddy.util.Preconditions;
-import it.unibo.oop.myworkoutbuddy.util.json.JSONObject;
 
 /**
  * Utility class for CRUD operations.
@@ -178,7 +177,7 @@ public final class CRUDOperations {
             @Override
             public void apply(final Document document) {
                 document.remove("_id"); // We don't want the MongoDB ObjectId field as a JSON document field.
-                l.add(new JSONObject(document));
+                l.add(document);
             }
         };
     }
