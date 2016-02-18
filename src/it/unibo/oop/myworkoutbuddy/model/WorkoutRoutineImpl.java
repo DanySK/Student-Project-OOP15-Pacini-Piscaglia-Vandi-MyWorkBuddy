@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget;
+import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
  * Training card : composed by an exercises list (Exercise list).
  * -------------------------------------------------------------
@@ -12,28 +12,22 @@ import it.unibo.oop.myworkoutbuddy.model.Body.BodyTarget;
 public class WorkoutRoutineImpl implements WorkoutRoutine {
 
     private String name; // name/code of a Workout
-    private BodyTarget target; // scope of Workout
+    private Target target; // scope of Workout
     private List<DayInWeek> dayAweek; // list of days in a week dedicated to the Workout
     private List<Exercise> exerciseList;
+
     /**
      * 
      * @param name String
      * @param target BodyTarget
      */
-    public WorkoutRoutineImpl(final String name, final BodyTarget target) {
-        this.setName(name);
-        this.setTarget(target);
+    public WorkoutRoutineImpl(final String name, final Target target) {
+        this.name = name;
+        this.target = target;
         this.dayAweek = new ArrayList<>();
         this.exerciseList = new ArrayList<>();
     }
 
-    private void setName(final String name) {
-        this.name = name;
-    }
-
-    private void setTarget(final BodyTarget target) {
-        this.target = target;
-    }
     /**
      * 
      * @param day DayInWeek
@@ -53,25 +47,45 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
         return this.name;
     }
 
     @Override
-    public BodyTarget getTarget() {
-        // TODO Auto-generated method stub
+    public Target getTarget() {
         return this.target;
     }
 
     @Override
     public List<DayInWeek> getDayAweek() {
-        // TODO Auto-generated method stub
         return this.dayAweek;
     }
 
     @Override
     public List<Exercise> getExerciseList() {
-        // TODO Auto-generated method stub
         return this.exerciseList;
+    }
+    /**
+     * temporanea funazione x stampa indicizzata.
+     * @return
+     */
+    @Override
+    public String getNumExercise() {
+        String returnNumString = "";
+
+        /*
+         * obiettivo terziario : usare metodo append x efficienza to String
+         */
+        this.exerciseList.forEach(i-> {
+            final String temp = "" + this.exerciseList.indexOf(i) + "" + i.toString() + " ";
+            returnNumString.concat(temp);
+        });
+
+        return returnNumString;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkoutRoutineImpl [name=" + name + " target=" + target + " dayAweek=" + dayAweek
+                + "\n\n ExerciseList=" + this.getExerciseList() + "]";
     }
 }
