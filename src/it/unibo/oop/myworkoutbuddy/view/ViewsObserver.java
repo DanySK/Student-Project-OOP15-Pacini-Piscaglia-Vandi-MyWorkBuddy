@@ -50,8 +50,11 @@ public interface ViewsObserver {
 
     /**
      * Ask Controller to save routine in the database.
+     * 
+     * @return true if routine is saved correctly
+     *         otherwise false if repetitions inserted are wrong.
      */
-    void saveRoutine();
+    boolean saveRoutine();
 
     /**
      * 
@@ -93,5 +96,14 @@ public interface ViewsObserver {
      * Ask Controller to logout the user.
      */
     void logoutUser();
+
+    /**
+     * 
+     * @param exerciseName
+     *            to get informations.
+     * @return exercise selected
+     *         informations.
+     */
+    List<String> getExInfo(String exerciseName);
 
 }

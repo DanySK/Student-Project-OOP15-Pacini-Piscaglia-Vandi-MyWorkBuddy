@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -113,6 +114,8 @@ public final class FxWindowFactory {
      *            content of the dialog.
      * @param imagePath
      *            to load the image.
+     * @param alertType
+     *            to select the type of dialog.
      */
     public static void showDialog(final String title, final String message, final Optional<String> imagePath,
             final AlertType alertType) {
@@ -125,6 +128,33 @@ public final class FxWindowFactory {
             alert.setGraphic(imageView);
         });
         alert.showAndWait();
+    }
+
+    /**
+     * 
+     * @param title
+     *            of dialog window.
+     * @param message
+     *            to user.
+     * @param inputText
+     *            to show in input text field.
+     * @return input string
+     *         written by user.
+     */
+    public static String createInputDialog(final String title, final String message, final String inputText) {
+        final TextInputDialog dialog = new TextInputDialog(inputText);
+        dialog.setTitle(title);
+        dialog.setHeaderText("You have to input the requested data!");
+        dialog.setContentText(message);
+
+        final Optional<String> result = dialog.showAndWait();
+        String input = "";
+        if (result.isPresent()) {
+            input = result.get();
+        } else {
+            createInputDialog(title, message, inputText);
+        }
+        return input;
     }
 
 }

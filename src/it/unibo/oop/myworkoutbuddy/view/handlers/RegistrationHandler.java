@@ -1,12 +1,15 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
@@ -41,6 +44,9 @@ public final class RegistrationHandler implements RegistrationView {
     private TextField txtPassword;
 
     @FXML
+    private PasswordField txtPassConfirm;
+
+    @FXML
     private Button btnReturnLogin;
 
     @Override
@@ -69,6 +75,11 @@ public final class RegistrationHandler implements RegistrationView {
     }
 
     @Override
+    public String getPassConfirm() {
+        return txtPassConfirm.getText();
+    }
+
+    @Override
     public String getUsername() {
         return txtUser.getText();
     }
@@ -86,18 +97,20 @@ public final class RegistrationHandler implements RegistrationView {
     @FXML
     private void register() {
         if (ViewsHandler.getObserver().registerUser()) {
-            FxWindowFactory.showDialog("User registered!",
+            showDialog("User registered!",
                     "Congratulations " + getUsername() + ", you are now registered!", Optional.empty(),
                     AlertType.INFORMATION);
             returnLogin();
         } else {
-
+            showDialog("Uncorrect data inserted!",
+                    "Please check fields data", Optional.empty(),
+                    AlertType.ERROR);
         }
     }
 
     @FXML
     private void returnLogin() {
-        FxWindowFactory.replaceWindow("Access.fxml", btnReturnLogin.getScene());
+        replaceWindow("Access.fxml", btnReturnLogin.getScene());
     }
 
 }

@@ -42,6 +42,12 @@ public interface RegistrationView {
 
     /**
      * 
+     * @return password confirmation.
+     */
+    String getPassConfirm();
+
+    /**
+     * 
      * Get the ID of the new user.
      * 
      * @return username

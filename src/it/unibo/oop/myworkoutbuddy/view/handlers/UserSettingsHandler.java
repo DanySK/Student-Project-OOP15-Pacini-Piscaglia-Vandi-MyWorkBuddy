@@ -1,11 +1,13 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
@@ -28,7 +30,10 @@ public final class UserSettingsHandler implements UserSettingsView {
     private TextField txtAge;
 
     @FXML
-    private TextField txtPassword;
+    private PasswordField txtPassword;
+
+    @FXML
+    private PasswordField txtPassConfirm;
 
     @Override
     public String getNewName() {
@@ -55,13 +60,19 @@ public final class UserSettingsHandler implements UserSettingsView {
         return txtPassword.getText();
     }
 
+    @Override
+    public String getPassConfirm() {
+        return txtPassConfirm.getText();
+    }
+
     @FXML
     private void saveChanges() {
-        // if (observer.setUserData()) {
-
-        // } else {
-        FxWindowFactory.showDialog("Wrong data", "You have inserted wrong data", Optional.empty(), AlertType.ERROR);
-        // }
+        if (ViewsHandler.getObserver().setUserData()) {
+            showDialog("Data saved!", "Your data has been successfully saved!", Optional.empty(),
+                    AlertType.ERROR);
+        } else {
+            showDialog("Wrong data", "You have inserted wrong data", Optional.empty(), AlertType.ERROR);
+        }
     }
 
 }

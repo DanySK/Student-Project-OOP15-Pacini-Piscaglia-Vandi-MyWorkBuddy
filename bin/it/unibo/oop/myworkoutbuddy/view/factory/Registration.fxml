@@ -17,7 +17,7 @@
       </Label>
    </top>
    <bottom>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox prefHeight="81.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" text="Register !" translateX="100.0" translateY="30.0">
                <effect>
@@ -47,11 +47,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label id="borderedLabel" text="Age" translateX="100.0" underline="true" GridPane.rowIndex="5" />
-            <Label id="borderedLabel" text="Weight (Cm)" translateX="100.0" underline="true" GridPane.rowIndex="6" />
-            <Label id="borderedLabel" text="Height (Cm)" translateX="100.0" underline="true" GridPane.rowIndex="7" />
+            <Label id="borderedLabel" text="Age" translateX="100.0" underline="true" GridPane.rowIndex="6" />
+            <Label id="borderedLabel" text="Weight (Kg)" translateX="100.0" underline="true" GridPane.rowIndex="7" />
+            <Label id="borderedLabel" text="Height (Cm)" translateX="100.0" underline="true" GridPane.rowIndex="8" />
             <Label id="borderedLabel" text="Email" translateX="100.0" underline="true" GridPane.rowIndex="3" />
             <Label id="borderedLabel" text="Password" translateX="100.0" underline="true" GridPane.rowIndex="4" />
             <Label id="borderedLabel" text="Username" translateX="100.0" underline="true" GridPane.rowIndex="2" />
@@ -61,10 +62,12 @@
             <TextField fx:id="txtSurname" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txtUser" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txtEmail" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="txtPassword" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtAge" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="txtWeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <TextField fx:id="txtHeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="txtAge" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField fx:id="txtWeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="txtHeight" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <PasswordField fx:id="txtPassword" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="txtPassConfirm" maxWidth="200.0" promptText="......" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label id="borderedLabel" alignment="CENTER" text="Password confirm" textAlignment="JUSTIFY" translateX="100.0" underline="true" GridPane.rowIndex="5" />
          </children>
       </GridPane>
    </center>

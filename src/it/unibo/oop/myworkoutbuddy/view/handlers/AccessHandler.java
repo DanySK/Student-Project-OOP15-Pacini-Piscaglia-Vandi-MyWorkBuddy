@@ -1,13 +1,10 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import java.util.Optional;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.setCssStyle;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
-import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
-import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.setCssStyle;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,12 +31,12 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void login() {
-        if (ViewsHandler.getObserver().loginUser()) {
+       // if (ViewsHandler.getObserver().loginUser()) {
             replaceWindow("Menu.fxml", txtID.getScene());
-        } else {
-            showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
-                    AlertType.ERROR);
-        }
+       // } else {
+       //     showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
+       //             AlertType.ERROR);
+       // }
     }
 
     /**

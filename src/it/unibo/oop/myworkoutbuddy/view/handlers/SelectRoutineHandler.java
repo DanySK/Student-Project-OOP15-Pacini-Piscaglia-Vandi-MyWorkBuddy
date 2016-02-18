@@ -66,12 +66,12 @@ public final class SelectRoutineHandler implements SelectRoutineView {
      */
     public void initialize() {
         // only for testing
-        Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
-        Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0, "routine1",
+        final Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
+        final Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0, "routine1",
                 new TreeMap<>());
-        Map<String, List<Integer>> map = new TreeMap<>();
+        final Map<String, List<Integer>> map = new TreeMap<>();
         map.put("Exercise - ", new LinkedList<>(Arrays.asList(8, 10, 12)));
-        Map<String, Map<String, List<Integer>>> map2 = new TreeMap<>();
+        final Map<String, Map<String, List<Integer>>> map2 = new TreeMap<>();
         map2.put("Workout", map);
         rou.setZ(map2);
         set.add(rou);
@@ -89,6 +89,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
                     final HBox box = new HBox();
                     box.getChildren().add(new Label(exName + "Repetitions: "));
                     box.getChildren().add(new TextField(repetitions.toString()));
+                    box.getChildren().add(new TextField("Kg"));
                     exercisesList.getChildren().add(box);
                 });
                 workout.getChildren().add(new TitledPane(workName, exercisesList));
