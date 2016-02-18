@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -79,7 +79,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private void saveRoutine() {
         // observer.saveRoutine();
-        FxWindowFactory.showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
+        showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
                 AlertType.INFORMATION);
     }
 
@@ -96,7 +96,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         }
         if (childrenCount(workoutBox) == MAX_WORKOUTS) {
             btnAddWorkout.setDisable(true);
-            FxWindowFactory.showDialog("Limit reached", "Max addable workouts limit reached", Optional.empty(),
+            showDialog("Limit reached", "Max addable workouts limit reached", Optional.empty(),
                     AlertType.ERROR);
         }
     }
@@ -122,12 +122,12 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             routine.get(getWorkName()).put(newExercise.getText(), reps);
 
         } else if (!workoutSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error adding workout", "You have to had a workout first!", Optional.empty(),
+            showDialog("Error adding workout", "You have to had a workout first!", Optional.empty(),
                     AlertType.ERROR);
 
         } else if (childrenCount(workoutSelected.get()) >= MAX_EXERCISES) {
             btnAddExercise.setDisable(true);
-            FxWindowFactory.showDialog("Limit reached", "Max addable exercises limit reached", Optional.empty(),
+            showDialog("Limit reached", "Max addable exercises limit reached", Optional.empty(),
                     AlertType.ERROR);
         }
         System.out.println(getRoutine());
@@ -135,7 +135,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void showExercise() {
-        FxWindowFactory.showDialog("Exercise", "Exercise description", Optional
+        showDialog("Exercise", "Exercise description", Optional
                 .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"),
                 AlertType.INFORMATION);
     }
@@ -157,9 +157,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             btnAddWorkout.setDisable(!btnAddWorkout.isDisabled());
 
         } else if (childrenCount(workoutBox) == 0) {
-            FxWindowFactory.showDialog("Error", "There aren't workouts added!", Optional.empty(), AlertType.ERROR);
+            showDialog("Error", "There aren't workouts added!", Optional.empty(), AlertType.ERROR);
         } else if (!workoutSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error", "No workout selected!", Optional.empty(), AlertType.ERROR);
+            showDialog("Error", "No workout selected!", Optional.empty(), AlertType.ERROR);
         }
     }
 
@@ -167,7 +167,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private void deleteExercise() {
 
         if (!exerciseSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error", "You have to select an exercise first!", Optional.empty(),
+            showDialog("Error", "You have to select an exercise first!", Optional.empty(),
                     AlertType.ERROR);
             return;
         }

@@ -3,8 +3,9 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.setCssStyle;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuButton;
@@ -34,9 +35,9 @@ public final class AccessHandler implements AccessView {
     @FXML
     private void login() {
         if (ViewsHandler.getObserver().loginUser()) {
-            FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
+            replaceWindow("Menu.fxml", txtID.getScene());
         } else {
-            FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
+            showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
                     AlertType.ERROR);
         }
     }
@@ -47,7 +48,7 @@ public final class AccessHandler implements AccessView {
     @FXML
     private void register() {
         /* Opening registration window */
-        FxWindowFactory.replaceWindow("Registration.fxml", txtPassword.getScene());
+        replaceWindow("Registration.fxml", txtPassword.getScene());
     }
 
     /**
@@ -55,8 +56,8 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void setOriginalStyle() {
-        FxWindowFactory.setCssStyle("original.css");
-        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
+        setCssStyle("original.css");
+        replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     /**
@@ -64,8 +65,8 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void setDarkStyle() {
-        FxWindowFactory.setCssStyle("dark.css");
-        FxWindowFactory.replaceWindow("Access.fxml", btnSelect.getScene());
+        setCssStyle("dark.css");
+        replaceWindow("Access.fxml", btnSelect.getScene());
     }
 
     @Override
