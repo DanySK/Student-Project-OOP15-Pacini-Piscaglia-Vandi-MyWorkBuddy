@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="818.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.MenuHandler">
+   <left>
+      <VBox fx:id="btnContainer" onMouseEntered="#openMenu" onMouseExited="#hideMenu" prefHeight="656.0" prefWidth="199.0" translateX="-100.0" translateY="-30.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btnCreate" mnemonicParsing="false" prefHeight="98.0" prefWidth="144.0" text="Create Routine" translateX="-30.0" translateY="100.0" BorderPane.alignment="TOP_LEFT" />
+            <Button fx:id="btnSelect" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="Select Routine" translateX="-30.0" translateY="105.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnStatistics" mnemonicParsing="false" prefHeight="75.0" prefWidth="145.0" text="Statistics" translateX="-30.0" translateY="110.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnSettings" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="User Settings" translateX="-30.0" translateY="115.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#logout" prefHeight="25.0" prefWidth="139.0" text="Logout" translateX="-30.0" translateY="225.0" BorderPane.alignment="CENTER_LEFT" />
+            <Button fx:id="btnQuit" mnemonicParsing="false" onAction="#quitApp" prefHeight="25.0" prefWidth="140.0" text="Quit" translateX="-30.0" translateY="250.0" BorderPane.alignment="CENTER_LEFT" />
+         </children>
+      </VBox>
+   </left>
+   <top>
+      <Label id="mainTitle" fx:id="menuTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="847.0" text="MyWorkoutBuddy Menù" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <HBox prefHeight="25.0" prefWidth="818.0" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

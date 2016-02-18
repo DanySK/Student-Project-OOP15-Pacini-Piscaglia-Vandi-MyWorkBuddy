@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="652.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.SelectRoutineHandler">
+   <center>
+      <TabPane fx:id="tabRoutine" prefHeight="479.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" translateY="50.0" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <Label id="borderedLabel" alignment="CENTER" prefHeight="40.0" prefWidth="320.0" text="Insert your daily results!" translateY="30.0" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+   </top>
+   <bottom>
+      <VBox prefHeight="106.0" prefWidth="652.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="652.0">
+               <children>
+                  <Label id="borderedLabel" text="Description" translateX="80.0" translateY="20.0" />
+                  <TextArea fx:id="txtDescription" editable="false" prefHeight="26.0" prefWidth="200.0" translateX="250.0" />
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#insertData" text="Insert data !" translateX="280.0" translateY="15.0" />
+         </children>
+      </VBox>
+   </bottom>
+</BorderPane>
