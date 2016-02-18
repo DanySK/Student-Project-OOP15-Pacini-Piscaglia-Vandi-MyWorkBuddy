@@ -12,9 +12,9 @@ import java.util.TreeMap;
 import it.unibo.oop.myworkoutbuddy.util.MutableTriple;
 import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -37,22 +37,20 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     @FXML
     private TextArea txtDescription;
 
-    private ViewsObserver observer = ViewsHandler.getObserver();
-
     @FXML
     private void insertData() {
         String message;
         String title;
-        // if (observer.setUserData()) {
+        // if (observer.addResults) {
         message = "Your data has been successfully inserted!";
         title = "Data inserted!";
         // } else {
         // message = "There was an error!";
         // title = "Error!";
         // }
-        FxWindowFactory.showDialog(title, message, Optional.empty());
+        FxWindowFactory.showDialog(title, message, Optional.empty(), AlertType.INFORMATION);
     }
-    
+
     @Override
     public Map<String, List<Integer>> getUserResults() {
         return null;
@@ -67,7 +65,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
      * Show all saved Routines.
      */
     public void initialize() {
-        //only for testing
+        // only for testing
         Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
         Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0, "routine1",
                 new TreeMap<>());

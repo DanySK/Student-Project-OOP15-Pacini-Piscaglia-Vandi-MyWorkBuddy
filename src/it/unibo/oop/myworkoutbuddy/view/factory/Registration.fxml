@@ -50,7 +50,7 @@
         </rowConstraints>
          <children>
             <Label id="borderedLabel" text="Age" translateX="100.0" underline="true" GridPane.rowIndex="5" />
-            <Label id="borderedLabel" text="Weight (Cm)" translateX="100.0" underline="true" GridPane.rowIndex="6" />
+            <Label id="borderedLabel" text="Weight (Kg)" translateX="100.0" underline="true" GridPane.rowIndex="6" />
             <Label id="borderedLabel" text="Height (Cm)" translateX="100.0" underline="true" GridPane.rowIndex="7" />
             <Label id="borderedLabel" text="Email" translateX="100.0" underline="true" GridPane.rowIndex="3" />
             <Label id="borderedLabel" text="Password" translateX="100.0" underline="true" GridPane.rowIndex="4" />

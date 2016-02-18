@@ -27,5 +27,5 @@ public interface AccessView {
      * 
      */
     String getStyle();
-
+    
 }

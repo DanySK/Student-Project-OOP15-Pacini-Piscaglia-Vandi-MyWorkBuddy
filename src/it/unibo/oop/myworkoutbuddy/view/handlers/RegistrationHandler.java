@@ -3,9 +3,9 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -42,8 +42,6 @@ public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private Button btnReturnLogin;
-
-    private ViewsObserver observer = ViewsHandler.getObserver();
 
     @Override
     public String getName() {
@@ -89,7 +87,8 @@ public final class RegistrationHandler implements RegistrationView {
     private void register() {
         if (ViewsHandler.getObserver().registerUser()) {
             FxWindowFactory.showDialog("User registered!",
-                    "Congratulations " + getUsername() + ", you are now registered!", Optional.empty());
+                    "Congratulations " + getUsername() + ", you are now registered!", Optional.empty(),
+                    AlertType.INFORMATION);
             returnLogin();
         } else {
 

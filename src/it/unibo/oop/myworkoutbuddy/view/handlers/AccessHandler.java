@@ -6,6 +6,7 @@ import it.unibo.oop.myworkoutbuddy.view.AccessView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -27,8 +28,6 @@ public final class AccessHandler implements AccessView {
     @FXML
     private MenuButton btnSelect;
 
-    private ViewsObserver observer = ViewsHandler.getObserver();
-
     /**
      * Open menuView.
      */
@@ -37,7 +36,8 @@ public final class AccessHandler implements AccessView {
         if (ViewsHandler.getObserver().loginUser()) {
             FxWindowFactory.replaceWindow("Menu.fxml", txtID.getScene());
         } else {
-            FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty());
+            FxWindowFactory.showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
+                    AlertType.ERROR);
         }
     }
 

@@ -109,6 +109,7 @@ public final class MenuHandler {
      */
     @FXML
     private void logout() {
+        ViewsHandler.getObserver().logoutUser();
         FxWindowFactory.replaceWindow("Access.fxml", btnLogout.getScene());
     }
 

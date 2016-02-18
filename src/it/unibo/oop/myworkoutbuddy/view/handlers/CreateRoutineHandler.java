@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -62,12 +62,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
                 || !workoutSelected.isPresent()) {
             workoutSelected = Optional.of((VBox) i.getSource());
         }
-
-        if (childrenCount(workoutSelected.get()) == MAX_EXERCISES) {
-            btnAddExercise.setDisable(true);
-        } else {
-            btnAddExercise.setDisable(false);
-        }
+        btnAddExercise.setDisable(childrenCount(workoutSelected.get()) == MAX_EXERCISES);
     };
 
     private final EventHandler<MouseEvent> selectExerciseHandler = i -> {
@@ -75,16 +70,17 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         if (exerciseSelected.isPresent() && exerciseSelected.get() != i.getSource()) {
             exerciseSelected.get().setStyle(null);
         }
-        exerciseSelected = Optional.of((Label) i.getSource());
-        exerciseSelected.get().setStyle("-fx-font-weight:bold");
-    };
 
-    private ViewsObserver observer = ViewsHandler.getObserver();
+        final Label selLabel = ((Label) i.getSource());
+        selLabel.setStyle("-fx-font-weight:bold");
+        exerciseSelected = Optional.of(selLabel);
+    };
 
     @FXML
     private void saveRoutine() {
         // observer.saveRoutine();
-        FxWindowFactory.showDialog("Routine saved!", "Your routine has been saved!", Optional.empty());
+        FxWindowFactory.showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
+                AlertType.INFORMATION);
     }
 
     @FXML
@@ -100,7 +96,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         }
         if (childrenCount(workoutBox) == MAX_WORKOUTS) {
             btnAddWorkout.setDisable(true);
-            FxWindowFactory.showDialog("Limit reached", "Max addable workouts limit reached", Optional.empty());
+            FxWindowFactory.showDialog("Limit reached", "Max addable workouts limit reached", Optional.empty(),
+                    AlertType.ERROR);
         }
     }
 
@@ -119,17 +116,19 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             workoutSelected.get().getChildren().add(exBox);
 
             // to getRoutine
-            final List<Integer> reps = repsField.stream().map(i -> Integer.parseInt(i.getText()))
+            final List<Integer> reps = repsField.stream().map(TextField::getText).map(Integer::valueOf)
                     .collect(Collectors.toList());
-            routine.get(getWorkName()).put(newExercise.getText(),
-                    new ArrayList<>(reps));
+
+            routine.get(getWorkName()).put(newExercise.getText(), reps);
 
         } else if (!workoutSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error adding workout", "You have to had a workout first!", Optional.empty());
+            FxWindowFactory.showDialog("Error adding workout", "You have to had a workout first!", Optional.empty(),
+                    AlertType.ERROR);
 
         } else if (childrenCount(workoutSelected.get()) >= MAX_EXERCISES) {
             btnAddExercise.setDisable(true);
-            FxWindowFactory.showDialog("Limit reached", "Max addable exercises limit reached", Optional.empty());
+            FxWindowFactory.showDialog("Limit reached", "Max addable exercises limit reached", Optional.empty(),
+                    AlertType.ERROR);
         }
         System.out.println(getRoutine());
     }
@@ -137,7 +136,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private void showExercise() {
         FxWindowFactory.showDialog("Exercise", "Exercise description", Optional
-                .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"));
+                .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"),
+                AlertType.INFORMATION);
     }
 
     @FXML
@@ -154,14 +154,12 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             workoutBox.getChildren().remove(workoutSelected.get().getParent().getParent());
             workoutSelected = Optional.empty();
 
-            if (btnAddWorkout.isDisabled()) {
-                btnAddWorkout.setDisable(false);
-            }
+            btnAddWorkout.setDisable(!btnAddWorkout.isDisabled());
 
         } else if (childrenCount(workoutBox) == 0) {
-            FxWindowFactory.showDialog("Error", "There aren't workouts added!", Optional.empty());
+            FxWindowFactory.showDialog("Error", "There aren't workouts added!", Optional.empty(), AlertType.ERROR);
         } else if (!workoutSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error", "No workout selected!", Optional.empty());
+            FxWindowFactory.showDialog("Error", "No workout selected!", Optional.empty(), AlertType.ERROR);
         }
     }
 
@@ -169,13 +167,12 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private void deleteExercise() {
 
         if (!exerciseSelected.isPresent()) {
-            FxWindowFactory.showDialog("Error", "You have to select an exercise first!", Optional.empty());
+            FxWindowFactory.showDialog("Error", "You have to select an exercise first!", Optional.empty(),
+                    AlertType.ERROR);
             return;
         }
         if (workoutSelected.isPresent() && exerciseSelected.isPresent()) {
-            if (btnAddExercise.isDisabled()) {
-                btnAddExercise.setDisable(false);
-            }
+            btnAddExercise.setDisable(!btnAddExercise.isDisabled());
 
             // to getRoutine
             routine.get(getWorkName()).remove("exercise");
@@ -183,6 +180,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             workoutSelected.get().getChildren().remove(exerciseSelected.get().getParent());
             exerciseSelected = Optional.empty();
         }
+        workoutSelected.ifPresent(i -> {
+
+        });
     }
 
     @Override
@@ -209,7 +209,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
      * completely processed.
      */
     public void initialize() {
-        observer.getExercises().forEach((section, exs) -> {
+        ViewsHandler.getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
             exercisePane.getTabs().add(newSection);
             final VBox workout = new VBox();

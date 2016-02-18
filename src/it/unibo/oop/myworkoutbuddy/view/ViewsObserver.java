@@ -47,7 +47,7 @@ public interface ViewsObserver {
      * 
      */
     Map<String, Set<String>> getExercises();
-    
+
     /**
      * Ask Controller to save routine in the database.
      */
@@ -81,5 +81,17 @@ public interface ViewsObserver {
      *         if data are correct, false otherwise.
      */
     boolean setUserData();
+
+    /**
+     * 
+     * @return true
+     *         if user results are saved.
+     */
+    boolean addResults();
+
+    /**
+     * Ask Controller to logout the user.
+     */
+    void logoutUser();
 
 }

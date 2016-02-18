@@ -114,15 +114,16 @@ public final class FxWindowFactory {
      * @param imagePath
      *            to load the image.
      */
-    public static void showDialog(final String title, final String message, final Optional<String> imagePath) {
-        final Alert alert = new Alert(AlertType.INFORMATION);
+    public static void showDialog(final String title, final String message, final Optional<String> imagePath,
+            final AlertType alertType) {
+        final Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        if (imagePath.isPresent()) {
-            final ImageView imageView = new ImageView(new Image(imagePath.get()));
+        imagePath.ifPresent(i -> {
+            final ImageView imageView = new ImageView(new Image(i));
             alert.setGraphic(imageView);
-        }
+        });
         alert.showAndWait();
     }
 

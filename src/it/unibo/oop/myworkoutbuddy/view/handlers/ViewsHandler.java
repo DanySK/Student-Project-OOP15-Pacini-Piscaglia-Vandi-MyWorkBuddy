@@ -9,7 +9,7 @@ import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.getHandler;
 
 /**
  * 
@@ -22,27 +22,27 @@ public final class ViewsHandler implements AppViews {
 
     @Override
     public AccessView getAccessView() {
-        return FxWindowFactory.getHandler();
+        return (AccessView) getHandler();
     }
 
     @Override
     public CreateRoutineView getCreateRoutineView() {
-        return FxWindowFactory.getHandler();
+        return (CreateRoutineView) getHandler();
     }
 
     @Override
     public RegistrationView getRegistrationView() {
-        return FxWindowFactory.getHandler();
+        return (RegistrationView) getHandler();
     }
 
     @Override
     public SelectRoutineView getSelectRoutineView() {
-        return FxWindowFactory.getHandler();
+        return (SelectRoutineView) getHandler();
     }
 
     @Override
     public UserSettingsView getUserSettingsView() {
-        return FxWindowFactory.getHandler();
+        return (UserSettingsView) getHandler();
     }
 
     @Override
@@ -56,7 +56,7 @@ public final class ViewsHandler implements AppViews {
      * @return view
      *         observer.
      */
-    public static ViewsObserver getObserver() {
+    static ViewsObserver getObserver() {
         return observer;
     }
 

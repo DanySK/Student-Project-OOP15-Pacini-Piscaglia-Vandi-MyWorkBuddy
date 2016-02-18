@@ -1,6 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -20,8 +19,6 @@ public final class StatisticsHandler {
     @FXML
     private PieChart pieChart;
 
-    private ViewsObserver observer = ViewsHandler.getObserver();
-    
     @FXML
     private void viewPie() {
         pieChart.setLabelLineLength(10);
