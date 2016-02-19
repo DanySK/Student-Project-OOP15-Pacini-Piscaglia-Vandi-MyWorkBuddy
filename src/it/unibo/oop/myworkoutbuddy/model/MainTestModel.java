@@ -61,6 +61,8 @@ public class MainTestModel {
         System.out.println("\n ==== BODY MASS : ");
         System.out.println(" TrendBodyMass = " + model.trendBodyMass());
 
+        System.out.println("\n ==== BMI CURRENT USER : ");
+        System.out.println(" Bmi Current User = " + model.calculateBMI());
     }
 
     /**

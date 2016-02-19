@@ -9,21 +9,31 @@ import java.util.stream.Collectors;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
-
 /**
- * 
- * Informations about User's activities :
- * Account, Data, Measure, Training, TrainingCard.
- * -------------------------------------------------------------
- */
+ Informations about User's activities :
+ Account, Data, Measure, Training, TrainingCard.
+
+    account : account
+    person : user's general data
+
+    measureList : list of body periodic measure
+    workoutList : list of training sessions done/to do
+    routineList : list of available Routine
+*/
 public class UserImpl implements User {
 
     private Account account;
     private Person person;
 
+    private static final  double FACTOR_BMR = 66.5;
+    private static final double FACTOR_WEIGHT = 13.75;
+    private static final double FACTOR_HEIGHT = 5.003;
+    private static final double FACTOR_AGE = 6.775;
+
     private List<BodyData> measureList;     // list of body periodic measure
     private List<Workout> workoutList;    // list of training sessions done/to do
     private List<WorkoutRoutine> routineList;    // list of available Routine
+
     /**
      * 
      */
@@ -43,10 +53,18 @@ public class UserImpl implements User {
         this.workoutList = new ArrayList<>();
         this.routineList = new ArrayList<>();
     }
+
+    /**
+     * 
+     */
     @Override
     public Account getAccount() {
         return this.account;
     }
+
+    /**
+     * 
+     */
     @Override
     public Person getPerson() {
         return this.person;
@@ -59,6 +77,7 @@ public class UserImpl implements User {
     public List<BodyData> getMeasureList() {
         return this.measureList;
     }
+
     /**
      * 
      */
@@ -66,6 +85,7 @@ public class UserImpl implements User {
     public List<Workout> getWorkoutList() {
         return this.workoutList;
     }
+
     /**
      * 
      */
@@ -74,21 +94,55 @@ public class UserImpl implements User {
         return this.routineList;
     }
 
+    /**
+     * 
+     */
     @Override
     public void addMesure(final BodyData bodyMeasure) {
         this.measureList.add(bodyMeasure);
     }
+
+    /**
+     * 
+     */
     @Override
     public void addWorkout(final Workout workout) {
         this.workoutList.add(workout);
     }
+
+    /**
+     * 
+     */
     @Override
     public void addRoutine(final WorkoutRoutine routine) {
         this.routineList.add(routine);
     }
+
+    /**
+     * 
+     */
     @Override
     public void upDateStatus() {
     }
+
+    /**
+     * 
+     * @return list of BMI values 
+     */
+    @Override
+    public List<Double> calculateBMI() {
+        final List<Double> listBMI = new ArrayList<>();
+        this.getMeasureList().stream().forEach(i -> {
+            final Double cm = i.getBodyMeasure().get(Body.Measure.HEIGHT);
+            final Double kg = i.getBodyMeasure().get(Body.Measure.WEIGHT);
+            final Integer age = this.getPerson().getAge();
+            final Double bmiValue = FACTOR_BMR + (FACTOR_WEIGHT * kg) + (FACTOR_HEIGHT * cm) - (FACTOR_AGE * age);
+            listBMI.add(bmiValue);
+        });
+
+        return listBMI;
+    }
+
     /**
      * 
      * @return list of performance scores of all workouts
@@ -124,11 +178,7 @@ public class UserImpl implements User {
      */
     @Override
     public Map<BodyZone, Double> performanceBodyZone() {
-        final Map<BodyZone, Double> mapBodyZone = new HashMap<>();
-        final Map<BodyPart, Double> mapBodyPart = this.performanceBodyPart();
-        this.mapPartZone(mapBodyZone, mapBodyPart);
-
-        return mapBodyZone;
+        return this.mapBodyZone(this.performanceBodyPart());
     }
 
     /**
@@ -150,27 +200,16 @@ public class UserImpl implements User {
      */
     @Override
     public Map<BodyZone, Double> timeBodyZone() {
-        final Map<BodyZone, Double> mapBodyZone = new HashMap<>();
-        final Map<BodyPart, Double> mapBodyPart = this.timeBodyPart();
-        this.mapPartZone(mapBodyZone, mapBodyPart);
-
-        return mapBodyZone;
+        return this.mapBodyZone(this.timeBodyPart());
     }
 
-    //         System.out.println(tempUser.getMeasureList().get(0).getBodyMass());
     /**
      * 
      * @return the trending of a human body
      */
     @Override
     public List<Double> trendBodyMass() {
-        final List<Double> bodyMassList = new ArrayList<>();
-
-        this.getMeasureList().forEach(i -> {
-            bodyMassList.add(i.getBodyMass());
-        });
-        return bodyMassList;
-        //return this.getMeasureList().stream().mapToDouble(i -> i.getBodyMass()).toArray();
+        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
     }
 
     /**
@@ -208,17 +247,21 @@ public class UserImpl implements User {
 
     /**
      * map each BodyPart in the specific BodyZone
-     * @param mapBodyZone
      * @param mapBodyPart
      */
-    private void mapPartZone(final Map<BodyZone, Double> mapBodyZone, final Map<BodyPart, Double> mapBodyPart) {
+    private Map<BodyZone, Double> mapBodyZone(final Map<BodyPart, Double> mapBodyPart) {
+
+        final Map<BodyZone, Double> mapBodyZone = new HashMap<>();
+
         mapBodyPart.keySet().forEach(i -> {
-        final BodyZone bodyZone = Body.getBodyZone(i.getName());
-        final Double value = mapBodyPart.get(i);
-        mapBodyZone.merge(bodyZone, value, (d, d1) -> { 
-            return value + mapBodyZone.get(bodyZone); 
+            final BodyZone bodyZone = Body.getBodyZone(i.getName());
+            final Double value = mapBodyPart.get(i);
+            mapBodyZone.merge(bodyZone, value, (d0, d1) -> {
+                return value + mapBodyZone.get(bodyZone);
+            });
         });
-    });
+
+        return mapBodyZone;
     }
 
     @Override
@@ -227,46 +270,5 @@ public class UserImpl implements User {
                 + "\n account = " + this.account 
                 + "\n Person = " + this.person
                 + "]";
-    }
-}
-
-/**
- * 
- * risolvere problema del package private
- */
-class AccountImpl implements Account {
-
-    private String userName;
-    private String password;
-    private String avatar;
-    /**
-     * 
-     * @param userName String
-     * @param password String
-     * @param avatar String
-     */
-    AccountImpl(final String userName, final String password, final String avatar) {
-        this.userName = userName;
-        this.password = password;
-        this.avatar = avatar;
-    }
-
-    @Override
-    public String getUserName() {
-        return this.userName;
-    }
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getAvatar() {
-        return this.avatar;
-    }
-
-    @Override
-    public String toString() {
-        return "AccountImpl [userName = " + this.userName + ", password = " + this.password + "]";
     }
 }

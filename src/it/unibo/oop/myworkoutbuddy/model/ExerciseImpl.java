@@ -3,11 +3,17 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Set;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
- * 
- *
- */
+ Class Exercise to personalized a single exercise
+
+     description : the exercise description
+     gymTool : the exercise tool used
+     settingValue : value of setting tool
+     repetition : number of repetition of exercise
+     time : duration time of a single repetition
+     pause : pause time between two consecutive repetitions
+     numSession : number of cycles (cycle = repetition + pause).
+*/
 public final class ExerciseImpl implements Exercise {
 
     private String description;

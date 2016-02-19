@@ -12,7 +12,6 @@ import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
  * User's data of a single training session. (WorkOut)
  * -------------------------------------------------------------
  */
- 
 public interface Workout {
 
     /**

@@ -3,7 +3,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Map;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
  * GymTool available for training.
  * -------------------------------------------------------------

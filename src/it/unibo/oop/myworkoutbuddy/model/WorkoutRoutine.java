@@ -4,10 +4,9 @@ import java.util.List;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
- * Training card : composed by an exercises list (Exercise list).
+ * WorkoutRoutine : composed by an exercises list (Exercise list).
  * -------------------------------------------------------------
  */
- 
 public interface WorkoutRoutine {
     /**
      * 
@@ -40,11 +39,13 @@ public interface WorkoutRoutine {
      */
     List<Exercise> getExerciseList();
 
-    /**
+    /*
      * funzione temporanea.
      * @return indicizzate string
-     */
+
     String getNumExercise();
+    */
+
     /**
      * 
     *

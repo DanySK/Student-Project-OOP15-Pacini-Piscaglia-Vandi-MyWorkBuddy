@@ -9,12 +9,18 @@ import java.util.Optional;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
-
-
 /**
- * 
- *
- */
+ Application data.
+
+     listUser : list of all memorized users
+     listAccount : list of all memorized accounts
+     listGymTool : list of all memorized GymTool
+
+     mapGymTool : map <name of GymTool, GymTool>
+
+     loginUser : current User
+     currentAccount : current Account
+*/
 public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
 
     private List<User> listUser;
@@ -235,6 +241,15 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     @Override
     public List<Double> trendBodyMass() {
         return this.getLoginUser().trendBodyMass();
+    }
+
+    /**
+     * 
+     * @return trend of current user' s body mass
+     */
+    @Override
+    public List<Double> calculateBMI() {
+        return this.getLoginUser().calculateBMI();
     }
 
     private boolean isAccount(final Account account) {

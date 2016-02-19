@@ -7,15 +7,15 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 
- *  this contains body data :
- *  BodyZone    : enum of body zone for mapping;
- *  BodyPart    : enum of body parts/muscles;
- *  BodyMeasure : enum of body parts for measurement data;
- *  BodyTarget  : enum of aims for each single training;
- *
- *  BodyData : class for body parts measurement.
- */
+ Class Body to manage human body
+
+     Body contains body data :
+     BodyZone    : enum of body zone for mapping;
+     BodyPart    : enum of body parts/muscles;
+     BodyMeasure : enum of body parts for measurement data;
+     BodyTarget  : enum of aims for each single training;
+     BodyData : class for body parts measurement.
+*/
 public final class Body {
 
     private static Map<BodyZone, Set<String>> bodyMap;  // mapping muscles -> zones
@@ -214,6 +214,7 @@ public final class Body {
         public LocalDate getDate() {
             return this.data;
         }
+
         /**
          * 
          * @return bodyMass of a single person

@@ -1,11 +1,12 @@
 package it.unibo.oop.myworkoutbuddy.model;
-
 /**
- * 
- * User's general data.
- * -------------------------------------------------------------
- */
- 
+ User's general data.
+
+     firstName : name 
+     lastName : surname
+     age : 
+     email : 
+*/
 public class PersonImpl implements Person {
 
     private String firstName;

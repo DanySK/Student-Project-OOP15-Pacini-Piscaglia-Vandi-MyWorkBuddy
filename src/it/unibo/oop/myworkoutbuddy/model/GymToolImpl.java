@@ -5,11 +5,17 @@ import java.util.Map;
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
- * 
- *
- */
+ Class for using a GymTool
+
+     code : alphabetic identifier code
+     name : 
+     imageFile : optional field for an image
+     numTools : number of Tools available in the Gym
+     valueMin : minimum value to setting a tool
+     valueMax : maximum value to setting a tool
+     bodyMap : map<body parts, percentage values> (BodyPart = a single muscle of the body, Percentage value = % of muscle using the tool).
+*/
 public final class GymToolImpl implements GymTool {
 
     private String code;
@@ -19,7 +25,7 @@ public final class GymToolImpl implements GymTool {
     private final int valueMin;
     private final int valueMax;
 
-    private Map<BodyPart, Double> bodyMap; // map of body parts and percentage values
+    private Map<BodyPart, Double> bodyMap;
 
     /**
      * 

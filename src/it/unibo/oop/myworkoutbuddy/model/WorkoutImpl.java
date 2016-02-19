@@ -9,22 +9,24 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
- * 
- * User's data of a single training session. (WorkOut)
- * -------------------------------------------------------------
- */
- 
+ User's data of a single workout session.
+
+     date : session date
+     time : hour of start session
+     state : session state (done/to do)
+     routine : WorkoutRoutine used
+     scoreList : list of got scores with card in session.
+*/
 public class WorkoutImpl implements Workout {
 
     private static final int PERCENTAGE = 100;
 
-    private LocalDate date;     // session date
-    private LocalTime time;  // hour of start session
-    private boolean state;  // session state (done/to do)
-    private WorkoutRoutine routine;  // workout routine used
-    private List<Integer> scoreList;    // list of got scores with card in session
+    private LocalDate date;
+    private LocalTime time;
+    private boolean state;
+    private WorkoutRoutine routine;
+    private List<Integer> scoreList;
 
     /**
      * 
@@ -96,13 +98,11 @@ public class WorkoutImpl implements Workout {
     @Override
     public Double getWorkoutScore() {
         final List<Double> normalizedList = new ArrayList<>();
-        int index = 0;
-
-        for (Exercise exr : routine.getExerciseList()) {
-            final Double score = exr.getNormalizedScore((double) this.getScoreList().get(index++));
+        final List<Exercise> listExercise = routine.getExerciseList();
+        listExercise.forEach(i -> {
+            final Double score = this.getScore(listExercise, i);
             normalizedList.add(score);
-        }
-
+        });
         return normalizedList.stream().mapToDouble(i->i.doubleValue()).average().getAsDouble();
     }
 
@@ -113,18 +113,14 @@ public class WorkoutImpl implements Workout {
     public Map<BodyPart, Double> getPercentuageParts() {
         final Map<BodyPart, Double> scoreMap = new HashMap<>();
         final Map<BodyPart, Integer> timesMap = new HashMap<>();
-        int index = 0;
-
-        for (Exercise exr : routine.getExerciseList()) {
-            final Double score = exr.getNormalizedScore((double) this.getScoreList().get(index++));
-            final Map<BodyPart, Double> percentageMap = exr.getGymTool().getBodyMap();
-
+        final List<Exercise> listExercise = routine.getExerciseList();
+        listExercise.forEach(i -> {
+            final Double score = this.getScore(listExercise, i);
+            final Map<BodyPart, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(scoreMap, percentageMap, score);
             this.countMap(timesMap, percentageMap);
-        }
-
+        });
         this.midMap(scoreMap, timesMap);
-
         return scoreMap;
     }
 
@@ -138,10 +134,8 @@ public class WorkoutImpl implements Workout {
         this.routine.getExerciseList().forEach(i -> {
             final Double minutes = this.timeExercise(i);
             final Map<BodyPart, Double> percentageMap = i.getGymTool().getBodyMap();
-
             this.percentageMapping(timeMap, percentageMap, minutes);
         });
-
         return timeMap;
     }
 
@@ -151,12 +145,10 @@ public class WorkoutImpl implements Workout {
         this.routine.getExerciseList().forEach(i -> {
             final Double minutes = this.timeExercise(i);
             final String code = i.getGymTool().getCode();
-
             this.mergeMap(timeMap, code, minutes, (d1, d2) -> {
                 return timeMap.get(code) + minutes;
             });
         });
-
         return timeMap;
     }
 
@@ -179,10 +171,17 @@ public class WorkoutImpl implements Workout {
 
     private void midMap(final Map<BodyPart, Double>scoreMap, final Map<BodyPart, Integer>timesMap) {
         timesMap.keySet().forEach(i -> {
-            final int num = timesMap.get(i);
-            final Double mid = (num > 0) ? scoreMap.get(i) / num : 0.00;
-            scoreMap.put(i, mid);
+            final Integer num = timesMap.get(i);
+            this.mergeMap(scoreMap, i, 0.00, (d1, d2)-> {
+                return scoreMap.get(i) / num;
+            });
         });
+    }
+
+    private Double getScore(final List<Exercise> list, final Exercise exerc) {
+        final int pos = routine.getExerciseList().indexOf(exerc);
+        final Double score = exerc.getNormalizedScore((double) this.getScoreList().get(pos));
+        return score;
     }
 
     private <X, Y> void mergeMap(final Map<X, Y> mapMerge, final X source, final Y data, final BiFunction<Y, Y, Y> function) {

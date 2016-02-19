@@ -5,15 +5,18 @@ import java.util.List;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
- * Training card : composed by an exercises list (Exercise list).
- * -------------------------------------------------------------
- */
- 
+ WorkoutRoutine : routine composed by an exercises list (Exercise list).
+
+     name : name/code
+     target : scope
+     dayAweek : list of days in a week dedicated
+     exerciseList : list of exercises
+*/
 public class WorkoutRoutineImpl implements WorkoutRoutine {
 
-    private String name; // name/code of a Workout
-    private Target target; // scope of Workout
-    private List<DayInWeek> dayAweek; // list of days in a week dedicated to the Workout
+    private String name;
+    private Target target;
+    private List<DayInWeek> dayAweek;
     private List<Exercise> exerciseList;
 
     /**
@@ -36,6 +39,7 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
     public void addDay(final DayInWeek day) {
         this.dayAweek.add(day);
     }
+
     /**
      * 
      * @param exercise GymExercise
@@ -63,24 +67,6 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
     @Override
     public List<Exercise> getExerciseList() {
         return this.exerciseList;
-    }
-    /**
-     * temporanea funazione x stampa indicizzata.
-     * @return
-     */
-    @Override
-    public String getNumExercise() {
-        String returnNumString = "";
-
-        /*
-         * obiettivo terziario : usare metodo append x efficienza to String
-         */
-        this.exerciseList.forEach(i-> {
-            final String temp = "" + this.exerciseList.indexOf(i) + "" + i.toString() + " ";
-            returnNumString.concat(temp);
-        });
-
-        return returnNumString;
     }
 
     @Override

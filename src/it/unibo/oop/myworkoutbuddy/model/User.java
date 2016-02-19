@@ -6,8 +6,6 @@ import java.util.Map;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
-
-
 /**
  * 
  * Informations about User's activities :
@@ -63,6 +61,12 @@ public interface User {
 
     /**
      * 
+     * @return trend of BMI values 
+     */
+    List<Double> calculateBMI();
+
+    /**
+     * 
      * @return list of performanced scores.
      */
     List<Double> performanceScore();
@@ -102,29 +106,4 @@ public interface User {
      * @return a map made of associations between a GymTool code and its relative time of use
      */
     Map<String, Double> timeGymTool();
-}
-
-/**
- * Class to access system.
- * -------------------------------------------------------------
- risolvere problema del package privato // o innestarla o altro file
- */
-interface Account {
-    /**
-     * 
-     * @return userName
-     */
-    String getUserName();
-
-    /**
-     * 
-     * @return userPassword
-     */
-    String getPassword();
-
-    /**
-     * 
-     * @return avatar of Account
-     */
-    String getAvatar();
 }

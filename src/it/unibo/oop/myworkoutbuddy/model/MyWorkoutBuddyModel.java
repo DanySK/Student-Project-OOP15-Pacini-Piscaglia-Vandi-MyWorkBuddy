@@ -7,7 +7,6 @@ import java.util.Optional;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
-
 /**
  * 
  * 
@@ -131,4 +130,10 @@ public interface MyWorkoutBuddyModel {
      * @return list of trendBodyMass for the current User
      */
     List<Double> trendBodyMass();
+
+    /**
+     * 
+     * @return list of trendBMI for the current User
+     */
+    List<Double> calculateBMI();
 }
