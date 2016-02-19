@@ -1,4 +1,10 @@
 syntax: glob
+*.class
+*_gen
+*_trace
+*/target/*
+*hs_err_pid*
+*/bin/*
 
 # Eclipse
 .classpath

@@ -232,7 +232,7 @@ public class UserImpl implements User {
 
 /**
  * 
- *
+ * risolvere problema del package private
  */
 class AccountImpl implements Account {
 

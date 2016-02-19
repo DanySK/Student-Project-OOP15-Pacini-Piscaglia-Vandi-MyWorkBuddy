@@ -107,6 +107,7 @@ public interface User {
 /**
  * Class to access system.
  * -------------------------------------------------------------
+ risolvere problema del package privato // o innestarla o altro file
  */
 interface Account {
     /**
