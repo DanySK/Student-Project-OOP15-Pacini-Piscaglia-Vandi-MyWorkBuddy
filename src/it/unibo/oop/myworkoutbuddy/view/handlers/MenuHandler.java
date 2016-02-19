@@ -5,6 +5,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -123,6 +125,9 @@ public final class MenuHandler {
                 i.addEventHandler(MouseEvent.MOUSE_CLICKED, setView);
             }
         });
+        final Button btn = (Button) btnContainer.getChildren().get(3);
+        Image imageDecline = new Image("http://www.mytechlogy.com/view/images/Settings.png");
+        btn.setGraphic(new ImageView(imageDecline));
     }
 
     @FXML

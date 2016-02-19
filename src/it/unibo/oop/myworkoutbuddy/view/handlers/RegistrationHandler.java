@@ -61,7 +61,11 @@ public final class RegistrationHandler implements RegistrationView {
 
     @Override
     public int getAge() {
-        return Integer.parseInt(txtAge.getText());
+        try {
+            return Integer.parseInt(txtAge.getText());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     @Override
@@ -86,12 +90,20 @@ public final class RegistrationHandler implements RegistrationView {
 
     @Override
     public int getHeight() {
-        return Integer.parseInt(txtHeight.getText());
+        try {
+            return Integer.parseInt(txtHeight.getText());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     @Override
     public double getWeight() {
-        return Double.parseDouble(txtWeight.getText());
+        try {
+            return Double.parseDouble(txtWeight.getText());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     @FXML

@@ -24,15 +24,15 @@
             <Label id="borderedLabel" alignment="CENTER" text="Name" translateX="100.0" />
             <Label id="borderedLabel" alignment="CENTER" text="Surname" translateX="100.0" GridPane.rowIndex="1" />
             <Label id="borderedLabel" alignment="CENTER" text="Age" translateX="100.0" GridPane.rowIndex="2" />
-            <TextField fx:id="txtName" GridPane.columnIndex="1" />
-            <TextField fx:id="txtSurname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="txtAge" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="name" GridPane.columnIndex="1" />
+            <TextField fx:id="surname" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="age" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label id="borderedLabel" alignment="CENTER" text="Email" translateX="100.0" GridPane.rowIndex="3" />
-            <TextField fx:id="txtEmail" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label id="borderedLabel" alignment="CENTER" text="Password" translateX="100.0" GridPane.rowIndex="4" />
             <Label id="borderedLabel" text="Password confirm" translateX="100.0" GridPane.rowIndex="5" />
-            <PasswordField fx:id="txtPassConfirm" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <PasswordField fx:id="passwordConfirm" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
