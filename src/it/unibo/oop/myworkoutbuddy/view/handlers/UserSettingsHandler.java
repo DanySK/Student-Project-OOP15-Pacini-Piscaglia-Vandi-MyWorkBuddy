@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 /**
  * 
@@ -18,61 +20,79 @@ import javafx.scene.control.TextField;
 public final class UserSettingsHandler implements UserSettingsView {
 
     @FXML
-    private TextField txtSurname;
+    private TextField surname;
 
     @FXML
-    private TextField txtName;
+    private TextField name;
 
     @FXML
-    private TextField txtEmail;
+    private TextField email;
 
     @FXML
-    private TextField txtAge;
+    private TextField age;
 
     @FXML
-    private PasswordField txtPassword;
+    private PasswordField password;
 
     @FXML
-    private PasswordField txtPassConfirm;
+    private PasswordField passwordConfirm;
 
     @Override
     public String getNewName() {
-        return txtName.getText();
+        return name.getText();
     }
 
     @Override
     public String getNewSurname() {
-        return txtSurname.getText();
+        return surname.getText();
     }
 
     @Override
     public int getNewAge() {
-        return Integer.parseInt(txtAge.getText());
+        try {
+            return Integer.parseInt(age.getText());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     @Override
     public String getNewEmail() {
-        return txtEmail.getText();
+        return email.getText();
     }
 
     @Override
     public String getNewPassword() {
-        return txtPassword.getText();
+        return password.getText();
     }
 
     @Override
     public String getPasswordConfirm() {
-        return txtPassConfirm.getText();
+        return passwordConfirm.getText();
     }
 
     @FXML
     private void saveChanges() {
-        if (ViewsHandler.getObserver().setUserData()) {
+        if (getObserver().setUserData()) {
             showDialog("Data saved!", "Your data has been successfully saved!", Optional.empty(),
                     AlertType.ERROR);
         } else {
             showDialog("Wrong data", "You have inserted wrong data", Optional.empty(), AlertType.ERROR);
         }
+    }
+
+    /**
+     * It fills textFields with current user data.
+     */
+    public void initialize() {
+        final GridPane txtPane = (GridPane) name.getParent();
+        getObserver().getUserData().forEach((field, data) -> {
+            System.out.println(field + "-" + data);
+            txtPane.getChildren().stream()
+            .filter(txt -> txt.getId().equals(field))
+            .map(f -> (TextField) f)
+            .forEach(f -> f.setText(data.toString()));
+        });
     }
 
 }

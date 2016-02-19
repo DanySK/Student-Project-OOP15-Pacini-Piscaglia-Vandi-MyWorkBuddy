@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import java.util.Map;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -7,6 +9,8 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 /**
  * Handler of the accessView. It show user statistics fetched from the database.
@@ -14,26 +18,27 @@ import javafx.scene.chart.XYChart.Series;
 public final class StatisticsHandler {
 
     @FXML
-    private LineChart<String, String> weightChart;
-
+    private VBox chartBox;
+    
     @FXML
-    private PieChart pieChart;
+    private GridPane indexPane;
 
-    @FXML
-    private void viewPie() {
-        pieChart.setLabelLineLength(10);
-        pieChart.setLegendSide(Side.LEFT);
-        pieChart.setData(FXCollections.observableArrayList(
-                new PieChart.Data("Chest", 13),
-                new PieChart.Data("Legs", 25),
-                new PieChart.Data("Arms", 10),
-                new PieChart.Data("Shoulders", 22),
-                new PieChart.Data("Crunch", 30)));
+    private PieChart buildPieChart(final Map<String, Number> data) {
+        final PieChart exDistribution = new PieChart();
+         exDistribution.setLabelLineLength(10);
+         exDistribution.setLegendSide(Side.LEFT);
+         exDistribution.setData(FXCollections.observableArrayList(
+         new PieChart.Data("Chest", 13),
+         new PieChart.Data("Legs", 25),
+         new PieChart.Data("Arms", 10),
+         new PieChart.Data("Shoulders", 22),
+         new PieChart.Data("Crunch", 30)));
+        return exDistribution;
     }
 
-    @FXML
-    private void viewWeightChart() {
-        final Series<String, String> series = new XYChart.Series<>();
+    private LineChart<String, Number> buildWeightChart(final Map<String, Number> data) {
+        
+        final Series<String, Number> series = new XYChart.Series<>();
         series.setName("Serie");
         series.getData().add(new XYChart.Data("Jan", 23));
         series.getData().add(new XYChart.Data("Feb", 14));
@@ -47,16 +52,31 @@ public final class StatisticsHandler {
         series.getData().add(new XYChart.Data("Oct", 17));
         series.getData().add(new XYChart.Data("Nov", 29));
         series.getData().add(new XYChart.Data("Dec", 25));
-        weightChart.getData().add(series);
+        
+        //weightChart.getData().add(series);
+        return null;
     }
 
     /**
      * Called to initialize a controller after its root element has been
      * completely processed.
+     * In this class this method builds the charts.
      */
     public void initialize() {
-        viewPie();
-        viewWeightChart();
+        ViewsHandler.getObserver().getChartsData().forEach((chart, data) -> {
+            switch (chart) {
+
+            case "exercisesDistribution":
+                chartBox.getChildren().add(buildPieChart(data));
+                break;
+
+            case "weightChart":
+                chartBox.getChildren().add(buildWeightChart(data));
+                break;
+
+            default:
+            }
+        });
     }
 
 }

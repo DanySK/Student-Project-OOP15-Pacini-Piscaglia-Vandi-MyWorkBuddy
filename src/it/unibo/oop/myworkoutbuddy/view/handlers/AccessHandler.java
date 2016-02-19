@@ -35,12 +35,12 @@ public final class AccessHandler implements AccessView {
      */
     @FXML
     private void login() {
-        if (ViewsHandler.getObserver().loginUser()) {
+        //if (ViewsHandler.getObserver().loginUser()) {
             replaceWindow("Menu.fxml", txtID.getScene());
-        } else {
-            showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
-                    AlertType.ERROR);
-        }
+        //} else {
+        //    showDialog("Uncorrect data", "Your username or password isn't correct", Optional.empty(),
+        //            AlertType.ERROR);
+        //}
     }
 
     /**
