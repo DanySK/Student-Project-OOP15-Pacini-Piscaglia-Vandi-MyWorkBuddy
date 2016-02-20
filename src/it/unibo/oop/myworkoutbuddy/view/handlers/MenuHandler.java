@@ -125,9 +125,7 @@ public final class MenuHandler {
                 i.addEventHandler(MouseEvent.MOUSE_CLICKED, setView);
             }
         });
-        final Button btn = (Button) btnContainer.getChildren().get(3);
-        Image imageDecline = new Image("http://www.mytechlogy.com/view/images/Settings.png");
-        btn.setGraphic(new ImageView(imageDecline));
+        btnContainer.getChildren().stream().map(i -> (Button) i).forEach(btn -> setButtonImages(btn));
     }
 
     @FXML
@@ -137,7 +135,35 @@ public final class MenuHandler {
 
     @FXML
     private void hideMenu() {
-        new MenuBarAgent(btnContainer).start();
+        //new MenuBarAgent(btnContainer).start();
+    }
+
+    private void setButtonImages(final Button btn) {
+        Image image = null;
+        switch (btn.getText()) {
+
+        case "Create Routine":
+            image = new Image(
+                    "https://chakraos.org/wiki/images/thumb/0/0d/Address-book-new.png/48px-Address-book-new.png");
+            break;
+
+        case "Select Routine":
+            image = new Image(
+                    "http://files.softicons.com/download/application-icons/minicons-icons-by-kyo-tux/png/48/Forward.png");
+            break;
+
+        case "Statistics":
+            image = new Image("http://www.fancyicons.com/free-icons/103/office/png/48/chart_48.png");
+            break;
+
+        case "Settings":
+            image = new Image("http://www.mytechlogy.com/view/images/Settings.png");
+            break;
+            
+        default:
+            break;
+        }
+        btn.setGraphic(new ImageView(image));
     }
 
     /**

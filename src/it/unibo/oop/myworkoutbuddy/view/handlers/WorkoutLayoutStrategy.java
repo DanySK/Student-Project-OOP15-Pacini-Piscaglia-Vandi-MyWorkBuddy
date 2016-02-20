@@ -7,18 +7,20 @@ import it.unibo.oop.myworkoutbuddy.util.Pair;
 import javafx.scene.Node;
 
 /**
- * 
+ * The strategy used to build routine GUI and fetch results in
+ * SelectRoutineView.
  *
  */
 public interface WorkoutLayoutStrategy {
 
     /**
-     * @param exercises
-     *            data structure with workout informations.
-     *            It is composed by a map exerciseName- list of repetitions.
+     * @param workouts
+     *            data structure with workouts informations.
+     *            It is composed by a map workoutName - exercises contained in a
+     *            map exerciseName- list of repetitions.
      * @return a javaFx node to add workout to the scene.
      */
-    Node addWorkoutNode(Map<String, List<Integer>> exercises);
+    Node addWorkoutNodes(Map<String, Map<String, List<Integer>>> workouts);
 
     /**
      * 

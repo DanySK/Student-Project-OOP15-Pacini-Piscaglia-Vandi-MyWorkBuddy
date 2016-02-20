@@ -11,11 +11,14 @@ import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * 
+ * Implementation of the building strategy of the GUI routine.
+ * It also provides a method to encapsulate the strategy to get exercises
+ * results.
  *
  */
 public class WorkoutLayout implements WorkoutLayoutStrategy {
@@ -23,14 +26,20 @@ public class WorkoutLayout implements WorkoutLayoutStrategy {
     private static final int FIELD_WIDTH = 45;
 
     @Override
-    public Node addWorkoutNode(final Map<String, List<Integer>> exercises) {
-        final VBox exercisesList = new VBox();
-        exercises.forEach((exName, repetitions) -> {
-            final HBox box = new HBox();
-            exerciseBoxBuild(box, exName, repetitions);
-            exercisesList.getChildren().add(box);
+    public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
+        final VBox workout = new VBox();
+        workouts.forEach((workName, exercises) -> {
+
+            final VBox exercisesList = new VBox();
+            exercises.forEach((exName, repetitions) -> {
+
+                final HBox box = new HBox();
+                exerciseBoxBuild(box, exName, repetitions);
+                exercisesList.getChildren().add(box);
+            });
+            workout.getChildren().add(new TitledPane(workName, exercisesList));
         });
-        return exercisesList;
+        return workout;
     }
 
     @Override

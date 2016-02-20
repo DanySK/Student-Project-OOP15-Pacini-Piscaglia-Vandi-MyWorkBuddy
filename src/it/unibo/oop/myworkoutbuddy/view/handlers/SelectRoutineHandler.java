@@ -181,11 +181,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             final Tab newRoutine = new Tab(String.valueOf(routineIndex));
             newRoutine.setOnSelectionChanged(descriptionHandler);
             tabRoutine.getTabs().add(newRoutine);
-            final VBox workout = new VBox();
-            i.getZ().forEach((workName, exercises) -> {
-                workout.getChildren().add(new TitledPane(workName, workoutLayout.addWorkoutNode(exercises)));
-            });
-            newRoutine.setContent(workout);
+            newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getZ()));
         });
     }
 

@@ -26,16 +26,15 @@
 }
 
 .tab{
-    -fx-padding: 10.0;
+    -fx-padding: 10;
     -fx-background-color: orange;
     -fx-cursor: hand;
-    -fx-background-radius: 30.0;
-    -fx-effect: dropshadow( one-pass-box , black , 5.0 , 3.0 , 0.0 , 0.0 );
+    -fx-background-radius: 20.0;
+    -fx-font-weight:bold;
 }
 
 .tab-pane > .tab-header-area > .tab-header-background{
 	-fx-background-color: orange;
-	-fx-background-radius: 20.0;
 }
 
 .root{

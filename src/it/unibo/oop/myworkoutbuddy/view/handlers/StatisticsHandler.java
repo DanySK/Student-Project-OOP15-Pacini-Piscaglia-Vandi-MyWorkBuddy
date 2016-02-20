@@ -69,8 +69,7 @@ public final class StatisticsHandler {
 
             nCharts++;
             if (nCharts > CHARTS_PER_TAB || nCharts == 1) {
-
-                // to add dinamically tab considering chart number.
+                // to add dynamically tab considering chart number.
                 currentBox = new VBox();
                 currentBox.setId("statBox");
                 final Tab newChartTab = new Tab("Charts");
@@ -133,6 +132,7 @@ public final class StatisticsHandler {
     private LineChart<String, Number> buildLineChart(final Map<String, Number> data, final String chartName) {
 
         final LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
+        lineChart.setTitle(chartName);
         final Series<String, Number> series = new XYChart.Series<>();
         series.setName(chartName);
         data.forEach((ex, value) -> series.getData().add(new XYChart.Data<String, Number>(ex, value)));
