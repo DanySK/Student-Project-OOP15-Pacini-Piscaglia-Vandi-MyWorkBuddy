@@ -43,3 +43,28 @@
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30.0, 0.5, 0.0, 0.0); 
 }
+
+.tab{
+    -fx-padding: 10.0;
+    -fx-background-color: grey;
+    -fx-cursor: hand;
+    -fx-background-radius: 30.0;
+    -fx-effect: dropshadow( one-pass-box , black , 5.0 , 3.0 , 0.0 , 0.0 );
+}
+
+.tab-pane > .tab-header-area > .tab-header-background{
+	-fx-background-color: grey;
+	-fx-background-radius: 20.0;
+}
+
+#statBox{
+	-fx-background-color:lightBlue;
+	-fx-background-radius: 20.0;
+}
+
+#indexLabel{
+	-fx-padding: 15.0;
+	-fx-font-weight: bold;
+	-fx-font-size: 18;
+	-fx-text-fill: black;
+}

@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +56,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     private static final int REPS_MAX_WIDTH = 40;
 
+    private static final String FONT_SIZE = "-fx-font-size: 18";
+
     private Optional<VBox> workoutSelected = Optional.empty();
 
     private Optional<Label> exerciseSelected = Optional.empty();
@@ -72,17 +75,17 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private final EventHandler<MouseEvent> selectExerciseHandler = i -> {
 
         if (exerciseSelected.isPresent() && exerciseSelected.get() != i.getSource()) {
-            exerciseSelected.get().setStyle("-fx-font-size: 18");
+            exerciseSelected.get().setStyle(FONT_SIZE);
         }
 
         final Label selLabel = ((Label) i.getSource());
-        selLabel.setStyle("-fx-font-weight:bold; -fx-background-color: lightBlue; -fx-font-size: 18");
+        selLabel.setStyle("-fx-font-weight:bold; -fx-background-color: lightBlue;" + FONT_SIZE);
         exerciseSelected = Optional.of(selLabel);
     };
 
     @FXML
     private void saveRoutine() {
-        if (ViewsHandler.getObserver().saveRoutine()) {
+        if (getObserver().saveRoutine()) {
             showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
@@ -146,7 +149,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private void showExercise() {
         if (exerciseSelected.isPresent()) {
             showDialog(exerciseSelected.get().getText(),
-                    ViewsHandler.getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
+                    getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
                             .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"),
                     AlertType.INFORMATION);
         } else {
@@ -242,13 +245,13 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         prova.put("Massa", new HashSet<>(Arrays.asList("alzate", "panca")));
         prova.put("Forza", new HashSet<>(Arrays.asList("crunch", "elastici")));
         //
-        ViewsHandler.getObserver().getExercises().forEach((section, exs) -> {
+        getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
             exercisePane.getTabs().add(newSection);
             final VBox workout = new VBox();
             exs.forEach(ex -> {
                 final Label exLabel = new Label(ex);
-                exLabel.setStyle("-fx-font-size: 18");
+                exLabel.setStyle(FONT_SIZE);
                 exLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
                 workout.getChildren().add(exLabel);
             });
