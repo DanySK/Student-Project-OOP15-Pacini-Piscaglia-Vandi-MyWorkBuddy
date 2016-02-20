@@ -42,16 +42,17 @@ public interface Workout {
 
     /**
      * 
-     * @param indExercise int
+     * @param index Integer
      * @param score Integer
      */
-    void addScore(final int indExercise, Integer score);
+    void addScore(final Integer index, final Integer score);
 
     /**
      * 
-     * @return all the scores got for an exercise
+     * @return list of scores of map
      */
     List<Integer> getScoreList();
+
     /**
      * 
      * @return average of normalized scores
@@ -76,4 +77,10 @@ public interface Workout {
      * @return a map of GymTool codes and relatives numbers of time used
      */
     Map<String, Double> getTimeTools();
+
+    /**
+     * 
+     * @return a map of GymTool codes and relatives numbers of score obtained
+     */
+    Map<String, Double> getScoreTools();
 }

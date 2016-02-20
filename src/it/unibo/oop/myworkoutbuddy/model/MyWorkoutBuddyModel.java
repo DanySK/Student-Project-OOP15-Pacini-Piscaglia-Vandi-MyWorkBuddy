@@ -93,19 +93,19 @@ public interface MyWorkoutBuddyModel {
      * 
      * @return list of performance score for the current User
      */
-    List<Double> performanceScore();
+    List<Double> scoreWorkout();
 
     /**
      * 
      * @return map of performanceBodyPart for the current User
      */
-    Map<BodyPart, Double> performanceBodyPart();
+    Map<BodyPart, Double> scoreBodyPart();
 
     /**
      * 
      * @return map of performanceBodyZone for the current User
      */
-    Map<BodyZone, Double> performanceBodyZone();
+    Map<BodyZone, Double> scoreBodyZone();
 
     /**
      * 
@@ -128,12 +128,16 @@ public interface MyWorkoutBuddyModel {
     /**
      * 
      * @return list of trendBodyMass for the current User
+     * @throws IllegalArgumentException 
+     * @throws NullPointerException 
      */
-    List<Double> trendBodyMass();
+    List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException;
 
     /**
      * 
      * @return list of trendBMI for the current User
+     * @throws IllegalArgumentException 
+     * @throws NullPointerException 
      */
-    List<Double> calculateBMI();
+    List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException;
 }

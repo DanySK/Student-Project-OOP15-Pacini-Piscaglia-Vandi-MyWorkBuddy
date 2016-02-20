@@ -61,27 +61,29 @@ public interface User {
 
     /**
      * 
-     * @return trend of BMI values 
+     * @return a list of BMI calculated
+     * @throws IllegalArgumentException an exception for not negative value check
+     * @throws NullPointerException an exception for null value check
      */
-    List<Double> calculateBMI();
+    List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException;
 
     /**
      * 
      * @return list of performanced scores.
      */
-    List<Double> performanceScore();
+    List<Double> scoreWorkout();
 
     /**
      * 
      * @return Improved Performance of Body (muscles level).
      */
-    Map<BodyPart, Double> performanceBodyPart();
+    Map<BodyPart, Double> scoreBodyPart();
 
     /**
      * 
      * @return Improved Performance of Body (parts level).
      */
-    Map<BodyZone, Double> performanceBodyZone();
+    Map<BodyZone, Double> scoreBodyZone();
 
     /**
      * 
@@ -106,4 +108,10 @@ public interface User {
      * @return a map made of associations between a GymTool code and its relative time of use
      */
     Map<String, Double> timeGymTool();
+
+    /**
+     * 
+     * @return a map made of associations between a codeTool and its relative increment/decrement of use
+     */
+    Map<String, Double> scoreGymTool();
 }

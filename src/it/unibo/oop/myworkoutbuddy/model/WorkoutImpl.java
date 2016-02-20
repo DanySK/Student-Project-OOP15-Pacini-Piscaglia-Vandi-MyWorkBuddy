@@ -2,11 +2,11 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
@@ -26,7 +26,8 @@ public class WorkoutImpl implements Workout {
     private LocalTime time;
     private boolean state;
     private WorkoutRoutine routine;
-    private List<Integer> scoreList;
+
+    private Map<Exercise, Integer> scoreMap;
 
     /**
      * 
@@ -39,7 +40,7 @@ public class WorkoutImpl implements Workout {
         this.time = time;
         this.state = false;
         this.routine = routine;
-        this.scoreList = new ArrayList<>();
+        this.scoreMap = new HashMap<>();
     }
 
     /**
@@ -51,20 +52,23 @@ public class WorkoutImpl implements Workout {
         this.state = state;
     }
 
+
     /**
      * 
-     * @param score Integer
+     * @param indExercise
+     * @param score
      */
-    @Override
-    public void addScore(final int indExercise, final Integer score) {
-        final GymTool temp = this.routine.getExerciseList().get(indExercise).getGymTool();
-        final Integer min = temp.getMinValue();
-        final Integer max = temp.getMaxValue();
-        // check score to be in : [min max]
-        final Integer newScore = (score < min) ? min : (score > max) ? max : score;
+   @Override
+   public void addScore(final Integer index, final Integer score) {
+       final Exercise exerc = this.routine.getExerciseList().get(index);
+       final GymTool gymTool = exerc.getGymTool();
+       final Integer min = gymTool.getMinValue();
+       final Integer max = gymTool.getMaxValue();
+       // check score to be in : [min max]
+       final Integer newScore = (score < min) ? min : (score > max) ? max : score;
 
-        this.scoreList.add(indExercise, newScore);
-    }
+       this.scoreMap.put(exerc, newScore);
+   }
 
     @Override
     public LocalDate getDate() {
@@ -81,9 +85,23 @@ public class WorkoutImpl implements Workout {
         return this.state;
     }
 
+
     @Override
     public List<Integer> getScoreList() {
-        return this.scoreList;
+        /*
+         * version for each
+        final List<Integer> listScore = new ArrayList<>();
+
+        final List<Exercise> listExercise = this.getRoutine().getExerciseList();
+        listExercise.forEach(i -> {
+            final Integer score = this.scoreMap.get(i);
+            listScore.add(score);
+        });
+        return listScore;
+        */
+        return this.getRoutine().getExerciseList().
+                stream().map(i -> this.scoreMap.get(i)).
+                collect(Collectors.toList());
     }
 
     @Override
@@ -97,13 +115,20 @@ public class WorkoutImpl implements Workout {
      */
     @Override
     public Double getWorkoutScore() {
-        final List<Double> normalizedList = new ArrayList<>();
-        final List<Exercise> listExercise = routine.getExerciseList();
+        /*
+         * version for each
+        final List<Double> listScore = new ArrayList<>();
+        final List<Exercise> listExercise = this.getRoutine().getExerciseList();
         listExercise.forEach(i -> {
-            final Double score = this.getScore(listExercise, i);
-            normalizedList.add(score);
+            final Double score = this.normalizedScore(i);
+            listScore.add(score);
         });
-        return normalizedList.stream().mapToDouble(i->i.doubleValue()).average().getAsDouble();
+        */
+        final List<Double> listScore = this.getRoutine().getExerciseList().
+                stream().map(i -> this.normalizedScore(i)).
+                collect(Collectors.toList());
+
+        return listScore.stream().mapToDouble(i->i.doubleValue()).average().getAsDouble();
     }
 
     /**
@@ -115,7 +140,8 @@ public class WorkoutImpl implements Workout {
         final Map<BodyPart, Integer> timesMap = new HashMap<>();
         final List<Exercise> listExercise = routine.getExerciseList();
         listExercise.forEach(i -> {
-            final Double score = this.getScore(listExercise, i);
+            final Double score = this.normalizedScore(i); //this.normalizedScore(listExercise, i);
+
             final Map<BodyPart, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(scoreMap, percentageMap, score);
             this.countMap(timesMap, percentageMap);
@@ -143,13 +169,30 @@ public class WorkoutImpl implements Workout {
     public Map<String, Double> getTimeTools() {
         final Map<String, Double> timeMap = new HashMap<>();
         this.routine.getExerciseList().forEach(i -> {
-            final Double minutes = this.timeExercise(i);
             final String code = i.getGymTool().getCode();
+            final Double minutes = this.timeExercise(i);
             this.mergeMap(timeMap, code, minutes, (d1, d2) -> {
                 return timeMap.get(code) + minutes;
             });
         });
         return timeMap;
+    }
+
+    /**
+     * 
+     * @return map of GymToolScore
+     */
+    @Override
+    public Map<String, Double> getScoreTools() {
+        final Map<String, Double> scoreMap = new HashMap<>();
+        this.routine.getExerciseList().forEach(i -> {
+            final String code = i.getGymTool().getCode();
+            final Double score = this.normalizedScore(i);
+            this.mergeMap(scoreMap, code, score, (d1, d2) -> {
+                return scoreMap.get(code) + score;
+            });
+        });
+        return scoreMap;
     }
 
     private void percentageMapping(final Map<BodyPart, Double> valueMap, final Map<BodyPart, Double> percentageMap, final Double value) {
@@ -178,14 +221,14 @@ public class WorkoutImpl implements Workout {
         });
     }
 
-    private Double getScore(final List<Exercise> list, final Exercise exerc) {
-        final int pos = routine.getExerciseList().indexOf(exerc);
-        final Double score = exerc.getNormalizedScore((double) this.getScoreList().get(pos));
-        return score;
-    }
-
     private <X, Y> void mergeMap(final Map<X, Y> mapMerge, final X source, final Y data, final BiFunction<Y, Y, Y> function) {
         mapMerge.merge(source, data, function);
+    }
+
+    private Double normalizedScore(final Exercise exerc) {
+        final Integer score = this.scoreMap.get(exerc);
+
+        return exerc.getNormalizedScore((double) score);
     }
 
     /**
@@ -200,11 +243,13 @@ public class WorkoutImpl implements Workout {
     @Override
     public String toString() {
         return "\n\n WorkoutImpl [date = " + date + ", time = " + time + ", state = " + state 
-                + "\n Routine = " + routine.getName() 
-                + "\n ScoreList = " + scoreList
+                + "\n Routine = " + routine.getName()
+                + "\n RoutineScore = " + this.getScoreList()
                 + "\n WorkoutScore = " + this.getWorkoutScore()
                 + "\n WorkoutParts = " + this.getPercentuageParts()
-                + "\n TimeParts = " + this.getTimeParts() 
+                + "\n TimeParts = " + this.getTimeParts()
+                + "\n TimeTools = " + this.getTimeTools()
+                + "\n ScoreTools = " + this.getScoreTools()
                 + "]";
     }
 

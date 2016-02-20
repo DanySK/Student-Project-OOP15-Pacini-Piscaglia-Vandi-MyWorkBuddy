@@ -29,8 +29,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
 
     private Map<String, GymTool> mapGymTool;
 
-    private Optional<User> loginUser;
-    private Optional<Account> currentAccount;
+    private Optional<User> currentUser = Optional.empty();
+    private Optional<Account> currentAccount = Optional.empty();
 
     /**
      * 
@@ -75,7 +75,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         }
 
         this.currentAccount = Optional.of(account);
-        this.listUser.add(new UserImpl(account, person));
+        this.listUser.add(new UserImpl(account, person)); // add this user to list user
     }
 
     /**
@@ -102,6 +102,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         this.currentAccount = Optional.of(account);
         this.listAccount.add(this.currentAccount.get());
     }
+
     /**
      * 
      * @param userName String
@@ -109,11 +110,10 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      */
     @Override
     public void loginUser(final String userName, final String password) {
-        this.loginUser = Optional.empty();
         // final Account tempAccount = new UserImpl().new AccountImpl(userName, password);
         this.listUser.forEach(t-> {
             if (t.getAccount().getUserName().equals(userName) && t.getAccount().getPassword().equals(password)) {
-                this.loginUser = Optional.of(t);
+                this.currentUser = Optional.of(t);
             }
         });
     }
@@ -124,7 +124,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      */
     @Override
     public User getLoginUser() {
-        return this.loginUser.get();
+        return this.currentUser.get();
     }
 
     /**
@@ -168,7 +168,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      */
     @Override
     public boolean isCurrentUser() {
-        return this.loginUser != null;
+        return this.currentUser.isPresent();
     }
 
     /**
@@ -185,8 +185,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      * @return a list of measure for current user's body
      */
     @Override
-    public List<Double> performanceScore() {
-        return this.getLoginUser().performanceScore();
+    public List<Double> scoreWorkout() {
+        return this.getLoginUser().scoreWorkout();
     }
 
     /**
@@ -194,8 +194,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      * @return a list of measure for current user's body
      */
     @Override
-    public Map<BodyPart, Double> performanceBodyPart() {
-        return this.getLoginUser().performanceBodyPart();
+    public Map<BodyPart, Double> scoreBodyPart() {
+        return this.getLoginUser().scoreBodyPart();
     }
 
     /**
@@ -203,8 +203,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      * @return a list of measure for current user's body
      */
     @Override
-    public Map<BodyZone, Double> performanceBodyZone() {
-        return this.getLoginUser().performanceBodyZone();
+    public Map<BodyZone, Double> scoreBodyZone() {
+        return this.getLoginUser().scoreBodyZone();
     }
 
     /**
@@ -239,17 +239,19 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      * @return trend of current user' s body mass
      */
     @Override
-    public List<Double> trendBodyMass() {
+    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
         return this.getLoginUser().trendBodyMass();
     }
 
     /**
      * 
      * @return trend of current user' s body mass
+     * @throws InvalidValueException 
+     * @throws NullPointerException 
      */
     @Override
-    public List<Double> calculateBMI() {
-        return this.getLoginUser().calculateBMI();
+    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
+        return this.getLoginUser().trendBodyBMI();
     }
 
     private boolean isAccount(final Account account) {

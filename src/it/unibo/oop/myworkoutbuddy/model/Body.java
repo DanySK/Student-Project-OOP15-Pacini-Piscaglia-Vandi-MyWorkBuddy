@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 /**
  Class Body to manage human body
 
@@ -195,6 +194,17 @@ public final class Body {
      *
      */
     public class BodyData {
+        private static final double ZERO_VALUE = 0.00;
+        /*
+         * factors for BMI calculation
+         */
+        private static final  double FACTOR_BMR = 66.5;
+        private static final double FACTOR_WEIGHT = 13.75;
+        private static final double FACTOR_HEIGHT = 5.003;
+        private static final double FACTOR_AGE = 6.775;
+
+        private static final double METER_TO_CM = 100.00;
+
         private LocalDate data;     // date of measurement
         private Map<Measure, Double> bodyMeasure;  // value measure for each body measure
 
@@ -216,19 +226,50 @@ public final class Body {
         }
 
         /**
-         * 
-         * @return bodyMass of a single person
+         * @return BodyMass value.
+         * @throws NullPointerException exception for not null values
+         * @throws IllegalArgumentException exception for not negative values
          */
-        public Double getBodyMass() {
-            // to calculate second BodyMeasure values
+        public Double getBodyMass() throws NullPointerException, IllegalArgumentException {
+            final Double mass = this.bodyMeasure.get(Body.Measure.WEIGHT);
+            final Double height = this.bodyMeasure.get(Body.Measure.HEIGHT);
 
-            final Double mass, height;
-
-            mass = this.bodyMeasure.get(Body.Measure.WEIGHT);
-            height = this.bodyMeasure.get(Body.Measure.HEIGHT);
+            if (mass == null || height == null) {
+                System.out.println("BodyMassException = " + new NullPointerException());
+                return ZERO_VALUE;
+            }
+            if (mass <= 0.00 || height <= 0.00) {
+                System.out.println("BodyMass Exception = " + new IllegalArgumentException());
+                return ZERO_VALUE;
+            }
 
             return (mass / (height * height));
         }
+
+        /**
+         * 
+         * @param age Integer
+         * @return BMI value 
+         * @throws NullPointerException exception for not null values
+         * @throws IllegalArgumentException exception for not negative values
+         */
+        public Double getBodyBMI(final Integer age) throws NullPointerException, IllegalArgumentException {
+            final Double height = this.getBodyMeasure().get(Body.Measure.HEIGHT);
+            final Double mass = this.getBodyMeasure().get(Body.Measure.WEIGHT);
+
+            if (height == null || mass == null || age == null) {
+                System.out.println("BodyBMIException = " + new NullPointerException());
+                return ZERO_VALUE;
+            }
+
+            if (height <= 0 || mass <= 0 || age <= 0) {
+                System.out.println("BodyBMI = " + new IllegalArgumentException());
+                return ZERO_VALUE;
+            }
+
+            return (FACTOR_BMR + (FACTOR_WEIGHT * mass) + (FACTOR_HEIGHT * METER_TO_CM * height) - (FACTOR_AGE * age));
+        }
+
         /**
          * 
          * @return measureData
