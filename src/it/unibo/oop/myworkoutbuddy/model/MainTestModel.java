@@ -12,7 +12,7 @@ public class MainTestModel {
 
     //private final Integer SETTING_VALUE = 0;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NullPointerException, IllegalArgumentException {
         final MyWorkoutBuddyModel model;
 
         System.out.println("\n Start Model");
@@ -36,6 +36,10 @@ public class MainTestModel {
 
         /* --- PRINTS ------*/
 
+        /* LOGIN USER : SETTA L' UTENTE CORRENTE DEL MODEL,
+           DOPO DI KE TUTTE LE FUNZIONI DEL MODEL LAVORANO IN BASE ALL' UTENTE CORRENTE IPOSTATO */
+
+        /* --- SCEGLIERE SE LAVORARE CON LOGIN USER OPPURE CON MODEL X USARE LE FUNZIONI DI STATISTIKE RELATIVE AL CURRENT USER ------*/
         final User loginUser = model.getLoginUser();
 
         System.out.println("\n USER : " + loginUser);
@@ -49,21 +53,20 @@ public class MainTestModel {
         System.out.println(" WorkoutList = " + loginUser.getWorkoutList());
 
         System.out.println("\n ==== STATISTICS SCORES : ");
-        System.out.println(" PerformanceScore = " + model.performanceScore());
-        System.out.println(" PerformanceBodyPart = " + model.performanceBodyPart());
-        System.out.println(" PerformanceBodyZone = " + model.performanceBodyZone());
+        System.out.println(" ScoreWorkout = " + model.scoreWorkout());
+        System.out.println(" ScoreBodyPart = " + model.scoreBodyPart());
+        System.out.println(" ScoreBodyZone = " + model.scoreBodyZone());
+        System.out.println(" ScoreGymTool = " + loginUser.scoreGymTool());
 
         System.out.println("\n ==== STATISTICS TIME : ");
         System.out.println(" TimeBodyPart = " + model.timeBodyPart());
         System.out.println(" TimeBodyZone = " + model.timeBodyZone());
         System.out.println(" TimeGymTool = " + model.timeGymTool());
 
-        System.out.println("\n ==== BODY MASS : ");
+        System.out.println("\n ==== BODY STATISTICS : ");
         System.out.println(" TrendBodyMass = " + model.trendBodyMass());
-
-        System.out.println("\n ==== BMI CURRENT USER : ");
-        System.out.println(" Bmi Current User = " + model.calculateBMI());
-    }
+        System.out.println(" TrendBodyBMI = " + model.trendBodyBMI());
+}
 
     /**
      * test method for try data building.
@@ -163,14 +166,14 @@ public class MainTestModel {
 
         /* set scores */
         for (int i = 0; i < workRoutine.getExerciseList().size(); i++) {
-            newWorkout.addScore(0, 3 + i + k);
+            newWorkout.addScore(i, 3 + i + k);
         }
         logUser.addWorkout(newWorkout);
     }
 
     /*Add a new measure body*/
     final BodyData newBodyData = Body.build().new BodyData(LocalDate.now());
-    newBodyData.addBodyMeasure(Body.Measure.HEIGHT, 1.80);
+    newBodyData.addBodyMeasure(Body.Measure.HEIGHT, 1.70);
     newBodyData.addBodyMeasure(Body.Measure.WEIGHT, 65.00);
     newBodyData.addBodyMeasure(Body.Measure.UPPER_BODY, 82.00);
     newBodyData.addBodyMeasure(Body.Measure.LOWER_BODY, 63.00);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
@@ -24,11 +25,6 @@ public class UserImpl implements User {
 
     private Account account;
     private Person person;
-
-    private static final  double FACTOR_BMR = 66.5;
-    private static final double FACTOR_WEIGHT = 13.75;
-    private static final double FACTOR_HEIGHT = 5.003;
-    private static final double FACTOR_AGE = 6.775;
 
     private List<BodyData> measureList;     // list of body periodic measure
     private List<Workout> workoutList;    // list of training sessions done/to do
@@ -128,19 +124,19 @@ public class UserImpl implements User {
     /**
      * 
      * @return list of BMI values 
+     * @throws NullPointerException
+     * @throws IllegalArgumentException
      */
     @Override
-    public List<Double> calculateBMI() {
+    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
+        /*
         final List<Double> listBMI = new ArrayList<>();
-        this.getMeasureList().stream().forEach(i -> {
-            final Double cm = i.getBodyMeasure().get(Body.Measure.HEIGHT);
-            final Double kg = i.getBodyMeasure().get(Body.Measure.WEIGHT);
-            final Integer age = this.getPerson().getAge();
-            final Double bmiValue = FACTOR_BMR + (FACTOR_WEIGHT * kg) + (FACTOR_HEIGHT * cm) - (FACTOR_AGE * age);
-            listBMI.add(bmiValue);
+        this.getMeasureList().forEach(i -> {
+            listBMI.add(i.getBodyBMI(this.getPerson().getAge()));
         });
-
-        return listBMI;
+        */
+        //return listBMI;
+        return this.getMeasureList().stream().map(i->i.getBodyBMI(this.getPerson().getAge())).collect(Collectors.toList());
     }
 
     /**
@@ -148,37 +144,38 @@ public class UserImpl implements User {
      * @return list of performance scores of all workouts
      */
     @Override
-    public List<Double> performanceScore() {
-    final List<Double> newList = this.getWorkoutList().stream().map(Workout::getWorkoutScore).collect(Collectors.toList());
+    public List<Double> scoreWorkout() {
+    return this.getWorkoutList().stream().map(Workout::getWorkoutScore).collect(Collectors.toList());
         /*
         final List<Double> newList = new ArrayList<>();
         this.getWorkoutList().forEach(i-> {
             newList.add(i.getWorkoutScore());
         });
         */
-        return newList;
     }
 
     /**
      * @return a map <BodyPart, Score> of all workout scores mapped in all BodyParts
      */
     @Override
-    public Map<BodyPart, Double> performanceBodyPart() {
-        final Map<BodyPart, Double> performanceMap = new HashMap<>();
+    public Map<BodyPart, Double> scoreBodyPart() {
+        final Map<BodyPart, Double> scoreMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<BodyPart, Double> tempMap = i.getPercentuageParts();
-            this.mapSum(performanceMap, tempMap);
+            this.mapSumGen(scoreMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
+            });
         });
 
-        return performanceMap;
+        return scoreMap;
     }
 
     /**
      * @return a map <BodyZone, Score> of all workout scores mapped in all BodyZones
      */
     @Override
-    public Map<BodyZone, Double> performanceBodyZone() {
-        return this.mapBodyZone(this.performanceBodyPart());
+    public Map<BodyZone, Double> scoreBodyZone() {
+        return this.mapBodyZone(this.scoreBodyPart());
     }
 
     /**
@@ -189,7 +186,9 @@ public class UserImpl implements User {
         final Map<BodyPart, Double> timeMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<BodyPart, Double> tempMap = i.getTimeParts();
-            this.mapSum(timeMap, tempMap);
+            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
+            });
         });
 
         return timeMap;
@@ -208,7 +207,7 @@ public class UserImpl implements User {
      * @return the trending of a human body
      */
     @Override
-    public List<Double> trendBodyMass() {
+    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
         return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
     }
 
@@ -221,26 +220,43 @@ public class UserImpl implements User {
         final Map<String, Double> timeMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<String, Double> tempMap = i.getTimeTools();
-            tempMap.keySet().forEach(h -> {
-                timeMap.merge(h, tempMap.get(h), (d1, d2) -> {
-                    return timeMap.get(h) + tempMap.get(h);
-                });
+            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
             });
         });
         return timeMap;
     }
 
     /**
+     * 
+     * @return a map made of associations between a codeTool and its relative increment/decrement of use
+     */
+    @Override
+    public Map<String, Double> scoreGymTool() {
+        final Map<String, Double> scoreMap = new HashMap<>();
+        this.getWorkoutList().forEach(i-> {
+            final Map<String, Double> tempMap = i.getScoreTools();
+            this.mapSumGen(scoreMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
+            });
+        });
+        return scoreMap;
+    }
+
+    /**
+     * 
      * Sum between two Maps : destMap = destMap + sourceMap
+     * @param <Y>
+     * @param <X>
      * @param destMap
      * @param sourceMap
      */
-    private void mapSum(final Map<BodyPart, Double> destMap, final Map<BodyPart, Double> sourceMap) {
+    private <X, Y> void mapSumGen(final Map<X, Y> destMap, final Map<X, Y> sourceMap, final BiFunction<Y, Y, Y> function) {
         sourceMap.keySet().forEach(t -> {
-            final Double newValue = sourceMap.get(t);
-            final Double oldValue = destMap.get(t);
-            destMap.merge(t, newValue, (d, d1) -> {
-                return newValue + oldValue;
+            final Y newValue = sourceMap.get(t);
+            final Y oldValue = destMap.get(t);
+            destMap.merge(t, newValue, (val1, val2) -> {
+                return function.apply(newValue, oldValue);
             });
         });
     }
