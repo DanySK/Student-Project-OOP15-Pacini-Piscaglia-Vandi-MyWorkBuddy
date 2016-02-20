@@ -44,7 +44,7 @@ public class MainTestModel {
 
         System.out.println("\n USER : " + loginUser);
 
-        System.out.println("\n MeasureList = " + model.getMeasureList());
+        System.out.println("\n MeasureList = " + loginUser.getMeasureList());
 
         System.out.println("\n ==== ROUTINE LIST  ==== ");
         System.out.println(" Routine List = " + loginUser.getRoutineList());
@@ -53,19 +53,19 @@ public class MainTestModel {
         System.out.println(" WorkoutList = " + loginUser.getWorkoutList());
 
         System.out.println("\n ==== STATISTICS SCORES : ");
-        System.out.println(" ScoreWorkout = " + model.scoreWorkout());
-        System.out.println(" ScoreBodyPart = " + model.scoreBodyPart());
-        System.out.println(" ScoreBodyZone = " + model.scoreBodyZone());
+        System.out.println(" ScoreWorkout = " + loginUser.scoreWorkout());
+        System.out.println(" ScoreBodyPart = " + loginUser.scoreBodyPart());
+        System.out.println(" ScoreBodyZone = " + loginUser.scoreBodyZone());
         System.out.println(" ScoreGymTool = " + loginUser.scoreGymTool());
 
         System.out.println("\n ==== STATISTICS TIME : ");
-        System.out.println(" TimeBodyPart = " + model.timeBodyPart());
-        System.out.println(" TimeBodyZone = " + model.timeBodyZone());
-        System.out.println(" TimeGymTool = " + model.timeGymTool());
+        System.out.println(" TimeBodyPart = " + loginUser.timeBodyPart());
+        System.out.println(" TimeBodyZone = " + loginUser.timeBodyZone());
+        System.out.println(" TimeGymTool = " + loginUser.timeGymTool());
 
         System.out.println("\n ==== BODY STATISTICS : ");
-        System.out.println(" TrendBodyMass = " + model.trendBodyMass());
-        System.out.println(" TrendBodyBMI = " + model.trendBodyBMI());
+        System.out.println(" TrendBodyMass = " + loginUser.trendBodyMass());
+        System.out.println(" TrendBodyBMI = " + loginUser.trendBodyBMI());
 }
 
     /**

@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
 /**
  Application data.
 
@@ -169,89 +165,6 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     @Override
     public boolean isCurrentUser() {
         return this.currentUser.isPresent();
-    }
-
-    /**
-     * 
-     * @return a list of measure for current user's body
-     */
-    @Override
-    public List<BodyData> getMeasureList() {
-        return this.getLoginUser().getMeasureList();
-    }
-
-    /**
-     * 
-     * @return a list of measure for current user's body
-     */
-    @Override
-    public List<Double> scoreWorkout() {
-        return this.getLoginUser().scoreWorkout();
-    }
-
-    /**
-     * 
-     * @return a list of measure for current user's body
-     */
-    @Override
-    public Map<BodyPart, Double> scoreBodyPart() {
-        return this.getLoginUser().scoreBodyPart();
-    }
-
-    /**
-     * 
-     * @return a list of measure for current user's body
-     */
-    @Override
-    public Map<BodyZone, Double> scoreBodyZone() {
-        return this.getLoginUser().scoreBodyZone();
-    }
-
-    /**
-     * 
-     * @return a list of time body part for the current user
-     */
-    @Override
-    public Map<BodyPart, Double> timeBodyPart() {
-        return this.getLoginUser().timeBodyPart();
-    }
-
-    /**
-     * 
-     * @return a list of time body zone for the current user
-     */
-    @Override
-    public Map<BodyZone, Double> timeBodyZone() {
-        return this.getLoginUser().timeBodyZone();
-    }
-
-    /**
-     * 
-     * @return a list of gym tool times for the current user
-     */
-    @Override
-    public Map<String, Double> timeGymTool() {
-        return this.getLoginUser().timeGymTool();
-    }
-
-    /**
-     * 
-     * @return trend of current user' s body mass
-     */
-    @Override
-    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
-        return this.getLoginUser().trendBodyMass();
-    }
-
-    /**
-     * 
-     * @return trend of current user' s body mass
-     * @throws InvalidValueException 
-     * @throws NullPointerException 
-     */
-    @Override
-    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
-        return this.getLoginUser().trendBodyBMI();
     }
 
     private boolean isAccount(final Account account) {

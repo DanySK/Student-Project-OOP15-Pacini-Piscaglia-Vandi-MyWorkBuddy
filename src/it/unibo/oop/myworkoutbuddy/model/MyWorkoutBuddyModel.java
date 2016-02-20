@@ -1,12 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
 /**
  * 
  * 
@@ -82,62 +77,4 @@ public interface MyWorkoutBuddyModel {
      * @return true if exists the current user
      */
     boolean isCurrentUser();
-
-    /**
-     * 
-     * @return a list of current user's body measures
-     */
-    List<BodyData> getMeasureList();
-
-    /**
-     * 
-     * @return list of performance score for the current User
-     */
-    List<Double> scoreWorkout();
-
-    /**
-     * 
-     * @return map of performanceBodyPart for the current User
-     */
-    Map<BodyPart, Double> scoreBodyPart();
-
-    /**
-     * 
-     * @return map of performanceBodyZone for the current User
-     */
-    Map<BodyZone, Double> scoreBodyZone();
-
-    /**
-     * 
-     * @return map of timeBodyPart for the current User
-     */
-    Map<BodyPart, Double> timeBodyPart();
-
-    /**
-     * 
-     * @return map of timeBodyZone for the current User
-     */
-    Map<BodyZone, Double> timeBodyZone();
-
-    /**
-     * 
-     * @return map of timeGymTool for the current User
-     */
-    Map<String, Double> timeGymTool();
-
-    /**
-     * 
-     * @return list of trendBodyMass for the current User
-     * @throws IllegalArgumentException 
-     * @throws NullPointerException 
-     */
-    List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException;
-
-    /**
-     * 
-     * @return list of trendBMI for the current User
-     * @throws IllegalArgumentException 
-     * @throws NullPointerException 
-     */
-    List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException;
 }
