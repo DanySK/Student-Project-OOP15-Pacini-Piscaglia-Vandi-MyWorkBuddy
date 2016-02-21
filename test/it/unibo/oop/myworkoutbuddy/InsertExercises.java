@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import it.unibo.oop.myworkoutbuddy.controller.Service;
+import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
+
 public class InsertExercises {
 
     private static final String STRENGTH = "Strength";
@@ -47,21 +50,12 @@ public class InsertExercises {
 
     private static final List<Map<String, Object>> EXERCISES;
 
-    // TEMPLATE
-    // final Map<String, Object> exerciseName = new HashMap<>();
-    // exerciseName.put("name", "");
-    // exerciseName.put("description", "");
-    // exerciseName.put("exerciseGoals", Arrays.asList());
-    // exerciseName.put("bodyParts", Arrays.asList());
-    // exerciseName.put("exerciseTypes", Arrays.asList());
-    // exerciseName.put("gymTools", Arrays.asList());
-
     @Test
     public void insertExercisesTest() {
         System.out.println(EXERCISES.size());
-        // final Service exercises = new MongoService("exercises");
-        // exercises.deleteAll();
-        // exercises.create(EXERCISES);
+        final Service exercises = new MongoService("exercises");
+        exercises.deleteAll();
+        exercises.create(EXERCISES);
     }
 
     static {
@@ -143,6 +137,7 @@ public class InsertExercises {
         chinUp.put("name", "Chin-Up");
         chinUp.put("description",
                 "The chin-up (also known as a chin or chinup) is a strength training exercise. People frequently do this exercise with the intention of strengthening muscles such as the latissimus dorsi and biceps, which extend the shoulder and flex the elbow, respectively.");
+        chinUp.put("bodyParts", Arrays.asList(BACK, BICEPS, SHOULDERS, ABDOMINALS, FOREARMS));
         chinUp.put("exerciseGoals", Arrays.asList(MASS, STRENGTH));
         chinUp.put("exerciseTypes", Arrays.asList(CALISTHENICS, BODYBUILDING));
         chinUp.put("gymTools", Arrays.asList(CHINUP_BAR, BODYWEIGHT));

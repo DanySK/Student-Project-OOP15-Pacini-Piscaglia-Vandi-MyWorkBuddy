@@ -108,6 +108,7 @@ public final class CRUDOperations {
         collection
                 .find(toBson(queryParams, true))
                 .forEach(addToList(l));
+        l.removeIf(m -> m.equals(null));
         return l;
     }
 

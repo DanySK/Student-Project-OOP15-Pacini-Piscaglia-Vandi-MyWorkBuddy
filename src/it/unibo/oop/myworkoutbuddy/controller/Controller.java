@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +21,6 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
-import it.unibo.oop.myworkoutbuddy.model.User;
 import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.util.UnmodifiableTriple;
@@ -41,15 +41,12 @@ public class Controller implements ViewsObserver {
     private final MyWorkoutBuddyModel model;
     private final AppViews views;
 
+    private Optional<String> currentUser;
+
     // Validation strategies
     private final Predicate<String> usernameValidator = u -> !isNull(u) && (u.length() >= MIN_USERNAME_LENGTH
             && u.length() <= MAX_USERNAME_LENGTH) && checkIfUserExists(u);
-    private final Predicate<String> emailValidator = e -> {
-        final Map<String, Object> param = new HashMap<>();
-        param.put("email", e);
-        return !isNull(e) && EmailValidator.getInstance().isValid(e)
-                && !SERVICES.get("userService").getOneByParams(param).isPresent();
-    };
+    private final Predicate<String> emailValidator = e -> !isNull(e) && EmailValidator.getInstance().isValid(e);
     private final Predicate<String> passwordValidator = p -> !isNull(p) && p.length() > MIN_PASSWORD_LENGTH;
     private final Predicate<String> nameValidator = n -> !isNull(n) && n.length() > 0;
     private final Predicate<Number> numberValidator = n -> !isNull(n) && Double.compare(n.doubleValue(), 0) > 0;
@@ -66,6 +63,7 @@ public class Controller implements ViewsObserver {
         this.model = requireNonNull(model);
         this.views = requireNonNull(views);
         views.setViewsObserver(this);
+        currentUser = Optional.empty();
     }
 
     @Override
@@ -80,7 +78,8 @@ public class Controller implements ViewsObserver {
             // TODO: use some password hashing library!
             final String password = views.getAccessView().getPassword();
             if (user.get().get("password").equals(password)) {
-                model.loginUser(username, password);
+                currentUser = Optional.of(username);
+                System.out.println(currentUser);
                 return true;
             }
         }
@@ -92,6 +91,7 @@ public class Controller implements ViewsObserver {
         checkIfUserIsNotLoggedIn();
         // Fields to validate
         final String username = views.getRegistrationView().getUsername();
+        // TODO: use some password hashing library!
         final String password = views.getRegistrationView().getPassword();
         final String firstName = views.getRegistrationView().getName();
         final String lastName = views.getRegistrationView().getSurname();
@@ -99,16 +99,19 @@ public class Controller implements ViewsObserver {
         final int age = views.getRegistrationView().getAge();
         final int height = views.getRegistrationView().getHeight();
         final double weight = views.getRegistrationView().getWeight();
-
         if (validate(username, usernameValidator) && validate(password, passwordValidator)
-                && validate(email, emailValidator) && validate(firstName, nameValidator)
-                && validate(lastName, nameValidator) && validate(age, numberValidator)
-                && validate(height, numberValidator) && validate(weight, numberValidator)) {
+                && validate(firstName, nameValidator) && validate(lastName, nameValidator)
+                && validate(age, numberValidator) && validate(height, numberValidator)
+                && validate(weight, numberValidator) && validate(email, emailValidator.and(e -> {
+                    final Map<String, Object> param = new HashMap<>();
+                    param.put("email", e);
+                    return !SERVICES.get("userService").getOneByParams(param).isPresent();
+                }))) {
             final Map<String, Object> newUser = new HashMap<>();
             newUser.put("username", username);
             newUser.put("password", password);
-            newUser.put("firstName", firstName);
-            newUser.put("lastName", lastName);
+            newUser.put("name", firstName);
+            newUser.put("surname", lastName);
             newUser.put("email", email);
             newUser.put("height", height);
             newUser.put("weight", weight);
@@ -121,7 +124,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public void logoutUser() {
-        // TODO
+        currentUser = Optional.empty();
     }
 
     @Override
@@ -133,25 +136,24 @@ public class Controller implements ViewsObserver {
 
     @Override
     public String getFavouriteTheme() {
-        final User loggedInUser = getLoggedInUser();
-        final Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("favouriteTheme", loggedInUser.getAccount().getUserName());
         final Optional<Map<String, Object>> user = SERVICES.get("userService")
-                .getOneByParams(queryParams);
+                .getOneByParams(currentUserUsernameAsQueryParam());
         final StringBuilder sb = new StringBuilder("");
         user.ifPresent(u -> sb.append(u.get("favouriteTheme")));
         return sb.toString();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Map<String, Set<String>> getExercises() {
-        return SERVICES.get("exerciseService").getAll().stream()
+        final List<Map<String, Object>> exercises = SERVICES.get("exerciseService").getAll();
+        return exercises.stream()
                 .collect(Collectors.toMap(
                         m -> (String) m.get("name"),
-                        m -> ((List<Object>) m.get("exerciseType")).stream()
-                                .map(o -> (String) o)
-                                .collect(Collectors.toSet())));
+                        m -> {
+                            return ((Collection<?>) m.get("bodyParts")).stream()
+                                    .map(o -> (String) o)
+                                    .collect(Collectors.toSet());
+                        }));
     }
 
     @Override
@@ -164,9 +166,8 @@ public class Controller implements ViewsObserver {
     @SuppressWarnings("unchecked")
     @Override
     public boolean saveRoutine() {
-        final User loggedInUser = getLoggedInUser();
         final Map<String, Object> id = new HashMap<>();
-        id.put("username", loggedInUser.getAccount().getUserName());
+        id.put("username", currentUser.get());
         id.put("routineId", SERVICES.get("routineService").getAll().stream()
                 .map(m -> (Map<String, Object>) m.get("id"))
                 .mapToInt(m -> (int) m.get("routineId"))
@@ -246,9 +247,9 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean setUserData() {
-        final String newPassword = views.getUserSettingsView().getNewPassword();
         final String newFirstName = views.getUserSettingsView().getNewName();
         final String newLastName = views.getUserSettingsView().getNewSurname();
+        final String newPassword = views.getUserSettingsView().getNewPassword();
         final int newAge = views.getUserSettingsView().getNewAge();
         final String newEmail = views.getUserSettingsView().getNewEmail();
         if (validate(newPassword, passwordValidator)
@@ -258,11 +259,11 @@ public class Controller implements ViewsObserver {
                 && validate(newEmail, emailValidator)) {
             final Map<String, Object> newUserData = new HashMap<>();
             newUserData.put("password", newPassword);
-            newUserData.put("firstName", newFirstName);
-            newUserData.put("lastName", newLastName);
+            newUserData.put("name", newFirstName);
+            newUserData.put("surname", newLastName);
             newUserData.put("email", newEmail);
             newUserData.put("age", newAge);
-            return SERVICES.get("userService").updateByParams(currentUserUsernameAsQueryParam(), newUserData) > 0;
+            return SERVICES.get("userService").updateByParams(currentUserUsernameAsQueryParam(), newUserData) >= 0;
         }
         return false;
     }
@@ -308,19 +309,12 @@ public class Controller implements ViewsObserver {
     }
 
     private void checkIfUserIsNotLoggedIn() {
-        Preconditions.checkState(model.getLoginUser() == null);
-    }
-
-    private User getLoggedInUser() {
-        final User loggedInUser = model.getLoginUser();
-        Preconditions.checkState(loggedInUser != null);
-        return loggedInUser;
+        Preconditions.checkState(!currentUser.isPresent());
     }
 
     private Map<String, Object> currentUserUsernameAsQueryParam() {
-        final User loggedInUser = getLoggedInUser();
         final Map<String, Object> username = new HashMap<>();
-        username.put("username", loggedInUser.getAccount().getUserName());
+        username.put("username", currentUser.get());
         return username;
     }
 
@@ -344,6 +338,45 @@ public class Controller implements ViewsObserver {
         services.put("chartService", new MongoService("charts"));
         services.put("userService", new MongoService("users"));
         SERVICES = Collections.unmodifiableMap(services);
+    }
+
+    private class Value<T> {
+
+        private T value = null;
+
+        public void set(final T value) {
+            this.value = requireNonNull(value);
+        }
+
+        public T get() {
+            return value;
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((value == null) ? 0 : value.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(final Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null || !(obj instanceof Value)) {
+                return false;
+            }
+            Value<?> other = (Value<?>) obj;
+            return value == null && other.value == null || value.equals(other.value);
+        }
+
+        @Override
+        public String toString() {
+            return value.toString();
+        }
+
     }
 
 }
