@@ -3,6 +3,7 @@ package it.unibo.oop.myworkoutbuddy;
 import java.io.IOException;
 
 import it.unibo.oop.myworkoutbuddy.controller.Controller;
+import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModelImpl;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler;
 import javafx.application.Application;
@@ -29,7 +30,7 @@ public class Main extends Application {
      *            not used.
      */
     public static void main(final String... args) {
-        new Controller(null, new ViewsHandler());
+        new Controller(new MyWorkoutBuddyModelImpl(), new ViewsHandler());
         launch(args);
     }
 

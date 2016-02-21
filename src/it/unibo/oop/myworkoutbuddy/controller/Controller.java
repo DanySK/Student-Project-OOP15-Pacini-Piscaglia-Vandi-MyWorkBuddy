@@ -42,12 +42,8 @@ public class Controller implements ViewsObserver {
     private final AppViews views;
 
     // Validation strategies
-    private final Predicate<String> usernameValidator = u -> {
-        final Map<String, Object> param = new HashMap<>();
-        param.put("username", u);
-        return !isNull(u) && (u.length() >= MIN_USERNAME_LENGTH && u.length() <= MAX_USERNAME_LENGTH)
-                && !SERVICES.get("userService").getOneByParams(param).isPresent();
-    };
+    private final Predicate<String> usernameValidator = u -> !isNull(u) && (u.length() >= MIN_USERNAME_LENGTH
+            && u.length() <= MAX_USERNAME_LENGTH) && checkIfUserExists(u);
     private final Predicate<String> emailValidator = e -> {
         final Map<String, Object> param = new HashMap<>();
         param.put("email", e);
@@ -67,24 +63,24 @@ public class Controller implements ViewsObserver {
      *            The refernce to the views
      */
     public Controller(final MyWorkoutBuddyModel model, final AppViews views) {
-        // this.model = requireNonNull(model); (this is the right one)
-        this.model = model; // Just for testing (to remove in future)
+        this.model = requireNonNull(model);
         this.views = requireNonNull(views);
         views.setViewsObserver(this);
     }
 
     @Override
     public boolean loginUser() {
-        // checkIfUserIsNotLoggedIn(); (to remove)
+        checkIfUserIsNotLoggedIn();
         final Map<String, Object> loginTry = new HashMap<>();
-        loginTry.put("username", views.getAccessView().getUsername());
+        final String username = views.getAccessView().getUsername();
+        loginTry.put("username", username);
         final Optional<Map<String, Object>> user = SERVICES.get("userService")
                 .getOneByParams(loginTry);
         if (user.isPresent()) {
             // TODO: use some password hashing library!
             final String password = views.getAccessView().getPassword();
             if (user.get().get("password").equals(password)) {
-                // model.loginUser((String) loginTry.get("username"), password); (to remove)
+                model.loginUser(username, password);
                 return true;
             }
         }
@@ -93,7 +89,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean registerUser() {
-        // checkIfUserIsNotLoggedIn(); comment to remove
+        checkIfUserIsNotLoggedIn();
         // Fields to validate
         final String username = views.getRegistrationView().getUsername();
         final String password = views.getRegistrationView().getPassword();
@@ -124,8 +120,8 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    // TODO
     public void logoutUser() {
+        // TODO
     }
 
     @Override
@@ -142,7 +138,9 @@ public class Controller implements ViewsObserver {
         queryParams.put("favouriteTheme", loggedInUser.getAccount().getUserName());
         final Optional<Map<String, Object>> user = SERVICES.get("userService")
                 .getOneByParams(queryParams);
-        return (String) (user.isPresent() ? user.get().get("favouriteTheme") : null);
+        final StringBuilder sb = new StringBuilder("");
+        user.ifPresent(u -> sb.append(u.get("favouriteTheme")));
+        return sb.toString();
     }
 
     @SuppressWarnings("unchecked")
@@ -157,8 +155,8 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    // TODO
-    public List<String> getExInfo(final String exerciseName) {
+    public List<String> getExerciseInfo(final String exerciseName) {
+        // TODO
         SERVICES.get("exerciseService");
         return null;
     }
@@ -226,16 +224,16 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    // TODO
     public boolean addResults() {
+        // TODO
         return false;
     }
 
     @Override
     public Map<String, Map<String, Number>> getChartsData() {
         final Map<String, Map<String, Number>> chartsData = new HashMap<>();
-        chartsData.put("pieChartData", getChartData("pieChartData"));
-        chartsData.put("lineChartData", getChartData("pieChartData"));
+        chartsData.put("pie", getChartData("pieChartData"));
+        chartsData.put("line", getChartData("pieChartData"));
         return chartsData;
     }
 
@@ -269,18 +267,54 @@ public class Controller implements ViewsObserver {
         return false;
     }
 
+    @Override
+    public double getBMI() {
+        // TODO
+        return 0;
+    }
+
+    @Override
+    public int getBMR() {
+        // TODO
+        return 0;
+    }
+
+    @Override
+    public double getLBM() {
+        // TODO
+        return 0;
+    }
+
+    @Override
+    public double getFMI() {
+        // TODO
+        return 0;
+    }
+
+    @Override
+    public Map<String, Number> getIndexes() {
+        // TODO
+        return null;
+    }
+
     private static <T> boolean validate(final T t, final Predicate<T> validator) {
         return validator.test(t);
     }
 
+    private static boolean checkIfUserExists(final String username) {
+        final Map<String, Object> param = new HashMap<>();
+        param.put("username", username);
+        return SERVICES.get("userService").getOneByParams(param).isPresent();
+    }
+
     private void checkIfUserIsNotLoggedIn() {
-        Preconditions.checkState(!model.getLoginUser().isPresent());
+        Preconditions.checkState(model.getLoginUser() == null);
     }
 
     private User getLoggedInUser() {
-        final Optional<User> loggedInUser = model.getLoginUser();
-        Preconditions.checkState(loggedInUser.isPresent());
-        return loggedInUser.get();
+        final User loggedInUser = model.getLoginUser();
+        Preconditions.checkState(loggedInUser != null);
+        return loggedInUser;
     }
 
     private Map<String, Object> currentUserUsernameAsQueryParam() {

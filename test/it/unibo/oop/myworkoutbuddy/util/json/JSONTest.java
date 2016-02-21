@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import it.unibo.oop.myworkoutbuddy.controller.db.Person;
-
 public class JSONTest {
 
     private class MapBuilder<K, V> {
@@ -43,13 +41,6 @@ public class JSONTest {
 
     @Test
     public void test() {
-        final JSONObject json = new JSONObject(new Person.Builder()
-                .age(20)
-                .firstName("Mattia")
-                .lastName("Vandi")
-                .build());
-        System.out.println(json);
-        System.out.println(json.getString("firstName").get() + " " + json.getString("lastName").get());
     }
 
 }
