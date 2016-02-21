@@ -63,6 +63,9 @@ public class WorkoutLayout implements WorkoutLayoutStrategy {
         repetitions.forEach(rep -> box.getChildren().add(new TextField(rep.toString())));
         box.getChildren().add(new Label("  - Kg: "));
         box.getChildren().add(new TextField("0"));
+        box.getChildren().stream()
+                .filter(label -> label.getClass().equals(Label.class))
+                .forEach(label -> label.setId("exercise"));
         resizeTextField(box, FIELD_WIDTH);
     }
 

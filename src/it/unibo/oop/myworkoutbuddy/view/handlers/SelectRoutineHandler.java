@@ -45,11 +45,11 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     private final EventHandler<Event> descriptionHandler = i -> {
         final Tab exs = (Tab) i.getSource();
-        // getObserver().getRoutines().stream()
-        // .filter(r -> r.getX().equals(exs.getText()))
-        // .map(r -> r.getY())
-        // .findAny()
-        // .ifPresent(des -> txtDescription.setText(des));
+        getObserver().getRoutines().stream()
+                .filter(r -> r.getX().equals(exs.getText()))
+                .map(r -> r.getY())
+                .findAny()
+                .ifPresent(des -> txtDescription.setText(des));
     };
 
     @FXML
@@ -89,58 +89,6 @@ public final class SelectRoutineHandler implements SelectRoutineView {
                         });
                     });
                 });
-        /*
-         * tabRoutine.getTabs().stream()
-         * .map(i -> (VBox) i.getContent())
-         * .forEach(exsBox -> {
-         * exsBox.getChildren().stream()
-         * .map(workT -> (TitledPane) workT)
-         * .map(exBox -> (VBox) exBox.getContent())
-         * .forEach(exVbox -> {
-         * exVbox.getChildren().stream()
-         * .map(exs -> (HBox) exs)
-         * .forEach(exs -> {
-         * final Label exName = (Label) exs.getChildren().get(0);
-         * final List<Integer> reps = new ArrayList<>();
-         * IntStream.range(2, exs.getChildren().size() - 2).forEach(i -> {
-         * final TextField repField = (TextField) exs.getChildren().get(i);
-         * reps.add(Integer.valueOf(repField.getText()));
-         * });
-         * final TextField kgField = (TextField)
-         * exs.getChildren().get(exs.getChildren().size() - 1);
-         * final Pair<List<Integer>, Integer> repKg = new MutablePair<>(reps,
-         * Integer.valueOf(kgField.getText()));
-         * results.put(exName.getText(), repKg);
-         * });
-         * });
-         * });
-         */
-        /*
-         * tabRoutine.getTabs().stream().map(i -> (VBox)
-         * i.getContent()).forEach(exsBox -> {
-         * exsBox.getChildren().forEach(workTitled -> {
-         * 
-         * final TitledPane workoutTitled = (TitledPane) workTitled;
-         * final VBox exVbox = (VBox) workoutTitled.getContent();
-         * exVbox.getChildren().forEach(exRow -> {
-         * 
-         * final HBox exs = (HBox) exRow;
-         * final Label exName = (Label) exs.getChildren().get(0);
-         * final List<Integer> reps = new ArrayList<>();
-         * IntStream.range(2, exs.getChildren().size() - 2).forEach(i -> {
-         * final TextField repField = (TextField) exs.getChildren().get(i);
-         * reps.add(Integer.valueOf(repField.getText()));
-         * });
-         * 
-         * final TextField kgField = (TextField)
-         * exs.getChildren().get(exs.getChildren().size() - 1);
-         * final Pair<List<Integer>, Integer> repKg = new MutablePair<>(reps,
-         * Integer.valueOf(kgField.getText()));
-         * results.put(exName.getText(), repKg);
-         * });
-         * });
-         * });
-         */
         return results;
     }
 
@@ -175,8 +123,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         rou2.setZ(map3);
         set.add(rou2);
         //
-        // getObserver().getRoutines()
-        set.forEach(i -> {
+        getObserver().getRoutines().forEach(i -> {
             final int routineIndex = i.getX();
             final Tab newRoutine = new Tab(String.valueOf(routineIndex));
             newRoutine.setOnSelectionChanged(descriptionHandler);

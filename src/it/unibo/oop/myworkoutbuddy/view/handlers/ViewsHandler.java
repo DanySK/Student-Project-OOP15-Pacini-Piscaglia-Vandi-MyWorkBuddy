@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.getHandler;
+
 import java.util.Objects;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
@@ -9,7 +11,6 @@ import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
 import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
-import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.getHandler;;
 
 /**
  * 
@@ -59,5 +60,5 @@ public final class ViewsHandler implements AppViews {
     public static ViewsObserver getObserver() {
         return observer;
     }
-
+    
 }

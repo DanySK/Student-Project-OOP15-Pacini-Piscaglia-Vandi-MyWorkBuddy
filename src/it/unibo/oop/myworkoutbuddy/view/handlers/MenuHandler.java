@@ -35,21 +35,17 @@ public final class MenuHandler {
 
     private Button lastPressed;
 
-    private static final double SHOW_MENU_DELTA_WIDTH = 25;
-
-    private static final String CSS_SELECT_STYLE = "-fx-background-color: lightBlue; -fx-font: bold 14px 'Serif';";
-
     private final EventHandler<MouseEvent> enteredAnimation = i -> {
         final Button btn = (Button) i.getSource();
         if (lastPressed != btn) {
-            btn.setStyle("-fx-font-weight: bold; -fx-font-size: 14px; -fx-background-color:DarkOrange;");
+            btn.setId("movedInMenuButton");
         }
     };
 
     private final EventHandler<MouseEvent> exitedAnimation = i -> {
         final Button btn = (Button) i.getSource();
         if (lastPressed != btn) {
-            btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+            btn.setId("menuButton");
         }
     };
 
@@ -61,23 +57,23 @@ public final class MenuHandler {
         String fxmlToLoad = "";
         String labelToSet = "";
         if (lastPressed != btnPressed) {
-            switch (btnPressed.getId()) {
-            case "btnCreate":
+            switch (btnPressed.getText()) {
+            case "Create Routine":
                 labelToSet = "Create your routine";
                 fxmlToLoad = "CreateRoutine.fxml";
                 break;
 
-            case "btnSelect":
+            case "Select Routine":
                 labelToSet = "Select your routine";
                 fxmlToLoad = "SelectRoutine.fxml";
                 break;
 
-            case "btnStatistics":
+            case "Statistics":
                 labelToSet = "Statistics";
                 fxmlToLoad = "Statistics.fxml";
                 break;
 
-            case "btnSettings":
+            case "Settings":
                 labelToSet = "User Settings";
                 fxmlToLoad = "UserSettings.fxml";
                 break;
@@ -89,7 +85,7 @@ public final class MenuHandler {
             mainPane.setCenter(FxWindowFactory.openWindow(fxmlToLoad, true));
             menuTitle.setText(labelToSet);
             resetButtonStyle(lastPressed);
-            btnPressed.setStyle(CSS_SELECT_STYLE);
+            btnPressed.setId("selectedMenuButton");
             lastPressed = btnPressed;
         }
     };
@@ -128,16 +124,6 @@ public final class MenuHandler {
         btnContainer.getChildren().stream().map(i -> (Button) i).forEach(btn -> setButtonImages(btn));
     }
 
-    @FXML
-    private void openMenu() {
-        btnContainer.setTranslateX(SHOW_MENU_DELTA_WIDTH);
-    }
-
-    @FXML
-    private void hideMenu() {
-        //new MenuBarAgent(btnContainer).start();
-    }
-
     private void setButtonImages(final Button btn) {
         Image image = null;
         switch (btn.getText()) {
@@ -159,7 +145,7 @@ public final class MenuHandler {
         case "Settings":
             image = new Image("http://www.mytechlogy.com/view/images/Settings.png");
             break;
-            
+
         default:
             break;
         }
@@ -167,11 +153,11 @@ public final class MenuHandler {
     }
 
     /**
-     * Set the initial style.
+     * Set the initial menu button style.
      */
     private void resetButtonStyle(final Button btn) {
         if (btn != null) {
-            btn.setStyle("-fx-font: 13px 'Serif'; -fx-padding: 10;");
+            btn.setId("menuButton");
         }
     }
 

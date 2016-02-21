@@ -17,7 +17,7 @@ import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,146 +50,85 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private TextField txtDescription;
 
-    private static final int MAX_WORKOUTS = 4;
-
-    private static final int MAX_EXERCISES = 6;
-
     private static final int REPS_MAX_WIDTH = 40;
-
-    private static final String FONT_SIZE = "-fx-font-size: 18";
 
     private Optional<VBox> workoutSelected = Optional.empty();
 
     private Optional<Label> exerciseSelected = Optional.empty();
 
+    private CreateRoutineCheckStrategy checkStrategy = new CreateRoutineCheck();
+
     private final Map<String, Map<String, List<Integer>>> routine = new HashMap<>();
 
-    private final EventHandler<MouseEvent> selectWorkoutHandler = i -> {
-        if ((workoutSelected.isPresent() && workoutSelected.get() != i.getSource())
-                || !workoutSelected.isPresent()) {
-            workoutSelected = Optional.of((VBox) i.getSource());
+    private final EventHandler<MouseEvent> selectWorkoutHandler = event -> {
+        if (checkStrategy.isWorkoutToBeSet(workoutSelected, btnAddExercise, event)) {
+            workoutSelected = Optional.of((VBox) event.getSource());
         }
-        btnAddExercise.setDisable(childrenCount(workoutSelected.get()) == MAX_EXERCISES);
     };
 
-    private final EventHandler<MouseEvent> selectExerciseHandler = i -> {
+    private final EventHandler<MouseEvent> selectExerciseHandler = event -> {
 
-        if (exerciseSelected.isPresent() && exerciseSelected.get() != i.getSource()) {
-            exerciseSelected.get().setStyle(FONT_SIZE);
+        if (checkStrategy.hasExBeenChanged(exerciseSelected, event)) {
+            exerciseSelected.get().setId("exercise");
         }
-
-        final Label selLabel = ((Label) i.getSource());
-        selLabel.setStyle("-fx-font-weight:bold; -fx-background-color: lightBlue;" + FONT_SIZE);
+        final Label selLabel = ((Label) event.getSource());
+        selLabel.setId("selectedExercise");
         exerciseSelected = Optional.of(selLabel);
     };
 
     @FXML
     private void saveRoutine() {
-        if (getObserver().saveRoutine()) {
+        if (checkStrategy.hasRoutineBeenSaved()) {
             showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
                     AlertType.INFORMATION);
-        } else {
-            showDialog("Error saving routine", "You have inserted wrong data!", Optional.empty(), AlertType.ERROR);
         }
     }
 
     @FXML
     private void addWorkout() {
-        if (childrenCount(workoutBox) < MAX_WORKOUTS) {
+        if (checkStrategy.canAddWorkout(workoutBox, btnAddWorkout)) {
             workoutSelected = Optional.of(new VBox());
-            // Ask user to assign a title to the new Workout.
-            final TitledPane newWorkout = new TitledPane(
-                    FxWindowFactory.createInputDialog("Workout name", "Insert your workout name:", "A,B,C, Crunch,..."),
-                    workoutSelected.get());
-            workoutSelected.get().addEventHandler(MouseEvent.MOUSE_CLICKED, selectWorkoutHandler);
-            workoutBox.getChildren().add(newWorkout);
-        }
 
-        if (childrenCount(workoutBox) == MAX_WORKOUTS) {
-            btnAddWorkout.setDisable(true);
-            showDialog("Limit reached", "Max addable workouts limit reached", Optional.empty(),
-                    AlertType.ERROR);
+            // Ask user to assign a title to the new Workout.
+            workoutSelected.get().addEventHandler(MouseEvent.MOUSE_CLICKED, selectWorkoutHandler);
+            workoutBox.getChildren().add(new TitledPane(
+                    FxWindowFactory.createInputDialog("Workout name", "Insert your workout name:", "A,B,C, Crunch,..."),
+                    workoutSelected.get()));
         }
     }
 
     @FXML
     private void addExercise() {
-        if (workoutSelected.isPresent() && childrenCount(workoutSelected.get()) < MAX_EXERCISES
-                && exerciseSelected.isPresent() && !isAlreadyInserted(exerciseSelected.get().getText())) {
 
-            final HBox exBox = new HBox();
-            final Label newExercise = new Label(exerciseSelected.get().getText());
-            final List<TextField> repsField = new ArrayList<>();
-            IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
-            IntStream.range(0, 3).forEach(i -> repsField.get(i).setMaxWidth(REPS_MAX_WIDTH));
-            exBox.getChildren().add(newExercise);
-            IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
-            newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
-            workoutSelected.get().getChildren().add(exBox);
-
-        } else if (!workoutSelected.isPresent()) {
-            showDialog("Error adding workout", "You have to had a workout first!", Optional.empty(),
-                    AlertType.ERROR);
-
-        } else if (childrenCount(workoutSelected.get()) >= MAX_EXERCISES) {
-            btnAddExercise.setDisable(true);
-            showDialog("Limit reached", "Max addable exercises limit reached", Optional.empty(),
-                    AlertType.ERROR);
-        } else if (!exerciseSelected.isPresent()) {
-            showDialog("No exercise selected", "Please select an exercise from the list", Optional.empty(),
-                    AlertType.ERROR);
-        } else if (isAlreadyInserted(exerciseSelected.get().getText())) {
-            showDialog("Exercise is already added", "You can't add a same exercise twice in the same workout",
-                    Optional.empty(), AlertType.ERROR);
+        if (checkStrategy.canAddExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
+            workoutSelected.get().getChildren().add(buildExerciseBox());
         }
+        // for testing
         System.out.println(getRoutine());
     }
 
     @FXML
     private void showExercise() {
-        if (exerciseSelected.isPresent()) {
+        if (checkStrategy.canShowExercise(exerciseSelected)) {
             showDialog(exerciseSelected.get().getText(),
                     getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
-                            .of("http://workouts.menshealth.com/sites/workouts.menshealth.com/files/back-and-biceps-builder.jpg"),
+                            .of(getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(1)),
                     AlertType.INFORMATION);
-        } else {
-            showDialog("No exercise selected", "Please select an exercise to show from the list", Optional.empty(),
-                    AlertType.ERROR);
         }
     }
 
     @FXML
     private void deleteWorkout() {
-
-        // the double call to getParent() select first VBox -> AnchorPane->
-        // and then the wanted AnchorPane -> TitlePane to remove
-
-        if (childrenCount(workoutBox) > 0 && workoutSelected.isPresent()) {
-
+        if (checkStrategy.canDeleteWorkout(workoutBox, workoutSelected, btnAddWorkout)) {
             workoutBox.getChildren().remove(workoutSelected.get().getParent().getParent());
             workoutSelected = Optional.empty();
-
-            btnAddWorkout.setDisable(false);
-
-        } else if (childrenCount(workoutBox) == 0) {
-            showDialog("Error", "There aren't workouts added!", Optional.empty(), AlertType.ERROR);
-
-        } else if (!workoutSelected.isPresent()) {
-            showDialog("Error", "No workout selected!", Optional.empty(), AlertType.ERROR);
         }
     }
 
     @FXML
     private void deleteExercise() {
 
-        if (!exerciseSelected.isPresent()) {
-            showDialog("Error", "You have to select an exercise first!", Optional.empty(),
-                    AlertType.ERROR);
-            return;
-        }
-        if (workoutSelected.isPresent() && exerciseSelected.isPresent()) {
-            btnAddExercise.setDisable(!btnAddExercise.isDisabled());
-
+        if (checkStrategy.canDeleteExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
             workoutSelected.get().getChildren().remove(exerciseSelected.get().getParent());
             exerciseSelected = Optional.empty();
         }
@@ -221,19 +160,6 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         return txtDescription.getText();
     }
 
-    private boolean isAlreadyInserted(final String exercise) {
-        System.out.println(exercise);
-        return workoutSelected.get().getChildren().stream()
-                .map(exBox -> (HBox) exBox)
-                .map(ex -> (Label) ex.getChildren().get(0))
-                .map(exLabel -> exLabel.getText())
-                .anyMatch(exName -> exName.equals(exercise));
-    }
-
-    private int childrenCount(final Parent parent) {
-        return parent.getChildrenUnmodifiable().size();
-    }
-
     /**
      * Called to initialize a controller after its root element has been
      * completely processed. It is used to show all the available exercises to
@@ -247,16 +173,31 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         //
         getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
+            newSection.setId("exerciseSection");
             exercisePane.getTabs().add(newSection);
             final VBox workout = new VBox();
+            workout.setId("workout");
             exs.forEach(ex -> {
                 final Label exLabel = new Label(ex);
-                exLabel.setStyle(FONT_SIZE);
+                exLabel.setId("exercise");
                 exLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
                 workout.getChildren().add(exLabel);
             });
             newSection.setContent(workout);
         });
+    }
+
+    private Node buildExerciseBox() {
+        final HBox exBox = new HBox();
+        final Label newExercise = new Label(exerciseSelected.get().getText());
+        final List<TextField> repsField = new ArrayList<>();
+        IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
+        IntStream.range(0, 3).forEach(i -> repsField.get(i).setMaxWidth(REPS_MAX_WIDTH));
+        exBox.getChildren().add(newExercise);
+        IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
+        newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
+        newExercise.setId("exercise");
+        return exBox;
     }
 
 }

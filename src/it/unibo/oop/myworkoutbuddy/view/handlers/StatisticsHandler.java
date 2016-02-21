@@ -1,12 +1,15 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
+
 import java.util.HashMap;
 import java.util.Map;
-import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -57,15 +60,9 @@ public final class StatisticsHandler {
         datas2.put("leg", 30);
         datas2.put("shoulders", 70);
         chartData.put("weightChart", datas);
-        chartData.put("exercisesDistribution", datas2);
+        chartData.put("time performance", datas2);
         //
-        // getObserver().getChartsData()
-       /* currentBox = new VBox();
-        Tab firstTab = new Tab("Charts");
-        firstTab.setContent(currentBox);
-        tabPane.getTabs().add(firstTab);
-*/
-        chartData.forEach((chart, data) -> {
+        getObserver().getChartsData().forEach((chart, data) -> {
 
             nCharts++;
             if (nCharts > CHARTS_PER_TAB || nCharts == 1) {
@@ -82,8 +79,16 @@ public final class StatisticsHandler {
                 currentBox.getChildren().add(buildLineChart(data, chart));
                 break;
 
-            case "exercisesDistribution":
+            case "time performance":
                 currentBox.getChildren().add(buildPieChart(data, chart));
+                break;
+
+            case "bodyZone performance":
+                currentBox.getChildren().add(buildBarChart(data, chart));
+                break;
+
+            case "bodyPart performance":
+                currentBox.getChildren().add(buildBarChart(data, chart));
                 break;
 
             default:
@@ -102,9 +107,9 @@ public final class StatisticsHandler {
         indexes.put("BMI", 16.5);
         //
 
-        // getObserver().getIndexes()
+        
         indexBox.setId("statBox");
-        indexes.forEach((name, value) -> {
+        getObserver().getIndexes().forEach((name, value) -> {
             final HBox singleBox = new HBox();
             final Label nameLabel = new Label(name);
             nameLabel.setId("indexLabel");
@@ -115,6 +120,19 @@ public final class StatisticsHandler {
             indexBox.getChildren().add(singleBox);
         });
 
+    }
+
+    private BarChart<String, Number> buildBarChart(final Map<String, Number> data, final String chartTitle) {
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final BarChart<String, Number> bc = new BarChart<String, Number>(xAxis, yAxis);
+        bc.setTitle(chartTitle);
+        final Series<String, Number> serie = new Series<String, Number>();
+        data.forEach((name, value) -> {
+            serie.getData().add(new XYChart.Data<String, Number>(name, value));
+        });
+        bc.getData().add(serie);
+        return bc;
     }
 
     private PieChart buildPieChart(final Map<String, Number> data, final String title) {
@@ -130,7 +148,6 @@ public final class StatisticsHandler {
     }
 
     private LineChart<String, Number> buildLineChart(final Map<String, Number> data, final String chartName) {
-
         final LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
         lineChart.setTitle(chartName);
         final Series<String, Number> series = new XYChart.Series<>();

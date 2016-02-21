@@ -71,7 +71,7 @@ public final class FxWindowFactory {
             stage.setResizable(false);
             scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
-            stage.getIcons().add(new Image("/it/unibo/oop/myworkoutbuddy/view/icons/workoutIcon.png"));
+            stage.getIcons().add(new Image("http://clementbatifoulier.com/here/wp-content/uploads/Icon-Workout.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
