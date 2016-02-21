@@ -19,7 +19,7 @@ public interface Person {
      * 
      * @return the birthDate of User
      */
-    int getAge();
+    Integer getAge();
     /**
      * 
      * @return the email of the User

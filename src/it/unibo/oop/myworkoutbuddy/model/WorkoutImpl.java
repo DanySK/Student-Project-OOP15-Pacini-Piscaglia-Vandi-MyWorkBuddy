@@ -34,6 +34,7 @@ public class WorkoutImpl implements Workout {
      * @param date LocalDate
      * @param time LocalTime
      * @param routine WorkoutRoutine
+     * 
      */
     public WorkoutImpl(final LocalDate date, final LocalTime time, final WorkoutRoutine routine) {
         this.date = date;
@@ -57,9 +58,17 @@ public class WorkoutImpl implements Workout {
      * 
      * @param indExercise
      * @param score
+     * 
+     * @throws NullPointerException exception for check about notNullValue
+     * @throws IllegalArgumentException exception for check about notNegativeValue
      */
    @Override
-   public void addScore(final Integer index, final Integer score) {
+   public void addScore(final Integer index, final Integer score) throws NullPointerException, IllegalArgumentException {
+       this.checkNotNull(index);
+       this.checkNotNull(score);
+       this.checkNotNegative(index);
+       this.checkNotNegative(score);
+
        final Exercise exerc = this.routine.getExerciseList().get(index);
        final GymTool gymTool = exerc.getGymTool();
        final Integer min = gymTool.getMinValue();
@@ -85,6 +94,14 @@ public class WorkoutImpl implements Workout {
         return this.state;
     }
 
+    /**
+     * 
+     * @return scoreMap
+     */
+    @Override
+    public Map<Exercise, Integer> getScoreMap() {
+        return this.scoreMap;
+    }
 
     @Override
     public List<Integer> getScoreList() {
@@ -238,6 +255,18 @@ public class WorkoutImpl implements Workout {
      */
     private Double timeExercise(final Exercise exe) {
         return Double.valueOf((double) exe.getTime() * exe.getRepetition()); //score=time*numRipetizioni
+    }
+
+    private void checkNotNull(final Object obj) throws NullPointerException {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
+    }
+
+    private void checkNotNegative(final Number number) throws IllegalArgumentException {
+        if (number.intValue() <= 0) {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override

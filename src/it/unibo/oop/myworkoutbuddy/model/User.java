@@ -62,10 +62,8 @@ public interface User {
     /**
      * 
      * @return a list of BMI calculated
-     * @throws IllegalArgumentException an exception for not negative value check
-     * @throws NullPointerException an exception for null value check
      */
-    List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException;
+    List<Double> trendBodyBMI();
 
     /**
      * 

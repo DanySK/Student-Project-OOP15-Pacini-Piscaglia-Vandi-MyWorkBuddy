@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
 /**
  Class Body to manage human body
 
@@ -194,7 +196,7 @@ public final class Body {
      *
      */
     public class BodyData {
-        private static final double ZERO_VALUE = 0.00;
+        private static final int ZERO_VALUE = 0;
         /*
          * factors for BMI calculation
          */
@@ -209,10 +211,10 @@ public final class Body {
         private Map<Measure, Double> bodyMeasure;  // value measure for each body measure
 
         /**
-         * 
+         * @throws NullPointerException an exception for null value
          * @param data LocalDate
          */
-        public BodyData(final LocalDate data) {
+        public BodyData(final LocalDate data) throws NullPointerException {
             this.setData(data);
             this.bodyMeasure = new HashMap<>();
         }
@@ -231,19 +233,9 @@ public final class Body {
          * @throws IllegalArgumentException exception for not negative values
          */
         public Double getBodyMass() throws NullPointerException, IllegalArgumentException {
-            final Double mass = this.bodyMeasure.get(Body.Measure.WEIGHT);
-            final Double height = this.bodyMeasure.get(Body.Measure.HEIGHT);
+            final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
 
-            if (mass == null || height == null) {
-                System.out.println("BodyMassException = " + new NullPointerException());
-                return ZERO_VALUE;
-            }
-            if (mass <= 0.00 || height <= 0.00) {
-                System.out.println("BodyMass Exception = " + new IllegalArgumentException());
-                return ZERO_VALUE;
-            }
-
-            return (mass / (height * height));
+            return (pairValues.getX() / (pairValues.getY() * pairValues.getY()));
         }
 
         /**
@@ -254,20 +246,13 @@ public final class Body {
          * @throws IllegalArgumentException exception for not negative values
          */
         public Double getBodyBMI(final Integer age) throws NullPointerException, IllegalArgumentException {
-            final Double height = this.getBodyMeasure().get(Body.Measure.HEIGHT);
-            final Double mass = this.getBodyMeasure().get(Body.Measure.WEIGHT);
-
-            if (height == null || mass == null || age == null) {
-                System.out.println("BodyBMIException = " + new NullPointerException());
-                return ZERO_VALUE;
+            final Optional<Integer> valueOpt = (age == null || age <= ZERO_VALUE) ? Optional.of(ZERO_VALUE) : Optional.of(age);
+            if (valueOpt.get() <= ZERO_VALUE) {
+                return (double) ZERO_VALUE;
             }
+            final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
 
-            if (height <= 0 || mass <= 0 || age <= 0) {
-                System.out.println("BodyBMI = " + new IllegalArgumentException());
-                return ZERO_VALUE;
-            }
-
-            return (FACTOR_BMR + (FACTOR_WEIGHT * mass) + (FACTOR_HEIGHT * METER_TO_CM * height) - (FACTOR_AGE * age));
+            return (FACTOR_BMR + (FACTOR_WEIGHT * pairValues.getX()) + (FACTOR_HEIGHT * METER_TO_CM * pairValues.getY()) - (FACTOR_AGE * age));
         }
 
         /**
@@ -284,6 +269,22 @@ public final class Body {
          */
         public void addBodyMeasure(final Body.Measure bodyMeasure, final Double measure) {
             this.bodyMeasure.put(bodyMeasure, measure);
+        }
+
+        private UnmodifiablePair<Double, Double> getMassHeight() {
+            final Double height = this.getBodyMeasure().get(Body.Measure.HEIGHT);
+            final Double mass = this.getBodyMeasure().get(Body.Measure.WEIGHT);
+            final Double zeroValue = (double) ZERO_VALUE;
+            if (height == null || mass == null) {
+                System.out.println("BodyBMIException = " + new NullPointerException());
+                return new UnmodifiablePair<>(zeroValue, zeroValue);
+            }
+            if (height <= 0 || mass <= 0) {
+                System.out.println("BodyBMI = " + new IllegalArgumentException());
+                return new UnmodifiablePair<>(zeroValue, zeroValue);
+            }
+
+            return new UnmodifiablePair<>(mass, height);
         }
 
         /**

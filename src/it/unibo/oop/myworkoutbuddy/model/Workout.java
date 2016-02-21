@@ -44,8 +44,17 @@ public interface Workout {
      * 
      * @param index Integer
      * @param score Integer
+     * 
+     * @throws NullPointerException exception for check about notNullValue
+     * @throws IllegalArgumentException for check about notNegativeValue
      */
-    void addScore(final Integer index, final Integer score);
+    void addScore(final Integer index, final Integer score) throws NullPointerException, IllegalArgumentException;
+
+    /**
+     * 
+     * @return a map of Exercise and relative score
+     */
+    Map<Exercise, Integer> getScoreMap();
 
     /**
      * 
@@ -69,7 +78,6 @@ public interface Workout {
      * 
      * @return a map of bodyPart and the time of training for all human muscles
      */
-    // Integer a dx di ,
     Map<BodyPart, Double> getTimeParts();
 
     /**

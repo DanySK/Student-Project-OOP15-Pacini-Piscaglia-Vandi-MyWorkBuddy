@@ -11,7 +11,7 @@ public class PersonImpl implements Person {
 
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private String email;
 
     /**
@@ -21,7 +21,7 @@ public class PersonImpl implements Person {
      * @param email String
      * @param age int
      */
-    public PersonImpl(final String firstName, final String lastName, final int age, final String email) {
+    public PersonImpl(final String firstName, final String lastName, final Integer age, final String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -39,7 +39,7 @@ public class PersonImpl implements Person {
     }
 
     @Override
-    public int getAge() {
+    public Integer getAge() {
         return this.age;
     }
 

@@ -37,9 +37,9 @@ public class UserImpl implements User {
     }
 
     /**
-     * 
      * @param account Account
      * @param person Person
+     * 
      */
     public UserImpl(final Account account, final Person person) {
         this.account = account;
@@ -94,7 +94,8 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public void addMesure(final BodyData bodyMeasure) {
+    public void addMesure(final BodyData bodyMeasure) throws NullPointerException {
+        this.checkNotNull(bodyMeasure);
         this.measureList.add(bodyMeasure);
     }
 
@@ -102,7 +103,8 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public void addWorkout(final Workout workout) {
+    public void addWorkout(final Workout workout) throws NullPointerException {
+        this.checkNotNull(workout);
         this.workoutList.add(workout);
     }
 
@@ -110,7 +112,8 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public void addRoutine(final WorkoutRoutine routine) {
+    public void addRoutine(final WorkoutRoutine routine) throws NullPointerException {
+        this.checkNotNull(routine);
         this.routineList.add(routine);
     }
 
@@ -124,11 +127,9 @@ public class UserImpl implements User {
     /**
      * 
      * @return list of BMI values 
-     * @throws NullPointerException
-     * @throws IllegalArgumentException
      */
     @Override
-    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
+    public List<Double> trendBodyBMI() {
         /*
         final List<Double> listBMI = new ArrayList<>();
         this.getMeasureList().forEach(i -> {
@@ -224,6 +225,7 @@ public class UserImpl implements User {
                 return d1 + d2;
             });
         });
+
         return timeMap;
     }
 
@@ -240,6 +242,7 @@ public class UserImpl implements User {
                 return d1 + d2;
             });
         });
+
         return scoreMap;
     }
 
@@ -253,8 +256,8 @@ public class UserImpl implements User {
      */
     private <X, Y> void mapSumGen(final Map<X, Y> destMap, final Map<X, Y> sourceMap, final BiFunction<Y, Y, Y> function) {
         sourceMap.keySet().forEach(t -> {
-            final Y newValue = sourceMap.get(t);
             final Y oldValue = destMap.get(t);
+            final Y newValue = sourceMap.get(t);
             destMap.merge(t, newValue, (val1, val2) -> {
                 return function.apply(newValue, oldValue);
             });
@@ -266,18 +269,22 @@ public class UserImpl implements User {
      * @param mapBodyPart
      */
     private Map<BodyZone, Double> mapBodyZone(final Map<BodyPart, Double> mapBodyPart) {
-
         final Map<BodyZone, Double> mapBodyZone = new HashMap<>();
-
         mapBodyPart.keySet().forEach(i -> {
-            final BodyZone bodyZone = Body.getBodyZone(i.getName());
+            final Double oldValue = mapBodyZone.get(i.getBodyZone());
             final Double value = mapBodyPart.get(i);
-            mapBodyZone.merge(bodyZone, value, (d0, d1) -> {
-                return value + mapBodyZone.get(bodyZone);
+            mapBodyZone.merge(i.getBodyZone(), value, (d0, d1) -> {
+                return value + oldValue;
             });
         });
 
         return mapBodyZone;
+    }
+
+    private void checkNotNull(final Object obj) throws NullPointerException {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
     }
 
     @Override

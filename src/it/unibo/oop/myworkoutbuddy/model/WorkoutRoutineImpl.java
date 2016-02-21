@@ -34,18 +34,24 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
     /**
      * 
      * @param day DayInWeek
+     * 
+     * @throws IllegalArgumentException exception for check not empty value
      */
     @Override
-    public void addDay(final DayInWeek day) {
+    public void addDay(final DayInWeek day) throws NullPointerException {
+        this.checkNotNull(day);
         this.dayAweek.add(day);
     }
 
     /**
      * 
      * @param exercise GymExercise
+     * 
+     * @throws IllegalArgumentException exception for check not empty value
      */
     @Override
-    public void addGymExcercise(final Exercise exercise) {
+    public void addGymExcercise(final Exercise exercise) throws NullPointerException {
+        this.checkNotNull(exercise);
         this.exerciseList.add(exercise);
     }
 
@@ -67,6 +73,12 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
     @Override
     public List<Exercise> getExerciseList() {
         return this.exerciseList;
+    }
+
+    private void checkNotNull(final Object obj) throws NullPointerException {
+        if (obj == null) {
+            throw new NullPointerException();
+        }
     }
 
     @Override

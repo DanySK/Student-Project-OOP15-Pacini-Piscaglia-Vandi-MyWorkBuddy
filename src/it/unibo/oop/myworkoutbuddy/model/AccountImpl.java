@@ -19,6 +19,7 @@ public class AccountImpl implements Account {
      * @param avatar String
      */
     AccountImpl(final String userName, final String password, final String avatar) {
+
         this.userName = userName;
         this.password = password;
         this.avatar = avatar;
