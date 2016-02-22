@@ -79,7 +79,6 @@ public class Controller implements ViewsObserver {
             final String password = views.getAccessView().getPassword();
             if (user.get().get("password").equals(password)) {
                 currentUser = Optional.of(username);
-                System.out.println(currentUser);
                 return true;
             }
         }
@@ -145,15 +144,18 @@ public class Controller implements ViewsObserver {
 
     @Override
     public Map<String, Set<String>> getExercises() {
-        final List<Map<String, Object>> exercises = SERVICES.get("exerciseService").getAll();
-        return exercises.stream()
-                .collect(Collectors.toMap(
-                        m -> (String) m.get("name"),
-                        m -> {
-                            return ((Collection<?>) m.get("bodyParts")).stream()
-                                    .map(o -> (String) o)
-                                    .collect(Collectors.toSet());
-                        }));
+        final Map<String, Set<String>> exercises = new HashMap<>();
+        SERVICES.get("exerciseService").getAll().forEach(m -> {
+            ((Collection<?>) m.get("bodyParts")).forEach(p -> {
+                final Set<String> s = new HashSet<>();
+                s.add((String) m.get("name"));
+                exercises.merge((String) p, s, (o, n) -> {
+                    o.addAll(n);
+                    return o;
+                });
+            });
+        });
+        return exercises;
     }
 
     @Override
