@@ -142,7 +142,7 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    public List<String> getExerciseInfo(final String exerciseName) {
+    public Map<String, String> getExerciseInfo(final String exerciseName) {
         final Map<String, Object> params = new HashMap<>();
         params.put("name", exerciseName);
         final Map<String, String> exerciseInfo = new HashMap<>();
@@ -150,8 +150,7 @@ public class Controller implements ViewsObserver {
             exerciseInfo.put("description", (String) m.get("description"));
             exerciseInfo.put("videoURL", (String) m.get("videoURL"));
         });
-        // return exerciseInfo; (to use)
-        return null;
+        return exerciseInfo;
     }
 
     @Override
@@ -260,30 +259,6 @@ public class Controller implements ViewsObserver {
             return SERVICES.get("userService").updateByParams(currentUserUsernameAsQueryParam(), newUserData) >= 0;
         }
         return false;
-    }
-
-    @Override
-    public double getBMI() {
-        // TODO
-        return 0;
-    }
-
-    @Override
-    public int getBMR() {
-        // TODO
-        return 0;
-    }
-
-    @Override
-    public double getLBM() {
-        // TODO
-        return 0;
-    }
-
-    @Override
-    public double getFMI() {
-        // TODO
-        return 0;
     }
 
     @Override

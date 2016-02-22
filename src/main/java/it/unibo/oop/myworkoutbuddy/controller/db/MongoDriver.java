@@ -19,7 +19,7 @@ import com.mongodb.client.MongoCollection;
  */
 public final class MongoDriver {
 
-    private static final String CONFIG_FILE = "dbconfig.yaml";
+    private static final String CONFIG_FILE = MongoDriver.class.getResource("/db/config.yaml").getFile();
 
     private static MongoClient client;
 
