@@ -120,10 +120,11 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private void showExercise() {
         if (checkStrategy.canShowExercise(exerciseSelected)) {
-            showDialog(exerciseSelected.get().getText(),
-                    getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
-                            .of(getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(1)),
-                    AlertType.INFORMATION);
+      //      showDialog(exerciseSelected.get().getText(),
+      //              getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
+      //                      .of(getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(1)),
+      //              AlertType.INFORMATION);
+        FxWindowFactory.openWindow("ExerciseDetails.fxml", false);
         }
     }
 

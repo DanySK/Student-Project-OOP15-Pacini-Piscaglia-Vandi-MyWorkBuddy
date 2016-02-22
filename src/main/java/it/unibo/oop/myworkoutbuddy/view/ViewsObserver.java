@@ -104,31 +104,7 @@ public interface ViewsObserver {
      * @return exercise selected
      *         informations.
      */
-    List<String> getExerciseInfo(String exerciseName);
-
-    /**
-     * 
-     * @return body mass index.
-     */
-    double getBMI();
-
-    /**
-     * 
-     * @return basal metabolic rate expressed in kcal.
-     */
-    int getBMR();
-
-    /**
-     * 
-     * @return Lean body mass expressed in percentage.
-     */
-    double getLBM();
-
-    /**
-     * 
-     * @return fat mass index.
-     */
-    double getFMI();
+    Map<String,String> getExerciseInfo(String exerciseName);
 
     /**
      * 
