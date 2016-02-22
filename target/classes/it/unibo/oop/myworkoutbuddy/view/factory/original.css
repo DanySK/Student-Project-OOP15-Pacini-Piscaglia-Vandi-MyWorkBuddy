@@ -1,7 +1,7 @@
 .root{
 	-fx-background-image: url("/it/unibo/oop/myworkoutbuddy/view/backgrounds/GYM_1_SLIDER.jpg");
 	-fx-background-repeat: stretch;
-    -fx-background-size: auto;
+    -fx-background-size: 860;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30.0, 0.5, 0.0, 0.0); 
 }
