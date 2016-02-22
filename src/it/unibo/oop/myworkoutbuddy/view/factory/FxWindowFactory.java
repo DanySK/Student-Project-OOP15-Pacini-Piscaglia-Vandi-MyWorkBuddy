@@ -68,7 +68,6 @@ public final class FxWindowFactory {
             }
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
-            stage.setResizable(false);
             scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
             stage.getIcons().add(new Image("http://clementbatifoulier.com/here/wp-content/uploads/Icon-Workout.png"));

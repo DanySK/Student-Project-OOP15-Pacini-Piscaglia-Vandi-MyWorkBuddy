@@ -136,4 +136,10 @@ public interface ViewsObserver {
      */
     Map<String, Number> getIndexes();
 
+    /**
+     * 
+     * @return true if routine has been deleted successfully.
+     */
+    boolean deleteRoutine();
+
 }

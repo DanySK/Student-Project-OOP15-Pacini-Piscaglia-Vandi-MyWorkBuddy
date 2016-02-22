@@ -2,25 +2,19 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.TreeMap;
 
-import it.unibo.oop.myworkoutbuddy.util.MutableTriple;
 import it.unibo.oop.myworkoutbuddy.util.Pair;
-import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -41,15 +35,24 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     @FXML
     private TextArea txtDescription;
 
+    @FXML
+    private Button btnDeleteRoutine;
+
+    private int selectedRoutineIndex;
+
     private final WorkoutLayoutStrategy workoutLayout = new WorkoutLayout();
 
-    private final EventHandler<Event> descriptionHandler = i -> {
+    private final EventHandler<Event> tabHandler = i -> {
         final Tab exs = (Tab) i.getSource();
-        getObserver().getRoutines().stream()
-                .filter(r -> r.getX().equals(exs.getText()))
-                .map(r -> r.getY())
-                .findAny()
-                .ifPresent(des -> txtDescription.setText(des));
+
+        // update routine selected index
+        selectedRoutineIndex = extractRoutineIndex(exs);
+
+        // update description field
+        updateDescriptionField();
+
+        // check if user can delete routines.
+        btnDeleteRoutine.setDisable(tabRoutine.getTabs().size() < 0);
     };
 
     @FXML
@@ -92,41 +95,44 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         return results;
     }
 
+    @FXML
+    private void deleteRoutine() {
+        // if (getObserver().deleteRoutine() &&
+        if (tabRoutine.getTabs().size() > 0) {
+            tabRoutine.getTabs().remove(tabRoutine.getTabs().stream()
+                    .filter(tab -> selectedRoutineIndex == extractRoutineIndex(tab))
+                    .findAny().get());
+        } else {
+            FxWindowFactory.showDialog("Error deleting routine", "Your routine hasn't been deleted", Optional.empty(),
+                    AlertType.ERROR);
+        }
+    }
+
     @Override
     public int getRoutineIndex() {
-        return 0;
+        return selectedRoutineIndex;
+    }
+
+    private int extractRoutineIndex(final Tab exs) {
+        return Integer.valueOf(exs.getText().substring(exs.getText().length() - 1));
+    }
+
+    private void updateDescriptionField() {
+        getObserver().getRoutines().stream()
+                .filter(r -> r.getX().equals(selectedRoutineIndex))
+                .map(r -> r.getY())
+                .findAny()
+                .ifPresent(des -> txtDescription.setText(des));
     }
 
     /**
      * Show all saved Routines.
      */
     public void initialize() {
-        // only for testing
-        final Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> set = new HashSet<>();
-        final Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou = new MutableTriple<>(0,
-                "routine1 description",
-                new TreeMap<>());
-        final Map<String, List<Integer>> map = new TreeMap<>();
-        map.put("Exercise", new LinkedList<>(Arrays.asList(8, 10, 12)));
-        final Map<String, Map<String, List<Integer>>> map2 = new TreeMap<>();
-        map2.put("Workout", map);
-        rou.setZ(map2);
-        set.add(rou);
-        //
-        final Triple<Integer, String, Map<String, Map<String, List<Integer>>>> rou2 = new MutableTriple<>(0,
-                "routine2 description",
-                new TreeMap<>());
-        final Map<String, List<Integer>> map22 = new TreeMap<>();
-        map22.put("Exercise2", new LinkedList<>(Arrays.asList(8, 10, 12)));
-        final Map<String, Map<String, List<Integer>>> map3 = new TreeMap<>();
-        map3.put("Workout2", map22);
-        rou2.setZ(map3);
-        set.add(rou2);
-        //
         getObserver().getRoutines().forEach(i -> {
             final int routineIndex = i.getX();
-            final Tab newRoutine = new Tab(String.valueOf(routineIndex));
-            newRoutine.setOnSelectionChanged(descriptionHandler);
+            final Tab newRoutine = new Tab("Routine " + routineIndex);
+            newRoutine.setOnSelectionChanged(tabHandler);
             tabRoutine.getTabs().add(newRoutine);
             newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getZ()));
         });

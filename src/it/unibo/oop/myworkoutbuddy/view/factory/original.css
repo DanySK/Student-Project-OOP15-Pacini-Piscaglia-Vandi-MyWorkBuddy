@@ -1,7 +1,7 @@
 .root{
 	-fx-background-image: url("/it/unibo/oop/myworkoutbuddy/view/backgrounds/GYM_1_SLIDER.jpg");
 	-fx-background-repeat: stretch;
-    -fx-background-size:1500.0;
+    -fx-background-size: auto;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30.0, 0.5, 0.0, 0.0); 
 }
@@ -13,14 +13,21 @@
     -fx-cursor: hand;
 }
 
-.tab{
-    -fx-padding: 10.0;
-    -fx-cursor: hand;
-    -fx-font-weight:bold;
-} 
-
 .tab-pane > .tab-header-area > .tab-header-background{
-	-fx-background-color: orange;
+}
+
+
+.tab{
+  	-fx-padding: 10.0;
+    -fx-cursor: hand;
+}
+
+#selectedTab{
+	-fx-padding: 10.0;
+    -fx-background-color: orange;
+    -fx-cursor: hand;
+    -fx-background-radius: 30.0;
+    -fx-effect: dropshadow( one-pass-box , black , 5.0 , 3.0 , 0.0 , 0.0 );
 }
 
 #borderedLabel{
@@ -56,20 +63,30 @@
 
 #selectedExercise{
 	-fx-font-weight:bold;
-	-fx-background-color: lightBlue;
-	-fx-font-size: 18.0;
+	-fx-background-color: orange;
+	-fx-font-size: 15.0;
+	-fx-background-radius: 20.0;
+	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
+	-fx-padding:7;
 }
 
 #exercise{
-	-fx-font-size: 18.0;
+	-fx-font-size: 15.0;
+	-fx-font-weight:bold;
+}
+
+#exerciseToSelect{
+	-fx-font-size: 15.0;
+	-fx-font-weight:bold;
+	-fx-underline: true;
+	-fx-padding:10;
 }
 
 #exerciseSection{
-	-fx-background-color: lightBlue;
 }
 
 #workout{
-	-fx-background-color: orange;
+	-fx-background-color: lightBlue;
 }
 
 #movedInMenuButton{

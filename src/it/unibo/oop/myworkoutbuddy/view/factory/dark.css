@@ -13,7 +13,7 @@
 .root{
 	-fx-background-image: url("http://www.paosfitworld.com/wp-content/uploads/2015/02/One-time-Consultation-Background.jpg");
 	-fx-background-repeat: stretch;
-    -fx-background-size:1500.0;
+    -fx-background-size: auto;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30.0, 0.5, 0.0, 0.0); 
 }
@@ -28,7 +28,6 @@
 
 .tab-pane > .tab-header-area > .tab-header-background{
 	-fx-background-color: grey;
-	-fx-background-radius: 20.0;
 }
 
 #borderedLabel{
@@ -75,18 +74,30 @@
 	-fx-text-fill:black;
 }
 
+#exerciseToSelect{
+	-fx-font-size: 15.0;
+	-fx-font-weight:bold;
+	-fx-underline: true;
+	-fx-padding:10;
+	-fx-text-fill:black;
+}
+
+#selectedExercise{
+	-fx-font-weight:bold;
+	-fx-background-color: orange;
+	-fx-text-fill:black;
+	-fx-font-size: 15.0;
+	-fx-background-radius: 20.0;
+	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
+	-fx-padding:7;
+}
+
 #exerciseSection{
 	-fx-background-color: lightBlue;
 }
 
 #workout{
 	-fx-background-color: grey;
-}
-
-#selectedExercise{
-	-fx-font-weight:bold;
-	-fx-background-color: lightBlue;
-	-fx-font-size: 18.0;
 }
 
 #selectedMenuButton{

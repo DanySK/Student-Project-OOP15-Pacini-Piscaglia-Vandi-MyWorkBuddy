@@ -5,13 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.CreateRoutineHandler">
-   <left>
-      <TabPane fx:id="exercisePane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
-   </left>
-   <center>
-      <VBox fx:id="workoutBox" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-   </center>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="785.0" prefWidth="776.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unibo.oop.myworkoutbuddy.view.handlers.CreateRoutineHandler">
    <top>
       <HBox prefHeight="121.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -21,23 +15,33 @@
       </HBox>
    </top>
    <bottom>
-      <VBox prefHeight="99.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="134.0" prefWidth="821.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="44.0" prefWidth="600.0">
+            <HBox prefHeight="44.0" prefWidth="687.0" translateX="85.0" translateY="40.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#saveRoutine" prefHeight="25.0" prefWidth="152.0" text="Save Routine" translateX="410.0" translateY="5.0" />
                   <Button fx:id="btnAddWorkout" mnemonicParsing="false" onAction="#addWorkout" prefHeight="25.0" prefWidth="154.0" text="Add Workout" translateX="60.0" translateY="5.0" />
                   <Button fx:id="btnAddExercise" mnemonicParsing="false" onAction="#addExercise" prefHeight="25.0" prefWidth="150.0" text="Add Exercise" translateX="-280.0" translateY="5.0" />
                </children>
             </HBox>
-            <HBox prefHeight="48.0" prefWidth="600.0">
+            <HBox prefHeight="48.0" prefWidth="600.0" translateX="85.0" translateY="40.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#deleteWorkout" prefHeight="25.0" prefWidth="146.0" text="Delete Workout" translateX="30.0" translateY="10.0" />
-                  <Button mnemonicParsing="false" onAction="#deleteExercise" prefHeight="25.0" prefWidth="149.0" text="Delete Exercise" translateX="70.0" translateY="10.0" />
-                  <Button mnemonicParsing="false" onAction="#showExercise" prefHeight="25.0" prefWidth="146.0" text="Show Exercise" translateX="115.0" translateY="10.0" />
+                  <Button mnemonicParsing="false" onAction="#deleteExercise" prefHeight="25.0" prefWidth="149.0" text="Delete Exercise" translateX="27.0" translateY="10.0" />
+                  <Button mnemonicParsing="false" onAction="#deleteWorkout" prefHeight="25.0" prefWidth="146.0" text="Delete Workout" translateX="67.0" translateY="10.0" />
+                  <Button mnemonicParsing="false" onAction="#showExercise" prefHeight="25.0" prefWidth="146.0" text="Show Exercise" translateX="118.0" translateY="10.0" />
                </children>
             </HBox>
          </children>
       </VBox>
    </bottom>
+   <center>
+      <ScrollPane prefHeight="530.0" prefWidth="497.0" BorderPane.alignment="CENTER">
+         <content>
+            <VBox fx:id="workoutBox" prefHeight="530.0" prefWidth="499.0" />
+         </content>
+      </ScrollPane>
+   </center>
+   <left>
+      <TabPane fx:id="exercisePane" prefHeight="529.0" prefWidth="257.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER" />
+   </left>
 </BorderPane>

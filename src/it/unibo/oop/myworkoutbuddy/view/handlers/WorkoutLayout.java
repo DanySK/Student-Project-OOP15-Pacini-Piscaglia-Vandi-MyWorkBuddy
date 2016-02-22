@@ -10,6 +10,7 @@ import it.unibo.oop.myworkoutbuddy.util.Pair;
 import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
@@ -39,7 +40,8 @@ public class WorkoutLayout implements WorkoutLayoutStrategy {
             });
             workout.getChildren().add(new TitledPane(workName, exercisesList));
         });
-        return workout;
+        final ScrollPane scrollWorkout = new ScrollPane(workout);
+        return scrollWorkout;
     }
 
     @Override

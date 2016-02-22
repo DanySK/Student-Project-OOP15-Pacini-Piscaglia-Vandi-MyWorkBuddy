@@ -4,13 +4,10 @@ import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialo
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
@@ -21,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
@@ -28,6 +26,8 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * 
@@ -52,11 +52,15 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     private static final int REPS_MAX_WIDTH = 40;
 
+    private static final int TAB_PANE_WIDTH = 250;
+
+    private static final int TAB_PANE_HEIGHT = 500;
+
     private Optional<VBox> workoutSelected = Optional.empty();
 
     private Optional<Label> exerciseSelected = Optional.empty();
 
-    private CreateRoutineCheckStrategy checkStrategy = new CreateRoutineCheck();
+    private final CreateRoutineCheckStrategy checkStrategy = new CreateRoutineCheck();
 
     private final Map<String, Map<String, List<Integer>>> routine = new HashMap<>();
 
@@ -69,18 +73,27 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private final EventHandler<MouseEvent> selectExerciseHandler = event -> {
 
         if (checkStrategy.hasExBeenChanged(exerciseSelected, event)) {
-            exerciseSelected.get().setId("exercise");
+            exerciseSelected.get().setId("exerciseToSelect");
         }
         final Label selLabel = ((Label) event.getSource());
         selLabel.setId("selectedExercise");
         exerciseSelected = Optional.of(selLabel);
     };
 
+    /*
+     * private final EventHandler<Event> selectTabHandler = event -> {
+     * final Tab section = (Tab) event.getSource();
+     * section.setId("selectedTab");
+     * };
+     */
+
     @FXML
     private void saveRoutine() {
         if (checkStrategy.hasRoutineBeenSaved()) {
             showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
                     AlertType.INFORMATION);
+            // clear routine....
+            workoutBox.getChildren().clear();
         }
     }
 
@@ -99,12 +112,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void addExercise() {
-
         if (checkStrategy.canAddExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
             workoutSelected.get().getChildren().add(buildExerciseBox());
         }
-        // for testing
-        System.out.println(getRoutine());
     }
 
     @FXML
@@ -127,7 +137,6 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void deleteExercise() {
-
         if (checkStrategy.canDeleteExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
             workoutSelected.get().getChildren().remove(exerciseSelected.get().getParent());
             exerciseSelected = Optional.empty();
@@ -144,7 +153,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
                 final HBox exInfo = (HBox) ex;
                 final List<Integer> repList = new ArrayList<>();
                 final Label exLabel = (Label) exInfo.getChildren().get(0);
-                IntStream.range(1, 4).forEach(i -> {
+                IntStream.range(2, 4).forEach(i -> {
                     final TextField repNumber = (TextField) exInfo.getChildren().get(i);
                     repList.add(Integer.parseInt(repNumber.getText()));
                 });
@@ -166,24 +175,24 @@ public final class CreateRoutineHandler implements CreateRoutineView {
      * add in a routine.
      */
     public void initialize() {
-        // only for testing
-        final Map<String, Set<String>> prova = new HashMap<>();
-        prova.put("Massa", new HashSet<>(Arrays.asList("alzate", "panca")));
-        prova.put("Forza", new HashSet<>(Arrays.asList("crunch", "elastici")));
-        //
         getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
             newSection.setId("exerciseSection");
+            // newSection.setOnSelectionChanged(selectTabHandler);
             exercisePane.getTabs().add(newSection);
+            final ScrollPane scroll = new ScrollPane();
             final VBox workout = new VBox();
+            workout.setPrefWidth(TAB_PANE_WIDTH);
+            workout.setPrefHeight(TAB_PANE_HEIGHT);
             workout.setId("workout");
             exs.forEach(ex -> {
                 final Label exLabel = new Label(ex);
-                exLabel.setId("exercise");
+                exLabel.setId("exerciseToSelect");
                 exLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
                 workout.getChildren().add(exLabel);
             });
-            newSection.setContent(workout);
+            scroll.setContent(workout);
+            newSection.setContent(scroll);
         });
     }
 
@@ -194,6 +203,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
         IntStream.range(0, 3).forEach(i -> repsField.get(i).setMaxWidth(REPS_MAX_WIDTH));
         exBox.getChildren().add(newExercise);
+        exBox.getChildren().add(new Label(" - Repetitions: "));
         IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
         newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
         newExercise.setId("exercise");
