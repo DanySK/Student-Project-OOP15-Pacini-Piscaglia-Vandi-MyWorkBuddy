@@ -104,7 +104,7 @@ public interface ViewsObserver {
      * @return exercise selected
      *         informations.
      */
-    Map<String,String> getExerciseInfo(String exerciseName);
+    Map<String, String> getExerciseInfo(String exerciseName);
 
     /**
      * 
