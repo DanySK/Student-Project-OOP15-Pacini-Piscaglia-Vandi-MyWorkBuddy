@@ -1,8 +1,8 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 
 import org.bson.Document;
@@ -19,7 +19,7 @@ import com.mongodb.client.MongoCollection;
  */
 public final class MongoDriver {
 
-    private static final String CONFIG_FILE = MongoDriver.class.getResource("/db/config.yaml").getFile();
+    private static final String CONFIG_FILE = "/resources/db/config.yaml";
 
     private static MongoClient client;
 
@@ -30,14 +30,15 @@ public final class MongoDriver {
     private static MongoClientURI uri;
 
     static {
+        final InputStream file = MongoDriver.class.getResourceAsStream(CONFIG_FILE);
         try {
             @SuppressWarnings("unchecked")
             final Map<String, Object> config = (Map<String, Object>) new YamlReader(
-                    new BufferedReader(new FileReader(CONFIG_FILE))).read();
+                    new BufferedReader(new InputStreamReader(file))).read();
             url = config.get("url").toString();
             dbName = config.get("db_name").toString();
             uri = new MongoClientURI(url);
-        } catch (final FileNotFoundException | YamlException e) {
+        } catch (final YamlException e) {
             e.printStackTrace();
         }
     }
