@@ -165,16 +165,8 @@ public class Controller implements ViewsObserver {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean saveRoutine() {
-        final Map<String, Object> id = new HashMap<>();
-        id.put("username", currentUser.get());
-        id.put("routineId", SERVICES.get("routineService").getAll().stream()
-                .map(m -> (Map<String, Object>) m.get("id"))
-                .mapToInt(m -> (int) m.get("routineId"))
-                .max()
-                .orElse(1));
         final List<Map<String, Object>> workouts = views.getCreateRoutineView().getRoutine().entrySet().stream()
                 .map(w -> {
                     final Map<String, Object> workout = new HashMap<>();
@@ -191,7 +183,11 @@ public class Controller implements ViewsObserver {
                 })
                 .collect(Collectors.toList());
         final Map<String, Object> routine = new HashMap<>();
-        routine.put("id", id);
+        routine.put("username", currentUser.get());
+        routine.put("routineIndex", SERVICES.get("routineService").getAll().stream()
+                .mapToInt(m -> (int) m.get("routineIndex"))
+                .max()
+                .orElse(0) + 1);
         routine.put("description", views.getCreateRoutineView().getRoutineDescription());
         routine.put("workouts", workouts);
         return SERVICES.get("routineService").create(routine);
@@ -200,29 +196,25 @@ public class Controller implements ViewsObserver {
     @SuppressWarnings("unchecked")
     @Override
     public Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines() {
-        final Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("id", currentUserUsernameAsQueryParam());
-        final List<Map<String, Object>> routinesFromDB = SERVICES.get("routineService").getByParams(queryParams);
         Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> routines = new HashSet<>();
-        routinesFromDB.forEach(r -> {
-            final Map<String, Map<String, List<Integer>>> workouts = new HashMap<>();
-            final List<Map<String, Object>> workoutsFromDB = (List<Map<String, Object>>) r.get("workouts");
-            workoutsFromDB.forEach(w -> {
-                final List<Map<String, Object>> exercisesFromDB = (List<Map<String, Object>>) w.get("exercises");
-                final Map<String, List<Integer>> exercises = new HashMap<>();
-                exercisesFromDB.forEach(e -> {
-                    exercises.put((String) e.get("exerciseName"), ((List<Object>) e.get("sets")).stream()
-                            .map(Object::toString)
-                            .map(Integer::valueOf)
-                            .collect(Collectors.toList()));
+        SERVICES.get("routineService")
+                .getByParams(currentUserUsernameAsQueryParam()).forEach(r -> {
+                    final Map<String, Map<String, List<Integer>>> workouts = new HashMap<>();
+                    ((List<Map<String, Object>>) r.get("workouts")).forEach(w -> {
+                        final Map<String, List<Integer>> exercises = new HashMap<>();
+                        ((List<Map<String, Object>>) w.get("exercises")).forEach(e -> {
+                            exercises.put((String) e.get("exerciseName"), ((List<Object>) e.get("repetitions")).stream()
+                                    .map(Object::toString)
+                                    .map(Integer::valueOf)
+                                    .collect(Collectors.toList()));
+                        });
+                        workouts.put((String) w.get("name"), exercises);
+                    });
+                    routines.add(new UnmodifiableTriple<>(
+                            (int) r.get("routineIndex"),
+                            (String) r.get("description"),
+                            workouts));
                 });
-                workouts.put((String) w.get("name"), exercises);
-            });
-            routines.add(new UnmodifiableTriple<>(
-                    (int) r.get("routineIndex"),
-                    (String) r.get("description"),
-                    workouts));
-        });
         return routines;
     }
 
@@ -340,45 +332,6 @@ public class Controller implements ViewsObserver {
         services.put("chartService", new MongoService("charts"));
         services.put("userService", new MongoService("users"));
         SERVICES = Collections.unmodifiableMap(services);
-    }
-
-    private class Value<T> {
-
-        private T value = null;
-
-        public void set(final T value) {
-            this.value = requireNonNull(value);
-        }
-
-        public T get() {
-            return value;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((value == null) ? 0 : value.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(final Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null || !(obj instanceof Value)) {
-                return false;
-            }
-            Value<?> other = (Value<?>) obj;
-            return value == null && other.value == null || value.equals(other.value);
-        }
-
-        @Override
-        public String toString() {
-            return value.toString();
-        }
-
     }
 
 }
