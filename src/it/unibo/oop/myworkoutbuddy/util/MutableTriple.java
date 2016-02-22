@@ -66,7 +66,7 @@ public class MutableTriple<X, Y, Z> extends MutablePair<X, Y> implements Triple<
 
     @Override
     public String toString() {
-        return String.format("Triple[%s, %s, %s]", getX(), getY(), z);
+        return String.format("Triple{%s, %s, %s}", getX(), getY(), z);
     }
 
 }

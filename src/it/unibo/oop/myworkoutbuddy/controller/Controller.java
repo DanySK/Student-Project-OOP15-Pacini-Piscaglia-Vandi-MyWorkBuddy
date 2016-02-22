@@ -4,8 +4,6 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,22 +32,11 @@ public class Controller implements ViewsObserver {
 
     private static final Map<String, Service> SERVICES;
 
-    private static final int MIN_USERNAME_LENGTH = 8;
-    private static final int MAX_USERNAME_LENGTH = 15;
-    private static final int MIN_PASSWORD_LENGTH = 6;
-
     private final MyWorkoutBuddyModel model;
     private final AppViews views;
 
+    // TODO: remove
     private Optional<String> currentUser;
-
-    // Validation strategies
-    private final Predicate<String> usernameValidator = u -> !isNull(u) && (u.length() >= MIN_USERNAME_LENGTH
-            && u.length() <= MAX_USERNAME_LENGTH) && checkIfUserExists(u);
-    private final Predicate<String> emailValidator = e -> !isNull(e) && EmailValidator.getInstance().isValid(e);
-    private final Predicate<String> passwordValidator = p -> !isNull(p) && p.length() > MIN_PASSWORD_LENGTH;
-    private final Predicate<String> nameValidator = n -> !isNull(n) && n.length() > 0;
-    private final Predicate<Number> numberValidator = n -> !isNull(n) && Double.compare(n.doubleValue(), 0) > 0;
 
     /**
      * Constructs a new controller instance.
@@ -92,20 +79,18 @@ public class Controller implements ViewsObserver {
         final String username = views.getRegistrationView().getUsername();
         // TODO: use some password hashing library!
         final String password = views.getRegistrationView().getPassword();
+        final String passwordConfirm = views.getRegistrationView().getPasswordConfirm();
         final String firstName = views.getRegistrationView().getName();
         final String lastName = views.getRegistrationView().getSurname();
         final String email = views.getRegistrationView().getEmail();
         final int age = views.getRegistrationView().getAge();
         final int height = views.getRegistrationView().getHeight();
         final double weight = views.getRegistrationView().getWeight();
-        if (validate(username, usernameValidator) && validate(password, passwordValidator)
-                && validate(firstName, nameValidator) && validate(lastName, nameValidator)
-                && validate(age, numberValidator) && validate(height, numberValidator)
-                && validate(weight, numberValidator) && validate(email, emailValidator.and(e -> {
-                    final Map<String, Object> param = new HashMap<>();
-                    param.put("email", e);
-                    return !SERVICES.get("userService").getOneByParams(param).isPresent();
-                }))) {
+        if (validate(username, usernameValidator()) && validate(firstName, nameValidator())
+                && validate(lastName, nameValidator()) && validate(weight, numberValidator())
+                && validate(email, emailValidator(true)) && validate(height, numberValidator())
+                && validate(password, passwordValidator(passwordConfirm)) && validate(age, numberValidator())) {
+            System.out.println("Validation passed");
             final Map<String, Object> newUser = new HashMap<>();
             newUser.put("username", username);
             newUser.put("password", password);
@@ -115,7 +100,7 @@ public class Controller implements ViewsObserver {
             newUser.put("height", height);
             newUser.put("weight", weight);
             newUser.put("age", age);
-            newUser.put("routinesId", new ArrayList<>());
+            newUser.put("favouriteTheme", "");
             return SERVICES.get("userService").create(newUser);
         }
         return false;
@@ -135,10 +120,10 @@ public class Controller implements ViewsObserver {
 
     @Override
     public String getFavouriteTheme() {
-        final Optional<Map<String, Object>> user = SERVICES.get("userService")
-                .getOneByParams(currentUserUsernameAsQueryParam());
         final StringBuilder sb = new StringBuilder("");
-        user.ifPresent(u -> sb.append(u.get("favouriteTheme")));
+        SERVICES.get("userService")
+                .getOneByParams(currentUserUsernameAsQueryParam())
+                .ifPresent(u -> sb.append(u.get("favouriteTheme")));
         return sb.toString();
     }
 
@@ -146,13 +131,11 @@ public class Controller implements ViewsObserver {
     public Map<String, Set<String>> getExercises() {
         final Map<String, Set<String>> exercises = new HashMap<>();
         SERVICES.get("exerciseService").getAll().forEach(m -> {
-            ((Collection<?>) m.get("bodyParts")).forEach(p -> {
-                final Set<String> s = new HashSet<>();
-                s.add((String) m.get("name"));
-                exercises.merge((String) p, s, (o, n) -> {
-                    o.addAll(n);
-                    return o;
-                });
+            final Set<String> s = new HashSet<>();
+            s.add((String) m.get("name"));
+            exercises.merge((String) m.get("mainTarget"), s, (o, n) -> {
+                o.addAll(n);
+                return o;
             });
         });
         return exercises;
@@ -160,8 +143,14 @@ public class Controller implements ViewsObserver {
 
     @Override
     public List<String> getExerciseInfo(final String exerciseName) {
-        // TODO
-        SERVICES.get("exerciseService");
+        final Map<String, Object> params = new HashMap<>();
+        params.put("name", exerciseName);
+        final Map<String, String> exerciseInfo = new HashMap<>();
+        SERVICES.get("exerciseService").getOneByParams(params).ifPresent(m -> {
+            exerciseInfo.put("description", (String) m.get("description"));
+            exerciseInfo.put("videoURL", (String) m.get("videoURL"));
+        });
+        // return exerciseInfo; (to use)
         return null;
     }
 
@@ -196,17 +185,19 @@ public class Controller implements ViewsObserver {
     @SuppressWarnings("unchecked")
     @Override
     public Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines() {
-        Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> routines = new HashSet<>();
+        final Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> routines = new HashSet<>();
         SERVICES.get("routineService")
                 .getByParams(currentUserUsernameAsQueryParam()).forEach(r -> {
                     final Map<String, Map<String, List<Integer>>> workouts = new HashMap<>();
                     ((List<Map<String, Object>>) r.get("workouts")).forEach(w -> {
                         final Map<String, List<Integer>> exercises = new HashMap<>();
                         ((List<Map<String, Object>>) w.get("exercises")).forEach(e -> {
-                            exercises.put((String) e.get("exerciseName"), ((List<Object>) e.get("repetitions")).stream()
-                                    .map(Object::toString)
-                                    .map(Integer::valueOf)
-                                    .collect(Collectors.toList()));
+                            exercises.put(
+                                    (String) e.get("exerciseName"),
+                                    ((List<Object>) e.get("repetitions")).stream()
+                                            .map(Object::toString)
+                                            .map(Integer::valueOf)
+                                            .collect(Collectors.toList()));
                         });
                         workouts.put((String) w.get("name"), exercises);
                     });
@@ -225,6 +216,14 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
+    public boolean deleteRoutine() {
+        final int routineIndex = views.getSelectRoutineView().getRoutineIndex();
+        final Map<String, Object> deleteParams = currentUserUsernameAsQueryParam();
+        deleteParams.put("routineIndex", routineIndex);
+        return SERVICES.get("routineService").deleteByParams(deleteParams) > 0;
+    }
+
+    @Override
     public Map<String, Map<String, Number>> getChartsData() {
         final Map<String, Map<String, Number>> chartsData = new HashMap<>();
         chartsData.put("pie", getChartData("pieChartData"));
@@ -236,7 +235,7 @@ public class Controller implements ViewsObserver {
     public Map<String, Object> getUserData() {
         return SERVICES.get("userService")
                 .getOneByParams(currentUserUsernameAsQueryParam())
-                .orElse(null);
+                .get();
     }
 
     @Override
@@ -245,12 +244,13 @@ public class Controller implements ViewsObserver {
         final String newLastName = views.getUserSettingsView().getNewSurname();
         final String newPassword = views.getUserSettingsView().getNewPassword();
         final int newAge = views.getUserSettingsView().getNewAge();
+        final String passwordConfirm = views.getUserSettingsView().getPasswordConfirm();
         final String newEmail = views.getUserSettingsView().getNewEmail();
-        if (validate(newPassword, passwordValidator)
-                && validate(newFirstName, nameValidator)
-                && validate(newLastName, nameValidator)
-                && validate(newAge, numberValidator)
-                && validate(newEmail, emailValidator)) {
+        if (validate(newFirstName, nameValidator())
+                && validate(newLastName, nameValidator())
+                && validate(newAge, numberValidator())
+                && validate(newEmail, emailValidator(false))
+                && validate(newPassword, passwordValidator(passwordConfirm))) {
             final Map<String, Object> newUserData = new HashMap<>();
             newUserData.put("password", newPassword);
             newUserData.put("name", newFirstName);
@@ -300,6 +300,38 @@ public class Controller implements ViewsObserver {
         final Map<String, Object> param = new HashMap<>();
         param.put("username", username);
         return SERVICES.get("userService").getOneByParams(param).isPresent();
+    }
+
+    private static boolean checkIfEmailExists(final String email) {
+        final Map<String, Object> param = new HashMap<>();
+        param.put("email", email);
+        return SERVICES.get("userService").getOneByParams(param).isPresent();
+    }
+
+    // Validation strategies
+    private static Predicate<String> usernameValidator() {
+        final int minUsernameLength = 8;
+        final int maxUsernameLength = 15;
+        return u -> !isNull(u) && (u.length() >= minUsernameLength
+                && u.length() <= maxUsernameLength) && !checkIfUserExists(u);
+    }
+
+    private static Predicate<String> emailValidator(final boolean checkInDatabase) {
+        return e -> !isNull(e) && EmailValidator.getInstance().isValid(e) && checkInDatabase
+                ? !checkIfEmailExists(e) : true;
+    }
+
+    private static Predicate<String> nameValidator() {
+        return n -> !isNull(n) && n.length() > 0;
+    }
+
+    private static Predicate<Number> numberValidator() {
+        return n -> !isNull(n) && Double.compare(n.doubleValue(), 0) > 0;
+    }
+
+    private static Predicate<String> passwordValidator(final String other) {
+        final int minPasswordLength = 6;
+        return p -> !isNull(p) && p.length() > minPasswordLength && p.equals(other);
     }
 
     private void checkIfUserIsNotLoggedIn() {

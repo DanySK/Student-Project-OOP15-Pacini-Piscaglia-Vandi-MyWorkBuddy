@@ -75,7 +75,7 @@ public class MutablePair<X, Y> implements Pair<X, Y> {
 
     @Override
     public String toString() {
-        return String.format("Pair[%s, %s]", x, y);
+        return String.format("Pair{%s, %s}", x, y);
     }
 
 }
