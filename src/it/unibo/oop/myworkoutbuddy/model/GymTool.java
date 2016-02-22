@@ -1,8 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.Map;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
  * GymTool available for training.
  * -------------------------------------------------------------
@@ -47,14 +45,14 @@ public interface GymTool {
 
     /**
      * 
-     * @param bodyPart BodyPart
-     * @param value Double
+     * @param bodyPart String
+     * @param percentage Double
      */
-    void addBodyPart(BodyPart bodyPart, Double value);
+    void addBodyPart(final String bodyPart, Double percentage);
 
     /**
      * 
      * @return percentage grade of single muscle involvement
      */
-    Map<BodyPart, Double> getBodyMap();
+    Map<String, Double> getBodyMap();
 }

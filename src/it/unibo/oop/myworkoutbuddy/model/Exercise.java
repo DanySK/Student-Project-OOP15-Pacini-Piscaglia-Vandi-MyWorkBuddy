@@ -1,8 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.Set;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
  * 
  *
@@ -46,7 +44,7 @@ public interface Exercise {
     /**
      * @return the set of body parts
      */
-    Set<BodyPart> getBodyParts();
+    Set<String> getBodyParts();
 
     /**
      * 

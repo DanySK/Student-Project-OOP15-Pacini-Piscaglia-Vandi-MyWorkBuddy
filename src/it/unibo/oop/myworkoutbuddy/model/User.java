@@ -1,11 +1,9 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
 /**
  * 
  * Informations about User's activities :
@@ -37,12 +35,17 @@ public interface User {
      * 
      * @return the WorkoutRoutine list for a specific user
      */
-    List<WorkoutRoutine> getRoutineList();
+    List<Routine> getRoutineList();
+
     /**
      * 
-     * @param bodyMeasure of User
+     * @param localDate LocalDate
+     * @param measureBodyZone String
+     * @param measure Double
+     * @throws NullPointerException an exception for null pointers
      */
-    void addMesure(BodyData bodyMeasure);
+    void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException;
+
     /**
      * 
      * @param workout of User
@@ -53,7 +56,7 @@ public interface User {
      * 
      * @param routine of User
      */
-    void addRoutine(WorkoutRoutine routine);
+    void addRoutine(Routine routine);
     /**
      * Update the Status of User's workout.
      */
@@ -75,25 +78,25 @@ public interface User {
      * 
      * @return Improved Performance of Body (muscles level).
      */
-    Map<BodyPart, Double> scoreBodyPart();
+    Map<String, Double> scoreBodyPart();
 
     /**
      * 
      * @return Improved Performance of Body (parts level).
      */
-    Map<BodyZone, Double> scoreBodyZone();
+    Map<String, Double> scoreBodyZone();
 
     /**
      * 
      * @return work times for each bodyPart
      */
-    Map<BodyPart, Double> timeBodyPart();
+    Map<String, Double> timeBodyPart();
 
     /**
      * 
      * @return work times for each bodyZone
      */
-    Map<BodyZone, Double> timeBodyZone();
+    Map<String, Double> timeBodyZone();
 
     /**
      * 

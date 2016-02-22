@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
  User's data of a single workout session.
 
@@ -25,22 +23,22 @@ public class WorkoutImpl implements Workout {
     private LocalDate date;
     private LocalTime time;
     private boolean state;
-    private WorkoutRoutine routine;
+    private Routine routine;
 
     private Map<Exercise, Integer> scoreMap;
 
     /**
-     * 
+     * @param routine Routine
      * @param date LocalDate
      * @param time LocalTime
-     * @param routine WorkoutRoutine
-     * 
+     * @param state boolean
      */
-    public WorkoutImpl(final LocalDate date, final LocalTime time, final WorkoutRoutine routine) {
+    public WorkoutImpl(final Routine routine, final LocalDate date, final LocalTime time, final boolean state) {
         this.date = date;
         this.time = time;
         this.state = false;
         this.routine = routine;
+        this.state = state;
         this.scoreMap = new HashMap<>();
     }
 
@@ -64,10 +62,12 @@ public class WorkoutImpl implements Workout {
      */
    @Override
    public void addScore(final Integer index, final Integer score) throws NullPointerException, IllegalArgumentException {
+       /*
        this.checkNotNull(index);
        this.checkNotNull(score);
        this.checkNotNegative(index);
        this.checkNotNegative(score);
+       */
 
        final Exercise exerc = this.routine.getExerciseList().get(index);
        final GymTool gymTool = exerc.getGymTool();
@@ -122,7 +122,7 @@ public class WorkoutImpl implements Workout {
     }
 
     @Override
-    public WorkoutRoutine getRoutine() {
+    public Routine getRoutine() {
         return this.routine;
     }
 
@@ -152,14 +152,14 @@ public class WorkoutImpl implements Workout {
      * return a map <BodyPart, Score> of all scores got by each body part(muscle).
      */
     @Override
-    public Map<BodyPart, Double> getPercentuageParts() {
-        final Map<BodyPart, Double> scoreMap = new HashMap<>();
-        final Map<BodyPart, Integer> timesMap = new HashMap<>();
+    public Map<String, Double> getPercentuageParts() {
+        final Map<String, Double> scoreMap = new HashMap<>();
+        final Map<String, Integer> timesMap = new HashMap<>();
         final List<Exercise> listExercise = routine.getExerciseList();
         listExercise.forEach(i -> {
             final Double score = this.normalizedScore(i); //this.normalizedScore(listExercise, i);
 
-            final Map<BodyPart, Double> percentageMap = i.getGymTool().getBodyMap();
+            final Map<String, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(scoreMap, percentageMap, score);
             this.countMap(timesMap, percentageMap);
         });
@@ -172,11 +172,11 @@ public class WorkoutImpl implements Workout {
      * @return timeMap
      */
     @Override
-    public Map<BodyPart, Double> getTimeParts() {
-        final Map<BodyPart, Double> timeMap = new HashMap<>();
+    public Map<String, Double> getTimeParts() {
+        final Map<String, Double> timeMap = new HashMap<>();
         this.routine.getExerciseList().forEach(i -> {
             final Double minutes = this.timeExercise(i);
-            final Map<BodyPart, Double> percentageMap = i.getGymTool().getBodyMap();
+            final Map<String, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(timeMap, percentageMap, minutes);
         });
         return timeMap;
@@ -212,7 +212,27 @@ public class WorkoutImpl implements Workout {
         return scoreMap;
     }
 
-    private void percentageMapping(final Map<BodyPart, Double> valueMap, final Map<BodyPart, Double> percentageMap, final Double value) {
+    /**
+     * 
+     * @param methodName String
+     * @return a map of all available services
+     */
+    public Map<String, Double> getService(final String methodName) {
+        switch (methodName) {
+             case "getScoreTools" :
+                 return this.getScoreTools();
+             case "getTimeParts" :
+                 return this.getTimeParts();
+             case "getTimeTools" :
+                 return this.getTimeTools();
+             case "getPercentuageParts" :
+                 return this.getPercentuageParts();
+             default :
+                 return null;
+        }
+    }
+
+    private void percentageMapping(final Map<String, Double> valueMap, final Map<String, Double> percentageMap, final Double value) {
         percentageMap.keySet().forEach(t-> {
             final double valuePerc = (percentageMap.get(t) * value) / PERCENTAGE;
             this.mergeMap(valueMap, t, valuePerc, (d1, d2) -> {
@@ -221,7 +241,7 @@ public class WorkoutImpl implements Workout {
         });
     }
 
-    private void countMap(final Map<BodyPart, Integer>timesMap, final Map<BodyPart, Double>percentageMap) {
+    private void countMap(final Map<String, Integer>timesMap, final Map<String, Double>percentageMap) {
     percentageMap.keySet().forEach(i-> {
         this.mergeMap(timesMap, i, 1, (i1, i2) -> {
             return timesMap.get(i) + 1;
@@ -229,7 +249,7 @@ public class WorkoutImpl implements Workout {
     });
     }
 
-    private void midMap(final Map<BodyPart, Double>scoreMap, final Map<BodyPart, Integer>timesMap) {
+    private void midMap(final Map<String, Double>scoreMap, final Map<String, Integer>timesMap) {
         timesMap.keySet().forEach(i -> {
             final Integer num = timesMap.get(i);
             this.mergeMap(scoreMap, i, 0.00, (d1, d2)-> {
@@ -257,6 +277,7 @@ public class WorkoutImpl implements Workout {
         return Double.valueOf((double) exe.getTime() * exe.getRepetition()); //score=time*numRipetizioni
     }
 
+    /*
     private void checkNotNull(final Object obj) throws NullPointerException {
         if (obj == null) {
             throw new NullPointerException();
@@ -268,6 +289,7 @@ public class WorkoutImpl implements Workout {
             throw new IllegalArgumentException();
         }
     }
+    */
 
     @Override
     public String toString() {

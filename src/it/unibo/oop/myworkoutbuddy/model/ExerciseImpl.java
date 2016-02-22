@@ -1,8 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.util.Set;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
  Class Exercise to personalized a single exercise
 
@@ -204,7 +202,7 @@ public final class ExerciseImpl implements Exercise {
      * @return the set of body parts
      */
     @Override
-    public Set<BodyPart> getBodyParts() {
+    public Set<String> getBodyParts() {
         return this.gymTool.getBodyMap().keySet();
     }
 

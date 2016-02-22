@@ -1,15 +1,12 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyData;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyZone;
 /**
  Informations about User's activities :
  Account, Data, Measure, Training, TrainingCard.
@@ -26,9 +23,11 @@ public class UserImpl implements User {
     private Account account;
     private Person person;
 
+    private Body body;
+
     private List<BodyData> measureList;     // list of body periodic measure
     private List<Workout> workoutList;    // list of training sessions done/to do
-    private List<WorkoutRoutine> routineList;    // list of available Routine
+    private List<Routine> routineList;    // list of available Routine
 
     /**
      * 
@@ -39,11 +38,13 @@ public class UserImpl implements User {
     /**
      * @param account Account
      * @param person Person
-     * 
+     * @param body Body
      */
-    public UserImpl(final Account account, final Person person) {
+    public UserImpl(final Account account, final Person person, final Body body) {
         this.account = account;
         this.person = person;
+
+        this.body = body;
 
         this.measureList = new ArrayList<>();
         this.workoutList = new ArrayList<>();
@@ -86,17 +87,25 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public List<WorkoutRoutine> getRoutineList() {
+    public List<Routine> getRoutineList() {
         return this.routineList;
     }
 
     /**
      * 
+     * @param localDate LocalDate
+     * @param measureBodyZone String
+     * @param measure Double
+     * @throws NullPointerException
      */
     @Override
-    public void addMesure(final BodyData bodyMeasure) throws NullPointerException {
-        this.checkNotNull(bodyMeasure);
-        this.measureList.add(bodyMeasure);
+    public void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException {
+        this.checkNotNull(localDate);
+        this.checkNotNull(measureBodyZone);
+        this.checkNotNull(measure);
+        final BodyData bodyData = new BodyData(localDate);
+        bodyData.addBodyMeasure(measureBodyZone, measure);
+        this.measureList.add(bodyData);
     }
 
     /**
@@ -112,7 +121,7 @@ public class UserImpl implements User {
      * 
      */
     @Override
-    public void addRoutine(final WorkoutRoutine routine) throws NullPointerException {
+    public void addRoutine(final Routine routine) throws NullPointerException {
         this.checkNotNull(routine);
         this.routineList.add(routine);
     }
@@ -159,10 +168,10 @@ public class UserImpl implements User {
      * @return a map <BodyPart, Score> of all workout scores mapped in all BodyParts
      */
     @Override
-    public Map<BodyPart, Double> scoreBodyPart() {
-        final Map<BodyPart, Double> scoreMap = new HashMap<>();
+    public Map<String, Double> scoreBodyPart() {
+        final Map<String, Double> scoreMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
-            final Map<BodyPart, Double> tempMap = i.getPercentuageParts();
+            final Map<String, Double> tempMap = i.getPercentuageParts();
             this.mapSumGen(scoreMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
@@ -175,32 +184,21 @@ public class UserImpl implements User {
      * @return a map <BodyZone, Score> of all workout scores mapped in all BodyZones
      */
     @Override
-    public Map<BodyZone, Double> scoreBodyZone() {
-        return this.mapBodyZone(this.scoreBodyPart());
-    }
-
-    /**
-     * @return a map <BodyPart, Time> of all workout times mapped in all BodyParts
-     */
-    @Override
-    public Map<BodyPart, Double> timeBodyPart() {
-        final Map<BodyPart, Double> timeMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
-            final Map<BodyPart, Double> tempMap = i.getTimeParts();
-            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
-                return d1 + d2;
-            });
-        });
-
-        return timeMap;
+    public Map<String, Double> scoreBodyZone() {
+        return this.mapBodyZone(new HashMap<String, Double>(), this.scoreBodyPart());
     }
 
     /**
      * @return a map <BodyZone, Time> of all workout times mapped in all BodyZones
      */
     @Override
-    public Map<BodyZone, Double> timeBodyZone() {
-        return this.mapBodyZone(this.timeBodyPart());
+    public Map<String, Double> timeBodyZone() {
+        final Map<String, Double> timeMap = new HashMap<>();
+        this.getWorkoutList().forEach(i-> {
+            final Map<String, Double> tempMap = i.getTimeParts();
+            this.mapBodyZone(timeMap, tempMap);
+        });
+        return timeMap;
     }
 
     /**
@@ -213,6 +211,22 @@ public class UserImpl implements User {
     }
 
     /**
+     * @return a map <BodyPart, Time> of all workout times mapped in all BodyParts
+     */
+    @Override
+    public Map<String, Double> timeBodyPart() {
+        final Map<String, Double> timeMap = new HashMap<>();
+        this.getWorkoutList().forEach(i-> {
+            final Map<String, Double> tempMap = i.getTimeParts();
+            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
+            });
+        });
+
+        return timeMap;
+    }
+
+    /**
      * 
      * @return a map made of associations between a codeTool and its relative time of use
      */
@@ -220,7 +234,7 @@ public class UserImpl implements User {
     public Map<String, Double> timeGymTool() {
         final Map<String, Double> timeMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
-            final Map<String, Double> tempMap = i.getTimeTools();
+            final Map<String, Double> tempMap = i.getService("getTimeTools"); //i.getTimeTools();
             this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
@@ -265,15 +279,18 @@ public class UserImpl implements User {
     }
 
     /**
-     * map each BodyPart in the specific BodyZone
-     * @param mapBodyPart
+     * function of merge of mapBodyZone2 and mapBodyZone
+     * @param mapBodyZone Map<String, Double>
+     * @param mapBodyPart Map<String, Double>
+     * @return mapBodyZone
      */
-    private Map<BodyZone, Double> mapBodyZone(final Map<BodyPart, Double> mapBodyPart) {
-        final Map<BodyZone, Double> mapBodyZone = new HashMap<>();
+    private Map<String, Double> mapBodyZone(final Map<String, Double> mapBodyZone, final Map<String, Double> mapBodyPart) {
         mapBodyPart.keySet().forEach(i -> {
-            final Double oldValue = mapBodyZone.get(i.getBodyZone());
+            final String bodyZone = body.getPartZone(i).get();
+            final Double oldValue = mapBodyZone.get(bodyZone); //mapBodyZone.get(i.getBodyZone());
             final Double value = mapBodyPart.get(i);
-            mapBodyZone.merge(i.getBodyZone(), value, (d0, d1) -> {
+
+            mapBodyZone.merge(bodyZone, value, (d0, d1) -> {
                 return value + oldValue;
             });
         });

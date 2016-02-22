@@ -5,8 +5,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
-
 /**
  * 
  * User's data of a single training session. (WorkOut)
@@ -38,7 +36,7 @@ public interface Workout {
      * 
      * @return training card of an exercise
      */
-    WorkoutRoutine getRoutine();
+    Routine getRoutine();
 
     /**
      * 
@@ -72,13 +70,13 @@ public interface Workout {
      * 
      * @return a map of bodyPart and the percentage for all human muscles
      */
-    Map<BodyPart, Double> getPercentuageParts();
+    Map<String, Double> getPercentuageParts();
 
     /**
      * 
      * @return a map of bodyPart and the time of training for all human muscles
      */
-    Map<BodyPart, Double> getTimeParts();
+    Map<String, Double> getTimeParts();
 
     /**
      * 
@@ -91,4 +89,11 @@ public interface Workout {
      * @return a map of GymTool codes and relatives numbers of score obtained
      */
     Map<String, Double> getScoreTools();
+
+    /**
+     * 
+     * @param methodName String
+     * @return the return type of available service
+     */
+    Map<String, Double> getService(final String methodName);
 }

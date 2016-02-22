@@ -3,8 +3,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import it.unibo.oop.myworkoutbuddy.model.Body.BodyPart;
 /**
  Class for using a GymTool
 
@@ -25,7 +23,7 @@ public final class GymToolImpl implements GymTool {
     private final int valueMin;
     private final int valueMax;
 
-    private Map<BodyPart, Double> bodyMap;
+    private Map<String, Double> bodyMap;
 
     /**
      * 
@@ -85,19 +83,20 @@ public final class GymToolImpl implements GymTool {
         return this.numTools;
     }
 
+    //         gymTool.addBodyPart(bodyPart, percentage);
     /**
-     * Add to list of GymTool BodyMap a specific body part with relative value of percentage
+     * Add to BodyMap a specific body part with relative value of percentage
      * Example : TapisRoulant = <m1, 20%>, <m2,30%>, <m5,20%>, ...
      * @param bodyPart BodyPart
      * @param value Double
      */
     @Override
-    public void addBodyPart(final BodyPart bodyPart, final Double value) {
-        this.bodyMap.put(bodyPart, value);
+    public void addBodyPart(final String bodyPart, final Double percentage) {
+        this.bodyMap.put(bodyPart, percentage);
     }
 
     @Override
-    public Map<BodyPart, Double> getBodyMap() {
+    public Map<String, Double> getBodyMap() {
         return this.bodyMap;
     }
 
