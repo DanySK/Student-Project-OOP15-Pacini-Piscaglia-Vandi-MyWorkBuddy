@@ -157,18 +157,11 @@ public final class ExerciseImpl implements Exercise {
         }
     }
 
-    /**
-     * 
-     * @return the description of Exercise
-     */
     @Override
     public String getDescription() {
         return this.description;
     }
 
-    /**
-     * @return gymTool
-     */
     @Override
     public GymTool getGymTool() {
         return this.gymTool;
@@ -198,19 +191,12 @@ public final class ExerciseImpl implements Exercise {
     public int getPause() {
         return this.pause;
     }
-    /**
-     * @return the set of body parts
-     */
+
     @Override
     public Set<String> getBodyParts() {
         return this.gymTool.getBodyMap().keySet();
     }
 
-    /**
-     * 
-     * @param score Double
-     * @return calculate the normalized score for an exercise
-     */
     @Override
     public Double getNormalizedScore(final Double score) {
         final int max = this.getGymTool().getMaxValue();

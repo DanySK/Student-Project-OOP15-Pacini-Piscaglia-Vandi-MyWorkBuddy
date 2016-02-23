@@ -22,40 +22,36 @@ public class MainTestModel {
      * @param args parameters for the main
      * @throws NullPointerException exception for nullPointer
      * @throws IllegalArgumentException exception for not supported values
-     * @throws ExistentAccount 
      */
-    public static void main(final String[] args) throws NullPointerException, IllegalArgumentException, ExistentAccount {
+    public static void main(final String[] args) throws NullPointerException, IllegalArgumentException {
 
         final MyWorkoutBuddyModel model;
 
+        /* --- LOAD DATA ------*/
         System.out.println("\n Start Model");
         model = new MyWorkoutBuddyModelImpl();
-
 
         System.out.println("\n Load Data");
         testLoadData(model);
 
+        /* --- PRINTS DATA ------*/
         System.out.println("\n ==== GYM TOOL LIST ==== \n");
         System.out.println(model.getGymToolList());
 
         System.out.println("\n ==== USERS LIST ==== \n");
         System.out.println(model.getUserList());
 
+        /* --- LOGIN USER ------*/
+        /* loginUser : set current user of model,
+         * after that all model functions are working with loginUser*/
+
         System.out.println("\n ==== LOGIN USER ==== \n");
-        // LOGIN: set current login user
         model.loginUser("account2", "password2");
 
-        // TEST LOGIN USER: generates test data for login User
+        // WOROUT DATE LOGIN USER: generates test data for login User
         testLoginUser(model);
 
-
-        /* --- PRINTS ------*/
-
-        /* LOGIN USER : SETTA L' UTENTE CORRENTE DEL MODEL,
-           DOPO DI KE TUTTE LE FUNZIONI DEL MODEL LAVORANO IN BASE ALL' UTENTE CORRENTE IPOSTATO */
-
-        /* --- SCEGLIERE SE LAVORARE CON LOGIN USER OPPURE CON MODEL X USARE LE FUNZIONI DI STATISTIKE RELATIVE AL CURRENT USER ------*/
-
+        /* --- PRINTS USER DATA AND STATISTICS ------*/
         System.out.println("\n MeasureList = " + model.getMeasureList());
 
         System.out.println("\n ==== ROUTINE LIST  ==== ");
@@ -79,6 +75,10 @@ public class MainTestModel {
         System.out.println(" TrendBodyMass = " + model.trendBodyMass());
         System.out.println(" TrendBodyBMI = " + model.trendBodyBMI());
 
+        model.logoutUser();
+        System.out.println("\n ==== LOGOUT USER : ");
+        System.out.println(" TrendBodyMass = " + model.getMeasureList());
+
      // -----------------------------------------------------------------------------------
         // use secondTestLoadData to try other functionalities
         //System.out.println("\n Load Data");
@@ -90,13 +90,12 @@ public class MainTestModel {
     /**
      * test method for try data building.
      * @param model MyWorkoutBuddyModel
-     * @throws ExistentAccount 
      */
     //@Test
-    public static void testLoadData(final MyWorkoutBuddyModel model) throws ExistentAccount {
+    public static void testLoadData(final MyWorkoutBuddyModel model) {
 
         /* 
-         * GYM TOOL: Make GymTool Test  Data
+         * BODY MAP : map : (Zone -> Body Parts)
          * 
          */
 
@@ -117,6 +116,11 @@ public class MainTestModel {
         musclesChest.add("PECTORALIS_MAJOR");
         model.addMapZone("CHEST", musclesChest);
 
+        /* 
+         * GYM TOOL: Make GymTool Data
+         * 
+         */
+
         // description, path, num, valueMin, valueMax
         model.addGymTool("T1", "Tapis Roulant", "image1.png", 10, 1, 10);
         model.addGymTool("T2", "Cyclette", "image2.png", 10, 1, 10);
@@ -134,10 +138,12 @@ public class MainTestModel {
         model.addBodyPart("T3", "BICEPS", 70.00);
         model.addBodyPart("T3", "PECTORALIS_MAJOR", 30.00);
 
-        /* USER: User (Account, Person)  make User Test data*/
-        /*       Account : UserName, Password, Avatar image Person */
-        /*       Person  : First Name, Last Name, age, email */
-
+       /*
+        *  USER: User (Account, Person)  make User Test data
+        *       Account : UserName, Password, Avatar image Person 
+        *       Person  : First Name, Last Name, age, email 
+        * 
+        */
         model.addAccount("account1", "password1", "avatar1.png");
         model.addUser("Paolo", "Rossi", 20, "paolo.rossi@studio.unibo.it");
 
@@ -159,7 +165,7 @@ public class MainTestModel {
     //@Test
     public static void testLoginUser(final MyWorkoutBuddyModel model) {
 
-    if (!model.isCurrentUser()) {
+    if (!model.isLoginUser()) {
         System.out.println("\n Errore login \n");
         return;
     }
@@ -170,35 +176,41 @@ public class MainTestModel {
         return;
     }
 
-    /*Add a new measure body*/
+    /*Add a measure body*/
     model.addDataMeasure(LocalDate.now());
 
-    model.addBodyMeasure("HEIGHT", 1.80);
-    model.addBodyMeasure("WEIGHT", 70.00);
-    model.addBodyMeasure("UPPER_BODY", 80.00);
-    model.addBodyMeasure("LOWER_BODY", 60.00);
+    model.addBodyMeasure("HEIGHT", 1.80, true);
+    model.addBodyMeasure("WEIGHT", 70.00, true);
+    model.addBodyMeasure("UPPER_BODY", 80.00, true);
+    model.addBodyMeasure("LOWER_BODY", 60.00, true);
 
-    /* WorkRoutine for login User : name, target */
-    // final WorkoutRoutine workRoutine = new WorkoutRoutineImpl("Routine1", "BODY_BUILDING");
+    /* 
+     * ROUTINE: load Routine for Current User
+     * 
+     */
+
+    /* Routine: code , name, target */
     model.addRoutine("R1", "Routine1", "BODY_BUILDING");
 
-    /* Exercise data for WorkRoutine : description, gymTool, settingValue, repetition, time, numSession, pause */
+    /* Exercise data for Routine: codeRoutine, description, codeGymTool, settingValue, repetition, time, numSession, pause */
     model.addGymExcercise("R1", "Warming", "T1", 0, 10, 3, 10, 2);
     model.addGymExcercise("R1", "Running", "T1", 0, 10, 3, 10, 2);
     model.addGymExcercise("R1", "Tonifing", "T2", 0, 10, 3, 10, 2);
     model.addGymExcercise("R1", "Swimming", "T3", 0, 10, 3, 10, 2);
     model.addGymExcercise("R1", "Swimming", "T2", 0, 10, 3, 10, 2);
 
-    /*
-     * Workout progress cycles
+    /* 
+     * WORKOUT: Workout Cycle for current User
+     * 
      */
     for (int k = 0; k < 5; k++) {
 
+        /*Workout : codeRoutine, date, hour, state*/
         model.addWorkout("R1", LocalDate.now(), LocalTime.now(), true);
 
         /* set scores */
-
         for (int i = 0; i < model.getNumExercise("R1"); i++) {
+            /*exerciseScore : numExercise, scoreExercise*/
             model.addExerciseScore(i, 3 + i + k);
         }
     }
@@ -206,10 +218,10 @@ public class MainTestModel {
     /*Add a new measure body*/
     model.addDataMeasure(LocalDate.now());
 
-    model.addBodyMeasure("HEIGHT", 1.80);
-    model.addBodyMeasure("WEIGHT", 65.00);
-    model.addBodyMeasure("UPPER_BODY", 82.00);
-    model.addBodyMeasure("LOWER_BODY", 63.00);
+    model.addBodyMeasure("HEIGHT", 1.80, false);
+    model.addBodyMeasure("WEIGHT", 65.00, false);
+    model.addBodyMeasure("UPPER_BODY", 82.00, false);
+    model.addBodyMeasure("LOWER_BODY", 63.00, false);
 
     }
 

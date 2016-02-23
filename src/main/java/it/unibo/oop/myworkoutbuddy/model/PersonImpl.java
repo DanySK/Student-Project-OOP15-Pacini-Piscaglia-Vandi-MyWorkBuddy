@@ -50,7 +50,7 @@ public class PersonImpl implements Person {
 
     @Override
     public String toString() {
-        return "PersonImpl [firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", email=" + email
+        return "PersonImpl [firstName=" + this.getFirstName() + ", lastName=" + this.getLastName() + ", age=" + this.getAge() + ", email=" + this.getEmail()
                 + "]";
     }
 }

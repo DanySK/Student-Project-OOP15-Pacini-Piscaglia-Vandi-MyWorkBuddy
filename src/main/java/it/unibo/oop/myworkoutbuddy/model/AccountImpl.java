@@ -41,6 +41,6 @@ public class AccountImpl implements Account {
 
     @Override
     public String toString() {
-        return "AccountImpl [userName = " + this.userName + ", password = " + this.password + "]";
+        return "AccountImpl [userName = " + this.getUserName() + ", password = " + this.getPassword() + "Avatar = " + this.getAvatar() + "]";
     }
 }

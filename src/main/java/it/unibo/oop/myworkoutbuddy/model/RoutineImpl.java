@@ -31,24 +31,12 @@ public class RoutineImpl implements Routine {
         this.exerciseList = new ArrayList<>();
     }
 
-    /**
-     * 
-     * @param day DayInWeek
-     * 
-     * @throws IllegalArgumentException exception for check not empty value
-     */
     @Override
     public void addDay(final DayInWeek day) throws NullPointerException {
         this.checkNotNull(day);
         this.dayAweek.add(day);
     }
 
-    /**
-     * 
-     * @param exercise GymExercise
-     * 
-     * @throws IllegalArgumentException exception for check not empty value
-     */
     @Override
     public void addGymExcercise(final Exercise exercise) throws NullPointerException {
 
@@ -81,6 +69,11 @@ public class RoutineImpl implements Routine {
         return this.exerciseList;
     }
 
+    /**
+     * check for negative values
+     * @param obj
+     * @throws NullPointerException
+     */
     private void checkNotNull(final Object obj) throws NullPointerException {
         if (obj == null) {
             throw new NullPointerException();
@@ -89,7 +82,7 @@ public class RoutineImpl implements Routine {
 
     @Override
     public String toString() {
-        return "WorkoutRoutineImpl [name=" + name + " target=" + target + " dayAweek=" + dayAweek
+        return "RoutineImpl [name=" + this.getName() + " target=" + this.getTarget() + " dayAweek=" + this.getDayAweek()
                 + "\n\n ExerciseList=" + this.getExerciseList() + "]";
     }
 }

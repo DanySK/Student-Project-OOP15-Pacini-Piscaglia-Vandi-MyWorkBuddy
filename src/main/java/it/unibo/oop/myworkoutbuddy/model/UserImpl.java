@@ -51,53 +51,31 @@ public class UserImpl implements User {
         this.routineList = new ArrayList<>();
     }
 
-    /**
-     * 
-     */
     @Override
     public Account getAccount() {
         return this.account;
     }
 
-    /**
-     * 
-     */
     @Override
     public Person getPerson() {
         return this.person;
     }
 
-    /**
-     * 
-     */
     @Override
     public List<BodyData> getMeasureList() {
         return this.measureList;
     }
 
-    /**
-     * 
-     */
     @Override
     public List<Workout> getWorkoutList() {
         return this.workoutList;
     }
 
-    /**
-     * 
-     */
     @Override
     public List<Routine> getRoutineList() {
         return this.routineList;
     }
 
-    /**
-     * 
-     * @param localDate LocalDate
-     * @param measureBodyZone String
-     * @param measure Double
-     * @throws NullPointerException
-     */
     @Override
     public void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException {
         this.checkNotNull(localDate);
@@ -108,51 +86,24 @@ public class UserImpl implements User {
         this.measureList.add(bodyData);
     }
 
-    /**
-     * 
-     */
     @Override
     public void addWorkout(final Workout workout) throws NullPointerException {
         this.checkNotNull(workout);
         this.workoutList.add(workout);
     }
 
-    /**
-     * 
-     */
     @Override
     public void addRoutine(final Routine routine) throws NullPointerException {
         this.checkNotNull(routine);
         this.routineList.add(routine);
     }
 
-    /**
-     * 
-     */
-    @Override
-    public void upDateStatus() {
-    }
-
-    /**
-     * 
-     * @return list of BMI values 
-     */
     @Override
     public List<Double> trendBodyBMI() {
-        /*
-        final List<Double> listBMI = new ArrayList<>();
-        this.getMeasureList().forEach(i -> {
-            listBMI.add(i.getBodyBMI(this.getPerson().getAge()));
-        });
-        */
-        //return listBMI;
+
         return this.getMeasureList().stream().map(i->i.getBodyBMI(this.getPerson().getAge())).collect(Collectors.toList());
     }
 
-    /**
-     * 
-     * @return list of performance scores of all workouts
-     */
     @Override
     public List<Double> scoreWorkout() {
     return this.getWorkoutList().stream().map(Workout::getWorkoutScore).collect(Collectors.toList());
@@ -164,9 +115,6 @@ public class UserImpl implements User {
         */
     }
 
-    /**
-     * @return a map <BodyPart, Score> of all workout scores mapped in all BodyParts
-     */
     @Override
     public Map<String, Double> scoreBodyPart() {
         final Map<String, Double> scoreMap = new HashMap<>();
@@ -180,39 +128,6 @@ public class UserImpl implements User {
         return scoreMap;
     }
 
-    /**
-     * @return a map <BodyZone, Score> of all workout scores mapped in all BodyZones
-     */
-    @Override
-    public Map<String, Double> scoreBodyZone() {
-        return this.mapBodyZone(new HashMap<String, Double>(), this.scoreBodyPart());
-    }
-
-    /**
-     * @return a map <BodyZone, Time> of all workout times mapped in all BodyZones
-     */
-    @Override
-    public Map<String, Double> timeBodyZone() {
-        final Map<String, Double> timeMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
-            final Map<String, Double> tempMap = i.getTimeParts();
-            this.mapBodyZone(timeMap, tempMap);
-        });
-        return timeMap;
-    }
-
-    /**
-     * 
-     * @return the trending of a human body
-     */
-    @Override
-    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
-        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
-    }
-
-    /**
-     * @return a map <BodyPart, Time> of all workout times mapped in all BodyParts
-     */
     @Override
     public Map<String, Double> timeBodyPart() {
         final Map<String, Double> timeMap = new HashMap<>();
@@ -226,27 +141,21 @@ public class UserImpl implements User {
         return timeMap;
     }
 
-    /**
-     * 
-     * @return a map made of associations between a codeTool and its relative time of use
-     */
     @Override
-    public Map<String, Double> timeGymTool() {
-        final Map<String, Double> timeMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
-            final Map<String, Double> tempMap = i.getService("getTimeTools"); //i.getTimeTools();
-            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
-                return d1 + d2;
-            });
-        });
-
-        return timeMap;
+    public Map<String, Double> scoreBodyZone() {
+        return this.mapBodyZone(new HashMap<String, Double>(), this.scoreBodyPart());
     }
 
-    /**
-     * 
-     * @return a map made of associations between a codeTool and its relative increment/decrement of use
-     */
+    @Override
+    public Map<String, Double> timeBodyZone() {
+        return this.mapBodyZone(new HashMap<String, Double>(), this.timeBodyPart());
+    }
+
+    @Override
+    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
+        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
+    }
+
     @Override
     public Map<String, Double> scoreGymTool() {
         final Map<String, Double> scoreMap = new HashMap<>();
@@ -258,6 +167,19 @@ public class UserImpl implements User {
         });
 
         return scoreMap;
+    }
+
+    @Override
+    public Map<String, Double> timeGymTool() {
+        final Map<String, Double> timeMap = new HashMap<>();
+        this.getWorkoutList().forEach(i-> {
+            final Map<String, Double> tempMap = i.getTimeTools();
+            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+                return d1 + d2;
+            });
+        });
+
+        return timeMap;
     }
 
     /**
@@ -279,10 +201,10 @@ public class UserImpl implements User {
     }
 
     /**
-     * function of merge of mapBodyZone2 and mapBodyZone
+     * It maps for each body zone the sum of all values of the body zone parts
      * @param mapBodyZone Map<String, Double>
      * @param mapBodyPart Map<String, Double>
-     * @return mapBodyZone
+     * @return a Map<String, Double>
      */
     private Map<String, Double> mapBodyZone(final Map<String, Double> mapBodyZone, final Map<String, Double> mapBodyPart) {
         mapBodyPart.keySet().forEach(i -> {
@@ -298,6 +220,11 @@ public class UserImpl implements User {
         return mapBodyZone;
     }
 
+    /**
+     * check for not negative values
+     * @param obj
+     * @throws NullPointerException
+     */
     private void checkNotNull(final Object obj) throws NullPointerException {
         if (obj == null) {
             throw new NullPointerException();

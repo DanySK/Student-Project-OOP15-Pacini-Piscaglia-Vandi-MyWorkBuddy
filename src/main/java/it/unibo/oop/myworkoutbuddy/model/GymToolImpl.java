@@ -45,45 +45,6 @@ public final class GymToolImpl implements GymTool {
         this.bodyMap = new HashMap<>(); // map to create with the specific add function
     }
 
-    @Override
-    public String getCode() {
-        return this.code;
-    }
-
-    @Override
-    public String getNameTool() {
-        return this.name;
-    }
-
-    @Override
-    public String getImageFile() {
-        return this.imageFile.orElse("none");
-    }
-
-    /**
-     * 
-     * @return the Max value for that exercise
-     */
-    @Override
-    public int getMinValue() {
-        return this.valueMin;
-    }
-
-    /**
-     * 
-     * @return the Max value for that exercise
-     */
-    @Override
-    public int getMaxValue() {
-        return this.valueMax;
-    }
-
-    @Override
-    public int getNumTools() {
-        return this.numTools;
-    }
-
-    //         gymTool.addBodyPart(bodyPart, percentage);
     /**
      * Add to BodyMap a specific body part with relative value of percentage
      * Example : TapisRoulant = <m1, 20%>, <m2,30%>, <m5,20%>, ...
@@ -95,6 +56,54 @@ public final class GymToolImpl implements GymTool {
         this.bodyMap.put(bodyPart, percentage);
     }
 
+    /**
+     * return the alphabetic code of a GymTool.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
+     * return the name of the tool.
+     */
+    @Override
+    public String getNameTool() {
+        return this.name;
+    }
+
+    /**
+     * give the string pattern of tool image.
+     */
+    @Override
+    public String getImageFile() {
+        return this.imageFile.orElse("none");
+    }
+
+    /**
+     * @return the Max value for the tool
+     */
+    @Override
+    public int getNumTools() {
+        return this.numTools;
+    }
+
+    /**
+     * @return the Max value for the tool
+     */
+    @Override
+    public int getMinValue() {
+        return this.valueMin;
+    }
+
+    /**
+     * @return the Max value for the tool
+     */
+    @Override
+    public int getMaxValue() {
+        return this.valueMax;
+    }
+
     @Override
     public Map<String, Double> getBodyMap() {
         return this.bodyMap;
@@ -103,9 +112,9 @@ public final class GymToolImpl implements GymTool {
     @Override
     public String toString() {
         return "\n\n GymToolImpl" 
-                + "\n [code = " + code + ", name = " + name + ", imageFile = " + imageFile 
-                + "\n numTools = " + numTools + ", valueMin = " + this.valueMin + ", valueMax = " + this.valueMax
-                + "\n bodyMap = " + bodyMap
+                + "\n [code = " + this.getCode() + ", name = " + this.getNameTool() + ", imageFile = " + getImageFile()
+                + "\n numTools = " + this.getNumTools() + ", valueMin = " + this.getMinValue() + ", valueMax = " + this.getMaxValue()
+                + "\n bodyMap = " + this.getBodyMap()
                 + "]";
     }
 

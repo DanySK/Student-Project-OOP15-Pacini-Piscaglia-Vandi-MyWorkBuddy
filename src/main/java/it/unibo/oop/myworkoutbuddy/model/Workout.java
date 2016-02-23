@@ -6,94 +6,88 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * User's data of a single training session. (WorkOut)
  * -------------------------------------------------------------
  */
 public interface Workout {
 
     /**
-     * 
+     * add a new Score with passed informations to a Workout.
+     * @param index Integer
+     * @param score Integer
+     */
+    void addScore(final Integer index, final Integer score);
+
+    /**
+     * set the state of a Workout : done -> to do or to do -> done.
      * @param state boolean
      */
     void modifyState(final boolean state);
+
     /**
-     * 
-     * @return data of Workout
+     * give the data of Workout.
+     * @return a LocalDate
      */
     LocalDate getDate();
+
     /**
-     * 
-     * @return time of Workout
+     * give the time of Workout.
+     * @return a LocalTime
      */
     LocalTime getTime();
+
     /**
-     * 
-     * @return if the exercise is done
+     * give true if the exercise is done.
+     * @return a boolean
      */
     boolean getState();
+
     /**
-     * 
-     * @return training card of an exercise
+     * give the training card of an exercise.
+     * @return a Routine
      */
     Routine getRoutine();
 
     /**
-     * 
-     * @param index Integer
-     * @param score Integer
-     * 
-     * @throws NullPointerException exception for check about notNullValue
-     * @throws IllegalArgumentException for check about notNegativeValue
-     */
-    void addScore(final Integer index, final Integer score) throws NullPointerException, IllegalArgumentException;
-
-    /**
-     * 
-     * @return a map of Exercise and relative score
-     */
-    Map<Exercise, Integer> getScoreMap();
-
-    /**
-     * 
-     * @return list of scores of map
+     * give the list of scores of map.
+     * @return a List<Integer>
      */
     List<Integer> getScoreList();
 
     /**
-     * 
-     * @return average of normalized scores
+     * give the average of normalized scores.
+     * @return a Double
      */
     Double getWorkoutScore();
 
     /**
-     * 
-     * @return a map of bodyPart and the percentage for all human muscles
+     * give the associations between muscles and the relative percentages.
+     * @return a Map<String, Double>
      */
     Map<String, Double> getPercentuageParts();
 
     /**
-     * 
-     * @return a map of bodyPart and the time of training for all human muscles
+     * give the associations between muscles and the relative time of training.
+     * @return a Map<String, Double>
      */
     Map<String, Double> getTimeParts();
 
     /**
-     * 
-     * @return a map of GymTool codes and relatives numbers of time used
+     * give the associations between codes and relative numbers of time used.
+     * @return a Map<String, Double>
      */
     Map<String, Double> getTimeTools();
 
     /**
-     * 
-     * @return a map of GymTool codes and relatives numbers of score obtained
+     * give the associations between GymTools and relative numbers of score obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> getScoreTools();
 
     /**
      * 
-     * @param methodName String
-     * @return the return type of available service
+     * give the associations between Exercise and relative score.
+     * @return a Map<String, Double>
      */
-    Map<String, Double> getService(final String methodName);
+    Map<Exercise, Integer> getScoreMap();
 }

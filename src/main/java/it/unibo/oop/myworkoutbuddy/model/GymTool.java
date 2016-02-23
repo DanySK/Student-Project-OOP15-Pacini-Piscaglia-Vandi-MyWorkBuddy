@@ -8,6 +8,13 @@ import java.util.Map;
 public interface GymTool {
 
     /**
+     * add a percentage value for a human body muscle.
+     * @param bodyPart String
+     * @param percentage Double
+     */
+    void addBodyPart(final String bodyPart, Double percentage);
+
+    /**
      * 
      * @return code of GymTool
      */
@@ -42,13 +49,6 @@ public interface GymTool {
      * @return number Max of available tools in the gym.
      */
     int getNumTools();
-
-    /**
-     * 
-     * @param bodyPart String
-     * @param percentage Double
-     */
-    void addBodyPart(final String bodyPart, Double percentage);
 
     /**
      * 

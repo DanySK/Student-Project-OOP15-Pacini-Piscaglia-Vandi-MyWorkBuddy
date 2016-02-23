@@ -7,25 +7,31 @@ import java.util.List;
 import java.util.Map;
 /**
  * 
- * 
+ * the principal class of model.
+ * -------------------------------------------------------------
  */
 public interface MyWorkoutBuddyModel {
     /**
-     * 
+     * get the account at list in index.
      * @param index int
      * @return an account at index of the Account list
      */
     Account getAccount(final int index);
 
     /**
-     * 
+     * user's login.
      * @param name String
      * @param password String
      */
     void loginUser(final String name, final String password);
 
     /**
-     * 
+     * the current user's logout.
+     */
+    void logoutUser();
+
+    /**
+     * add a new routine for current user.
      * @param code String
      * @param nameRoutine String
      * @param target String
@@ -33,7 +39,7 @@ public interface MyWorkoutBuddyModel {
     void addRoutine(final String code, final String nameRoutine, final String target);
 
     /**
-     * 
+     * add a new Exercise.
      * @param nameRoutine String
      * @param target String
      * @param nameTool String
@@ -47,7 +53,7 @@ public interface MyWorkoutBuddyModel {
             final int settingValue, final int repetition, final int time, final int numSession, final int pause);
 
     /**
-     * 
+     * add a new Workout for current User.
      * @param nameRoutine String
      * @param localDate LocalDate
      * @param localTime LocalTime
@@ -56,35 +62,36 @@ public interface MyWorkoutBuddyModel {
     void addWorkout(final String nameRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state);
 
     /**
-     * 
+     * add a new data of measure.
      * @param localDate LocalDate
      */
     void addDataMeasure(final LocalDate localDate);
 
     /**
-     * 
+     * add new muscles for the bodyZone.
      * @param bodyZone String
      * @param bodyParts Collection<String>
      */
     void addMapZone(final String bodyZone, final Collection<String> bodyParts);
 
     /**
-     * 
+     * add a new BodyMeasure for current User.
      * @param measureBodyZone String
      * @param measure Double
+     * @param firstTime boolean
      */
-    void addBodyMeasure(final String measureBodyZone, final Double measure);
+    void addBodyMeasure(final String measureBodyZone, final Double measure, final boolean firstTime);
 
     /**
-     * 
+     * add a new score for the specified exercise by the numEx.
      * @param numEx Integer
      * @param score Integer
      */
     void addExerciseScore(final Integer numEx, final Integer score);
 
     /**
-     * 
-     * @return true if current User has been set
+     * true if current User has been set.
+     * @return boolean
      */
     boolean isLoginUser();
 
@@ -93,9 +100,8 @@ public interface MyWorkoutBuddyModel {
      * @param userName String
      * @param password String
      * @param avatar String
-     * @throws ExistentAccount 
      */
-    void addAccount(final String userName, final String password, final String avatar) throws ExistentAccount;
+    void addAccount(final String userName, final String password, final String avatar); //throws ExistentAccount;
 
     /**
      * Add a new User.
@@ -107,6 +113,7 @@ public interface MyWorkoutBuddyModel {
     void addUser(final String firstName, final String secondName, final int age, final String email);
 
     /**
+     * add a new GymTool.
      * @param description String
      * @param nameTool String
      * @param nameImage String
@@ -117,7 +124,7 @@ public interface MyWorkoutBuddyModel {
     void addGymTool(final String description, final String nameTool, final String nameImage, final int num, final int valueMin, final int valueMax);
 
     /**
-     * 
+     * add a new muscle with relative percentage measure in the tool specified by the toolCode.
      * @param toolCode String
      * @param bodyPart String
      * @param percentage Double
@@ -125,99 +132,107 @@ public interface MyWorkoutBuddyModel {
     void addBodyPart(final String toolCode, final String bodyPart, final Double percentage);
 
     /**
-     * 
-     * @return the list of GymTool in an application
+     * give the list of GymTool in an application.
+     * @return a List<GymTool>
      */
     List<GymTool> getGymToolList();
 
     /**
-     * 
-     * @return the list of Users
+     * give the list of Users.
+     * @return a List<User>
      */
     List<User> getUserList();
 
     /**
-     * 
+     * give for each application GymTool name the relatives tool.
+     * @return a Map<String, GymTool>
+     */
+    Map<String, GymTool> getMapGymTool();
+
+    /**
+     * give the dimension of an exercise list with codeRoutine.
      * @param codeRoutine String
-     * @return dimension of an exercise list with codeRoutine
+     * @return an Integer
      */
     int getNumExercise(final String codeRoutine);
 
     /**
-     * 
-     * @return true if exists the current user
+     * give the application Body.
+     * @return a Body
      */
-    boolean isCurrentUser();
+    Body getBody();
 
     /**
-     * 
-     * @return the current user's measure list
+     * give the current user's measure list.
+     * @return a List<BodyData>
      */
     List<BodyData> getMeasureList();
 
     /**
-     * 
-     * @return the current user's routine list
+     * give the current user's routine list.
+     * @return a List<Routine>
      */
     List<Routine> getRoutineList();
 
     /**
-     * 
-     * @return the current user's Workout list
+     * give the current user's Workout list.
+     * @return a List<Workout>
      */
     List<Workout> getWorkoutList();
 
     /**
-     * 
-     * @return the current user's Workout score list
+     * give the current user's Workout score list.
+     * @return a List<Double>
      */
     List<Double> scoreWorkout();
 
     /**
-     * 
-     * @return associations between muscles and relative scores obtained
+     * give the associations between muscles and relative scores obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreBodyPart();
 
     /**
-     * 
-     * @return associations between parts of body and relative scores obtained
+     * give the associations between parts of body and relative scores obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreBodyZone();
 
     /**
-     * 
-     * @return associations between gymTool names and relative scores obtained
+     * give the associations between gymTool names and relative scores obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreGymTool();
 
     /**
-     * 
-     * @return associations between muscles and relative times obtained
+     * give the associations between muscles and relative times obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeBodyPart();
 
     /**
-     * 
-     * @return associations between parts of body and relative times obtained
+     * give the associations between parts of body and relative times obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeBodyZone();
 
     /**
      * 
-     * @return associations between gymTool names and relative scores obtained
+     * give the associations between gymTool names and relative scores obtained.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeGymTool();
 
     /**
-     * 
-     * @return the current User's trending of Body Mass
+     * give the current User's trending of Body Mass.
+     * @return a List<Double>
      */
     List<Double> trendBodyMass();
 
     /**
      * 
-     * @return the current User's trending of BMI
+     * give the current User's trending of BMI.
+     * @return a List<Double>
      */
     List<Double> trendBodyBMI();
 }

@@ -8,30 +8,54 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- Class Body to manage human body
-
-     Body contains body data :
-     BodyZone    : enum of body zone for mapping;
-     BodyPart    : enum of body parts/muscles;
-     BodyMeasure : enum of body parts for measurement data;
-     BodyTarget  : enum of aims for each single training;
-     BodyData : class for body parts measurement.
+ Class Body to manage human body.
 */
 public final class Body {
     private Map<String, Set<String>> bodyMap;
+    private Set<String> measureSet;
 
+    /**
+     * new HashMap for body
+     */
     private void initBodyMap() {
         bodyMap = new HashMap<>();
+    }
+
+    /**
+     * new HashSet for measures
+     */
+    private void initMeasureSet() {
+        measureSet = new HashSet<>();
     }
 
     /**
      * @return a map of partZones and relatives muscles
      */
     public Map<String, Set<String>> getBodyMap() {
-        return bodyMap;
+        return this.bodyMap;
     }
 
     /**
+     * @return a map of partZones and relatives muscles
+     */
+    public Set<String> getMeasureSet() {
+        return this.measureSet;
+    }
+
+    /**
+     * add a new measure in set measure.
+     * @param measure String
+     */
+    public void addMeasureData(final String measure) {
+        if (this.getMeasureSet() == null) {
+            this.initMeasureSet();
+        }
+
+        this.measureSet.add(measure);
+    }
+
+    /**
+     * add a bodyPart to the set of a bodyZone.
      * @param bodyZone String
      * @param bodyPart String
      */
@@ -40,23 +64,16 @@ public final class Body {
             initBodyMap();
         }
 
-        /*
-        final Set<String> parts = new HashSet<>();
-        parts.addAll(bodyMap.get(bodyZone));
-        parts.add(bodyPart);
-        bodyMap.put(bodyZone, parts);
-        */
-
-        final Set<String> retSet = bodyMap.get(bodyZone);
-        final Set<String> parts = new HashSet<>();
-        if (retSet != null) {
-            parts.addAll(retSet);
-        }
-        parts.add(bodyPart);
-        bodyMap.put(bodyZone, parts);
+        final Set<String> setToadd = new HashSet<>();
+        setToadd.add(bodyPart);
+        bodyMap.merge(bodyZone, setToadd, (s1, s2) -> {
+            setToadd.addAll(bodyMap.get(bodyZone));
+            return setToadd;
+        });
     }
 
     /**
+     * remove a key of bodyMap.
      * @param partZone String
      * @throws ElementNotFoundException 
      */
@@ -67,20 +84,55 @@ public final class Body {
     }
 
     /**
+     * remove an element of values of bodyMap.
      * @param bodyPart String
      * @throws ElementNotFoundException 
      */
     public void removingMapBodyPart(final String bodyPart) throws ElementNotFoundException {
+        this.bodyMap.keySet().forEach(i -> {
+            if (this.bodyMap.get(i).contains(bodyPart)) {
+                this.bodyMap.get(i).remove(bodyPart);
+            }
+        });
+    }
+
+    /**
+     * remove an element of values of measureSet.
+     * @param bodyMeasure String
+     */
+    public void removeBodyMeasure(final String bodyMeasure) {
+        this.measureSet.remove(bodyMeasure);
     }
 
     /**
      * @param muscle String
-     * @return partZone Optional<String>
+     * @return a part zone of human body in optional form
      */
     public Optional<String> getPartZone(final String muscle) {
+        if (this.getBodyMap() == null) {
+            return Optional.empty();
+        }
         return getBodyMap().keySet().stream().filter(i -> getBodyMap().get(i).contains(muscle)).findAny();
     }
 
+    /**
+     * 
+     * @param measure String
+     * @return an optional name of measure
+     */
+    public Optional<String> getMeasure(final String measure) {
+        if (this.getMeasureSet() == null) {
+            return Optional.empty();
+        }
+        return this.getMeasureSet().stream().filter(i -> i.equals(measure)).findAny();
+    }
+
+    /**
+     * 
+     * @param collection of elements in witch it is supposed to find the specified bodyPart
+     * @param bodyPart a muscle of body
+     * @throws ElementNotFoundException
+     */
     private <X> void checkBodyPart(final Collection<X> collection, final X bodyPart) throws ElementNotFoundException {
         final Optional<X> optValue = collection.stream().filter(i -> i.equals(bodyPart)).findAny();
 

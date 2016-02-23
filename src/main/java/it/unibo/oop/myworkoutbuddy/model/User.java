@@ -11,34 +11,39 @@ import java.util.Map;
  * -------------------------------------------------------------
  */
 public interface User {
+
     /**
-     * 
-     * @return the Account of User
+     * give the Account of User.
+     * @return an Account
      */
     Account getAccount();
+
     /**
-     * 
-     * @return the specific Data of User
+     * give the specific Data of User.
+     * @return a Person
      */
     Person getPerson();
+
     /**
-     * 
-     * @return the body data for a specific user
+     * give the body data for a specific user.
+     * @return a List<BodyData>
      */
     List<BodyData> getMeasureList();
+
     /**
-     * 
-     * @return the Workout list for a specific user
+     * give the Workout list for a specific user.
+     * @return a List<Workout>
      */
     List<Workout> getWorkoutList(); // workoutRoutine
+
     /**
-     * 
-     * @return the WorkoutRoutine list for a specific user
+     * give the WorkoutRoutine list for a specific user.
+     * @return a List<Routine>
      */
     List<Routine> getRoutineList();
 
     /**
-     * 
+     * add a new measure for the user.
      * @param localDate LocalDate
      * @param measureBodyZone String
      * @param measure Double
@@ -47,72 +52,68 @@ public interface User {
     void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException;
 
     /**
-     * 
+     * add a new workout for the user.
      * @param workout of User
      */
     void addWorkout(Workout workout);
 
     /**
-     * 
+     * add a new routine for the user.
      * @param routine of User
      */
     void addRoutine(Routine routine);
-    /**
-     * Update the Status of User's workout.
-     */
-    void upDateStatus();
 
     /**
-     * 
-     * @return a list of BMI calculated
+     * list of BMI calculated.
+     * @return a List<Double>
      */
     List<Double> trendBodyBMI();
 
     /**
-     * 
-     * @return list of performanced scores.
+     * list of performance scores.
+     * @return a List<Double>
      */
     List<Double> scoreWorkout();
 
     /**
-     * 
-     * @return Improved Performance of Body (muscles level).
+     * give the improved performance of body (muscles level).
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreBodyPart();
 
     /**
-     * 
-     * @return Improved Performance of Body (parts level).
+     * give the improved performance of body (parts level).
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreBodyZone();
 
     /**
-     * 
-     * @return work times for each bodyPart
+     * give work times for each bodyPart.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeBodyPart();
 
     /**
-     * 
-     * @return work times for each bodyZone
+     * give the work times for each bodyZone.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeBodyZone();
 
     /**
-     * 
-     * @return a double array of trend values for a human body
+     * give a double array of trend values for a human body.
+     * @return a List<Double>
      */
     List<Double> trendBodyMass();
 
     /**
-     * 
-     * @return a map made of associations between a GymTool code and its relative time of use
+     * give the associations between a GymTool code and its relative time of use.
+     * @return a Map<String, Double>
      */
     Map<String, Double> timeGymTool();
 
     /**
-     * 
-     * @return a map made of associations between a codeTool and its relative increment/decrement of use
+     * give the associations between a codeTool and its relative increment/decrement of use.
+     * @return a Map<String, Double>
      */
     Map<String, Double> scoreGymTool();
 }
