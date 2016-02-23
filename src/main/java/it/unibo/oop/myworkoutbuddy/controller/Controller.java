@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import com.google.common.base.Preconditions;
+
 import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
-import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.util.UnmodifiableTriple;
 import it.unibo.oop.myworkoutbuddy.view.AppViews;

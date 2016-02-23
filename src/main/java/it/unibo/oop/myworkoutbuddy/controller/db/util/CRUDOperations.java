@@ -13,12 +13,11 @@ import java.util.stream.Collectors;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import com.google.common.base.Preconditions;
 import com.mongodb.BasicDBObject;
 import com.mongodb.Block;
 import com.mongodb.MongoException;
 import com.mongodb.client.MongoCollection;
-
-import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 
 /**
  * Utility class for CRUD operations.
