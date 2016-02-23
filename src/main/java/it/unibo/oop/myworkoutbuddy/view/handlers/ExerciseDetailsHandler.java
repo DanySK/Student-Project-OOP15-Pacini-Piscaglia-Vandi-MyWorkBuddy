@@ -10,7 +10,7 @@ import javafx.scene.media.MediaPlayer;
  * 
  *
  */
-public class VideoHandler {
+public class ExerciseDetailsHandler {
 
     @FXML
     private BorderPane container;
