@@ -20,8 +20,8 @@
             <HBox prefHeight="44.0" prefWidth="687.0" translateX="85.0" translateY="40.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#saveRoutine" prefHeight="25.0" prefWidth="152.0" text="Save Routine" translateX="410.0" translateY="5.0" />
-                  <Button fx:id="btnAddWorkout" mnemonicParsing="false" onAction="#addWorkout" prefHeight="25.0" prefWidth="154.0" text="Add Workout" translateX="60.0" translateY="5.0" />
-                  <Button fx:id="btnAddExercise" mnemonicParsing="false" onAction="#addExercise" prefHeight="25.0" prefWidth="150.0" text="Add Exercise" translateX="-280.0" translateY="5.0" />
+                  <Button mnemonicParsing="false" onAction="#addWorkout" prefHeight="25.0" prefWidth="154.0" text="Add Workout" translateX="60.0" translateY="5.0" />
+                  <Button mnemonicParsing="false" onAction="#addExercise" prefHeight="25.0" prefWidth="150.0" text="Add Exercise" translateX="-280.0" translateY="5.0" />
                </children>
             </HBox>
             <HBox prefHeight="48.0" prefWidth="600.0" translateX="85.0" translateY="40.0">

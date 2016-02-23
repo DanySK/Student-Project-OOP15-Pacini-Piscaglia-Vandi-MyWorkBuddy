@@ -1,6 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
@@ -26,8 +24,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 /**
  * 
@@ -42,12 +38,6 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private TabPane exercisePane;
 
     @FXML
-    private Button btnAddWorkout;
-
-    @FXML
-    private Button btnAddExercise;
-
-    @FXML
     private TextField txtDescription;
 
     private static final int REPS_MAX_WIDTH = 40;
@@ -55,6 +45,10 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private static final int TAB_PANE_WIDTH = 250;
 
     private static final int TAB_PANE_HEIGHT = 500;
+
+    private static final int REPS_FIELD_TRANSLATE_Y = 10;
+
+    private static final int REP_LABEL_TRANSLATE_Y = 13;
 
     private Optional<VBox> workoutSelected = Optional.empty();
 
@@ -65,7 +59,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private final Map<String, Map<String, List<Integer>>> routine = new HashMap<>();
 
     private final EventHandler<MouseEvent> selectWorkoutHandler = event -> {
-        if (checkStrategy.isWorkoutToBeSet(workoutSelected, btnAddExercise, event)) {
+        if (checkStrategy.isWorkoutToBeSet(workoutSelected, event)) {
             workoutSelected = Optional.of((VBox) event.getSource());
         }
     };
@@ -80,18 +74,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         exerciseSelected = Optional.of(selLabel);
     };
 
-    /*
-     * private final EventHandler<Event> selectTabHandler = event -> {
-     * final Tab section = (Tab) event.getSource();
-     * section.setId("selectedTab");
-     * };
-     */
-
     @FXML
     private void saveRoutine() {
-        if (checkStrategy.hasRoutineBeenSaved()) {
-            showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(),
-                    AlertType.INFORMATION);
+        if (checkStrategy.canRoutineBeenSaved(workoutBox) && checkStrategy.hasRoutineBeenSaved()) {
             // clear routine....
             workoutBox.getChildren().clear();
         }
@@ -99,38 +84,41 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void addWorkout() {
-        if (checkStrategy.canAddWorkout(workoutBox, btnAddWorkout)) {
+        if (checkStrategy.canAddWorkout(workoutBox)) {
             workoutSelected = Optional.of(new VBox());
 
             // Ask user to assign a title to the new Workout.
             workoutSelected.get().addEventHandler(MouseEvent.MOUSE_CLICKED, selectWorkoutHandler);
-            workoutBox.getChildren().add(new TitledPane(
-                    FxWindowFactory.createInputDialog("Workout name", "Insert your workout name:", "A,B,C, Crunch,..."),
-                    workoutSelected.get()));
+            final String workoutName = FxWindowFactory.createInputDialog("Workout name", "Insert your workout name:",
+                    "A,B,C, Crunch,...");
+            if (!checkStrategy.isWorkoutAlreadyAdded(workoutName, workoutBox)) {
+                workoutBox.getChildren().add(new TitledPane(workoutName, workoutSelected.get()));
+            }
         }
     }
 
     @FXML
     private void addExercise() {
-        if (checkStrategy.canAddExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
+        if (checkStrategy.canAddExercise(workoutSelected, exerciseSelected)) {
             workoutSelected.get().getChildren().add(buildExerciseBox());
+            exerciseSelected.get().setId("exerciseToSelect");
+            exerciseSelected = Optional.empty();
         }
     }
 
     @FXML
     private void showExercise() {
         if (checkStrategy.canShowExercise(exerciseSelected)) {
-      //      showDialog(exerciseSelected.get().getText(),
-      //              getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(0), Optional
-      //                      .of(getObserver().getExerciseInfo(exerciseSelected.get().getText()).get(1)),
-      //              AlertType.INFORMATION);
-        FxWindowFactory.openWindow("ExerciseDetails.fxml", false);
+            FxWindowFactory.showDialog(exerciseSelected.get().getText(), "",
+                    Optional.of("http://videocdn.bodybuilding.com/video/mp4/118000/118911m.mp4"),
+                    AlertType.INFORMATION);
+            // FxWindowFactory.openWindow("ExerciseDetails.fxml", false);
         }
     }
 
     @FXML
     private void deleteWorkout() {
-        if (checkStrategy.canDeleteWorkout(workoutBox, workoutSelected, btnAddWorkout)) {
+        if (checkStrategy.canDeleteWorkout(workoutBox, workoutSelected)) {
             workoutBox.getChildren().remove(workoutSelected.get().getParent().getParent());
             workoutSelected = Optional.empty();
         }
@@ -138,7 +126,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void deleteExercise() {
-        if (checkStrategy.canDeleteExercise(workoutSelected, exerciseSelected, btnAddExercise)) {
+        if (checkStrategy.canDeleteExercise(workoutSelected, exerciseSelected)) {
             workoutSelected.get().getChildren().remove(exerciseSelected.get().getParent());
             exerciseSelected = Optional.empty();
         }
@@ -150,12 +138,11 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             final TitledPane tPane = (TitledPane) workouts;
             final Map<String, List<Integer>> exercises = new HashMap<>();
             final VBox exBox = (VBox) tPane.getContent();
-            exBox.getChildren().forEach(ex -> {
-                final HBox exInfo = (HBox) ex;
+            exBox.getChildren().stream().map(ex -> (HBox) ex).forEach(ex -> {
                 final List<Integer> repList = new ArrayList<>();
-                final Label exLabel = (Label) exInfo.getChildren().get(0);
-                IntStream.range(2, 4).forEach(i -> {
-                    final TextField repNumber = (TextField) exInfo.getChildren().get(i);
+                final Label exLabel = (Label) ex.getChildren().get(0);
+                IntStream.range(2, 5).forEach(i -> {
+                    final TextField repNumber = (TextField) ex.getChildren().get(i);
                     repList.add(Integer.parseInt(repNumber.getText()));
                 });
                 exercises.put(exLabel.getText(), repList);
@@ -179,7 +166,6 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         getObserver().getExercises().forEach((section, exs) -> {
             final Tab newSection = new Tab(section);
             newSection.setId("exerciseSection");
-            // newSection.setOnSelectionChanged(selectTabHandler);
             exercisePane.getTabs().add(newSection);
             final ScrollPane scroll = new ScrollPane();
             final VBox workout = new VBox();
@@ -202,12 +188,15 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         final Label newExercise = new Label(exerciseSelected.get().getText());
         final List<TextField> repsField = new ArrayList<>();
         IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
+        IntStream.range(0, 3).forEach(i -> repsField.get(i).setTranslateY(REPS_FIELD_TRANSLATE_Y));
         IntStream.range(0, 3).forEach(i -> repsField.get(i).setMaxWidth(REPS_MAX_WIDTH));
         exBox.getChildren().add(newExercise);
-        exBox.getChildren().add(new Label(" - Repetitions: "));
+        final Label repLabel = new Label(" - Repetitions: ");
+        repLabel.setTranslateY(REP_LABEL_TRANSLATE_Y);
+        exBox.getChildren().add(repLabel);
         IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
         newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
-        newExercise.setId("exercise");
+        newExercise.setId("exerciseToSelect");
         return exBox;
     }
 
