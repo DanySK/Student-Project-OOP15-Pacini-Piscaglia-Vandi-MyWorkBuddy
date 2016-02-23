@@ -1,35 +1,15 @@
 package it.unibo.oop.myworkoutbuddy.util;
 
-import static java.util.Objects.requireNonNull;
-
 import java.util.Objects;
 
-/**
- * Models a mutable {@link Pair} of two generic objects.
- *
- * @param <X>
- *            the {@code x} value type
- * @param <Y>
- *            the {@code y} value type
- */
 public class MutablePair<X, Y> implements Pair<X, Y> {
 
     private X x;
     private Y y;
 
-    /**
-     * Constructs a new {@code MutablePair} from the {@code x} and {@code y} values.
-     * 
-     * @param x
-     *            the {@code x} value
-     * @param y
-     *            the {@code y} value
-     * @throws NullPointerException
-     *             if {@code x} or {@code y} is {@code null}
-     */
     public MutablePair(final X x, final Y y) {
-        this.x = requireNonNull(x);
-        this.y = requireNonNull(y);
+        this.x = Objects.requireNonNull(x);
+        this.y = Objects.requireNonNull(y);
     }
 
     @Override
@@ -69,13 +49,13 @@ public class MutablePair<X, Y> implements Pair<X, Y> {
         if (obj == null || !(obj instanceof Pair)) {
             return false;
         }
-        final Pair<?, ?> other = (Pair<?, ?>) obj;
-        return Objects.equals(x, other.getX()) && Objects.equals(y, other.getY());
+        final Pair<?, ?> pair = (Pair<?, ?>) obj;
+        return Objects.equals(x, pair.getX()) && Objects.equals(y, pair.getY());
     }
 
     @Override
     public String toString() {
-        return String.format("Pair{%s, %s}", x, y);
+        return String.format("Pair[%s, %s]", x, y);
     }
 
 }

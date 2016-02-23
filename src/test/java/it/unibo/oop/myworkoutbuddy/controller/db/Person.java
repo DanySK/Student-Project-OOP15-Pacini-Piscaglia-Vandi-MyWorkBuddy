@@ -1,6 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
-import it.unibo.oop.myworkoutbuddy.util.Preconditions;
+import com.google.common.base.Preconditions;
 
 public class Person {
 

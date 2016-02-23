@@ -15,10 +15,10 @@ import java.util.Optional;
 
 import org.bson.Document;
 
+import com.google.common.base.Preconditions;
 import com.mongodb.client.MongoCollection;
 
 import it.unibo.oop.myworkoutbuddy.controller.Service;
-import it.unibo.oop.myworkoutbuddy.util.Preconditions;
 
 /**
  * A generic service to make Create Read Update Delete operations on MongoDB.
