@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.Target;
+//import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
  WorkoutRoutine : routine composed by an exercises list (Exercise list).
 
@@ -15,7 +15,7 @@ import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 public class WorkoutRoutineImpl implements WorkoutRoutine {
 
     private String name;
-    private Target target;
+    //private Target target;
     private List<DayInWeek> dayAweek;
     private List<Exercise> exerciseList;
 
@@ -24,12 +24,12 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
      * @param name String
      * @param target BodyTarget
      */
-    public WorkoutRoutineImpl(final String name, final Target target) {
-        this.name = name;
-        this.target = target;
-        this.dayAweek = new ArrayList<>();
-        this.exerciseList = new ArrayList<>();
-    }
+   // public WorkoutRoutineImpl(final String name, final Target target) {
+   //     this.name = name;
+      //  this.target = target;
+   //     this.dayAweek = new ArrayList<>();
+   //     this.exerciseList = new ArrayList<>();
+  //  }
 
     /**
      * 
@@ -60,10 +60,10 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
         return this.name;
     }
 
-    @Override
-    public Target getTarget() {
-        return this.target;
-    }
+  //  @Override
+  //  public Target getTarget() {
+  //      return this.target;
+  //  }
 
     @Override
     public List<DayInWeek> getDayAweek() {
@@ -81,9 +81,9 @@ public class WorkoutRoutineImpl implements WorkoutRoutine {
         }
     }
 
-    @Override
-    public String toString() {
-        return "WorkoutRoutineImpl [name=" + name + " target=" + target + " dayAweek=" + dayAweek
-                + "\n\n ExerciseList=" + this.getExerciseList() + "]";
-    }
+ //   @Override
+ //   public String toString() {
+  //      return "WorkoutRoutineImpl [name=" + name + " target=" + target + " dayAweek=" + dayAweek
+  //              + "\n\n ExerciseList=" + this.getExerciseList() + "]";
+  //  }
 }

@@ -25,6 +25,8 @@ import javafx.scene.layout.VBox;
 public class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final int FIELD_WIDTH = 45;
+    
+    private static final int EXERCISE_BOX_WIDTH = 614;
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
@@ -68,6 +70,7 @@ public class WorkoutLayout implements WorkoutLayoutStrategy {
         box.getChildren().stream()
                 .filter(label -> label.getClass().equals(Label.class))
                 .forEach(label -> label.setId("exercise"));
+        box.setPrefWidth(EXERCISE_BOX_WIDTH);
         resizeTextField(box, FIELD_WIDTH);
     }
 

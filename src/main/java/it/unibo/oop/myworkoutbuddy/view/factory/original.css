@@ -20,6 +20,8 @@
 .tab{
   	-fx-padding: 10.0;
     -fx-cursor: hand;
+    -fx-font-weight:bold;
+    -fx-background-color:orange;
 }
 
 #selectedTab{
@@ -65,9 +67,8 @@
 	-fx-font-weight:bold;
 	-fx-background-color: orange;
 	-fx-font-size: 15.0;
-	-fx-background-radius: 20.0;
 	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
-	-fx-padding:7;
+	-fx-padding:10;
 }
 
 #exercise{
@@ -80,9 +81,6 @@
 	-fx-font-weight:bold;
 	-fx-underline: true;
 	-fx-padding:10;
-}
-
-#exerciseSection{
 }
 
 #workout{

@@ -4,19 +4,25 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 
 /**
  * Utility class to create JavaFx windows using pattern Static Factory.
  */
 public final class FxWindowFactory {
+
+    private static final int MEDIA_PLAYER_WIDTH = 480;
+
+    private static final int MEDIA_PLAYER_HEIGHT = 300;
 
     private static String cssSheetPath = "original.css";
 
@@ -32,9 +38,7 @@ public final class FxWindowFactory {
      *            type of the handler
      */
     public static <T> T getHandler() {
-        return loader == null
-                ? null
-                : loader.getController();
+        return loader == null ? null : loader.getController();
     }
 
     /**
@@ -48,8 +52,7 @@ public final class FxWindowFactory {
 
     /**
      * Load a new window. If it is contained in a menu, the method return the
-     * root
-     * of the new scene.
+     * root of the new scene.
      * 
      * @param fxmlPath
      *            path of the GUI structure file FXML.
@@ -116,17 +119,24 @@ public final class FxWindowFactory {
      * @param alertType
      *            to select the type of dialog.
      */
-    public static void showDialog(final String title, final String message, final Optional<String> imagePath,
+    public static void showDialog(final String title, final String message, final Optional<String> videoURL,
             final AlertType alertType) {
         final Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        imagePath.ifPresent(i -> {
-            final ImageView imageView = new ImageView(new Image(i));
-            alert.setGraphic(imageView);
+        videoURL.ifPresent(url -> {
+            alert.setGraphic(buildVideoPlayer(url));
         });
         alert.showAndWait();
+    }
+
+    private static Node buildVideoPlayer(String url) {
+        final MediaPlayer mediaPlayer = new MediaPlayer(new Media(url));
+        final BorderPane playerPane = new MediaControl(mediaPlayer);
+        System.out.println(playerPane.getMaxWidth());
+        playerPane.setPrefSize(MEDIA_PLAYER_WIDTH, MEDIA_PLAYER_HEIGHT);
+        return playerPane;
     }
 
     /**
@@ -137,8 +147,7 @@ public final class FxWindowFactory {
      *            to user.
      * @param inputText
      *            to show in input text field.
-     * @return input string
-     *         written by user.
+     * @return input string written by user.
      */
     public static String createInputDialog(final String title, final String message, final String inputText) {
         final TextInputDialog dialog = new TextInputDialog(inputText);

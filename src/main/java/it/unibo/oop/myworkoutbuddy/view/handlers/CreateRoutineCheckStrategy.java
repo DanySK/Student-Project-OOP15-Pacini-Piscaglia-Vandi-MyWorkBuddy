@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import java.util.Optional;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -19,14 +18,14 @@ public interface CreateRoutineCheckStrategy {
      * @param exerciseSelected
      * @return
      */
-    boolean canAddExercise(Optional<VBox> workoutSelected, Optional<Label> exerciseSelected, Button btnAddExercise);
+    boolean canAddExercise(Optional<VBox> workoutSelected, Optional<Label> exerciseSelected);
 
     /**
      * 
      * @param workoutBox
      * @return
      */
-    boolean canAddWorkout(VBox workoutBox, Button btnAddWorkout);
+    boolean canAddWorkout(VBox workoutBox);
 
     /**
      * 
@@ -34,7 +33,7 @@ public interface CreateRoutineCheckStrategy {
      * @param exerciseSelected
      * @return
      */
-    boolean canDeleteExercise(Optional<VBox> workoutSelected, Optional<Label> exerciseSelected, Button btnAddExercise);
+    boolean canDeleteExercise(Optional<VBox> workoutSelected, Optional<Label> exerciseSelected);
 
     /**
      * 
@@ -43,7 +42,7 @@ public interface CreateRoutineCheckStrategy {
      * @param btnAddWorkout
      * @return
      */
-    boolean canDeleteWorkout(VBox workoutBox, Optional<VBox> workoutSelected, Button btnAddWorkout);
+    boolean canDeleteWorkout(VBox workoutBox, Optional<VBox> workoutSelected);
 
     /**
      * 
@@ -51,13 +50,13 @@ public interface CreateRoutineCheckStrategy {
      * @return
      */
     boolean canShowExercise(Optional<Label> exerciseSelected);
-    
+
     /**
      * 
      * @param workoutSelected
      * @return
      */
-    boolean isWorkoutToBeSet(Optional<VBox> workoutSelected, Button btnAddExercise, MouseEvent event);
+    boolean isWorkoutToBeSet(Optional<VBox> workoutSelected, MouseEvent event);
 
     /**
      * 
@@ -65,10 +64,23 @@ public interface CreateRoutineCheckStrategy {
      * @return
      */
     boolean hasExBeenChanged(Optional<Label> exerciseSelected, MouseEvent event);
-    
+
     /**
      * 
      * @return
      */
     boolean hasRoutineBeenSaved();
+
+    /**
+     * 
+     * @return
+     */
+    boolean canRoutineBeenSaved(VBox workoutBox);
+
+    /**
+     * 
+     * @param workoutName
+     * @return
+     */
+    boolean isWorkoutAlreadyAdded(String workoutName, VBox workoutBox);
 }

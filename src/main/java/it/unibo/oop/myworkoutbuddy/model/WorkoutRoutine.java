@@ -1,7 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.model;
 import java.util.List;
 
-import it.unibo.oop.myworkoutbuddy.model.Body.Target;
+//import it.unibo.oop.myworkoutbuddy.model.Body.Target;
 /**
  * WorkoutRoutine : composed by an exercises list (Exercise list).
  * -------------------------------------------------------------
@@ -30,7 +30,7 @@ public interface WorkoutRoutine {
      * 
      * @return the scope of Workout
      */
-    Target getTarget();
+    //Target getTarget();
     /**
      * 
      * @return list of Day in a week
