@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 /**
  * 
  * the principal class of model.
@@ -139,7 +140,7 @@ public interface MyWorkoutBuddyModel {
      * give alphabetic name of Current Account.
      * @return a String
      */
-    String getCurrentIdName();
+    Optional<String> getCurrentIdName();
 
     /**
      * give the list of GymTool in an application.

@@ -187,8 +187,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public String getCurrentIdName() {
-        return (this.checkCurrentAccount()) ? this.getCurrentAccount().getUserName() : "None";
+    public Optional<String> getCurrentIdName() {
+        return (this.checkCurrentAccount()) ? Optional.of(this.getCurrentAccount().getUserName()) : Optional.empty();
     }
 
     @Override
