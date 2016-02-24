@@ -12,19 +12,6 @@ import java.util.Map;
 public interface Workout {
 
     /**
-     * add a new Score with passed informations to a Workout.
-     * @param index Integer
-     * @param score Integer
-     */
-    void addScore(final Integer index, final Integer score);
-
-    /**
-     * set the state of a Workout : done -> to do or to do -> done.
-     * @param state boolean
-     */
-    void modifyState(final boolean state);
-
-    /**
      * give the data of Workout.
      * @return a LocalDate
      */
@@ -55,12 +42,6 @@ public interface Workout {
     List<Integer> getScoreList();
 
     /**
-     * give the average of normalized scores.
-     * @return a Double
-     */
-    Double getWorkoutScore();
-
-    /**
      * give the associations between muscles and the relative percentages.
      * @return a Map<String, Double>
      */
@@ -85,9 +66,27 @@ public interface Workout {
     Map<String, Double> getScoreTools();
 
     /**
-     * 
      * give the associations between Exercise and relative score.
      * @return a Map<String, Double>
      */
     Map<Exercise, Integer> getScoreMap();
+
+    /**
+     * give the average of normalized scores.
+     * @return a Double
+     */
+    Double getWorkoutScore();
+
+    /**
+     * add a new Score with passed informations to a Workout.
+     * @param index Integer
+     * @param score Integer
+     */
+    void addScore(final Integer index, final Integer score);
+
+    /**
+     * set the state of a Workout : done -> to do or to do -> done.
+     * @param state boolean
+     */
+    void modifyState(final boolean state);
 }

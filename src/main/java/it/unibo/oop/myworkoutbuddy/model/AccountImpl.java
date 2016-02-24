@@ -5,12 +5,13 @@ package it.unibo.oop.myworkoutbuddy.model;
      userName : name used to access the application
      password : password to access the application
      avatar : alter ego for user.
+     -------------------------------------------------------------
 */
 public class AccountImpl implements Account {
 
-    private String userName;
-    private String password;
-    private String avatar;
+    private final String userName;
+    private final String password;
+    private final String avatar;
 
     /**
      * 
@@ -18,7 +19,7 @@ public class AccountImpl implements Account {
      * @param password String
      * @param avatar String
      */
-    AccountImpl(final String userName, final String password, final String avatar) {
+    public AccountImpl(final String userName, final String password, final String avatar) {
 
         this.userName = userName;
         this.password = password;

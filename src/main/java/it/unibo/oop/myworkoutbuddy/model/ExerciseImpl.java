@@ -11,11 +11,12 @@ import java.util.Set;
      time : duration time of a single repetition
      pause : pause time between two consecutive repetitions
      numSession : number of cycles (cycle = repetition + pause).
+     -------------------------------------------------------------
 */
 public final class ExerciseImpl implements Exercise {
 
-    private String description;
-    private GymTool gymTool;
+    private final String description;
+    private final GymTool gymTool;
     private int settingValue;
     private int repetition;
     private int time;
@@ -34,7 +35,7 @@ public final class ExerciseImpl implements Exercise {
      * @param numSession int 
      * @param pause int 
      */
-    public ExerciseImpl(final String description, final GymTool gymTool, final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
+    private ExerciseImpl(final String description, final GymTool gymTool, final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
         this.description = description;
         this.gymTool = gymTool;
         this.settingValue = settingValue;
@@ -45,7 +46,7 @@ public final class ExerciseImpl implements Exercise {
     }
 
     /**
-     * 
+     * class x builder method.
      *
      */
     public static class Builder {
@@ -58,7 +59,7 @@ public final class ExerciseImpl implements Exercise {
         private int numSession;
 
         /**
-         * 
+         * add a description to an Exercise.
          * @param description String
          * @return a builder
          */
@@ -68,7 +69,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a GymTool to an Exercise.
          * @param gymTool GymTool
          * @return a builder
          */
@@ -78,7 +79,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a settingValue to an Exercise.
          * @param settingValue integer
          * @return a builder
          */
@@ -88,7 +89,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a repetition to an Exercise.
          * @param repetition integer
          * @return a builder
          */
@@ -98,7 +99,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a time to an Exercise.
          * @param time integer
          * @return a builder
          */
@@ -108,7 +109,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a pause to an Exercise.
          * @param pause integer
          * @return a builder
          */
@@ -118,7 +119,7 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * 
+         * add a numSession to an Exercise.
          * @param numSession integer
          * @return a builder
          */
@@ -153,7 +154,8 @@ public final class ExerciseImpl implements Exercise {
             this.checkNotNegative(this.settingValue);
             this.checkNotNegative(this.time);
 
-            return new ExerciseImpl(this.description, this.gymTool, this.numSession, this.pause, this.repetition, this.settingValue, this.time);
+            /* Exercise data for Routine: codeRoutine, description, codeGymTool, settingValue, repetition, time, numSession, pause */
+            return new ExerciseImpl(this.description, this.gymTool, this.settingValue, this.repetition, this.time, this.numSession, this.pause);
         }
     }
 

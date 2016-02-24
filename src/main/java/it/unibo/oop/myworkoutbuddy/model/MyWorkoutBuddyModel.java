@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 /**
@@ -68,11 +67,22 @@ public interface MyWorkoutBuddyModel {
     void addDataMeasure(final LocalDate localDate);
 
     /**
-     * add new muscles for the bodyZone.
+     * add a new bodyPart mapped in specific set of bodyZone.
+     * @param bodyPart String
      * @param bodyZone String
-     * @param bodyParts Collection<String>
      */
-    void addMapZone(final String bodyZone, final Collection<String> bodyParts);
+    void body(final String bodyPart, final String bodyZone);
+
+    /**
+     * add a new bodyPart mapped in specific set of current bodyZone.
+     * @param bodyPart String
+     */
+    void body(final String bodyPart);
+
+    /**
+     * the default body.
+     */
+    void body();
 
     /**
      * add a new BodyMeasure for current User.
@@ -88,12 +98,6 @@ public interface MyWorkoutBuddyModel {
      * @param score Integer
      */
     void addExerciseScore(final Integer numEx, final Integer score);
-
-    /**
-     * true if current User has been set.
-     * @return boolean
-     */
-    boolean isLoginUser();
 
     /**
      * Add a new Account.
@@ -132,6 +136,18 @@ public interface MyWorkoutBuddyModel {
     void addBodyPart(final String toolCode, final String bodyPart, final Double percentage);
 
     /**
+     * give current user's name.
+     * @return a String
+     */
+    String getCurrentUserName();
+
+    /**
+     * give current user's surname.
+     * @return a String
+     */
+    String getCurrentUserSurName();
+
+    /**
      * give the list of GymTool in an application.
      * @return a List<GymTool>
      */
@@ -155,12 +171,6 @@ public interface MyWorkoutBuddyModel {
      * @return an Integer
      */
     int getNumExercise(final String codeRoutine);
-
-    /**
-     * give the application Body.
-     * @return a Body
-     */
-    Body getBody();
 
     /**
      * give the current user's measure list.

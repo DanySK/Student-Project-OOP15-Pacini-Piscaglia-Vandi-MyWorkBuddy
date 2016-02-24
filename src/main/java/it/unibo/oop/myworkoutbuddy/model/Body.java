@@ -8,35 +8,61 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- Class Body to manage human body.
+ Class Body to manage a human body.
+ -------------------------------------------------------------
 */
 public class Body {
     private Map<String, Set<String>> bodyMap;
     private Set<String> measureSet;
 
+    /**
+     * 
+     */
     public Body() {
-        bodyMap = new HashMap<>();
-        measureSet = new HashSet<>();
+        this.bodyMap = new HashMap<>();
+        this.measureSet = new HashSet<>();
     }
 
     /**
-     * @return a map of partZones and relatives muscles
+     * give a part zone of human body in optional form.
+     * @param muscle String
+     * @return a Optional<String>
+     */
+    public Optional<String> getPartZone(final String muscle) {
+        if (this.getBodyMap().isEmpty()) {
+            return Optional.empty();
+        }
+        return getBodyMap().keySet().stream().filter(i -> getBodyMap().get(i).contains(muscle)).findAny();
+    }
+
+    /**
+     * give an optional name of measure.
+     * @param measure String
+     * @return a Optional<String>
+     */
+    public Optional<String> getMeasure(final String measure) {
+        if (this.getMeasureSet().isEmpty()) {
+            return Optional.empty();
+        }
+        return this.getMeasureSet().stream().filter(i -> i.equals(measure)).findAny();
+    }
+
+    /**
+     * give a map of partZones and relatives muscles.
+     * @return a Map<String, Set<String>>
      */
     public Map<String, Set<String>> getBodyMap() {
         return this.bodyMap;
     }
 
     /**
-     * @return a map of partZones and relatives muscles
+     * give the set of measurable body parts.
+     * @return a Set<String>
      */
     public Set<String> getMeasureSet() {
         return this.measureSet;
     }
 
-    public void defaultBody() {
-        
-    }
-    
     /**
      * add a new measure in set measure.
      * @param measure String
@@ -92,29 +118,6 @@ public class Body {
     }
 
     /**
-     * @param muscle String
-     * @return a part zone of human body in optional form
-     */
-    public Optional<String> getPartZone(final String muscle) {
-        if (this.getBodyMap().isEmpty()) {
-            return Optional.empty();
-        }
-        return getBodyMap().keySet().stream().filter(i -> getBodyMap().get(i).contains(muscle)).findAny();
-    }
-
-    /**
-     * 
-     * @param measure String
-     * @return an optional name of measure
-     */
-    public Optional<String> getMeasure(final String measure) {
-        if (this.getMeasureSet().isEmpty()) {
-            return Optional.empty();
-        }
-        return this.getMeasureSet().stream().filter(i -> i.equals(measure)).findAny();
-    }
-
-    /**
      * 
      * @param collection of elements in witch it is supposed to find the specified bodyPart
      * @param bodyPart a muscle of body
@@ -127,7 +130,7 @@ public class Body {
             throw new ElementNotFoundException();
         }
     }
-    
+
     /**
      * an exception for an element not found in a collection.
      */

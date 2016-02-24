@@ -17,23 +17,18 @@ import java.util.stream.Collectors;
     measureList : list of body periodic measure
     workoutList : list of training sessions done/to do
     routineList : list of available Routine
+    -------------------------------------------------------------
 */
 public class UserImpl implements User {
 
-    private Account account;
-    private Person person;
+    private final Account account;
+    private final Person person;
 
     private Body body;
 
     private List<BodyData> measureList;     // list of body periodic measure
     private List<Workout> workoutList;    // list of training sessions done/to do
     private List<Routine> routineList;    // list of available Routine
-
-    /**
-     * 
-     */
-    public UserImpl() {
-    }
 
     /**
      * @param account Account
@@ -105,6 +100,11 @@ public class UserImpl implements User {
     }
 
     @Override
+    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
+        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
+    }
+
+    @Override
     public List<Double> scoreWorkout() {
     return this.getWorkoutList().stream().map(Workout::getWorkoutScore).collect(Collectors.toList());
         /*
@@ -152,11 +152,6 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
-        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
-    }
-
-    @Override
     public Map<String, Double> scoreGymTool() {
         final Map<String, Double> scoreMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
@@ -183,6 +178,26 @@ public class UserImpl implements User {
     }
 
     /**
+     * It maps for each body zone the sum of all values of the body zone parts
+     * @param mapBodyZone Map<String, Double>
+     * @param mapBodyPart Map<String, Double>
+     * @return a Map<String, Double>
+     */
+    private Map<String, Double> mapBodyZone(final Map<String, Double> mapBodyZone, final Map<String, Double> mapBodyPart) {
+        mapBodyPart.keySet().forEach(i -> {
+            final String bodyZone = this.body.getPartZone(i).get();
+            final Double oldValue = mapBodyZone.get(bodyZone);
+            final Double value = mapBodyPart.get(i);
+
+            mapBodyZone.merge(bodyZone, value, (d0, d1) -> {
+                return value + oldValue;
+            });
+        });
+
+        return mapBodyZone;
+    }
+
+    /**
      * 
      * Sum between two Maps : destMap = destMap + sourceMap
      * @param <Y>
@@ -198,26 +213,6 @@ public class UserImpl implements User {
                 return function.apply(newValue, oldValue);
             });
         });
-    }
-
-    /**
-     * It maps for each body zone the sum of all values of the body zone parts
-     * @param mapBodyZone Map<String, Double>
-     * @param mapBodyPart Map<String, Double>
-     * @return a Map<String, Double>
-     */
-    private Map<String, Double> mapBodyZone(final Map<String, Double> mapBodyZone, final Map<String, Double> mapBodyPart) {
-        mapBodyPart.keySet().forEach(i -> {
-            final String bodyZone = body.getPartZone(i).get();
-            final Double oldValue = mapBodyZone.get(bodyZone); //mapBodyZone.get(i.getBodyZone());
-            final Double value = mapBodyPart.get(i);
-
-            mapBodyZone.merge(bodyZone, value, (d0, d1) -> {
-                return value + oldValue;
-            });
-        });
-
-        return mapBodyZone;
     }
 
     /**

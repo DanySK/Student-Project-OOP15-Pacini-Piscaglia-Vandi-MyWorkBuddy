@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -15,9 +17,12 @@ import org.junit.Test;
  */
 public class MainTestModel {
 
-    private static final Double valueDouble = 20.00;
-    
     //private final Integer SETTING_VALUE = 0;
+    private static final Double VAL_MIN_DOUBLE = 20.00;
+    private static final Double VAL_MIN1_DOUBLE = 30.00;
+    private static final Double VAL_MAX_DOUBLE = 80.00;
+
+    private static final Map<String, Double> TIME_MAP = new HashMap<>();
 
     /**
      * 
@@ -29,28 +34,27 @@ public class MainTestModel {
 
         final MyWorkoutBuddyModel model;
 
-        /* --- LOAD DATA ------*/
         System.out.println("\n Start Model");
         model = new MyWorkoutBuddyModelImpl();
 
+        /* --- LOAD DATA ------*/
         System.out.println("\n Load Data");
         testLoadData(model);
 
         /* --- PRINTS DATA ------*/
-        System.out.println("\n ==== GYM TOOL LIST ==== \n");
+        System.out.println("\n ==== GYM TOOL LIST ==== ");
         System.out.println(model.getGymToolList());
 
-        System.out.println("\n ==== USERS LIST ==== \n");
+        System.out.println("\n ==== USERS LIST ==== ");
         System.out.println(model.getUserList());
 
+        for (int i = 1; i <= 3; i++) {
+
         /* --- LOGIN USER ------*/
-        /* loginUser : set current user of model,
-         * after that all model functions are working with loginUser*/
+        System.out.println("\n ==== LOGIN USER ==== ");
+        model.loginUser("account" + i, "password" + i);
 
-        System.out.println("\n ==== LOGIN USER ==== \n");
-        model.loginUser("account2", "password2");
-
-        // WOROUT DATE LOGIN USER: generates test data for login User
+        // WORKOUT DATE LOGIN USER: cycle of generation test data for login User
         testLoginUser(model);
 
         /* --- PRINTS USER DATA AND STATISTICS ------*/
@@ -77,52 +81,61 @@ public class MainTestModel {
         System.out.println(" TrendBodyMass = " + model.trendBodyMass());
         System.out.println(" TrendBodyBMI = " + model.trendBodyBMI());
 
-        model.logoutUser();
+        final Map<String, Double> mapGymTool = model.timeGymTool();
+        mergeMap(mapGymTool);
+
         System.out.println("\n ==== LOGOUT USER : ");
-        System.out.println(" TrendBodyMass = " + model.getMeasureList());
+        model.logoutUser();
+        }
 
-     // -----------------------------------------------------------------------------------
-        // use secondTestLoadData to try other functionalities
-        //System.out.println("\n Load Data");
-        //secondTestLoadData();
-
-
+        System.out.println("\n ==== GLOBAL STATISTICS : ");
+        System.out.println("\n TimeGymTool = " + TIME_MAP);
 }
 
     /**
      * test method for try data building.
      * @param model MyWorkoutBuddyModel
      */
-    //@Test
     public static void testLoadData(final MyWorkoutBuddyModel model) {
 
         /* 
-         * BODY MAP : map : (Zone -> Body Parts)
+         * BODY: body definition (zone, part)
          * 
          */
+        model.body(); // new body
+
+        model.body("HAMSTRINGS", "LEG"); // mapping: part -> zone
+        model.body("QUADRICEPS");
+        model.body("CALVES");
+
+        model.body("BICEPS", "ARM"); // mapping: part -> zone
+        model.body("FORE_ARM");
+
+        model.body("PECTORALIS_MAJOR", "CHEST"); // mapping: part -> zone
+        model.body("PECTORALIS_MINOR");
+        model.body("ABDOMINALS");
+        // end Body definition
 
         /* 
-         * GYM TOOL: Make GymTool Data
+         * GYMTOOLS: load GymTool informations
          * 
          */
-
-        // description, path, num, valueMin, valueMax
+        // description, image, num, valueMin, valueMax
         model.addGymTool("T1", "Tapis Roulant", "image1.png", 10, 1, 10);
         model.addGymTool("T2", "Cyclette", "image2.png", 10, 1, 10);
         model.addGymTool("T3", "Hand Weight", "image3.png", 10, 1, 10);
-        
+
         // setting body parts for each GymTool
-        model.addBodyPart("T1", "HAMSxxTRINGS", valueDouble);
+        model.addBodyPart("T1", "HAMSTRINGS", VAL_MIN_DOUBLE);
+        model.addBodyPart("T1", "QUADRICEPS", VAL_MAX_DOUBLE);
 
-        model.addBodyPart("T1", "QUADRICEPS", 80.00);
-
-        model.addBodyPart("T2", "HAMSTRINGS", 30.00);
+        model.addBodyPart("T2", "HAMSTRINGS", VAL_MIN1_DOUBLE);
         model.addBodyPart("T2", "CALVES", 50.00);
-        model.addBodyPart("T2", "BICEPS", 20.00);
+        model.addBodyPart("T2", "BICEPS", VAL_MIN_DOUBLE);
 
-        model.addBodyPart("T3", "HAMSTRINGS", 0.00);
-        model.addBodyPart("T3", "BICEPS", 70.00);
-        model.addBodyPart("T3", "PECTORALIS_MAJOR", 30.00);
+        model.addBodyPart("T3", "BICEPS", 50.00);
+        model.addBodyPart("T3", "PECTORALIS_MINOR", VAL_MIN_DOUBLE);
+        model.addBodyPart("T3", "PECTORALIS_MAJOR", VAL_MIN1_DOUBLE);
 
        /*
         *  USER: User (Account, Person)  make User Test data
@@ -143,7 +156,6 @@ public class MainTestModel {
          */
     }
 
-
     /**
      * test method for try data loading.
      * @param model MyWorkoutBuddyModel
@@ -151,180 +163,60 @@ public class MainTestModel {
     //@Test
     public static void testLoginUser(final MyWorkoutBuddyModel model) {
 
-    if (!model.isLoginUser()) {
-        System.out.println("\n Errore login \n");
-        return;
-    }
+        /*Add a init measure body : true(init) = new Measure*/
+        model.addDataMeasure(LocalDate.now());
 
-    model.loginUser("account1", "password1");
-    if (!model.isLoginUser()) {
-        System.out.println("Errore login");
-        return;
-    }
+        model.addBodyMeasure("HEIGHT", 1.80, true);
+        model.addBodyMeasure("WEIGHT", 70.00, true);
+        model.addBodyMeasure("UPPER_BODY", VAL_MAX_DOUBLE, true);
+        model.addBodyMeasure("LOWER_BODY", 60.00, true);
 
-    /*Add a measure body*/
-    model.addDataMeasure(LocalDate.now());
+        /* 
+         * ROUTINE: load Routines for Current User
+         * 
+         */
+        /* Routine: code , name, target */
+        model.addRoutine("R1", "Routine1", "BODY_BUILDING");
 
-    model.addBodyMeasure("HEIGHT", 1.80, true);
-    model.addBodyMeasure("WEIGHT", 70.00, true);
-    model.addBodyMeasure("UPPER_BODY", 80.00, true);
-    model.addBodyMeasure("LOWER_BODY", 60.00, true);
+        /* Exercise data for Routine: codeRoutine, description, codeGymTool, settingValue, repetition, time, numSession, pause */
+        model.addGymExcercise("R1", "Warming", "T1", 5, 10, 3, 10, 2);
+        model.addGymExcercise("R1", "Running", "T1", 5, 10, 3, 10, 2);
+        model.addGymExcercise("R1", "Tonifing", "T2", 5, 10, 3, 10, 2);
+        model.addGymExcercise("R1", "Swimming", "T3", 5, 10, 3, 10, 2);
+        model.addGymExcercise("R1", "Swimming", "T2", 5, 10, 3, 10, 2);
 
-    /* 
-     * ROUTINE: load Routine for Current User
-     * 
-     */
-
-    /* Routine: code , name, target */
-    model.addRoutine("R1", "Routine1", "BODY_BUILDING");
-
-    /* Exercise data for Routine: codeRoutine, description, codeGymTool, settingValue, repetition, time, numSession, pause */
-    model.addGymExcercise("R1", "Warming", "T1", 0, 10, 3, 10, 2);
-    model.addGymExcercise("R1", "Running", "T1", 0, 10, 3, 10, 2);
-    model.addGymExcercise("R1", "Tonifing", "T2", 0, 10, 3, 10, 2);
-    model.addGymExcercise("R1", "Swimming", "T3", 0, 10, 3, 10, 2);
-    model.addGymExcercise("R1", "Swimming", "T2", 0, 10, 3, 10, 2);
-
-    /* 
-     * WORKOUT: Workout Cycle for current User
-     * 
-     */
-    for (int k = 0; k < 5; k++) {
-
-        /*Workout : codeRoutine, date, hour, state*/
-        model.addWorkout("R1", LocalDate.now(), LocalTime.now(), true);
-
-        /* set scores */
-        for (int i = 0; i < model.getNumExercise("R1"); i++) {
-            /*exerciseScore : numExercise, scoreExercise*/
-            model.addExerciseScore(i, 3 + i + k);
-        }
-    }
-
-    /*Add a new measure body*/
-    model.addDataMeasure(LocalDate.now());
-
-    model.addBodyMeasure("HEIGHT", 1.80, false);
-    model.addBodyMeasure("WEIGHT", 65.00, false);
-    model.addBodyMeasure("UPPER_BODY", 82.00, false);
-    model.addBodyMeasure("LOWER_BODY", 63.00, false);
-
-    }
-
-// -----------------------------------------------------------------------------------
-
-    /*
-    @Test
-    public void secondTestLoadData() {
-
-        final MyWorkoutBuddyModel model;
-
-        System.out.println("\n Start Model");
-        model = new MyWorkoutBuddyModelImpl();
-
-        final GymTool gymTool = new GymToolImpl("Tool1", "Tapis Roulant", "image1.png", 10, 1, 10);
-
-        model.addGymTool("Tool1", "Tapis Roulant", "image1.png", 10, 1, 10);
-
-        assertEquals(model.getGymToolList().size(), 1);
-        assertEquals(model.getGymToolList().get(0), gymTool);
-
-        System.out.println("\n Prova GymTool passata");
-
-        final Account account4 = new AccountImpl("account4", "password4", "avatar4.png");
-        final Person person4 = new PersonImpl("Silvio", "Pani", 20, "Silvio.pani@studio.unibo.it");
-        model.addUser(account4, person4);
-
-        model.loginUser("account4", "password4"); // setLoginUser
-
-        assertEquals(model.getLoginUser().getAccount(), account4);
-        assertEquals(model.getLoginUser().getPerson(), person4);
-        
-        System.out.println("\n Prova Login User passata");
-        
-        final GymTool tempTool = model.getGymTool("Tool1").get();
-        tempTool.addBodyPart(BodyPart.HAMSTRINGS, 30.00);
-        tempTool.addBodyPart(BodyPart.CALVES, 50.00);
-        tempTool.addBodyPart(BodyPart.BICEPS, 20.00);
-
-        assertEquals(model.getGymToolList().get(0).getBodyMap().keySet(), tempTool.getBodyMap().keySet());
-        assertEquals(model.getGymToolList().get(0).getBodyMap().values(), tempTool.getBodyMap().values());
-        System.out.println("\n Prova GymTool passata");
-        
-        final User logUser = model.getLoginUser();
-
-         // WorkRoutine for login User : name, target 
-        final WorkoutRoutine workRoutineProva = new WorkoutRoutineImpl("Routine1", "SPORTING");
-        logUser.addRoutine(workRoutineProva);
-        
-        assertEquals(logUser.getRoutineList().size(), 1);
-        assertEquals(logUser.getRoutineList().get(0), workRoutineProva);
-        System.out.println("\n Prova WorkoutRoutine passata");
-
-        // Exercise data for WorkRoutine : description, gymTool, settingValue, repetition, time, numSession, pause 
-        workRoutineProva.addGymExcercise(new ExerciseImpl("Sporting", model.getGymTool("Tool1").get(), 0, 10, 3, 10, 2));
-        
-        assertEquals(logUser.getRoutineList().get(0).getExerciseList().size(), 1);
-        assertEquals(logUser.getRoutineList().get(0).getExerciseList(), workRoutineProva.getExerciseList());
-        System.out.println("\n Prova Exercise passata");
-        
-        final BodyData bodyData = Body.build().new BodyData(LocalDate.now());
-        bodyData.addBodyMeasure(Body.Measure.HEIGHT, 1.80);
-        bodyData.addBodyMeasure(Body.Measure.WEIGHT, 70.00);
-        bodyData.addBodyMeasure(Body.Measure.UPPER_BODY, 80.00);
-        bodyData.addBodyMeasure(Body.Measure.LOWER_BODY, 60.00);
-        
-        logUser.addMesure(bodyData);
-        
-        assertEquals(logUser.getMeasureList().size(), 1);
-        assertEquals(logUser.getMeasureList().get(0), bodyData);
-        System.out.println("\n Prima prova BodyData passata");
-        
-        logUser.getMeasureList().forEach(i -> {
-            System.out.println("\n Meausure = " + i.getBodyMeasure());
-        });
-        
-        final List<Workout> workoutList = new ArrayList<>();
-        
-        // Workout progress cycles
-
+        /* 
+         * WORKOUT: Workout Cycle of current User
+         * 
+         */
         for (int k = 0; k < 5; k++) {
 
-            final Workout newWorkout = new WorkoutImpl(LocalDate.now(), LocalTime.now(), workRoutineProva);
-            newWorkout.modifyState(true);
+            /*Workout : codeRoutine, date, hour, state*/
+            model.addWorkout("R1", LocalDate.now(), LocalTime.now(), true);
 
-            // set scores
-            for (int i = 0; i < workRoutineProva.getExerciseList().size(); i++) {
-                newWorkout.addScore(i, 3 + i + k);
+            /* set scores */
+            for (int i = 0; i < model.getNumExercise("R1"); i++) {
+                /*exerciseScore : numExercise, scoreExercise*/
+                final int score = 1 + k + i;
+                model.addExerciseScore(i, score);
             }
-            //logUser.addWorkout(workRoutineProva);
-            workoutList.add(newWorkout);
-            logUser.addWorkout(newWorkout);
         }
-        
-        assertEquals(logUser.getWorkoutList(), workoutList);
-        System.out.println("\n Prima prova punteggio passata");
-        
-        logUser.getWorkoutList().forEach(i -> {
-            System.out.println("Punteggio = " + i.getScoreList());
-        });
-        
-        final BodyData newBodyData = Body.build().new BodyData(LocalDate.now());
-        newBodyData.addBodyMeasure("HEIGHT", 1.70);
-        newBodyData.addBodyMeasure("WEIGHT", 65.00);
-        newBodyData.addBodyMeasure("UPPER_BODY", 82.00);
-        newBodyData.addBodyMeasure("LOWER_BODY", 63.00);
 
-        logUser.addMesure(newBodyData);
-        
-        assertEquals(logUser.getMeasureList().size(), 2);
-        assertEquals(logUser.getMeasureList().get(1), newBodyData);
-        System.out.println("\n Seconda prova BodyData passata");
-        
-        logUser.getMeasureList().forEach(i -> {
-            System.out.println("\n Meausure = " + i.getBodyMeasure());
+        /*Add a new measure body*/
+        model.addDataMeasure(LocalDate.now());
+
+        model.addBodyMeasure("HEIGHT", 1.80, false);
+        model.addBodyMeasure("WEIGHT", 65.00, false);
+        model.addBodyMeasure("UPPER_BODY", 82.00, false);
+        model.addBodyMeasure("LOWER_BODY", 63.00, false);
+}
+    
+    private static void mergeMap(final Map<String, Double> mapGymTool) {
+        mapGymTool.keySet().stream().forEach(i -> {
+            final Double newValue = mapGymTool.get(i);
+            TIME_MAP.merge(i, newValue, (d1, d2) -> {
+                return newValue + TIME_MAP.get(i);
+            });
         });
-        
     }
-    */
 }

@@ -70,6 +70,12 @@ public interface User {
     List<Double> trendBodyBMI();
 
     /**
+     * give a double array of trend values for a human body.
+     * @return a List<Double>
+     */
+    List<Double> trendBodyMass();
+
+    /**
      * list of performance scores.
      * @return a List<Double>
      */
@@ -98,12 +104,6 @@ public interface User {
      * @return a Map<String, Double>
      */
     Map<String, Double> timeBodyZone();
-
-    /**
-     * give a double array of trend values for a human body.
-     * @return a List<Double>
-     */
-    List<Double> trendBodyMass();
 
     /**
      * give the associations between a GymTool code and its relative time of use.

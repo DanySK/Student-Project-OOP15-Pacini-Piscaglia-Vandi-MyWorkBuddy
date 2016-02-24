@@ -7,9 +7,38 @@ import java.util.List;
 public interface Routine {
 
     /**
+     * give the alphabetic code of a Routine.
+     * @return a String
+     */
+    String getCode();
+
+    /**
+     * give the nameCard of a Routine.
+     * @return a String
+     */
+    String getName();
+
+    /**
+     * give the scope of Workout.
+     * @return a String
+     */
+    String getTarget();
+
+    /**
+     * give the list of Day in a week.
+     * @return a List<DayInWeek>
+     */
+    List<DayInWeek> getDayAweek();
+
+    /**
+     * give the list of gymExercise in a Workout.
+     * @return a List<Exercise>
+     */
+    List<Exercise> getExerciseList();
+
+    /**
      * add a week day for doing a workout.
      * @param day DayInWeek
-     * 
      * @throws IllegalArgumentException exception for check not empty value
      */
     void addDay(final DayInWeek day);
@@ -17,40 +46,9 @@ public interface Routine {
     /**
      * add a new gymExercise for a workout.
      * @param exercise Exercise
-     * 
      * @throws IllegalArgumentException exception for check not empty value
      */
     void addGymExcercise(final Exercise exercise);
-
-    /**
-     * 
-     * @return alphabetic code
-     */
-    String getCode();
-
-    /**
-     * 
-     * @return nameCard
-     */
-    String getName();
-
-    /**
-     * 
-     * @return the scope of Workout
-     */
-    String getTarget();
-
-    /**
-     * 
-     * @return list of Day in a week
-     */
-    List<DayInWeek> getDayAweek();
-
-    /**
-     * 
-     * @return list of gymExercise in a Workout
-     */
-    List<Exercise> getExerciseList();
 
     /**
      * enum of week day.

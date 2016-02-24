@@ -9,14 +9,15 @@ import java.util.List;
      target : scope
      dayAweek : list of days in a week dedicated
      exerciseList : list of exercises
+     -------------------------------------------------------------
 */
 public class RoutineImpl implements Routine {
 
-    private String code;
-    private String name;
-    private String target;
-    private List<DayInWeek> dayAweek;
-    private List<Exercise> exerciseList;
+    private final String code;
+    private final String name;
+    private final String target;
+    private final List<DayInWeek> dayAweek;
+    private final List<Exercise> exerciseList;
 
     /**
      * @param code String
@@ -29,19 +30,6 @@ public class RoutineImpl implements Routine {
         this.target = targetName;
         this.dayAweek = new ArrayList<>();
         this.exerciseList = new ArrayList<>();
-    }
-
-    @Override
-    public void addDay(final DayInWeek day) throws NullPointerException {
-        this.checkNotNull(day);
-        this.dayAweek.add(day);
-    }
-
-    @Override
-    public void addGymExcercise(final Exercise exercise) throws NullPointerException {
-
-        this.checkNotNull(exercise);
-        this.exerciseList.add(exercise);
     }
 
     @Override
@@ -69,6 +57,19 @@ public class RoutineImpl implements Routine {
         return this.exerciseList;
     }
 
+
+    @Override
+    public void addDay(final DayInWeek day) throws NullPointerException {
+        this.checkNotNull(day);
+        this.dayAweek.add(day);
+    }
+
+    @Override
+    public void addGymExcercise(final Exercise exercise) throws NullPointerException {
+        this.checkNotNull(exercise);
+        this.exerciseList.add(exercise);
+    }
+
     /**
      * check for negative values
      * @param obj
@@ -76,7 +77,7 @@ public class RoutineImpl implements Routine {
      */
     private void checkNotNull(final Object obj) throws NullPointerException {
         if (obj == null) {
-            throw new NullPointerException();
+            new NullPointerException();
         }
     }
 

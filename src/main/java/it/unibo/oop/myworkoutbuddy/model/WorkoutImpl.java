@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
      state : session state (done/to do)
      routine : WorkoutRoutine used
      scoreList : list of got scores with card in session.
+     -------------------------------------------------------------
 */
 public class WorkoutImpl implements Workout {
 
@@ -46,25 +47,6 @@ public class WorkoutImpl implements Workout {
     }
 
     @Override
-    public void modifyState(final boolean state) {
-        this.state = state;
-    }
-
-   @Override
-   public void addScore(final Integer index, final Integer score) {
-       if (this.isRoutine()) {
-           final Exercise exerc = this.getRoutine().getExerciseList().get(index);
-           final GymTool gymTool = exerc.getGymTool();
-           final Integer min = gymTool.getMinValue();
-           final Integer max = gymTool.getMaxValue();
-           // check score to be in : [min max]
-           final Integer newScore = (score < min) ? min : (score > max) ? max : score;
-
-           this.scoreMap.put(exerc, newScore);
-       }
-   }
-
-    @Override
     public LocalDate getDate() {
         return this.date;
     }
@@ -80,8 +62,8 @@ public class WorkoutImpl implements Workout {
     }
 
     @Override
-    public Map<Exercise, Integer> getScoreMap() {
-        return this.scoreMap;
+    public Routine getRoutine() {
+        return this.routine.get();
     }
 
     @Override
@@ -93,11 +75,6 @@ public class WorkoutImpl implements Workout {
         }
 
         return new ArrayList<>();
-    }
-
-    @Override
-    public Routine getRoutine() {
-        return this.routine.get();
     }
 
     @Override
@@ -114,6 +91,11 @@ public class WorkoutImpl implements Workout {
     }
 
     @Override
+    public Map<Exercise, Integer> getScoreMap() {
+        return this.scoreMap;
+    }
+
+    @Override
     public Map<String, Double> getPercentuageParts() {
         final Map<String, Double> scoreMap = new HashMap<>();
         final Map<String, Integer> timesMap = new HashMap<>();
@@ -122,7 +104,7 @@ public class WorkoutImpl implements Workout {
         }
         final List<Exercise> listExercise = this.getRoutine().getExerciseList();
         listExercise.forEach(i -> {
-            final Double score = this.normalizedScore(i); //this.normalizedScore(listExercise, i);
+            final Double score = this.normalizedScore(i);
             final Map<String, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(scoreMap, percentageMap, score);
             this.countMap(timesMap, percentageMap);
@@ -178,6 +160,49 @@ public class WorkoutImpl implements Workout {
         return scoreMap;
     }
 
+    @Override
+    public void modifyState(final boolean state) {
+        this.state = state;
+    }
+
+   @Override
+   public void addScore(final Integer index, final Integer score) {
+       if (this.isRoutine()) {
+           final Exercise exerc = this.getRoutine().getExerciseList().get(index);
+           final GymTool gymTool = exerc.getGymTool();
+           final Integer min = gymTool.getMinValue();
+           final Integer max = gymTool.getMaxValue();
+           // check score to be in : [min max]
+           final Integer newScore = (score < min) ? min : (score > max) ? max : score;
+
+           this.scoreMap.put(exerc, newScore);
+       }
+   }
+
+    /**
+     * give the normalized score of the exercise
+     * @param exerc an exercise
+     * @return a Double
+     */
+    private Double normalizedScore(final Exercise exerc) {
+        final Integer score = this.scoreMap.get(exerc);
+
+        if (!this.checkScore(score)) { // fare check score
+            return SCORE_NULL;
+        }
+
+        return exerc.getNormalizedScore((double) score);
+    }
+
+    /**
+     * give the time of an exercise calculated like a single exercise duration multiplied for number of its repetition.
+     * @param exe Exercise
+     * @return calculation time for an exercise
+     */
+    private Double timeExercise(final Exercise exe) {
+        return Double.valueOf((double) exe.getTime() * exe.getRepetition()); //score=time*numRipetizioni
+    }
+
     /**
      * it calculates a percentageMap composed by a set of percentage values for each specific string key
      * @param valueMap
@@ -222,51 +247,27 @@ public class WorkoutImpl implements Workout {
 
     /**
      * make the merge for mapMerge
-     * @param mapMerge
-     * @param source
-     * @param data
-     * @param function
+     * @param mapMerge Map<X, Y>
+     * @param source  X
+     * @param data Y
+     * @param function BiFunction<Y, Y, Y>
      */
     private <X, Y> void mergeMap(final Map<X, Y> mapMerge, final X source, final Y data, final BiFunction<Y, Y, Y> function) {
         mapMerge.merge(source, data, function);
     }
 
     /**
-     * 
-     * @param exerc an exercise
-     * @return the normalized score of the exercise
-     */
-    private Double normalizedScore(final Exercise exerc) {
-        final Integer score = this.scoreMap.get(exerc);
-
-        if (!this.checkScore(score)) { // fare check score
-            return SCORE_NULL;
-        }
-
-        return exerc.getNormalizedScore((double) score);
-    }
-
-    /**
-     * give the time of an exercise calculated like a single exercise duration multiplied for number of its repetition.
-     * @param exe Exercise
-     * @return calculation time for an exercise
-     */
-    private Double timeExercise(final Exercise exe) {
-        return Double.valueOf((double) exe.getTime() * exe.getRepetition()); //score=time*numRipetizioni
-    }
-
-    /**
-     * 
-     * @return if routine value is present
+     * true if routine value is present
+     * @return a boolean
      */
     private boolean isRoutine() {
         return this.routine.isPresent();
     }
 
     /**
-     * 
+     * true if score is acceptable
      * @param score
-     * @return if score is acceptable
+     * @return a boolean
      */
     private boolean checkScore(final Integer score) {
         return score != null && score > 0;

@@ -13,6 +13,7 @@ import java.util.Optional;
      valueMin : minimum value to setting a tool
      valueMax : maximum value to setting a tool
      bodyMap : map<body parts, percentage values> (BodyPart = a single muscle of the body, Percentage value = % of muscle using the tool).
+     -------------------------------------------------------------
 */
 public final class GymToolImpl implements GymTool {
 
@@ -34,7 +35,7 @@ public final class GymToolImpl implements GymTool {
      * @param valueMin integer
      * @param valueMax integer
      */
-    public GymToolImpl(final String code, final String name, final String imageFile, final int numTools, final int valueMin, final int valueMax) {
+    private GymToolImpl(final String code, final String name, final String imageFile, final int numTools, final int valueMin, final int valueMax) {
         this.code = code;
         this.name = name;
         this.imageFile = Optional.of(imageFile);

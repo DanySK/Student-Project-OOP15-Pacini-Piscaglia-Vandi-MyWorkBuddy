@@ -6,6 +6,7 @@ package it.unibo.oop.myworkoutbuddy.model;
      lastName : surname
      age : 
      email : 
+     -------------------------------------------------------------
 */
 public class PersonImpl implements Person {
 

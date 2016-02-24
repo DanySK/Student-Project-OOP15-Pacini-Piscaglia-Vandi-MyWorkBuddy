@@ -4,11 +4,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
-
 /**
- * 
- *
+ * class Data of measurements.
+ * -------------------------------------------------------------
  */
 public class BodyData {
     private static final double ZERO_DOUBLE = 0.00;
@@ -22,7 +20,7 @@ public class BodyData {
     private static final double METER_TO_CM = 100.00;
 
     private LocalDate data;     // date of measurement
-    private Map<String, Double> bodyMeasure;  // value measure for each body measure
+    private final Map<String, Double> bodyMeasure;  // value measure for each body measure
 
     /**
      * 
@@ -49,33 +47,29 @@ public class BodyData {
      * @throws IllegalArgumentException exception for invalid values
      */
     public Double getBodyMass() throws NullPointerException, IllegalArgumentException {
-        final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
-        final Double den = pairValues.getY() * pairValues.getY();
+        final Double mass = getMassHeight("MASS");
+        final Double height = getMassHeight("HEIGHT");
+        final Double den = height * height;
         if (den <= ZERO_DOUBLE) {
             return ZERO_DOUBLE;
         }
 
-        return (pairValues.getX() / den);
+        return (mass / den);
     }
 
     /**
-     * 
+     * calculation of BMI(Body Mass Index).
      * @param age Integer
      * @return bodyBMI
-     * @throws NullPointerException exception for null values
-     * @throws IllegalArgumentException exception for invalid values
      */
-    public Double getBodyBMI(final Integer age) throws NullPointerException, IllegalArgumentException {
-        /*final Optional<Integer> valueOpt = (age == null || age <= ZERO_INTEGER) ? Optional.of(ZERO_INTEGER) : Optional.of(age);
-        if (valueOpt.get() <= ZERO_VALUE) {
-            return (double) ZERO_VALUE;
-        }
-        */
+    public Double getBodyBMI(final Integer age) {
         if (age == null || age <= ZERO_INTEGER) {
             return ZERO_DOUBLE;
         }
-        final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
-        final Double valueTemp = (FACTOR_WEIGHT * pairValues.getX()) + (FACTOR_HEIGHT * METER_TO_CM * pairValues.getY());
+        //final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
+        final Double mass = getMassHeight("MASS");
+        final Double height = getMassHeight("HEIGHT");
+        final Double valueTemp = (FACTOR_WEIGHT * mass) + (FACTOR_HEIGHT * METER_TO_CM * height);
         if (valueTemp <= ZERO_DOUBLE) {
             return ZERO_DOUBLE;
         }
@@ -83,15 +77,15 @@ public class BodyData {
     }
 
     /**
-     * 
-     * @return a map of measurable body zone and relatives measurement
+     * give a map of measurable body zone and relatives measurement.
+     * @return Map<String, Double>
      */
     public Map<String, Double> getBodyMeasure() {
         return this.bodyMeasure;
     }
 
     /**
-     * 
+     * add a new measure for the body in map of body measure and relative data.
      * @param bodyMeasure String
      * @param measure Double
      */
@@ -99,22 +93,23 @@ public class BodyData {
         this.bodyMeasure.put(bodyMeasure, measure);
     }
 
-    private UnmodifiablePair<Double, Double> getMassHeight() {
-        final Double height = this.getBodyMeasure().get("HEIGHT");
-        final Double mass = this.getBodyMeasure().get("WEIGHT");
-        final Double zeroValue = ZERO_DOUBLE;
-        if (height == null || mass == null) {
-            System.out.println("BodyBMIException = " + new NullPointerException());
-            return new UnmodifiablePair<>(zeroValue, zeroValue);
+    /**
+     * return mass or height according to the measure
+     * @param measure String
+     * @return a Double
+     */
+    private Double getMassHeight(final String measure) {
+        final Double heightMass = this.getBodyMeasure().get(measure);
+        if (heightMass == null || heightMass <= ZERO_DOUBLE) {
+            return ZERO_DOUBLE;
         }
-        if (height <= 0 || mass <= 0) {
-            System.out.println("BodyBMI = " + new IllegalArgumentException());
-            return new UnmodifiablePair<>(zeroValue, zeroValue);
-        }
-
-        return new UnmodifiablePair<>(mass, height);
+        return heightMass;
     }
 
+    /**
+     * set the data of measure
+     * @param data LocalDate
+     */
     private void setData(final LocalDate data) {
         this.data = data;
     }
