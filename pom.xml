@@ -15,7 +15,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>org.sample.App</mainClass>
+              <mainClass>it.unibo.oop.myworkoutbuddy.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
