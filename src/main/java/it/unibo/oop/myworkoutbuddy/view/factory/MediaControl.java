@@ -1,8 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.view.factory;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,7 +24,7 @@ public class MediaControl extends BorderPane {
 
     private final MediaPlayer mp;
     private final MediaView mediaView;
-    private final boolean repeat = false;
+    private static final boolean repeat = false;
     private boolean stopRequested = false;
     private boolean atEndOfMedia = false;
     private Duration duration;
@@ -38,6 +36,7 @@ public class MediaControl extends BorderPane {
     /**
      * 
      * @param mp
+     *            MediaPlayer.
      */
     public MediaControl(final MediaPlayer mp) {
         this.mp = mp;
@@ -146,6 +145,13 @@ public class MediaControl extends BorderPane {
         mediaBar.getChildren().add(volumeSlider);
 
         setBottom(mediaBar);
+    }
+
+    /**
+     * 
+     */
+    protected void stopMediaPlayer() {
+        mp.stop();
     }
 
     /**

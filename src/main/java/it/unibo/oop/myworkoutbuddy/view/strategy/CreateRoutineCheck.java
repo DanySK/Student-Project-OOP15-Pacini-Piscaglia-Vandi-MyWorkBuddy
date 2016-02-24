@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.view.handlers;
+package it.unibo.oop.myworkoutbuddy.view.strategy;
 
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
@@ -129,7 +129,7 @@ public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
     }
 
     @Override
-    public boolean canRoutineBeenSaved(VBox workoutBox) {
+    public boolean canRoutineBeenSaved(final VBox workoutBox) {
         if (!workoutBox.getChildren().isEmpty()) {
             return true;
         }
@@ -138,7 +138,7 @@ public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
     }
 
     @Override
-    public boolean isWorkoutAlreadyAdded(String workoutName, VBox workoutBox) {
+    public boolean isWorkoutAlreadyAdded(final String workoutName, final VBox workoutBox) {
         if (workoutBox.getChildren().stream().map(work -> (TitledPane) work)
                 .anyMatch(work -> work.getText().equals(workoutName))) {
             showDialog("Please select another name", "A workout with the same is already added!", Optional.empty(),

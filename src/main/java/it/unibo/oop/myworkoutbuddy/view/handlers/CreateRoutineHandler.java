@@ -11,6 +11,8 @@ import java.util.stream.IntStream;
 
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
+import it.unibo.oop.myworkoutbuddy.view.strategy.CreateRoutineCheck;
+import it.unibo.oop.myworkoutbuddy.view.strategy.CreateRoutineCheckStrategy;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -49,6 +51,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private static final int REPS_FIELD_TRANSLATE_Y = 10;
 
     private static final int REP_LABEL_TRANSLATE_Y = 13;
+
+    private static final int REP_FIELD_START_INDEX = 2;
 
     private Optional<VBox> workoutSelected = Optional.empty();
 
@@ -141,7 +145,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             exBox.getChildren().stream().map(ex -> (HBox) ex).forEach(ex -> {
                 final List<Integer> repList = new ArrayList<>();
                 final Label exLabel = (Label) ex.getChildren().get(0);
-                IntStream.range(2, 5).forEach(i -> {
+                IntStream.range(REP_FIELD_START_INDEX, ex.getChildren().size()).forEach(i -> {
                     final TextField repNumber = (TextField) ex.getChildren().get(i);
                     repList.add(Integer.parseInt(repNumber.getText()));
                 });

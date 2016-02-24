@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.view.handlers;
+package it.unibo.oop.myworkoutbuddy.view.strategy;
 
 import java.util.List;
 import java.util.Map;

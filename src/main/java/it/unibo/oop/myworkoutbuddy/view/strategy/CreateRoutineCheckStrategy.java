@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.view.handlers;
+package it.unibo.oop.myworkoutbuddy.view.strategy;
 
 import java.util.Optional;
 
@@ -16,7 +16,7 @@ public interface CreateRoutineCheckStrategy {
      * 
      * @param workoutSelected
      * @param exerciseSelected
-     * @return
+     * @return true if exercise can be added, false otherwise.
      */
     boolean canAddExercise(Optional<VBox> workoutSelected, Optional<Label> exerciseSelected);
 
@@ -39,7 +39,6 @@ public interface CreateRoutineCheckStrategy {
      * 
      * @param workoutBox
      * @param workoutSelected
-     * @param btnAddWorkout
      * @return
      */
     boolean canDeleteWorkout(VBox workoutBox, Optional<VBox> workoutSelected);
@@ -54,6 +53,7 @@ public interface CreateRoutineCheckStrategy {
     /**
      * 
      * @param workoutSelected
+     * @param event
      * @return
      */
     boolean isWorkoutToBeSet(Optional<VBox> workoutSelected, MouseEvent event);
@@ -73,6 +73,7 @@ public interface CreateRoutineCheckStrategy {
 
     /**
      * 
+     * @param workoutBox
      * @return
      */
     boolean canRoutineBeenSaved(VBox workoutBox);
@@ -80,6 +81,7 @@ public interface CreateRoutineCheckStrategy {
     /**
      * 
      * @param workoutName
+     * @param workoutBox
      * @return
      */
     boolean isWorkoutAlreadyAdded(String workoutName, VBox workoutBox);

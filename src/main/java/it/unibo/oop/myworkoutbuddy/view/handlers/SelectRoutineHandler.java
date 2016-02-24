@@ -11,6 +11,8 @@ import java.util.Optional;
 import org.apache.commons.lang3.tuple.Pair;
 
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
+import it.unibo.oop.myworkoutbuddy.view.strategy.WorkoutLayout;
+import it.unibo.oop.myworkoutbuddy.view.strategy.WorkoutLayoutStrategy;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -47,7 +49,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     private final WorkoutLayoutStrategy workoutLayout = new WorkoutLayout();
 
-    private final static int NO_ROUTINE_MESSAGE_Y = 300;
+    private static final int NO_ROUTINE_MESSAGE_Y = 300;
 
     private final EventHandler<Event> tabHandler = i -> {
         final Tab exs = (Tab) i.getSource();
@@ -105,7 +107,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     private int extractRoutineIndex(final Tab exs) {
-        return Integer.valueOf(exs.getText().split("- ")[1]);
+        return Integer.parseInt((exs.getText().split("- ")[1]));
     }
 
     private void updateDescriptionField() {
