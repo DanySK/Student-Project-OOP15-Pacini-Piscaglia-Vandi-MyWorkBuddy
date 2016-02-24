@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 /**
  * 
@@ -108,15 +109,14 @@ public final class RegistrationHandler implements RegistrationView {
 
     @FXML
     private void register() {
-        if (ViewsHandler.getObserver().registerUser()) {
-            showDialog("User registered!",
-                    "Congratulations " + getUsername() + ", you are now registered!", Optional.empty(),
-                    AlertType.INFORMATION);
+        final StringBuilder errors = new StringBuilder();
+        getObserver().registerUser().forEach(err -> errors.append(err + "\n"));
+        if (errors.toString().isEmpty()) {
+            showDialog("User registered!", "Congratulations " + getUsername() + ", you are now registered!",
+                    Optional.empty(), AlertType.INFORMATION);
             returnLogin();
         } else {
-            showDialog("Uncorrect data inserted!",
-                    "Please check fields data", Optional.empty(),
-                    AlertType.ERROR);
+            showDialog("Uncorrect data inserted!", errors.toString(), Optional.empty(), AlertType.ERROR);
         }
     }
 

@@ -96,7 +96,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     private int extractRoutineIndex(final Tab exs) {
-        return Integer.valueOf(exs.getText().substring(exs.getText().length() - 1));
+        return Integer.valueOf(exs.getText().split("- ")[1]);
     }
 
     private void updateDescriptionField() {
@@ -109,7 +109,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
      */
     public void initialize() {
         getObserver().getRoutines().forEach(i -> {
-            final Tab newRoutine = new Tab("Routine " + i.getX());
+            final Tab newRoutine = new Tab("Routine - " + i.getX());
             newRoutine.setOnSelectionChanged(tabHandler);
             newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getZ()));
             tabRoutine.getTabs().add(newRoutine);

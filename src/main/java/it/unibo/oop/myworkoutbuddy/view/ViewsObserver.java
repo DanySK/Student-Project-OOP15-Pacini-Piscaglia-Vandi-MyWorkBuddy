@@ -23,7 +23,7 @@ public interface ViewsObserver {
      * @return true
      *         if registration process has been completed successfully.
      */
-    boolean registerUser();
+    List<String> registerUser();
 
     /**
      * 
@@ -83,7 +83,7 @@ public interface ViewsObserver {
      * @return true
      *         if data are correct, false otherwise.
      */
-    boolean setUserData();
+    List<String> setUserData();
 
     /**
      * 

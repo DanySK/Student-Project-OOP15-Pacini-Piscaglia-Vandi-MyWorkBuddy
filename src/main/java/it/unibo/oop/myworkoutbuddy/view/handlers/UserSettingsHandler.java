@@ -73,11 +73,12 @@ public final class UserSettingsHandler implements UserSettingsView {
 
     @FXML
     private void saveChanges() {
-        if (getObserver().setUserData()) {
-            showDialog("Data saved!", "Your data has been successfully saved!", Optional.empty(),
-                    AlertType.ERROR);
+        final StringBuilder errors = new StringBuilder();
+        getObserver().setUserData().forEach(err -> errors.append(err + "\n"));
+        if (errors.toString().isEmpty()) {
+            showDialog("Data saved!", "Your data has been successfully saved!", Optional.empty(), AlertType.ERROR);
         } else {
-            showDialog("Wrong data", "You have inserted wrong data", Optional.empty(), AlertType.ERROR);
+            showDialog("Wrong data", errors.toString(), Optional.empty(), AlertType.ERROR);
         }
     }
 
@@ -89,8 +90,7 @@ public final class UserSettingsHandler implements UserSettingsView {
         getObserver().getUserData().forEach((field, data) -> {
             txtPane.getChildren().stream()
                     .filter(txt -> txt.getId().equals(field) && txt.getClass().equals(TextField.class))
-                    .map(f -> (TextField) f)
-                    .forEach(f -> f.setText(data.toString()));
+                    .map(f -> (TextField) f).forEach(f -> f.setText(data.toString()));
         });
     }
 
