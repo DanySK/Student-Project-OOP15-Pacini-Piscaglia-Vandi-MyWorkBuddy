@@ -46,6 +46,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         this.mapGymTool = new HashMap<>();
 
         this.body = new Body();
+        this.bodyDefault();
     }
 
     @Override
@@ -466,6 +467,25 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
      */
     private<X> boolean checkOptValue(final Optional<X> optvalue) {
         return optvalue.isPresent();
+    }
+    
+    private void bodyDefault() {
+        final List<String> musclesUleg = new ArrayList<>();
+        musclesUleg.add("HAMSTRINGS");
+        musclesUleg.add("QUADRICEPS");
+        this.addMapZone("UPPER_LEG", musclesUleg);
+
+        final List<String> musclesLleg = new ArrayList<>();
+        musclesLleg.add("CALVES");
+        this.addMapZone("LOWER_LEG", musclesLleg);
+
+        final List<String> musclesUa = new ArrayList<>();
+        musclesUa.add("BICEPS");
+        this.addMapZone("UPPER_ARM", musclesUa);
+
+        final List<String> musclesChest = new ArrayList<>();
+        musclesChest.add("PECTORALIS_MAJOR");
+        this.addMapZone("CHEST", musclesChest);
     }
 }
 

@@ -10,21 +10,12 @@ import java.util.Set;
 /**
  Class Body to manage human body.
 */
-public final class Body {
+public class Body {
     private Map<String, Set<String>> bodyMap;
     private Set<String> measureSet;
 
-    /**
-     * new HashMap for body
-     */
-    private void initBodyMap() {
+    public Body() {
         bodyMap = new HashMap<>();
-    }
-
-    /**
-     * new HashSet for measures
-     */
-    private void initMeasureSet() {
         measureSet = new HashSet<>();
     }
 
@@ -42,15 +33,15 @@ public final class Body {
         return this.measureSet;
     }
 
+    public void defaultBody() {
+        
+    }
+    
     /**
      * add a new measure in set measure.
      * @param measure String
      */
     public void addMeasureData(final String measure) {
-        if (this.getMeasureSet() == null) {
-            this.initMeasureSet();
-        }
-
         this.measureSet.add(measure);
     }
 
@@ -60,10 +51,6 @@ public final class Body {
      * @param bodyPart String
      */
     public void addMap(final String bodyZone, final String bodyPart) {
-        if (getBodyMap() == null) {
-            initBodyMap();
-        }
-
         final Set<String> setToadd = new HashSet<>();
         setToadd.add(bodyPart);
         bodyMap.merge(bodyZone, setToadd, (s1, s2) -> {
@@ -109,7 +96,7 @@ public final class Body {
      * @return a part zone of human body in optional form
      */
     public Optional<String> getPartZone(final String muscle) {
-        if (this.getBodyMap() == null) {
+        if (this.getBodyMap().isEmpty()) {
             return Optional.empty();
         }
         return getBodyMap().keySet().stream().filter(i -> getBodyMap().get(i).contains(muscle)).findAny();
@@ -121,7 +108,7 @@ public final class Body {
      * @return an optional name of measure
      */
     public Optional<String> getMeasure(final String measure) {
-        if (this.getMeasureSet() == null) {
+        if (this.getMeasureSet().isEmpty()) {
             return Optional.empty();
         }
         return this.getMeasureSet().stream().filter(i -> i.equals(measure)).findAny();
@@ -140,7 +127,7 @@ public final class Body {
             throw new ElementNotFoundException();
         }
     }
-
+    
     /**
      * an exception for an element not found in a collection.
      */

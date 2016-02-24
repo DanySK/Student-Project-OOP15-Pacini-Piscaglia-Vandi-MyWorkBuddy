@@ -15,6 +15,8 @@ import org.junit.Test;
  */
 public class MainTestModel {
 
+    private static final Double valueDouble = 20.00;
+    
     //private final Integer SETTING_VALUE = 0;
 
     /**
@@ -99,23 +101,6 @@ public class MainTestModel {
          * 
          */
 
-        final List<String> musclesUleg = new ArrayList<>();
-        musclesUleg.add("HAMSTRINGS");
-        musclesUleg.add("QUADRICEPS");
-        model.addMapZone("UPPER_LEG", musclesUleg);
-
-        final List<String> musclesLleg = new ArrayList<>();
-        musclesLleg.add("CALVES");
-        model.addMapZone("LOWER_LEG", musclesLleg);
-
-        final List<String> musclesUa = new ArrayList<>();
-        musclesUa.add("BICEPS");
-        model.addMapZone("UPPER_ARM", musclesUa);
-
-        final List<String> musclesChest = new ArrayList<>();
-        musclesChest.add("PECTORALIS_MAJOR");
-        model.addMapZone("CHEST", musclesChest);
-
         /* 
          * GYM TOOL: Make GymTool Data
          * 
@@ -125,9 +110,10 @@ public class MainTestModel {
         model.addGymTool("T1", "Tapis Roulant", "image1.png", 10, 1, 10);
         model.addGymTool("T2", "Cyclette", "image2.png", 10, 1, 10);
         model.addGymTool("T3", "Hand Weight", "image3.png", 10, 1, 10);
-
+        
         // setting body parts for each GymTool
-        model.addBodyPart("T1", "HAMSTRINGS", 20.00);
+        model.addBodyPart("T1", "HAMSxxTRINGS", valueDouble);
+
         model.addBodyPart("T1", "QUADRICEPS", 80.00);
 
         model.addBodyPart("T2", "HAMSTRINGS", 30.00);
