@@ -14,7 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * 
+ * Implementation of the check of the possible actions performed by user when it
+ * creates a routine.
  *
  */
 public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {

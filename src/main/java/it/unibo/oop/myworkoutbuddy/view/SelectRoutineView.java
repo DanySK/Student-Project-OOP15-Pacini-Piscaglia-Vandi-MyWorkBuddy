@@ -14,13 +14,13 @@ public interface SelectRoutineView {
 
     /**
      * 
-     * @return a map exercise name and pair of
-     *         list of repetitions executed by user - KG moved.
+     * @return a map exercise name and pair of list of repetitions executed by
+     *         user - KG moved.
      */
     Map<String, Pair<List<Integer>, Integer>> getUserResults();
 
     /**
-     * @return index of the saved routines of the user.
+     * @return index of the select routine chosen by user.
      */
     int getRoutineIndex();
 

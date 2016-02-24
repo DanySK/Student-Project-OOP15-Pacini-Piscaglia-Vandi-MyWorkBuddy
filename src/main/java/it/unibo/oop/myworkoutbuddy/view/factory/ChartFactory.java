@@ -14,13 +14,26 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.chart.XYChart.Series;
 
+/**
+ * Utility class which provides methods to build charts using static factory
+ * pattern.
+ *
+ */
 public final class ChartFactory {
 
     private static final int PIECHART_SIZE = 400;
-    
-    private ChartFactory(){
+
+    private ChartFactory() {
     }
-    
+
+    /**
+     * 
+     * @param data
+     *            to insert in the chart.
+     * @param chartTitle
+     *            to show.
+     * @return a bar chart.
+     */
     public static BarChart<String, Number> buildBarChart(final Map<String, Number> data, final String chartTitle) {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
@@ -34,6 +47,14 @@ public final class ChartFactory {
         return bc;
     }
 
+    /**
+     * 
+     * @param data
+     *            to insert in the chart.
+     * @param title
+     *            of the chart.
+     * @return a pie chart.
+     */
     public static PieChart buildPieChart(final Map<String, Number> data, final String title) {
         final PieChart pieChart = new PieChart();
         pieChart.setTitle(title);
@@ -46,6 +67,14 @@ public final class ChartFactory {
         return pieChart;
     }
 
+    /**
+     * 
+     * @param data
+     *            to insert in the chart.
+     * @param chartName
+     *            to show.
+     * @return a line chart.
+     */
     public static LineChart<String, Number> buildLineChart(final Map<String, Number> data, final String chartName) {
         final LineChart<String, Number> lineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
         lineChart.setTitle(chartName);
@@ -55,5 +84,5 @@ public final class ChartFactory {
         lineChart.getData().add(series);
         return lineChart;
     }
-    
+
 }

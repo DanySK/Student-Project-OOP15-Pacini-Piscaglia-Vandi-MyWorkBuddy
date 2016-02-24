@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  *
- * Shows the possible exercises and get the custom routine.
+ * Shows the possible exercises and get the custom routine created by the user.
  *
  */
 public interface CreateRoutineView {
@@ -13,16 +13,14 @@ public interface CreateRoutineView {
     /**
      * Save the names of the exercises of the chosen routine by the user.
      * 
-     * @return routine map
-     *         composed by <Routine description, List<<Exercise name,
-     *         <Repetitions>>>
+     * @return routine map composed by a map <Routine description, Map <Exercise
+     *         name, List <Exercise repetitions>>
      */
     Map<String, Map<String, List<Integer>>> getRoutine();
 
     /**
      * 
-     * @return routine
-     *         description.
+     * @return routine description.
      */
     String getRoutineDescription();
 }

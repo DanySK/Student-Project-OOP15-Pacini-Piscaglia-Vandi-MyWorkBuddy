@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -28,7 +27,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final int EXERCISE_BOX_WIDTH = 614;
 
-    /*@Override
+    @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
         final VBox workout = new VBox();
         workouts.forEach((workName, exercises) -> {
@@ -39,21 +38,20 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
             workout.getChildren().add(new TitledPane(workName, exercisesList));
         });
         return new ScrollPane(workout);
-    }*/
-    
-    @Override
-    public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
-        final VBox workout = new VBox();
-        workouts.forEach((workName, exercises) -> {
-            final GridPane exercisesList = new GridPane();
-            exercises.forEach((exName, repetitions) -> {
-                exercisesList.getChildren().add(exerciseBoxBuild(exName, repetitions));
-            });
-            workout.getChildren().add(new TitledPane(workName, exercisesList));
-        });
-        return new ScrollPane(workout);
     }
-    
+
+    /*
+     * @Override public Node addWorkoutNodes(final Map<String, Map<String,
+     * List<Integer>>> workouts) { final VBox workout = new VBox();
+     * workouts.forEach((workName, exercises) -> { final TableView<String>
+     * exercisesTable = new TableView<>(); final ObservableList<String> data =
+     * FXCollections.observableArrayList(); exercises.forEach((exName,
+     * repetitions) -> { data.add(exName); }); exercisesTable.setItems(data);
+     * tableBuild(exercisesTable); workout.getChildren().add(new
+     * TitledPane(workName, exercisesTable)); }); return new
+     * ScrollPane(workout); }
+     */
+
     @Override
     public Pair<String, Pair<List<Integer>, Integer>> getExerciseResults(final Node workout) {
         final HBox exs = (HBox) workout;
@@ -67,6 +65,15 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         return new ImmutablePair<String, Pair<List<Integer>, Integer>>(exName.getText(),
                 new ImmutablePair<>(reps, Integer.valueOf(kgField.getText())));
     }
+
+    /*
+     * private void tableBuild(TableView table){ TableColumn<String,String>
+     * exCol = new TableColumn<>("Exercise Name"); exCol.setCellValueFactory(
+     * new PropertyValueFactory<String,String>("exercise Name"));
+     * TableColumn<String,String> repsCol = new TableColumn<>("Repetitions");
+     * TableColumn<String,String> kgCol = new TableColumn<>("Kg");
+     * table.getColumns().addAll(exCol, repsCol, kgCol); }
+     */
 
     private Node exerciseBoxBuild(final String exName, final List<Integer> repetitions) {
         final HBox box = new HBox();
