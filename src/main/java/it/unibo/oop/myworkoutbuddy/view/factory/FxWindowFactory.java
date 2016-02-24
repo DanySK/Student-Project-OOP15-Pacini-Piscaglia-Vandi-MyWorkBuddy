@@ -114,8 +114,8 @@ public final class FxWindowFactory {
      *            header of the show dialog.
      * @param message
      *            content of the dialog.
-     * @param imagePath
-     *            to load the image.
+     * @param videoURL
+     *            to load the video.
      * @param alertType
      *            to select the type of dialog.
      */
@@ -126,12 +126,14 @@ public final class FxWindowFactory {
         alert.setHeaderText(null);
         alert.setContentText(message);
         videoURL.ifPresent(url -> {
-            alert.setGraphic(buildVideoPlayer(url));
+            final MediaControl player = (MediaControl) buildVideoPlayer(url);
+            alert.setGraphic(player);
+            alert.setOnCloseRequest(e -> player.stopMediaPlayer());
         });
         alert.showAndWait();
     }
 
-    private static Node buildVideoPlayer(String url) {
+    private static Node buildVideoPlayer(final String url) {
         final MediaPlayer mediaPlayer = new MediaPlayer(new Media(url));
         final BorderPane playerPane = new MediaControl(mediaPlayer);
         playerPane.setPrefSize(MEDIA_PLAYER_WIDTH, MEDIA_PLAYER_HEIGHT);
@@ -153,14 +155,11 @@ public final class FxWindowFactory {
         dialog.setTitle(title);
         dialog.setHeaderText("You have to input the requested data!");
         dialog.setContentText(message);
-
         final Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            return result.get();
-        } else {
+        return result.orElseGet(() -> {
             createInputDialog(title, message, inputText);
-        }
-        return "";
+            return "";
+        });
     }
 
 }

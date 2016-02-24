@@ -54,11 +54,10 @@ public final class ViewsHandler implements AppViews {
     /**
      * Allows each GUI to get Controller reference.
      * 
-     * @return view
-     *         observer.
+     * @return view observer.
      */
     public static ViewsObserver getObserver() {
         return observer;
     }
-    
+
 }

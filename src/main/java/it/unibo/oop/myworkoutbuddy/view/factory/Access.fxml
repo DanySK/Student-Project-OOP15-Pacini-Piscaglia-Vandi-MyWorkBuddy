@@ -36,7 +36,7 @@
    <bottom>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" text="Register" translateX="100.0">
+            <Button mnemonicParsing="false" onAction="#register" text="Register" translateX="100.0">
                <effect>
                   <Reflection />
                </effect>
@@ -44,7 +44,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnLogin" lineSpacing="5.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="JUSTIFY" translateX="190.0">
+            <Button lineSpacing="5.0" mnemonicParsing="false" onAction="#login" text="Login" textAlignment="JUSTIFY" translateX="190.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -54,8 +54,8 @@
             </Button>
             <MenuButton id="selectTheme" fx:id="btnSelect" mnemonicParsing="false" text="Select App Theme" translateX="260.0">
               <items>
-                <MenuItem id="menuItem" fx:id="styleOriginal" mnemonicParsing="false" onAction="#setOriginalStyle" text="Original" />
-                <MenuItem id="menuItem" fx:id="styleDark" mnemonicParsing="false" onAction="#setDarkStyle" text="Dark" />
+                <MenuItem id="menuItem"  mnemonicParsing="false" onAction="#setOriginalStyle" text="Original" />
+                <MenuItem id="menuItem"  mnemonicParsing="false" onAction="#setDarkStyle" text="Dark" />
               </items>
                <effect>
                   <Reflection />
