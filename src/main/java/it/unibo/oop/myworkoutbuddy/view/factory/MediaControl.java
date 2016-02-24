@@ -18,6 +18,10 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
+/**
+ * 
+ *
+ */
 public class MediaControl extends BorderPane {
 
     private final MediaPlayer mp;
@@ -31,6 +35,10 @@ public class MediaControl extends BorderPane {
     private final Slider volumeSlider;
     private final HBox mediaBar;
 
+    /**
+     * 
+     * @param mp
+     */
     public MediaControl(final MediaPlayer mp) {
         this.mp = mp;
         setStyle("-fx-background-color: #bfc2c7;");
@@ -48,26 +56,22 @@ public class MediaControl extends BorderPane {
 
         final Button playButton = new Button(">");
 
-        playButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                final Status status = mp.getStatus();
+        playButton.setOnAction(e -> {
+            final Status status = mp.getStatus();
 
-                if (status == Status.UNKNOWN || status == Status.HALTED) {
-                    // don't do anything in these states
-                    return;
+            if (status == Status.UNKNOWN || status == Status.HALTED) {
+                // don't do anything in these states
+                return;
+            }
+            if (status == Status.PAUSED || status == Status.READY || status == Status.STOPPED) {
+                // rewind the movie if we're sitting at the end
+                if (atEndOfMedia) {
+                    mp.seek(mp.getStartTime());
+                    atEndOfMedia = false;
                 }
-                if (status == Status.PAUSED
-                        || status == Status.READY
-                        || status == Status.STOPPED) {
-                    // rewind the movie if we're sitting at the end
-                    if (atEndOfMedia) {
-                        mp.seek(mp.getStartTime());
-                        atEndOfMedia = false;
-                    }
-                    mp.play();
-                } else {
-                    mp.pause();
-                }
+                mp.play();
+            } else {
+                mp.pause();
             }
         });
         mp.currentTimeProperty().addListener(o -> updateValues());
@@ -144,15 +148,16 @@ public class MediaControl extends BorderPane {
         setBottom(mediaBar);
     }
 
+    /**
+     * 
+     */
     protected void updateValues() {
         if (playTime != null && timeSlider != null && volumeSlider != null) {
             Platform.runLater(() -> {
                 Duration currentTime = mp.getCurrentTime();
                 playTime.setText(formatTime(currentTime, duration));
                 timeSlider.setDisable(duration.isUnknown());
-                if (!timeSlider.isDisabled()
-                        && duration.greaterThan(Duration.ZERO)
-                        && !timeSlider.isValueChanging()) {
+                if (!timeSlider.isDisabled() && duration.greaterThan(Duration.ZERO) && !timeSlider.isValueChanging()) {
                     timeSlider.setValue(currentTime.divide(duration.toMillis()).toMillis() * 100.0);
                 }
                 if (!volumeSlider.isValueChanging()) {
@@ -162,7 +167,7 @@ public class MediaControl extends BorderPane {
         }
     }
 
-    private static String formatTime(Duration elapsed, Duration duration) {
+    private static String formatTime(final Duration elapsed, final Duration duration) {
         int intElapsed = (int) Math.floor(elapsed.toSeconds());
         int elapsedHours = intElapsed / (60 * 60);
         if (elapsedHours > 0) {
@@ -180,13 +185,11 @@ public class MediaControl extends BorderPane {
             int durationMinutes = intDuration / 60;
             int durationSeconds = intDuration - durationHours * 60 * 60 - durationMinutes * 60;
             if (durationHours > 0) {
-                return String.format("%d:%02d:%02d/%d:%02d:%02d",
-                        elapsedHours, elapsedMinutes, elapsedSeconds,
+                return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds,
                         durationHours, durationMinutes, durationSeconds);
             } else {
-                return String.format("%02d:%02d/%02d:%02d",
-                        elapsedMinutes, elapsedSeconds,
-                        durationMinutes, durationSeconds);
+                return String.format("%02d:%02d/%02d:%02d", elapsedMinutes, elapsedSeconds, durationMinutes,
+                        durationSeconds);
             }
         } else {
             if (elapsedHours > 0) {

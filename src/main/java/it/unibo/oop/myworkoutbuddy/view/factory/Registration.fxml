@@ -19,7 +19,7 @@
    <bottom>
       <HBox prefHeight="81.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnRegister" mnemonicParsing="false" onAction="#register" text="Register !" translateX="100.0" translateY="30.0">
+            <Button mnemonicParsing="false" onAction="#register" text="Register !" translateX="100.0" translateY="30.0">
                <effect>
                   <Reflection />
                </effect>

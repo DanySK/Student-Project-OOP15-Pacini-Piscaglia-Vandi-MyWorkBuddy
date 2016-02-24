@@ -10,19 +10,19 @@
    <left>
       <VBox fx:id="btnContainer" prefHeight="804.0" prefWidth="172.0" translateY="-30.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnCreate" contentDisplay="TOP" mnemonicParsing="false" prefHeight="98.0" prefWidth="144.0" text="Create Routine" translateY="100.0" BorderPane.alignment="TOP_LEFT">
+            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="98.0" prefWidth="144.0" text="Create Routine" translateY="100.0" BorderPane.alignment="TOP_LEFT">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <Button fx:id="btnSelect" contentDisplay="TOP" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="Select Routine" translateY="105.0" BorderPane.alignment="CENTER_LEFT">
+            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="Select Routine" translateY="105.0" BorderPane.alignment="CENTER_LEFT">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <Button fx:id="btnStatistics" contentDisplay="TOP" mnemonicParsing="false" prefHeight="75.0" prefWidth="145.0" text="Statistics" translateY="110.0" BorderPane.alignment="CENTER_LEFT">
+            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="75.0" prefWidth="145.0" text="Statistics" translateY="110.0" BorderPane.alignment="CENTER_LEFT">
                <font>
                   <Font size="15.0" />
                </font></Button>
-            <Button fx:id="btnSettings" contentDisplay="TOP" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="Settings" translateY="115.0" BorderPane.alignment="CENTER_LEFT">
+            <Button contentDisplay="TOP" mnemonicParsing="false" prefHeight="85.0" prefWidth="144.0" text="Settings" translateY="115.0" BorderPane.alignment="CENTER_LEFT">
                <font>
                   <Font size="15.0" />
                </font></Button>
