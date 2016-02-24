@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -54,22 +55,20 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    public boolean loginUser() {
+    public List<String> loginUser() {
         checkIfUserIsNotLoggedIn();
         final String username = views.getAccessView().getUsername();
         final String password = views.getAccessView().getPassword();
         final Optional<Map<String, Object>> userData = getUserData(username);
         if (!userData.isPresent()) {
-            // return Arrays.asList(username + " does not exist");
-            return false;
+            return Arrays.asList(username + " does not exist");
         }
         final Validator validator = new Validator()
                 .addValidation(p -> userData.get().get("password").equals(p), password, "Invalid password");
         validator.validate();
         // Login the user
         validator.ifValid(() -> currentUser = Optional.of(username));
-        // return validator.getErrorMessages();
-        return validator.isValid();
+        return validator.getErrorMessages();
     }
 
     @Override
@@ -133,7 +132,8 @@ public class Controller implements ViewsObserver {
     public void setFavouriteTheme(final String selectedTheme) {
         final Map<String, Object> updateParams = new HashMap<>();
         updateParams.put("favouriteTheme", requireNonNull(selectedTheme));
-        getService(ServiceProvider.USERS).updateByParams(usernameAsQueryParam(currentUser.get()), updateParams);
+        getService(ServiceProvider.USERS)
+                .updateByParams(usernameAsQueryParam(currentUser.get()), updateParams);
     }
 
     @Override
@@ -185,10 +185,12 @@ public class Controller implements ViewsObserver {
         final Map<String, Object> params = new HashMap<>();
         params.put("name", exerciseName);
         final Map<String, String> exerciseInfo = new HashMap<>();
-        getService(ServiceProvider.EXERCISES).getOneByParams(params).ifPresent(m -> {
-            exerciseInfo.put("description", (String) m.get("description"));
-            exerciseInfo.put("videoURL", (String) m.get("videoURL"));
-        });
+        getService(ServiceProvider.EXERCISES)
+                .getOneByParams(params)
+                .ifPresent(m -> {
+                    exerciseInfo.put("description", (String) m.get("description"));
+                    exerciseInfo.put("videoURL", (String) m.get("videoURL"));
+                });
         return exerciseInfo;
     }
 
@@ -276,8 +278,8 @@ public class Controller implements ViewsObserver {
                 .addValidation(passwordValidator(), newPassword, "Invalid password")
                 .addValidation(passwordConfirmValidator(newPasswordasswordConfirm), newPassword,
                         "The two passwords do not match")
-                .addValidation(emailAlreadyTakenValidator().or(e -> getUserData().get("email").equals(e)),
-                        newEmail, "Email already taken");
+                .addValidation(emailAlreadyTakenValidator().or(e -> getUserData().get("email").equals(e)), newEmail,
+                        "Email already taken");
         validator.validate();
         validator.ifValid(() -> {
             // Update the current user data
