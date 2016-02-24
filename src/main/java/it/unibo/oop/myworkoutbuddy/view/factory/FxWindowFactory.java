@@ -58,7 +58,8 @@ public final class FxWindowFactory {
      *            path of the GUI structure file FXML.
      * 
      * @param isContained
-     *            true if the window is set in a other container.
+     *            true if the window is set in a other container, otherwise
+     *            false if you want to open another window.
      * 
      * @return root.
      */

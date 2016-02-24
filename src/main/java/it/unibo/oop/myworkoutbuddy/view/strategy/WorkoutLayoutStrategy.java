@@ -16,9 +16,9 @@ public interface WorkoutLayoutStrategy {
 
     /**
      * @param workouts
-     *            data structure with workouts informations.
-     *            It is composed by a map workoutName - exercises contained in a
-     *            map exerciseName- list of repetitions.
+     *            data structure with workouts informations. It is composed by a
+     *            map workoutName - exercises contained in a map exerciseName -
+     *            list of repetitions.
      * @return a javaFx node to add workout to the scene.
      */
     Node addWorkoutNodes(Map<String, Map<String, List<Integer>>> workouts);
