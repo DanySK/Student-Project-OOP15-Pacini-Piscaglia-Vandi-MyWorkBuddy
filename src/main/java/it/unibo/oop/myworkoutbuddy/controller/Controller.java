@@ -21,6 +21,7 @@ import com.google.common.base.Preconditions;
 
 import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
+import it.unibo.oop.myworkoutbuddy.util.Pair;
 import it.unibo.oop.myworkoutbuddy.util.Triple;
 import it.unibo.oop.myworkoutbuddy.util.UnmodifiableTriple;
 import it.unibo.oop.myworkoutbuddy.view.AppViews;
@@ -63,7 +64,6 @@ public class Controller implements ViewsObserver {
         final Optional<Map<String, Object>> user = SERVICES.get("userService")
                 .getOneByParams(loginTry);
         if (user.isPresent()) {
-            // TODO: use some password hashing library!
             final String password = views.getAccessView().getPassword();
             if (user.get().get("password").equals(password)) {
                 currentUser = Optional.of(username);
@@ -74,11 +74,10 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    public boolean registerUser() {
+    public List<String> registerUser() {
         checkIfUserIsNotLoggedIn();
         // Fields to validate
         final String username = views.getRegistrationView().getUsername();
-        // TODO: use some password hashing library!
         final String password = views.getRegistrationView().getPassword();
         final String passwordConfirm = views.getRegistrationView().getPasswordConfirm();
         final String firstName = views.getRegistrationView().getName();
@@ -87,10 +86,20 @@ public class Controller implements ViewsObserver {
         final int age = views.getRegistrationView().getAge();
         final int height = views.getRegistrationView().getHeight();
         final double weight = views.getRegistrationView().getWeight();
-        if (validate(username, usernameValidator()) && validate(firstName, nameValidator())
-                && validate(lastName, nameValidator()) && validate(weight, numberValidator())
-                && validate(email, emailValidator(true)) && validate(height, numberValidator())
-                && validate(password, passwordValidator(passwordConfirm)) && validate(age, numberValidator())) {
+
+        final Validator validator = new Validator();
+        validator.addValidation(usernameValidator(), username, "Invalid username or username already taken");
+        validator.addValidation(nameValidator(), firstName, "Invalid first name");
+        validator.addValidation(nameValidator(), lastName, "Invalid last name");
+        validator.addValidation(numberValidator(), age, "Invalid age");
+        validator.addValidation(numberValidator(), weight, "Invalid weight");
+        validator.addValidation(numberValidator(), height, "Invalid height");
+        validator.addValidation(passwordValidator(passwordConfirm), password,
+                "Invalid password or the passwords do not match");
+        validator.addValidation(emailValidator(true), email, "Invalid email or email already taken");
+        validator.validate();
+
+        if (validator.isValid()) {
             System.out.println("Validation passed");
             final Map<String, Object> newUser = new HashMap<>();
             newUser.put("username", username);
@@ -102,9 +111,12 @@ public class Controller implements ViewsObserver {
             newUser.put("weight", weight);
             newUser.put("age", age);
             newUser.put("favouriteTheme", "");
-            return SERVICES.get("userService").create(newUser);
+            final boolean create = SERVICES.get("userService").create(newUser);
+            if (!create) {
+                validator.addErrorMessage("Error with the server");
+            }
         }
-        return false;
+        return validator.getErrorMessages();
     }
 
     @Override
@@ -212,6 +224,9 @@ public class Controller implements ViewsObserver {
     @Override
     public boolean addResults() {
         // TODO
+        // Nome esercizio
+        // Lista di ripetizioni - Chili alzati
+        final Map<String, Pair<List<Integer>, Integer>> userResults = views.getSelectRoutineView().getUserResults();
         return false;
     }
 
@@ -226,7 +241,7 @@ public class Controller implements ViewsObserver {
     @Override
     public Map<String, Map<String, Number>> getChartsData() {
         final Map<String, Map<String, Number>> chartsData = new HashMap<>();
-        chartsData.put("pie", getChartData("pieChartData"));
+        chartsData.put("weightChart", getChartData("pieChartData"));
         chartsData.put("line", getChartData("pieChartData"));
         return chartsData;
     }
@@ -239,27 +254,38 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    public boolean setUserData() {
+    public List<String> setUserData() {
         final String newFirstName = views.getUserSettingsView().getNewName();
         final String newLastName = views.getUserSettingsView().getNewSurname();
         final String newPassword = views.getUserSettingsView().getNewPassword();
         final int newAge = views.getUserSettingsView().getNewAge();
         final String passwordConfirm = views.getUserSettingsView().getPasswordConfirm();
         final String newEmail = views.getUserSettingsView().getNewEmail();
-        if (validate(newFirstName, nameValidator())
-                && validate(newLastName, nameValidator())
-                && validate(newAge, numberValidator())
-                && validate(newEmail, emailValidator(false))
-                && validate(newPassword, passwordValidator(passwordConfirm))) {
+
+        final Validator validator = new Validator();
+        validator.addValidation(nameValidator(), newFirstName, "Invalid first name");
+        validator.addValidation(nameValidator(), newLastName, "Invalid last name");
+        validator.addValidation(numberValidator(), newAge, "Invalid age");
+        validator.addValidation(emailValidator(false), newEmail, "Invalid email");
+        validator.addValidation(passwordValidator(passwordConfirm), newPassword,
+                "Invalid password or the passwords do not match");
+        validator.validate();
+
+        if (validator.isValid()) {
             final Map<String, Object> newUserData = new HashMap<>();
             newUserData.put("password", newPassword);
             newUserData.put("name", newFirstName);
             newUserData.put("surname", newLastName);
             newUserData.put("email", newEmail);
             newUserData.put("age", newAge);
-            return SERVICES.get("userService").updateByParams(currentUserUsernameAsQueryParam(), newUserData) >= 0;
+            final boolean update = SERVICES.get("userService").updateByParams(
+                    currentUserUsernameAsQueryParam(),
+                    newUserData) >= 0;
+            if (!update) {
+                validator.addErrorMessage("Error with the server");
+            }
         }
-        return false;
+        return validator.getErrorMessages();
     }
 
     @Override
@@ -268,8 +294,27 @@ public class Controller implements ViewsObserver {
         return null;
     }
 
-    private static <T> boolean validate(final T t, final Predicate<T> validator) {
-        return validator.test(t);
+    private void checkIfUserIsNotLoggedIn() {
+        Preconditions.checkState(!currentUser.isPresent());
+    }
+
+    private Map<String, Object> currentUserUsernameAsQueryParam() {
+        final Map<String, Object> username = new HashMap<>();
+        username.put("username", currentUser.get());
+        return username;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Number> getChartData(final String chartName) {
+        final Optional<Map<String, Object>> chartData = SERVICES.get("chartService")
+                .getByParams(currentUserUsernameAsQueryParam())
+                .stream().findFirst();
+        return chartData.isPresent()
+                ? ((List<Map<String, Object>>) chartData.get().get(chartName))
+                        .stream()
+                        .map(m -> new SimpleImmutableEntry<>((String) m.get("bodyPart"), (Number) m.get("times")))
+                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue))
+                : Collections.emptyMap();
     }
 
     private static boolean checkIfUserExists(final String username) {
@@ -310,35 +355,13 @@ public class Controller implements ViewsObserver {
         return p -> !isNull(p) && p.length() > minPasswordLength && p.equals(other);
     }
 
-    private void checkIfUserIsNotLoggedIn() {
-        Preconditions.checkState(!currentUser.isPresent());
-    }
-
-    private Map<String, Object> currentUserUsernameAsQueryParam() {
-        final Map<String, Object> username = new HashMap<>();
-        username.put("username", currentUser.get());
-        return username;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, Number> getChartData(final String chartName) {
-        final Optional<Map<String, Object>> chartData = SERVICES.get("chartService")
-                .getByParams(currentUserUsernameAsQueryParam())
-                .stream().findFirst();
-        return chartData.isPresent()
-                ? ((List<Map<String, Object>>) chartData.get().get(chartName))
-                        .stream()
-                        .map(m -> new SimpleImmutableEntry<>((String) m.get("bodyPart"), (Number) m.get("times")))
-                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue))
-                : Collections.emptyMap();
-    }
-
     static {
         final Map<String, Service> services = new HashMap<>();
         services.put("exerciseService", new MongoService("exercises"));
         services.put("routineService", new MongoService("routines"));
         services.put("chartService", new MongoService("charts"));
         services.put("userService", new MongoService("users"));
+        services.put("resultService", new MongoService("results"));
         SERVICES = Collections.unmodifiableMap(services);
     }
 

@@ -9,7 +9,7 @@ import com.google.common.base.Supplier;
  * This class consists of {@code static} utility methods for operating on objects. These utilities include {@code null}
  * -safe or {@code null}-tolerant methods.
  */
-public final class ObjectsUtils {
+public final class ObjectUtils {
 
     /**
      * Checks that the specified objects are not null. This method is designed primarily for doing parameter
@@ -78,7 +78,7 @@ public final class ObjectsUtils {
         return requireNonNull(value, defaultValueSupplier.get());
     }
 
-    private ObjectsUtils() {
+    private ObjectUtils() {
     }
 
 }
