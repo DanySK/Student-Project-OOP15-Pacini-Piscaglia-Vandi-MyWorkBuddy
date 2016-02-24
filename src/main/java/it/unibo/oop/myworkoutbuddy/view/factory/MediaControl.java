@@ -17,14 +17,14 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 /**
- * 
+ * A media player pane used to play exercises videos.
  *
  */
 public class MediaControl extends BorderPane {
 
     private final MediaPlayer mp;
     private final MediaView mediaView;
-    private static final boolean repeat = false;
+    private static final boolean REPEAT = false;
     private boolean stopRequested = false;
     private boolean atEndOfMedia = false;
     private Duration duration;
@@ -32,6 +32,16 @@ public class MediaControl extends BorderPane {
     private final Label playTime;
     private final Slider volumeSlider;
     private final HBox mediaBar;
+    private static final int PADDING_TOP = 5;
+    private static final int PADDING_RIGHT = 10;
+    private static final int PADDING_BOTTOM = 5;
+    private static final int PADDING_LEFT = 10;
+    private static final int TIME_SLIDER_MIN_WIDTH = 50;
+    private static final int PLAY_TIME_PREF_WIDTH = 130;
+    private static final int PLAY_TIME_MIN_WIDTH = 50;
+    private static final int VOLUME_SLIDER_PREF_WIDTH = 70;
+    private static final int VOLUME_SLIDER_MIN_WIDTH = 30;
+    private static final int SEXADECIMAL_BASE = 60;
 
     /**
      * 
@@ -50,7 +60,7 @@ public class MediaControl extends BorderPane {
 
         mediaBar = new HBox();
         mediaBar.setAlignment(Pos.CENTER);
-        mediaBar.setPadding(new Insets(5, 10, 5, 10));
+        mediaBar.setPadding(new Insets(PADDING_TOP, PADDING_RIGHT, PADDING_BOTTOM, PADDING_LEFT));
         BorderPane.setAlignment(mediaBar, Pos.CENTER);
 
         final Button playButton = new Button(">");
@@ -91,9 +101,9 @@ public class MediaControl extends BorderPane {
             updateValues();
         });
 
-        mp.setCycleCount(repeat ? MediaPlayer.INDEFINITE : 1);
+        mp.setCycleCount(REPEAT ? MediaPlayer.INDEFINITE : 1);
         mp.setOnEndOfMedia(() -> {
-            if (!repeat) {
+            if (!REPEAT) {
                 playButton.setText(">");
                 stopRequested = true;
                 atEndOfMedia = true;
@@ -112,7 +122,7 @@ public class MediaControl extends BorderPane {
         // Add time slider
         timeSlider = new Slider();
         HBox.setHgrow(timeSlider, Priority.ALWAYS);
-        timeSlider.setMinWidth(50);
+        timeSlider.setMinWidth(TIME_SLIDER_MIN_WIDTH);
         timeSlider.setMaxWidth(Double.MAX_VALUE);
         timeSlider.valueProperty().addListener(o -> {
             if (timeSlider.isValueChanging()) {
@@ -124,8 +134,8 @@ public class MediaControl extends BorderPane {
 
         // Add Play label
         playTime = new Label();
-        playTime.setPrefWidth(130);
-        playTime.setMinWidth(50);
+        playTime.setPrefWidth(PLAY_TIME_PREF_WIDTH);
+        playTime.setMinWidth(PLAY_TIME_MIN_WIDTH);
         mediaBar.getChildren().add(playTime);
 
         // Add the volume label
@@ -134,9 +144,9 @@ public class MediaControl extends BorderPane {
 
         // Add Volume slider
         volumeSlider = new Slider();
-        volumeSlider.setPrefWidth(70);
+        volumeSlider.setPrefWidth(VOLUME_SLIDER_PREF_WIDTH);
         volumeSlider.setMaxWidth(Region.USE_PREF_SIZE);
-        volumeSlider.setMinWidth(30);
+        volumeSlider.setMinWidth(VOLUME_SLIDER_MIN_WIDTH);
         volumeSlider.valueProperty().addListener(o -> {
             if (volumeSlider.isValueChanging()) {
                 mp.setVolume(volumeSlider.getValue() / 100.0);
@@ -175,21 +185,23 @@ public class MediaControl extends BorderPane {
 
     private static String formatTime(final Duration elapsed, final Duration duration) {
         int intElapsed = (int) Math.floor(elapsed.toSeconds());
-        int elapsedHours = intElapsed / (60 * 60);
+        int elapsedHours = intElapsed / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
         if (elapsedHours > 0) {
-            intElapsed -= elapsedHours * 60 * 60;
+            intElapsed -= elapsedHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE;
         }
-        int elapsedMinutes = intElapsed / 60;
-        int elapsedSeconds = intElapsed - elapsedHours * 60 * 60 - elapsedMinutes * 60;
+        int elapsedMinutes = intElapsed / SEXADECIMAL_BASE;
+        int elapsedSeconds = intElapsed - elapsedHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
+                - elapsedMinutes * SEXADECIMAL_BASE;
 
         if (duration.greaterThan(Duration.ZERO)) {
             int intDuration = (int) Math.floor(duration.toSeconds());
-            int durationHours = intDuration / (60 * 60);
+            int durationHours = intDuration / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
             if (durationHours > 0) {
-                intDuration -= durationHours * 60 * 60;
+                intDuration -= durationHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE;
             }
-            int durationMinutes = intDuration / 60;
-            int durationSeconds = intDuration - durationHours * 60 * 60 - durationMinutes * 60;
+            int durationMinutes = intDuration / SEXADECIMAL_BASE;
+            int durationSeconds = intDuration - durationHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
+                    - durationMinutes * SEXADECIMAL_BASE;
             if (durationHours > 0) {
                 return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds,
                         durationHours, durationMinutes, durationSeconds);

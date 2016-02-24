@@ -9,14 +9,14 @@ public interface AccessView {
 
     /**
      * 
-     * @return Username.
+     * @return username.
      * 
      */
     String getUsername();
 
     /**
      * 
-     * @return UserPassword.
+     * @return user Password.
      * 
      */
     String getPassword();

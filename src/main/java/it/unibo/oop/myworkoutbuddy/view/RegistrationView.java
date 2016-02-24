@@ -2,8 +2,7 @@ package it.unibo.oop.myworkoutbuddy.view;
 
 /**
  *
- * View used to register a new user fetching its personal info
- * like ID and password.
+ * View used to register a new user fetching its personal info, ID and password.
  *
  */
 public interface RegistrationView {

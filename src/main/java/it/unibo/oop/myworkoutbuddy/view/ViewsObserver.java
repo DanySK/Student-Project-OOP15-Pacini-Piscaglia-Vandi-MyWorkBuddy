@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-
 /**
  * Provided by Controller and used by the View to update data in the GUI.
  */
@@ -14,15 +13,16 @@ public interface ViewsObserver {
 
     /**
      * 
-     * @return true
-     *         if credentials are correct.
+     * @return a list of the string representations of the occurred errors,
+     *         otherwise an empty list if credentials are correct.
      */
     List<String> loginUser();
 
     /**
      * 
-     * @return true
-     *         if registration process has been completed successfully.
+     * @return a list of the string representations of the occurred errors, an
+     *         empty list if registration process has been completed
+     *         successfully.
      */
     List<String> registerUser();
 
@@ -35,16 +35,14 @@ public interface ViewsObserver {
 
     /**
      * 
-     * @return selected theme
-     *         chosen previously.
+     * @return selected theme chosen previously.
      */
     String getFavouriteTheme();
 
     /**
      * 
-     * @return a map of Workout exercises
-     *         with section name like key and a set of workout training
-     *         composed by exercise name and its related description.
+     * @return a map of Workout exercises with body part name like key and a set
+     *         of related exercises names.
      * 
      */
     Map<String, Set<String>> getExercises();
@@ -52,44 +50,46 @@ public interface ViewsObserver {
     /**
      * Ask Controller to save routine in the database.
      * 
-     * @return true if routine is saved correctly
-     *         otherwise false if repetitions inserted are wrong.
+     * @return true if routine is saved correctly otherwise false if an error
+     *         occurred.
      */
     boolean saveRoutine();
 
     /**
      * 
-     * @return the set of routines to show to user.
+     * @return the set of routines to show to user composed by a triple <index,
+     *         description, Map<workout name, Map<exercise name, List of
+     *         repetitions >>.
      * 
      */
     Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines();
 
     /**
      * 
-     * @return a series of data in a map to show in the chart.
+     * @return series of data in a map <chartName, Map<name,value>> to show in
+     *         the chart.
      */
     Map<String, Map<String, Number>> getChartsData();
 
     /**
      * 
-     * @return a map of user data
-     *         Map key is the data description and the related value is the
-     *         effective data.
+     * @return a map of user data Map key is the data description and the
+     *         related value is the effective data.
      */
     Map<String, Object> getUserData();
 
     /**
      * Ask Controller to save user data modified.
      * 
-     * @return true
-     *         if data are correct, false otherwise.
+     * @return a list of string representations of the occurred errors,
+     *         otherwise an empty list if data are correct.
      */
     List<String> setUserData();
 
     /**
      * 
-     * @return true
-     *         if user results are saved.
+     * @return true if user results are saved, otherwise false if an error
+     *         occurred.
      */
     boolean addResults();
 
@@ -102,8 +102,7 @@ public interface ViewsObserver {
      * 
      * @param exerciseName
      *            to get informations.
-     * @return exercise selected
-     *         informations.
+     * @return exercise selected informations.
      */
     Map<String, String> getExerciseInfo(String exerciseName);
 
