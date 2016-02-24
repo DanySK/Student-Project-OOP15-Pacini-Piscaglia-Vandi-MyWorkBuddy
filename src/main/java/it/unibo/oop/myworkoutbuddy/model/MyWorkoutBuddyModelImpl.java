@@ -187,13 +187,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public String getCurrentUserName() {
-        return (this.checkCurrentUser()) ? this.currentUser.get().getPerson().getFirstName() : "None"; 
-    }
-
-    @Override
-    public String getCurrentUserSurName() {
-        return (this.checkCurrentUser()) ? this.currentUser.get().getPerson().getLastName() : "None";
+    public String getCurrentIdName() {
+        return (this.checkCurrentAccount()) ? this.getCurrentAccount().getUserName() : "None";
     }
 
     @Override

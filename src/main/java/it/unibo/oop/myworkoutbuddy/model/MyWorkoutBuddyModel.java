@@ -136,16 +136,10 @@ public interface MyWorkoutBuddyModel {
     void addBodyPart(final String toolCode, final String bodyPart, final Double percentage);
 
     /**
-     * give current user's name.
+     * give alphabetic name of Current Account.
      * @return a String
      */
-    String getCurrentUserName();
-
-    /**
-     * give current user's surname.
-     * @return a String
-     */
-    String getCurrentUserSurName();
+    String getCurrentIdName();
 
     /**
      * give the list of GymTool in an application.
