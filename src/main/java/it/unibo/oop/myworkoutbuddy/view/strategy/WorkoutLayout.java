@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.view.handlers;
+package it.unibo.oop.myworkoutbuddy.view.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -27,7 +28,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final int EXERCISE_BOX_WIDTH = 614;
 
-    @Override
+    /*@Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
         final VBox workout = new VBox();
         workouts.forEach((workName, exercises) -> {
@@ -38,8 +39,21 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
             workout.getChildren().add(new TitledPane(workName, exercisesList));
         });
         return new ScrollPane(workout);
+    }*/
+    
+    @Override
+    public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
+        final VBox workout = new VBox();
+        workouts.forEach((workName, exercises) -> {
+            final GridPane exercisesList = new GridPane();
+            exercises.forEach((exName, repetitions) -> {
+                exercisesList.getChildren().add(exerciseBoxBuild(exName, repetitions));
+            });
+            workout.getChildren().add(new TitledPane(workName, exercisesList));
+        });
+        return new ScrollPane(workout);
     }
-
+    
     @Override
     public Pair<String, Pair<List<Integer>, Integer>> getExerciseResults(final Node workout) {
         final HBox exs = (HBox) workout;

@@ -17,7 +17,7 @@ public interface ViewsObserver {
      * @return true
      *         if credentials are correct.
      */
-    boolean loginUser();
+    List<String> loginUser();
 
     /**
      * 
