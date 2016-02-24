@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import it.unibo.oop.myworkoutbuddy.util.MutablePair;
 import it.unibo.oop.myworkoutbuddy.util.Pair;
 import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
 import javafx.scene.Node;
@@ -17,33 +16,27 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * Implementation of the building strategy of the GUI routine.
- * It also provides a method to encapsulate the strategy to get exercises
- * results.
+ * Implementation of the building strategy of the GUI routine. It also provides
+ * a method to encapsulate the strategy to get exercises results.
  *
  */
-public class WorkoutLayout implements WorkoutLayoutStrategy {
+public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final int FIELD_WIDTH = 45;
-    
+
     private static final int EXERCISE_BOX_WIDTH = 614;
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
         final VBox workout = new VBox();
         workouts.forEach((workName, exercises) -> {
-
             final VBox exercisesList = new VBox();
             exercises.forEach((exName, repetitions) -> {
-
-                final HBox box = new HBox();
-                exerciseBoxBuild(box, exName, repetitions);
-                exercisesList.getChildren().add(box);
+                exercisesList.getChildren().add(exerciseBoxBuild(exName, repetitions));
             });
             workout.getChildren().add(new TitledPane(workName, exercisesList));
         });
-        final ScrollPane scrollWorkout = new ScrollPane(workout);
-        return scrollWorkout;
+        return new ScrollPane(workout);
     }
 
     @Override
@@ -56,29 +49,29 @@ public class WorkoutLayout implements WorkoutLayoutStrategy {
             reps.add(Integer.valueOf(repField.getText()));
         });
         final TextField kgField = (TextField) exs.getChildren().get(exs.getChildren().size() - 1);
-        final Pair<List<Integer>, Integer> repKg = new MutablePair<>(reps,
-                Integer.valueOf(kgField.getText()));
-        return new UnmodifiablePair<String, Pair<List<Integer>, Integer>>(exName.getText(), repKg);
+        return new UnmodifiablePair<String, Pair<List<Integer>, Integer>>(exName.getText(),
+                new UnmodifiablePair<>(reps, Integer.valueOf(kgField.getText())));
     }
 
-    private void exerciseBoxBuild(final HBox box, final String exName, final List<Integer> repetitions) {
+    private Node exerciseBoxBuild(final String exName, final List<Integer> repetitions) {
+        final HBox box = new HBox();
         box.getChildren().add(new Label(exName));
         box.getChildren().add(new Label("- Repetitions: "));
         repetitions.forEach(rep -> box.getChildren().add(new TextField(rep.toString())));
         box.getChildren().add(new Label("  - Kg: "));
         box.getChildren().add(new TextField("0"));
-        box.getChildren().stream()
-                .filter(label -> label.getClass().equals(Label.class))
+        box.getChildren().stream().filter(label -> label.getClass().equals(Label.class))
                 .forEach(label -> label.setId("exercise"));
         box.setPrefWidth(EXERCISE_BOX_WIDTH);
         resizeTextField(box, FIELD_WIDTH);
+        return box;
     }
 
     private void resizeTextField(final HBox box, final int width) {
         box.getChildren().stream()
-                .filter(rep -> rep.getClass().equals(TextField.class))
-                .map(rep -> (TextField) rep)
-                .forEach(rep -> rep.setMaxWidth(width));
+            .filter(rep -> rep.getClass().equals(TextField.class))
+            .map(rep -> (TextField) rep)
+            .forEach(rep -> rep.setMaxWidth(width));
     }
 
 }

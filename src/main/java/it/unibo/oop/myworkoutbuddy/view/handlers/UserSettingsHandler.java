@@ -87,7 +87,6 @@ public final class UserSettingsHandler implements UserSettingsView {
     public void initialize() {
         final GridPane txtPane = (GridPane) name.getParent();
         getObserver().getUserData().forEach((field, data) -> {
-            System.out.println(field + "-" + data);
             txtPane.getChildren().stream()
                     .filter(txt -> txt.getId().equals(field) && txt.getClass().equals(TextField.class))
                     .map(f -> (TextField) f)

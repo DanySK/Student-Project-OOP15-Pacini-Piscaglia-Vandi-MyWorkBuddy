@@ -77,7 +77,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private void saveRoutine() {
         if (checkStrategy.canRoutineBeenSaved(workoutBox) && checkStrategy.hasRoutineBeenSaved()) {
-            // clear routine....
+            // clear routine fields after routine creation.
             workoutBox.getChildren().clear();
         }
     }
@@ -186,6 +186,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     private Node buildExerciseBox() {
         final HBox exBox = new HBox();
         final Label newExercise = new Label(exerciseSelected.get().getText());
+        newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
+        newExercise.setId("exerciseToSelect");
         final List<TextField> repsField = new ArrayList<>();
         IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
         IntStream.range(0, 3).forEach(i -> repsField.get(i).setTranslateY(REPS_FIELD_TRANSLATE_Y));
@@ -195,8 +197,6 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         repLabel.setTranslateY(REP_LABEL_TRANSLATE_Y);
         exBox.getChildren().add(repLabel);
         IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
-        newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
-        newExercise.setId("exerciseToSelect");
         return exBox;
     }
 

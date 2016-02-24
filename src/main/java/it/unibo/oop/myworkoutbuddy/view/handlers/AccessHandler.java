@@ -7,11 +7,8 @@ import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialo
 import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
