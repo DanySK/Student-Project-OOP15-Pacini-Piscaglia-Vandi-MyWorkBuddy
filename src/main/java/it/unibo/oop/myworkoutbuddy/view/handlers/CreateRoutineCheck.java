@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
  * 
  *
  */
-public class CreateRoutineCheck implements CreateRoutineCheckStrategy {
+public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
 
     private static final int MAX_WORKOUTS = 4;
 

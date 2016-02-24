@@ -1,5 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
+import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 import java.util.HashMap;
@@ -9,7 +10,6 @@ import java.util.Optional;
 
 import it.unibo.oop.myworkoutbuddy.util.Pair;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
-import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -57,54 +57,36 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private void insertData() {
-        System.out.println(getUserResults());
-        final String message;
-        final String title;
-        final AlertType dialogType;
         if (getObserver().addResults()) {
-            message = "Your data has been successfully inserted!";
-            title = "Data inserted!";
-            dialogType = AlertType.INFORMATION;
+            showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
+                    AlertType.INFORMATION);
         } else {
-            message = "There was an error!";
-            title = "Error!";
-            dialogType = AlertType.ERROR;
+            showDialog("Error!", "There was an error!", Optional.empty(), AlertType.ERROR);
         }
-        FxWindowFactory.showDialog(title, message, Optional.empty(), dialogType);
     }
 
     @Override
     public Map<String, Pair<List<Integer>, Integer>> getUserResults() {
         final Map<String, Pair<List<Integer>, Integer>> results = new HashMap<>();
-        tabRoutine.getTabs().stream()
-                .map(i -> (VBox) i.getContent())
-                .forEach(exsBox -> {
-                    exsBox.getChildren().stream()
-                            .map(workT -> (TitledPane) workT)
-                            .map(exBox -> (VBox) exBox.getContent())
-                            .forEach(exVbox -> {
-                        exVbox.getChildren().stream()
-                                .map(exs -> (HBox) exs)
-                                .forEach(exs -> {
-                            final Pair<String, Pair<List<Integer>, Integer>> result = workoutLayout
-                                    .getExerciseResults(exs);
-                            results.put(result.getX(), result.getY());
-                        });
-                    });
+        tabRoutine.getTabs().stream().map(i -> (VBox) i.getContent()).forEach(exsBox -> {
+            exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(exBox -> (VBox) exBox.getContent())
+                    .forEach(exVbox -> {
+                exVbox.getChildren().stream().map(exs -> (HBox) exs).forEach(exs -> {
+                    final Pair<String, Pair<List<Integer>, Integer>> result = workoutLayout.getExerciseResults(exs);
+                    results.put(result.getX(), result.getY());
                 });
+            });
+        });
         return results;
     }
 
     @FXML
     private void deleteRoutine() {
-        // if (getObserver().deleteRoutine() &&
-        if (tabRoutine.getTabs().size() > 0) {
+        if (getObserver().deleteRoutine() && tabRoutine.getTabs().size() > 0) {
             tabRoutine.getTabs().remove(tabRoutine.getTabs().stream()
-                    .filter(tab -> selectedRoutineIndex == extractRoutineIndex(tab))
-                    .findAny().get());
+                    .filter(tab -> selectedRoutineIndex == extractRoutineIndex(tab)).findAny().get());
         } else {
-            FxWindowFactory.showDialog("Error deleting routine", "Your routine hasn't been deleted", Optional.empty(),
-                    AlertType.ERROR);
+            showDialog("Error deleting routine", "Your routine hasn't been deleted", Optional.empty(), AlertType.ERROR);
         }
     }
 
@@ -118,11 +100,8 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     private void updateDescriptionField() {
-        getObserver().getRoutines().stream()
-                .filter(r -> r.getX().equals(selectedRoutineIndex))
-                .map(r -> r.getY())
-                .findAny()
-                .ifPresent(des -> txtDescription.setText(des));
+        getObserver().getRoutines().stream().filter(r -> r.getX().equals(selectedRoutineIndex)).map(r -> r.getY())
+                .findAny().ifPresent(des -> txtDescription.setText(des));
     }
 
     /**
@@ -130,11 +109,10 @@ public final class SelectRoutineHandler implements SelectRoutineView {
      */
     public void initialize() {
         getObserver().getRoutines().forEach(i -> {
-            final int routineIndex = i.getX();
-            final Tab newRoutine = new Tab("Routine " + routineIndex);
+            final Tab newRoutine = new Tab("Routine " + i.getX());
             newRoutine.setOnSelectionChanged(tabHandler);
-            tabRoutine.getTabs().add(newRoutine);
             newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getZ()));
+            tabRoutine.getTabs().add(newRoutine);
         });
     }
 

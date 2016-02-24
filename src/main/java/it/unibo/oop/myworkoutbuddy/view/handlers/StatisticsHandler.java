@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
@@ -34,9 +33,9 @@ public final class StatisticsHandler {
     @FXML
     private VBox indexBox;
 
-    private int nCharts;
-
     private VBox currentBox;
+    
+    private int nCharts;
 
     private static final int PIECHART_SIZE = 400;
 
@@ -51,17 +50,6 @@ public final class StatisticsHandler {
     public void initialize() {
 
         // initializing charts
-        // only for testing
-        final Map<String, Map<String, Number>> chartData = new HashMap<>();
-        final Map<String, Number> datas = new HashMap<>();
-        datas.put("febbraio", 3);
-        datas.put("marzo", 10);
-        final Map<String, Number> datas2 = new HashMap<>();
-        datas2.put("leg", 30);
-        datas2.put("shoulders", 70);
-        chartData.put("weightChart", datas);
-        chartData.put("time performance", datas2);
-        //
         getObserver().getChartsData().forEach((chart, data) -> {
 
             nCharts++;
@@ -97,16 +85,6 @@ public final class StatisticsHandler {
         });
 
         // initializing indexes
-        // only for testing
-        final Map<String, Number> indexes = new HashMap<>();
-        indexes.put("BMI", 18.5);
-        indexes.put("BMI2", 18.5);
-        indexes.put("BMI3", 122.5);
-        indexes.put("BMI3", 12.5);
-        indexes.put("BMI5", 19.5);
-        indexes.put("BMI", 16.5);
-        //
-
         
         indexBox.setId("statBox");
         getObserver().getIndexes().forEach((name, value) -> {
@@ -119,7 +97,7 @@ public final class StatisticsHandler {
             singleBox.getChildren().add(valueLabel);
             indexBox.getChildren().add(singleBox);
         });
-
+        
     }
 
     private BarChart<String, Number> buildBarChart(final Map<String, Number> data, final String chartTitle) {

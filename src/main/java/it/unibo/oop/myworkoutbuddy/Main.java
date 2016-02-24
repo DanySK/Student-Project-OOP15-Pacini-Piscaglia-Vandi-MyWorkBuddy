@@ -20,7 +20,7 @@ public class Main extends Application {
 
     @Override
     public void start(final Stage stage) throws IOException {
-        FxWindowFactory.openWindow("Access.fxml", false);
+        FxWindowFactory.openWindow("/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/factory/Access.fxml", false);
     }
 
     /**
