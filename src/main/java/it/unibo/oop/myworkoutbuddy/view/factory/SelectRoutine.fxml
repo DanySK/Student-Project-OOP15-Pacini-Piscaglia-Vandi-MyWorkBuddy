@@ -11,7 +11,7 @@
       <TabPane fx:id="tabRoutine" prefHeight="557.0" prefWidth="652.0" tabClosingPolicy="UNAVAILABLE" translateY="10.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
-      <Label id="borderedLabel" alignment="CENTER" prefHeight="40.0" prefWidth="320.0" text="Insert your daily results!" BorderPane.alignment="CENTER">
+      <Label id="borderedLabel" fx:id="messageLabel" alignment="CENTER" prefHeight="40.0" prefWidth="480.0" text="Insert your daily results!" BorderPane.alignment="CENTER">
          <font>
             <Font size="22.0" />
          </font>

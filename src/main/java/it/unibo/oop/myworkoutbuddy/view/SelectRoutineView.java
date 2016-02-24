@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.view;
 import java.util.List;
 import java.util.Map;
 
-import it.unibo.oop.myworkoutbuddy.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * 

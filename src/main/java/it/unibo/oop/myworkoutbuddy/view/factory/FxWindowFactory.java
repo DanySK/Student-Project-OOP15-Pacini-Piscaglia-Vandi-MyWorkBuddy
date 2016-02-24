@@ -134,7 +134,6 @@ public final class FxWindowFactory {
     private static Node buildVideoPlayer(String url) {
         final MediaPlayer mediaPlayer = new MediaPlayer(new Media(url));
         final BorderPane playerPane = new MediaControl(mediaPlayer);
-        System.out.println(playerPane.getMaxWidth());
         playerPane.setPrefSize(MEDIA_PLAYER_WIDTH, MEDIA_PLAYER_HEIGHT);
         return playerPane;
     }
@@ -156,13 +155,12 @@ public final class FxWindowFactory {
         dialog.setContentText(message);
 
         final Optional<String> result = dialog.showAndWait();
-        String input = "";
         if (result.isPresent()) {
-            input = result.get();
+            return result.get();
         } else {
             createInputDialog(title, message, inputText);
         }
-        return input;
+        return "";
     }
 
 }

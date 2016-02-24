@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import it.unibo.oop.myworkoutbuddy.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -36,11 +38,16 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     private TextArea txtDescription;
 
     @FXML
+    private Label messageLabel;
+
+    @FXML
     private Button btnDeleteRoutine;
 
     private int selectedRoutineIndex;
 
     private final WorkoutLayoutStrategy workoutLayout = new WorkoutLayout();
+
+    private final static int NO_ROUTINE_MESSAGE_Y = 300;
 
     private final EventHandler<Event> tabHandler = i -> {
         final Tab exs = (Tab) i.getSource();
@@ -73,7 +80,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
                     .forEach(exVbox -> {
                 exVbox.getChildren().stream().map(exs -> (HBox) exs).forEach(exs -> {
                     final Pair<String, Pair<List<Integer>, Integer>> result = workoutLayout.getExerciseResults(exs);
-                    results.put(result.getX(), result.getY());
+                    results.put(result.getLeft(), result.getRight());
                 });
             });
         });
@@ -85,6 +92,8 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         if (getObserver().deleteRoutine() && tabRoutine.getTabs().size() > 0) {
             tabRoutine.getTabs().remove(tabRoutine.getTabs().stream()
                     .filter(tab -> selectedRoutineIndex == extractRoutineIndex(tab)).findAny().get());
+            routineCheck();
+
         } else {
             showDialog("Error deleting routine", "Your routine hasn't been deleted", Optional.empty(), AlertType.ERROR);
         }
@@ -100,18 +109,26 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     private void updateDescriptionField() {
-        getObserver().getRoutines().stream().filter(r -> r.getX().equals(selectedRoutineIndex)).map(r -> r.getY())
-                .findAny().ifPresent(des -> txtDescription.setText(des));
+        getObserver().getRoutines().stream().filter(r -> r.getLeft().equals(selectedRoutineIndex))
+                .map(r -> r.getMiddle()).findAny().ifPresent(des -> txtDescription.setText(des));
+    }
+
+    private void routineCheck() {
+        if (getObserver().getRoutines().isEmpty()) {
+            messageLabel.setTranslateY(NO_ROUTINE_MESSAGE_Y);
+            messageLabel.setText("Create a new routine from the item in the menu!");
+        }
     }
 
     /**
      * Show all saved Routines.
      */
     public void initialize() {
+        routineCheck();
         getObserver().getRoutines().forEach(i -> {
-            final Tab newRoutine = new Tab("Routine - " + i.getX());
+            final Tab newRoutine = new Tab("Routine - " + i.getLeft());
             newRoutine.setOnSelectionChanged(tabHandler);
-            newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getZ()));
+            newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getRight()));
             tabRoutine.getTabs().add(newRoutine);
         });
     }

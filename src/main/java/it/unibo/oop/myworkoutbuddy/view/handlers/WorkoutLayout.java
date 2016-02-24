@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import it.unibo.oop.myworkoutbuddy.util.Pair;
-import it.unibo.oop.myworkoutbuddy.util.UnmodifiablePair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
+
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -49,8 +50,8 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
             reps.add(Integer.valueOf(repField.getText()));
         });
         final TextField kgField = (TextField) exs.getChildren().get(exs.getChildren().size() - 1);
-        return new UnmodifiablePair<String, Pair<List<Integer>, Integer>>(exName.getText(),
-                new UnmodifiablePair<>(reps, Integer.valueOf(kgField.getText())));
+        return new ImmutablePair<String, Pair<List<Integer>, Integer>>(exName.getText(),
+                new ImmutablePair<>(reps, Integer.valueOf(kgField.getText())));
     }
 
     private Node exerciseBoxBuild(final String exName, final List<Integer> repetitions) {
@@ -68,10 +69,8 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
     }
 
     private void resizeTextField(final HBox box, final int width) {
-        box.getChildren().stream()
-            .filter(rep -> rep.getClass().equals(TextField.class))
-            .map(rep -> (TextField) rep)
-            .forEach(rep -> rep.setMaxWidth(width));
+        box.getChildren().stream().filter(rep -> rep.getClass().equals(TextField.class)).map(rep -> (TextField) rep)
+                .forEach(rep -> rep.setMaxWidth(width));
     }
 
 }

@@ -40,7 +40,4 @@
    <top>
       <Label id="mainTitle" fx:id="menuTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="946.0" text="Welcome! Please select an item from the menu" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
    </top>
-   <bottom>
-      <HBox prefHeight="25.0" prefWidth="818.0" BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>

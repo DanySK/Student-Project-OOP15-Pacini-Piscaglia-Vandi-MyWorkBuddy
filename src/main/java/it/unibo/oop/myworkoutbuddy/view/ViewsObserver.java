@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import it.unibo.oop.myworkoutbuddy.util.Triple;
+import org.apache.commons.lang3.tuple.Triple;
+
 
 /**
  * Provided by Controller and used by the View to update data in the GUI.
