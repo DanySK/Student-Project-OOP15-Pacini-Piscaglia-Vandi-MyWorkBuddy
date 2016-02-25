@@ -9,7 +9,6 @@ import java.util.List;
      target : scope
      dayAweek : list of days in a week dedicated
      exerciseList : list of exercises
-     -------------------------------------------------------------
 */
 public class RoutineImpl implements Routine {
 
@@ -59,26 +58,13 @@ public class RoutineImpl implements Routine {
 
 
     @Override
-    public void addDay(final DayInWeek day) throws NullPointerException {
-        this.checkNotNull(day);
+    public void addDay(final DayInWeek day) {
         this.dayAweek.add(day);
     }
 
     @Override
-    public void addGymExcercise(final Exercise exercise) throws NullPointerException {
-        this.checkNotNull(exercise);
+    public void addGymExcercise(final Exercise exercise) {
         this.exerciseList.add(exercise);
-    }
-
-    /**
-     * check for negative values
-     * @param obj
-     * @throws NullPointerException
-     */
-    private void checkNotNull(final Object obj) throws NullPointerException {
-        if (obj == null) {
-            new NullPointerException();
-        }
     }
 
     @Override

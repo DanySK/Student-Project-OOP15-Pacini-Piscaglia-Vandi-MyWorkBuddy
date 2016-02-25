@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
     measureList : list of body periodic measure
     workoutList : list of training sessions done/to do
     routineList : list of available Routine
-    -------------------------------------------------------------
 */
 public class UserImpl implements User {
 
@@ -72,24 +71,19 @@ public class UserImpl implements User {
     }
 
     @Override
-    public void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException {
-        this.checkNotNull(localDate);
-        this.checkNotNull(measureBodyZone);
-        this.checkNotNull(measure);
+    public void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) {
         final BodyData bodyData = new BodyData(localDate);
         bodyData.addBodyMeasure(measureBodyZone, measure);
         this.measureList.add(bodyData);
     }
 
     @Override
-    public void addWorkout(final Workout workout) throws NullPointerException {
-        this.checkNotNull(workout);
+    public void addWorkout(final Workout workout) {
         this.workoutList.add(workout);
     }
 
     @Override
-    public void addRoutine(final Routine routine) throws NullPointerException {
-        this.checkNotNull(routine);
+    public void addRoutine(final Routine routine) {
         this.routineList.add(routine);
     }
 
@@ -99,7 +93,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
+    public List<Double> trendBodyBMI() {
         return this.getMeasureList().stream().map(BodyData::getBodyBMI).collect(Collectors.toList());
     }
 
@@ -212,17 +206,6 @@ public class UserImpl implements User {
                 return function.apply(newValue, oldValue);
             });
         });
-    }
-
-    /**
-     * check for not negative values
-     * @param obj
-     * @throws NullPointerException
-     */
-    private void checkNotNull(final Object obj) throws NullPointerException {
-        if (obj == null) {
-            throw new NullPointerException();
-        }
     }
 
     @Override

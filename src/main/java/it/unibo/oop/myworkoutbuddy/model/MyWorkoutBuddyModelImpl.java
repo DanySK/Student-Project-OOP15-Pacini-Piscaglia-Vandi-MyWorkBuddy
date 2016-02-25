@@ -18,7 +18,6 @@ import java.util.Optional;
 
      loginUser : current User
      currentAccount : current Account
-     -------------------------------------------------------------
 */
 public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
 
@@ -43,31 +42,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         this.listUser = new ArrayList<>();
         this.listAccount = new ArrayList<>();
         this.listGymTool = new ArrayList<>();
-
         this.mapGymTool = new HashMap<>();
-
         this.body = new Body();
-    }
-
-    @Override
-    public Account getAccount(final int indice) {
-        return this.listAccount.get(indice);
-    }
-
-    @Override
-    public void addGymTool(final String description, final String nameTool, final String nameImage, final int num, final int valueMin, final int valueMax) {
-        final GymTool newTool = new GymToolImpl.Builder().code(description).name(nameTool).
-                imageFile(nameImage).numTools(num).valueMin(valueMin).valueMax(valueMax).build();
-        this.listGymTool.add(newTool);
-        this.mapGymTool.put(newTool.getCode(), newTool);
-    }
-
-    @Override
-    public void addBodyPart(final String toolCode, final String bodyPart, final Double percentage) {
-        final Optional<GymTool> optGymTool = this.getGymTool(toolCode);
-        if (this.checkGymTool(optGymTool, toolCode) && this.checkBodyPart(bodyPart)) {
-            optGymTool.get().addBodyPart(bodyPart, percentage);
-        }
     }
 
     @Override
@@ -79,6 +55,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         }
     }
 
+
     @Override
     public void addUser(final String firstName, final String secondName, final int age, final String email) {
         if (checkCurrentAccount()) {
@@ -87,13 +64,20 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         }
     }
 
+
+    @Override
+    public Optional<String> getCurrentNameAccount() {
+        return (this.checkCurrentAccount()) ? Optional.of(this.getCurrentAccount().getUserName()) : Optional.empty();
+    }
+
+
     @Override
     public void loginUser(final String userName, final String password) {
         this.getUserList().forEach(i -> {
             final Account account = i.getAccount();
             if (account.getUserName().equals(userName) && account.getPassword().equals(password)) {
                 this.currentUser = Optional.of(i);
-                System.out.println("currentUser = " + this.currentUser.get().getPerson().getFirstName());
+                this.currentAccount = Optional.of(account);
             }
         });
     }
@@ -116,28 +100,31 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     @Override
     public void addGymExcercise(final String codeRoutine, final String target, final String codeTool, 
             final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
-
-        final Optional<GymTool> optGymTool = this.getGymTool(codeTool);
-        if (this.checkGymTool(optGymTool, codeTool)) {
-            final Exercise exercToadd = new ExerciseImpl.Builder().description(target).gymTool(optGymTool.get()).
-                    settingValue(settingValue).repetition(repetition).time(time).numSession(numSession).pause(pause).
-                    build();
-            final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine); // check valid routine
-            if (checkRoutine(optRoutine, codeRoutine)) {
-                optRoutine.get().addGymExcercise(exercToadd);
+        if (this.checkCurrentUser()) {
+            final Optional<GymTool> optGymTool = this.getGymTool(codeTool);
+            if (this.checkGymTool(optGymTool, codeTool)) {
+                final Exercise exercToadd = new ExerciseImpl.Builder().description(target).gymTool(optGymTool.get()).
+                        settingValue(settingValue).repetition(repetition).time(time).numSession(numSession).pause(pause).
+                        build();
+                final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine); // check valid routine
+                if (checkRoutine(optRoutine, codeRoutine)) {
+                    optRoutine.get().addGymExcercise(exercToadd);
+                }
             }
         }
     }
 
     @Override
     public void addWorkout(final String codeRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state) {
-        final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine);
-        final Workout newWorkout;
+        if (this.checkCurrentUser()) {
+            final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine);
+            final Workout newWorkout;
 
-        if (checkRoutine(optRoutine, codeRoutine)) {
-            newWorkout = new WorkoutImpl(optRoutine.get(), localDate, localTime, state);
-            this.getCurrentUser().addWorkout(newWorkout);
-            this.currentWorkout = Optional.of(newWorkout);
+            if (checkRoutine(optRoutine, codeRoutine)) {
+                newWorkout = new WorkoutImpl(optRoutine.get(), localDate, localTime, state);
+                this.getCurrentUser().addWorkout(newWorkout);
+                this.currentWorkout = Optional.of(newWorkout);
+            }
         }
     }
 
@@ -149,12 +136,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void addDataMeasure(final LocalDate localDate) {
-        if (this.checkCurrentUser()) {
-            final BodyData bodyData = new BodyData(localDate);
-            this.getCurrentUser().getMeasureList().add(bodyData);
-            this.currentBodyData = Optional.of(bodyData);
-        }
+    public void body() {
+        this.body = new Body();
     }
 
     @Override
@@ -169,8 +152,12 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void body() {
-        this.body = new Body();
+    public void addDataMeasure(final LocalDate localDate) {
+        if (this.checkCurrentUser()) {
+            final BodyData bodyData = new BodyData(localDate);
+            this.getCurrentUser().getMeasureList().add(bodyData);
+            this.currentBodyData = Optional.of(bodyData);
+        }
     }
 
     @Override
@@ -187,8 +174,19 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public Optional<String> getCurrentIdName() {
-        return (this.checkCurrentAccount()) ? Optional.of(this.getCurrentAccount().getUserName()) : Optional.empty();
+    public void addGymTool(final String description, final String nameTool, final String nameImage, final int num, final int valueMin, final int valueMax) {
+        final GymTool newTool = new GymToolImpl.Builder().code(description).name(nameTool).
+                imageFile(nameImage).numTools(num).valueMin(valueMin).valueMax(valueMax).build();
+        this.listGymTool.add(newTool);
+        this.mapGymTool.put(newTool.getCode(), newTool);
+    }
+
+    @Override
+    public void addBodyPart(final String toolCode, final String bodyPart, final Double percentage) {
+        final Optional<GymTool> optGymTool = this.getGymTool(toolCode);
+        if (this.checkGymTool(optGymTool, toolCode) && this.checkBodyPart(bodyPart)) {
+            optGymTool.get().addBodyPart(bodyPart, percentage);
+        }
     }
 
     @Override
@@ -202,14 +200,11 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public Map<String, GymTool> getMapGymTool() {
-        return this.mapGymTool;
-    }
-
-    @Override
     public int getNumExercise(final String codeRoutine) {
+        if (!checkCurrentUser()) {
+            return 0;
+        }
         final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine);
-
         return checkRoutine(optRoutine, codeRoutine) ? optRoutine.get().getExerciseList().size() : 0;
     }
 
@@ -309,15 +304,24 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         return this.getCurrentUser().trendBodyBMI();
     }
 
+    /**
+     * add this user to list user
+     * @param account Account
+     * @param person Person
+     */
     private void addUser(final Account account, final Person person) {
         if (!this.isAccount(account)) {
             this.listAccount.add(account);
         }
-
         this.currentAccount = Optional.of(account);
-        this.listUser.add(new UserImpl(account, person, this.body)); // add this user to list user
+        this.listUser.add(new UserImpl(account, person, this.body));
     }
 
+    /**
+     * return true if the account param is present
+     * @param account Account
+     * @return a boolean
+     */
     private boolean isAccount(final Account account) {
         return !this.listAccount.stream().noneMatch(i->i.equals(account));
     }
@@ -476,19 +480,3 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
         return optvalue.isPresent();
     }
 }
-
-/*
- * 
- *
-class ExistentAccount extends Exception {
-    private static final long serialVersionUID = -6352669332423280257L;
-}
-*/
-
-/*
- * 
- * 
-class ErrorLogin extends Exception {
-    private static final long serialVersionUID = -6352669332423280257L;
-}
- */

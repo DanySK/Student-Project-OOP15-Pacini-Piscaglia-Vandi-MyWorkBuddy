@@ -34,7 +34,7 @@ public interface User {
      * give the Workout list for a specific user.
      * @return a List<Workout>
      */
-    List<Workout> getWorkoutList(); // workoutRoutine
+    List<Workout> getWorkoutList();
 
     /**
      * give the WorkoutRoutine list for a specific user.
@@ -47,9 +47,8 @@ public interface User {
      * @param localDate LocalDate
      * @param measureBodyZone String
      * @param measure Double
-     * @throws NullPointerException an exception for null pointers
      */
-    void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure) throws NullPointerException;
+    void addMesure(final LocalDate localDate, final String measureBodyZone, final Double measure);
 
     /**
      * add a new workout for the user.

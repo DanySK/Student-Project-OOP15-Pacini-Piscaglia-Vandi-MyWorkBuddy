@@ -39,14 +39,12 @@ public interface Routine {
     /**
      * add a week day for doing a workout.
      * @param day DayInWeek
-     * @throws IllegalArgumentException exception for check not empty value
      */
     void addDay(final DayInWeek day);
 
     /**
      * add a new gymExercise for a workout.
      * @param exercise Exercise
-     * @throws IllegalArgumentException exception for check not empty value
      */
     void addGymExcercise(final Exercise exercise);
 

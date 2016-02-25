@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
      state : session state (done/to do)
      routine : WorkoutRoutine used
      scoreList : list of got scores with card in session.
-     -------------------------------------------------------------
 */
 public class WorkoutImpl implements Workout {
 

@@ -8,15 +8,25 @@ import java.util.Optional;
 /**
  * 
  * the principal class of model.
- * -------------------------------------------------------------
  */
 public interface MyWorkoutBuddyModel {
+
     /**
-     * get the account at list in index.
-     * @param index int
-     * @return an account at index of the Account list
+     * Add a new Account.
+     * @param userName String
+     * @param password String
+     * @param avatar String
      */
-    Account getAccount(final int index);
+    void addAccount(final String userName, final String password, final String avatar);
+
+    /**
+     * Add a new User.
+     * @param firstName String
+     * @param secondName String
+     * @param age Integer
+     * @param email String
+     */
+    void addUser(final String firstName, final String secondName, final int age, final String email);
 
     /**
      * user's login.
@@ -24,6 +34,12 @@ public interface MyWorkoutBuddyModel {
      * @param password String
      */
     void loginUser(final String name, final String password);
+
+    /**
+     * give alphabetic name of Current Account.
+     * @return a String
+     */
+    Optional<String> getCurrentNameAccount();
 
     /**
      * the current user's logout.
@@ -62,10 +78,16 @@ public interface MyWorkoutBuddyModel {
     void addWorkout(final String nameRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state);
 
     /**
-     * add a new data of measure.
-     * @param localDate LocalDate
+     * add a new score for the specified exercise by the numEx.
+     * @param numEx Integer
+     * @param score Integer
      */
-    void addDataMeasure(final LocalDate localDate);
+    void addExerciseScore(final Integer numEx, final Integer score);
+
+    /**
+     * the default body.
+     */
+    void body();
 
     /**
      * add a new bodyPart mapped in specific set of bodyZone.
@@ -81,9 +103,10 @@ public interface MyWorkoutBuddyModel {
     void body(final String bodyPart);
 
     /**
-     * the default body.
+     * add a new data of measure.
+     * @param localDate LocalDate
      */
-    void body();
+    void addDataMeasure(final LocalDate localDate);
 
     /**
      * add a new BodyMeasure for current User.
@@ -92,30 +115,6 @@ public interface MyWorkoutBuddyModel {
      * @param firstTime boolean
      */
     void addBodyMeasure(final String measureBodyZone, final Double measure, final boolean firstTime);
-
-    /**
-     * add a new score for the specified exercise by the numEx.
-     * @param numEx Integer
-     * @param score Integer
-     */
-    void addExerciseScore(final Integer numEx, final Integer score);
-
-    /**
-     * Add a new Account.
-     * @param userName String
-     * @param password String
-     * @param avatar String
-     */
-    void addAccount(final String userName, final String password, final String avatar); //throws ExistentAccount;
-
-    /**
-     * Add a new User.
-     * @param firstName String
-     * @param secondName String
-     * @param age Integer
-     * @param email String
-     */
-    void addUser(final String firstName, final String secondName, final int age, final String email);
 
     /**
      * add a new GymTool.
@@ -137,12 +136,6 @@ public interface MyWorkoutBuddyModel {
     void addBodyPart(final String toolCode, final String bodyPart, final Double percentage);
 
     /**
-     * give alphabetic name of Current Account.
-     * @return a String
-     */
-    Optional<String> getCurrentIdName();
-
-    /**
      * give the list of GymTool in an application.
      * @return a List<GymTool>
      */
@@ -153,12 +146,6 @@ public interface MyWorkoutBuddyModel {
      * @return a List<User>
      */
     List<User> getUserList();
-
-    /**
-     * give for each application GymTool name the relatives tool.
-     * @return a Map<String, GymTool>
-     */
-    Map<String, GymTool> getMapGymTool();
 
     /**
      * give the dimension of an exercise list with codeRoutine.

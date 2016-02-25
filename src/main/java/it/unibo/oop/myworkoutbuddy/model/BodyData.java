@@ -6,19 +6,19 @@ import java.util.Map;
 
 /**
  * class Data of measurements.
- * -------------------------------------------------------------
  */
 public class BodyData {
     private static final double ZERO_DOUBLE = 0.00;
     private static final int ZERO_INTEGER = 0;
 
     /*
-     * BMR Formula : Harris Bennedict : Equation
+     * BMR Formula : Mifflin St Jeor : Equation
      */
-    private static final double FACTOR_WEIGHT = 13.7516;
-    private static final double FACTOR_HEIGHT = 5.0033;
-    private static final double FACTOR_AGE = 6.755;
-    private static final double FACTOR_BMR = 66.4730;
+    private static final double FACTOR_WEIGHT = 10.0;
+    private static final double FACTOR_HEIGHT = 6.25;
+    private static final double FACTOR_AGE = 5.0;
+    private static final double FACTOR_BMR_MALE = 5.00;
+    //private static final double FACTOR_BMR_FEMALE = -161;
 
     private static final double METER_TO_CM = 100.00;
 
@@ -71,11 +71,13 @@ public class BodyData {
         }
         final Double mass = getMassHeight("WEIGHT");
         final Double height = getMassHeight("HEIGHT");
+        final Double factorBmr = FACTOR_BMR_MALE;
         final Double valueTemp = (FACTOR_WEIGHT * mass) + (FACTOR_HEIGHT * METER_TO_CM * height);
         if (valueTemp <= ZERO_DOUBLE) {
             return ZERO_DOUBLE;
         }
-        return (FACTOR_BMR + valueTemp - (FACTOR_AGE * age));
+
+        return (factorBmr + valueTemp - (FACTOR_AGE * age));
     }
 
     /**

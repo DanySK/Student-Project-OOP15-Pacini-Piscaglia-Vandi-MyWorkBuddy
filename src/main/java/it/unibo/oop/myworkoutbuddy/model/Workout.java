@@ -7,7 +7,6 @@ import java.util.Map;
 
 /**
  * User's data of a single training session. (WorkOut)
- * -------------------------------------------------------------
  */
 public interface Workout {
 

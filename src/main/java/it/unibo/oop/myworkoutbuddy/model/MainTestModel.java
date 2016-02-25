@@ -48,12 +48,14 @@ public class MainTestModel {
         System.out.println("\n ==== USERS LIST ==== ");
         System.out.println(model.getUserList());
 
-        // model.getUserList().size()
-        for (int i = 1; i <= 1; i++) {
+        final int num = model.getUserList().size();
+        for (int i = 1; i <= num; i++) {
 
         /* --- LOGIN USER ------*/
         System.out.println("\n ==== LOGIN USER ==== ");
         model.loginUser("account" + i, "password" + i);
+
+        System.out.println("\n currentAccount = " + model.getCurrentNameAccount());
 
         // WORKOUT DATE LOGIN USER: cycle of generation test data for login User
         testLoginUser(model);
