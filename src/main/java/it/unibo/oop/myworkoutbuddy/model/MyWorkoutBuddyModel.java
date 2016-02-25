@@ -232,7 +232,7 @@ public interface MyWorkoutBuddyModel {
      * give the current User's trending of Body Mass.
      * @return a List<Double>
      */
-    List<Double> trendBodyMass();
+    List<Double> trendBodyBMR();
 
     /**
      * 

@@ -12,10 +12,13 @@ public class BodyData {
     private static final double ZERO_DOUBLE = 0.00;
     private static final int ZERO_INTEGER = 0;
 
-    private static final  double FACTOR_BMR = 66.5;
-    private static final double FACTOR_WEIGHT = 13.75;
-    private static final double FACTOR_HEIGHT = 5.003;
-    private static final double FACTOR_AGE = 6.775;
+    /*
+     * BMR Formula : Harris Bennedict : Equation
+     */
+    private static final double FACTOR_WEIGHT = 13.7516;
+    private static final double FACTOR_HEIGHT = 5.0033;
+    private static final double FACTOR_AGE = 6.755;
+    private static final double FACTOR_BMR = 66.4730;
 
     private static final double METER_TO_CM = 100.00;
 
@@ -46,8 +49,8 @@ public class BodyData {
      * @throws NullPointerException exception for null values
      * @throws IllegalArgumentException exception for invalid values
      */
-    public Double getBodyMass() throws NullPointerException, IllegalArgumentException {
-        final Double mass = getMassHeight("MASS");
+    public Double getBodyBMI() {
+        final Double mass = getMassHeight("WEIGHT");
         final Double height = getMassHeight("HEIGHT");
         final Double den = height * height;
         if (den <= ZERO_DOUBLE) {
@@ -62,12 +65,11 @@ public class BodyData {
      * @param age Integer
      * @return bodyBMI
      */
-    public Double getBodyBMI(final Integer age) {
+    public Double getBodyBMR(final Integer age) {
         if (age == null || age <= ZERO_INTEGER) {
             return ZERO_DOUBLE;
         }
-        //final UnmodifiablePair<Double, Double> pairValues = getMassHeight();
-        final Double mass = getMassHeight("MASS");
+        final Double mass = getMassHeight("WEIGHT");
         final Double height = getMassHeight("HEIGHT");
         final Double valueTemp = (FACTOR_WEIGHT * mass) + (FACTOR_HEIGHT * METER_TO_CM * height);
         if (valueTemp <= ZERO_DOUBLE) {

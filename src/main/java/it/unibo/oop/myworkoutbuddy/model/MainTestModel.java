@@ -48,7 +48,8 @@ public class MainTestModel {
         System.out.println("\n ==== USERS LIST ==== ");
         System.out.println(model.getUserList());
 
-        for (int i = 1; i <= 3; i++) {
+        // model.getUserList().size()
+        for (int i = 1; i <= 1; i++) {
 
         /* --- LOGIN USER ------*/
         System.out.println("\n ==== LOGIN USER ==== ");
@@ -78,8 +79,8 @@ public class MainTestModel {
         System.out.println(" TimeGymTool = " + model.timeGymTool());
 
         System.out.println("\n ==== BODY STATISTICS : ");
-        System.out.println(" TrendBodyMass = " + model.trendBodyMass());
-        System.out.println(" TrendBodyBMI = " + model.trendBodyBMI());
+        System.out.println(" TrendBodyBMI = " + model.trendBodyBMI() + " ");
+        System.out.println(" TrendBodyBMR = " + model.trendBodyBMR() + " [kcal/day]");
 
         final Map<String, Double> mapGymTool = model.timeGymTool();
         mergeMap(mapGymTool);
@@ -151,8 +152,9 @@ public class MainTestModel {
 
         model.addAccount("account3", "password3", "avatar3.png");
         model.addUser("Mario", "Verdi", 30, "mario.verdi@studio.unibo.it");
+        
         /*
-         * ...
+         * ... loading other users
          */
     }
 
@@ -163,7 +165,7 @@ public class MainTestModel {
     //@Test
     public static void testLoginUser(final MyWorkoutBuddyModel model) {
 
-        /*Add a init measure body : true(init) = new Measure*/
+        /*Add an init measure body: true(init) = new Measure*/
         model.addDataMeasure(LocalDate.now());
 
         model.addBodyMeasure("HEIGHT", 1.80, true);

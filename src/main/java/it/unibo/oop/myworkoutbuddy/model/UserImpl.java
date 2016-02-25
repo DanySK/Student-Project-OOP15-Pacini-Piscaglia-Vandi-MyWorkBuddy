@@ -94,14 +94,13 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<Double> trendBodyBMI() {
-
-        return this.getMeasureList().stream().map(i->i.getBodyBMI(this.getPerson().getAge())).collect(Collectors.toList());
+    public List<Double> trendBodyBMR() {
+        return this.getMeasureList().stream().map(i->i.getBodyBMR(this.getPerson().getAge())).collect(Collectors.toList());
     }
 
     @Override
-    public List<Double> trendBodyMass() throws NullPointerException, IllegalArgumentException {
-        return this.getMeasureList().stream().map(BodyData::getBodyMass).collect(Collectors.toList());
+    public List<Double> trendBodyBMI() throws NullPointerException, IllegalArgumentException {
+        return this.getMeasureList().stream().map(BodyData::getBodyBMI).collect(Collectors.toList());
     }
 
     @Override

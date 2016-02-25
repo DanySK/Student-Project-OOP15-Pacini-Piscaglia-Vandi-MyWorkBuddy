@@ -294,11 +294,11 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public List<Double> trendBodyMass() {
+    public List<Double> trendBodyBMR() {
         if (!checkCurrentUser()) {
             return new ArrayList<>();
         }
-        return this.getCurrentUser().trendBodyMass();
+        return this.getCurrentUser().trendBodyBMR();
     }
 
     @Override

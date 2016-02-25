@@ -67,13 +67,13 @@ public interface User {
      * list of BMI calculated.
      * @return a List<Double>
      */
-    List<Double> trendBodyBMI();
+    List<Double> trendBodyBMR();
 
     /**
      * give a double array of trend values for a human body.
      * @return a List<Double>
      */
-    List<Double> trendBodyMass();
+    List<Double> trendBodyBMI();
 
     /**
      * list of performance scores.
