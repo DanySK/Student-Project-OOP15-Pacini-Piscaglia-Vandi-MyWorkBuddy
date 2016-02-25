@@ -16,12 +16,18 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
+/**
+ * Validator.
+ */
 public class Validator {
 
     private final Table<Predicate<Object>, Object, String> validations;
 
     private Optional<List<String>> errorMessages;
 
+    /**
+     * Creates a new {@Validator}.
+     */
     public Validator() {
         validations = HashBasedTable.create();
         errorMessages = Optional.empty();
@@ -37,6 +43,8 @@ public class Validator {
      * @param errorMessage
      *            the message to retrieve if the {@code validator} rejects the given {@code value}
      * @return it self
+     * @param <T>
+     *            the type of the parameter
      * @throws IllegalStateException
      *             if the validation was already performed
      * @throws NullPointerException
