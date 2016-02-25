@@ -28,19 +28,6 @@ public interface ViewsObserver {
 
     /**
      * 
-     * @param selectedTheme
-     *            to save and show after login.
-     */
-    void setFavouriteTheme(String selectedTheme);
-
-    /**
-     * 
-     * @return selected theme chosen previously.
-     */
-    String getFavouriteTheme();
-
-    /**
-     * 
      * @return a map of Workout exercises with body part name like key and a set
      *         of related exercises names.
      * 
