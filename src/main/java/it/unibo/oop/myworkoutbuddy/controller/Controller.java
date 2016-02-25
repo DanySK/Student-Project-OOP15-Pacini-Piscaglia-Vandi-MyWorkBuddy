@@ -121,22 +121,6 @@ public class Controller implements ViewsObserver {
     }
 
     @Override
-    public String getFavouriteTheme() {
-        return getService(ServiceProvider.USERS)
-                .getOneByParams(usernameAsQueryParam(currentUser.get()))
-                .map(m -> (String) m.get("favouriteTheme"))
-                .orElseGet(String::new);
-    }
-
-    @Override
-    public void setFavouriteTheme(final String selectedTheme) {
-        final Map<String, Object> updateParams = new HashMap<>();
-        updateParams.put("favouriteTheme", requireNonNull(selectedTheme));
-        getService(ServiceProvider.USERS)
-                .updateByParams(usernameAsQueryParam(currentUser.get()), updateParams);
-    }
-
-    @Override
     public Map<String, Set<String>> getExercises() {
         final Map<String, Set<String>> exercises = new HashMap<>();
         getService(ServiceProvider.EXERCISES).getAll().forEach(m -> {

@@ -1,19 +1,21 @@
 package it.unibo.oop.myworkoutbuddy.view.strategy;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -23,75 +25,169 @@ import javafx.scene.layout.VBox;
  */
 public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
-    private static final int FIELD_WIDTH = 45;
+    private static final double EXERCISE_BOX_WIDTH = 638;
 
-    private static final int EXERCISE_BOX_WIDTH = 614;
+    private static final double EXERCISE_FIELD_WIDTH = 200;
+
+    private static final double KG_FIELD_WIDTH = 136;
+
+    private static final double REPS_FIELD_WIDTH = 100;
+
+    private TableBuildStrategy tableBuild = new TableBuild();
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
         final VBox workout = new VBox();
+        workout.setPrefWidth(EXERCISE_BOX_WIDTH);
         workouts.forEach((workName, exercises) -> {
-            final VBox exercisesList = new VBox();
+
+            final ObservableList<Exercise> data = FXCollections.observableArrayList();
             exercises.forEach((exName, repetitions) -> {
-                exercisesList.getChildren().add(exerciseBoxBuild(exName, repetitions));
+                data.add(new Exercise(exName, repetitions, "0"));
             });
-            workout.getChildren().add(new TitledPane(workName, exercisesList));
+            workout.getChildren().add(new TitledPane(workName, tableBuild(data)));
         });
         return new ScrollPane(workout);
     }
 
-    /*
-     * @Override public Node addWorkoutNodes(final Map<String, Map<String,
-     * List<Integer>>> workouts) { final VBox workout = new VBox();
-     * workouts.forEach((workName, exercises) -> { final TableView<String>
-     * exercisesTable = new TableView<>(); final ObservableList<String> data =
-     * FXCollections.observableArrayList(); exercises.forEach((exName,
-     * repetitions) -> { data.add(exName); }); exercisesTable.setItems(data);
-     * tableBuild(exercisesTable); workout.getChildren().add(new
-     * TitledPane(workName, exercisesTable)); }); return new
-     * ScrollPane(workout); }
-     */
-
     @Override
-    public Pair<String, Pair<List<Integer>, Integer>> getExerciseResults(final Node workout) {
-        final HBox exs = (HBox) workout;
-        final Label exName = (Label) exs.getChildren().get(0);
-        final List<Integer> reps = new ArrayList<>();
-        IntStream.range(2, exs.getChildren().size() - 2).forEach(i -> {
-            final TextField repField = (TextField) exs.getChildren().get(i);
-            reps.add(Integer.valueOf(repField.getText()));
+    public List<Pair<String, Pair<List<Integer>, Integer>>> getExerciseResults(final Node workout) {
+        final List<Pair<String, Pair<List<Integer>, Integer>>> results = new LinkedList<>();
+        @SuppressWarnings("unchecked")
+        final TableView<Exercise> table = (TableView<Exercise>) workout;
+        table.getItems().forEach(ex -> {
+            results.add(new ImmutablePair<String, Pair<List<Integer>, Integer>>(ex.getExerciseName(),
+                    new ImmutablePair<>(ex.getReps(), Integer.parseInt(ex.getKg()))));
         });
-        final TextField kgField = (TextField) exs.getChildren().get(exs.getChildren().size() - 1);
-        return new ImmutablePair<String, Pair<List<Integer>, Integer>>(exName.getText(),
-                new ImmutablePair<>(reps, Integer.valueOf(kgField.getText())));
+        return results;
     }
 
-    /*
-     * private void tableBuild(TableView table){ TableColumn<String,String>
-     * exCol = new TableColumn<>("Exercise Name"); exCol.setCellValueFactory(
-     * new PropertyValueFactory<String,String>("exercise Name"));
-     * TableColumn<String,String> repsCol = new TableColumn<>("Repetitions");
-     * TableColumn<String,String> kgCol = new TableColumn<>("Kg");
-     * table.getColumns().addAll(exCol, repsCol, kgCol); }
+    private TableView<Exercise> tableBuild(final ObservableList<Exercise> data) {
+
+        TableColumn<Exercise, String> exCol = tableBuild.buildColumn("Exercise Name", EXERCISE_FIELD_WIDTH,
+                "exerciseName");
+        TableColumn<Exercise, String> repsCol = tableBuild.buildColumn("Repetitions", 0, "");
+        TableColumn<Exercise, String> kgCol = tableBuild.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
+        TableColumn<Exercise, String> rep1Col = tableBuild.buildRepColumn("Rep 1", REPS_FIELD_WIDTH, "rep1");
+        TableColumn<Exercise, String> rep2Col = tableBuild.buildRepColumn("Rep 2", REPS_FIELD_WIDTH, "rep2");
+        TableColumn<Exercise, String> rep3Col = tableBuild.buildRepColumn("Rep 3", REPS_FIELD_WIDTH, "rep3");
+        repsCol.getColumns().addAll(Arrays.asList(rep1Col, rep2Col, rep3Col));
+        return tableBuild.build(Arrays.asList(exCol, repsCol, kgCol), data);
+    }
+
+    /**
+     * Inner class used to model table data.
      */
+    public static final class Exercise {
 
-    private Node exerciseBoxBuild(final String exName, final List<Integer> repetitions) {
-        final HBox box = new HBox();
-        box.getChildren().add(new Label(exName));
-        box.getChildren().add(new Label("- Repetitions: "));
-        repetitions.forEach(rep -> box.getChildren().add(new TextField(rep.toString())));
-        box.getChildren().add(new Label("  - Kg: "));
-        box.getChildren().add(new TextField("0"));
-        box.getChildren().stream().filter(label -> label.getClass().equals(Label.class))
-                .forEach(label -> label.setId("exercise"));
-        box.setPrefWidth(EXERCISE_BOX_WIDTH);
-        resizeTextField(box, FIELD_WIDTH);
-        return box;
-    }
+        private final SimpleStringProperty exerciseName;
+        private final SimpleStringProperty rep1;
+        private final SimpleStringProperty rep2;
+        private final SimpleStringProperty rep3;
+        private final SimpleStringProperty kg;
 
-    private void resizeTextField(final HBox box, final int width) {
-        box.getChildren().stream().filter(rep -> rep.getClass().equals(TextField.class)).map(rep -> (TextField) rep)
-                .forEach(rep -> rep.setMaxWidth(width));
+        private Exercise(final String exName, final List<Integer> repetitions, final String kg) {
+            this.exerciseName = new SimpleStringProperty(exName);
+            rep1 = new SimpleStringProperty(repetitions.get(0).toString());
+            rep2 = new SimpleStringProperty(repetitions.get(1).toString());
+            rep3 = new SimpleStringProperty(repetitions.get(2).toString());
+            this.kg = new SimpleStringProperty(kg);
+        }
+
+        /**
+         * 
+         * @return exercise name.
+         */
+        public String getExerciseName() {
+            return exerciseName.get();
+        }
+
+        /**
+         * 
+         * @param exName
+         *            to set.
+         */
+        public void setExerciseName(final String exName) {
+            exerciseName.set(exName);
+        }
+
+        /**
+         * 
+         * @return a string representation of Kg.
+         */
+        public String getKg() {
+            return kg.get();
+        }
+
+        /**
+         * 
+         * @param newKg
+         *            registered by user to set.
+         */
+        public void setKg(final String newKg) {
+            kg.set(newKg);
+        }
+
+        /**
+         * 
+         * @return a string representation of repetition 1.
+         */
+        public String getRep1() {
+            return rep1.get();
+        }
+
+        /**
+         * 
+         * @param repetition
+         *            string to set.
+         */
+        public void setRep1(final String repetition) {
+            rep1.set(repetition);
+        }
+
+        /**
+         * 
+         * @return a string representation of repetition 2.
+         */
+        public String getRep2() {
+            return rep2.get();
+        }
+
+        /**
+         * 
+         * @param repetition
+         *            string to set.
+         */
+        public void setRep2(final String repetition) {
+            rep2.set(repetition);
+        }
+
+        /**
+         * 
+         * @return a string representation of repetition 3.
+         */
+        public String getRep3() {
+            return rep3.get();
+        }
+
+        /**
+         * 
+         * @param repetition
+         *            string to set.
+         */
+        public void setRep3(final String repetition) {
+            rep3.set(repetition);
+        }
+
+        /**
+         * 
+         * @return a list of repetitions.
+         */
+        public List<Integer> getReps() {
+            return new LinkedList<>(Arrays.asList(Integer.parseInt(getRep1()), Integer.parseInt(getRep2()),
+                    Integer.parseInt(getRep3())));
+        }
+
     }
 
 }

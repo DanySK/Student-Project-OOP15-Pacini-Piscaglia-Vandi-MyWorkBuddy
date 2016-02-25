@@ -3,9 +3,8 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,11 +18,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -64,6 +63,19 @@ public final class SelectRoutineHandler implements SelectRoutineView {
         btnDeleteRoutine.setDisable(tabRoutine.getTabs().size() < 0);
     };
 
+    /**
+     * Show all saved Routines.
+     */
+    public void initialize() {
+        routineCheck();
+        getObserver().getRoutines().forEach(i -> {
+            final Tab newRoutine = new Tab("Routine - " + i.getLeft());
+            newRoutine.setOnSelectionChanged(tabHandler);
+            newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getRight()));
+            tabRoutine.getTabs().add(newRoutine);
+        });
+    }
+
     @FXML
     private void insertData() {
         if (getObserver().addResults()) {
@@ -75,17 +87,17 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     @Override
-    public Map<String, Pair<List<Integer>, Integer>> getUserResults() {
-        final Map<String, Pair<List<Integer>, Integer>> results = new HashMap<>();
-        tabRoutine.getTabs().stream().map(i -> (VBox) i.getContent()).forEach(exsBox -> {
-            exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(exBox -> (VBox) exBox.getContent())
-                    .forEach(exVbox -> {
-                exVbox.getChildren().stream().map(exs -> (HBox) exs).forEach(exs -> {
-                    final Pair<String, Pair<List<Integer>, Integer>> result = workoutLayout.getExerciseResults(exs);
-                    results.put(result.getLeft(), result.getRight());
+    public List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults() {
+        final List<Pair<String, Pair<List<Integer>, Integer>>> results = new LinkedList<>();
+        tabRoutine.getTabs().stream().filter(tab -> tab.getText().equals("Routine - " + selectedRoutineIndex))
+                .map(i -> (ScrollPane) i.getContent()).map(i -> (VBox) i.getContent()).forEach(exsBox -> {
+                    exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(workBox -> workBox.getContent())
+                            .forEach(workout -> {
+                        final List<Pair<String, Pair<List<Integer>, Integer>>> result = workoutLayout
+                                .getExerciseResults(workout);
+                        results.addAll(result);
+                    });
                 });
-            });
-        });
         return results;
     }
 
@@ -120,19 +132,6 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             messageLabel.setTranslateY(NO_ROUTINE_MESSAGE_Y);
             messageLabel.setText("Create a new routine from the item in the menu!");
         }
-    }
-
-    /**
-     * Show all saved Routines.
-     */
-    public void initialize() {
-        routineCheck();
-        getObserver().getRoutines().forEach(i -> {
-            final Tab newRoutine = new Tab("Routine - " + i.getLeft());
-            newRoutine.setOnSelectionChanged(tabHandler);
-            newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getRight()));
-            tabRoutine.getTabs().add(newRoutine);
-        });
     }
 
 }
