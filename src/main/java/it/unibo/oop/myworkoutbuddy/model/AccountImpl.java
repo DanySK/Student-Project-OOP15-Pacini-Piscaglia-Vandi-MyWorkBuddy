@@ -5,7 +5,6 @@ package it.unibo.oop.myworkoutbuddy.model;
      userName : name used to access the application
      password : password to access the application
      avatar : alter ego for user.
-     -------------------------------------------------------------
 */
 public class AccountImpl implements Account {
 

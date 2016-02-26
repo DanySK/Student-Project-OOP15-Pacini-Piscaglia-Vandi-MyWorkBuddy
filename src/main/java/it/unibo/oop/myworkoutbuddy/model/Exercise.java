@@ -3,7 +3,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Set;
 /**
  * Class for Exercise.
- * -------------------------------------------------------------
  */
 public interface Exercise {
 

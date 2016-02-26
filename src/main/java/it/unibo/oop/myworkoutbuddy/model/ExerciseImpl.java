@@ -11,7 +11,6 @@ import java.util.Set;
      time : duration time of a single repetition
      pause : pause time between two consecutive repetitions
      numSession : number of cycles (cycle = repetition + pause).
-     -------------------------------------------------------------
 */
 public final class ExerciseImpl implements Exercise {
 
