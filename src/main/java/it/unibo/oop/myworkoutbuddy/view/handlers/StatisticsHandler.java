@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildBarChart;
 import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildLineChart;
 import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildPieChart;
-import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,7 +11,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
 
 /**
  * Handler of the accessView. It show user statistics fetched from the database.

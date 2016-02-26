@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.view;
 /**
  * It returns the references to the views of the application.
  */
-public interface AppViews {
+public interface AppView {
 
     /**
      * @return reference to access view.
@@ -34,6 +34,6 @@ public interface AppViews {
      * @param observer
      *            controller of the views.
      */
-    void setViewsObserver(ViewsObserver observer);
+    void setViewsObserver(ViewObserver observer);
 
 }

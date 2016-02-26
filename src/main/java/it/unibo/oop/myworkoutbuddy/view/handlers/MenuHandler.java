@@ -95,7 +95,7 @@ public final class MenuHandler {
      */
     @FXML
     private void quitApp() {
-        System.exit(0);
+        FxWindowFactory.closeWindow(btnLogout.getScene());
     }
 
     /**
@@ -103,7 +103,7 @@ public final class MenuHandler {
      */
     @FXML
     private void logout() {
-        ViewsHandler.getObserver().logoutUser();
+        ViewHandler.getObserver().logoutUser();
         FxWindowFactory.replaceWindow("Access.fxml", btnLogout.getScene());
     }
 

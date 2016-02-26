@@ -2,6 +2,7 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
 import java.util.Optional;
 
@@ -11,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
 
 /**
  * 

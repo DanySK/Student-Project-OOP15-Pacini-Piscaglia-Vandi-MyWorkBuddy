@@ -3,7 +3,7 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.replaceWindow;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.setCssStyle;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
-import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
 import java.util.Optional;
 
