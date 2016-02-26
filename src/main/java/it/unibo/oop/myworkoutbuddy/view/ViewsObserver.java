@@ -63,7 +63,7 @@ public interface ViewsObserver {
      * @return a map of user data Map key is the data description and the
      *         related value is the effective data.
      */
-    Map<String, Object> getUserData();
+    Map<String, Object> getCurrentUserData();
 
     /**
      * Ask Controller to save user data modified.

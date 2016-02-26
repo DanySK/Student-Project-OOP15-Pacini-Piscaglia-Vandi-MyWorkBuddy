@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * This class consists exclusively of static methods that operate on collections.
+ */
 public final class CollectionUtils {
 
     /**
@@ -16,6 +19,8 @@ public final class CollectionUtils {
      *            the source list
      * 
      * @return a copy of the source list
+     * @param <E>
+     *            the type of the elements of the list
      */
     public static <E> List<E> copy(final List<? extends E> src) {
         return new ArrayList<>(src);
@@ -28,6 +33,8 @@ public final class CollectionUtils {
      *            the source set
      * 
      * @return a copy of the source set
+     * @param <E>
+     *            the type of the elements of the list
      */
     public static <E> Set<E> copy(final Set<? extends E> src) {
         return new HashSet<>(src);
@@ -40,6 +47,10 @@ public final class CollectionUtils {
      *            the source map
      * 
      * @return a copy of the source map
+     * @param <K>
+     *            the type of the key in the map
+     * @param <V>
+     *            the type of the value in the map
      */
     public static <K, V> Map<K, V> copy(final Map<? extends K, ? extends V> src) {
         return new HashMap<>(src);
