@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Triple;
 /**
  * Provided by Controller and used by the View to update data in the GUI.
  */
-public interface ViewsObserver {
+public interface ViewObserver {
 
     /**
      * 

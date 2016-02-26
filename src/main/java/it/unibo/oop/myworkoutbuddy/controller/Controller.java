@@ -25,36 +25,39 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
-import it.unibo.oop.myworkoutbuddy.view.AppViews;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
+import it.unibo.oop.myworkoutbuddy.view.AppView;
+import it.unibo.oop.myworkoutbuddy.view.ViewObserver;
 
 /**
  * Controller.
  */
-public class Controller implements ViewsObserver {
+public class Controller implements ViewObserver {
 
+    private static final int MIN_USERNAME_LENGTH = 8;
+    private static final int MAX_USERNAME_LENGTH = 15;
+    private static final int MIN_PASSWORD_LENGTH = 6;
     private final MyWorkoutBuddyModel model;
-    private final AppViews views;
+    private final AppView view;
 
     /**
      * Constructs a new controller instance.
      * 
      * @param model
      *            The reference to the model
-     * @param views
+     * @param view
      *            The refernce to the views
      */
-    public Controller(final MyWorkoutBuddyModel model, final AppViews views) {
+    public Controller(final MyWorkoutBuddyModel model, final AppView view) {
         this.model = requireNonNull(model);
-        this.views = requireNonNull(views);
-        views.setViewsObserver(this);
+        this.view = requireNonNull(view);
+        view.setViewsObserver(this);
     }
 
     @Override
     public List<String> loginUser() {
         checkIfUserIsNotLoggedIn();
-        final String username = views.getAccessView().getUsername();
-        final String password = views.getAccessView().getPassword();
+        final String username = view.getAccessView().getUsername();
+        final String password = view.getAccessView().getPassword();
         final Optional<Map<String, Object>> optUserData = getUserData(username);
         if (!optUserData.isPresent()) {
             return Arrays.asList(username + " does not exist");
@@ -82,25 +85,29 @@ public class Controller implements ViewsObserver {
     public List<String> registerUser() {
         checkIfUserIsNotLoggedIn();
         // Fields to validate
-        final String username = views.getRegistrationView().getUsername();
-        final String password = views.getRegistrationView().getPassword();
-        final String passwordConfirm = views.getRegistrationView().getPasswordConfirm();
-        final String firstName = views.getRegistrationView().getName();
-        final String lastName = views.getRegistrationView().getSurname();
-        final String email = views.getRegistrationView().getEmail();
-        final int age = views.getRegistrationView().getAge();
-        final int height = views.getRegistrationView().getHeight();
-        final double weight = views.getRegistrationView().getWeight();
+        final String username = view.getRegistrationView().getUsername();
+        final String password = view.getRegistrationView().getPassword();
+        final String passwordConfirm = view.getRegistrationView().getPasswordConfirm();
+        final String firstName = view.getRegistrationView().getName();
+        final String lastName = view.getRegistrationView().getSurname();
+        final String email = view.getRegistrationView().getEmail();
+        final int age = view.getRegistrationView().getAge();
+        final int height = view.getRegistrationView().getHeight();
+        final double weight = view.getRegistrationView().getWeight();
 
         final Validator validator = new Validator()
-                .addValidation(usernameValidator(), username, "Invalid username")
+                .addValidation(usernameMinLengthValidator(MIN_USERNAME_LENGTH), username,
+                       "Username must contain at least " + MIN_USERNAME_LENGTH + " characters")
+                .addValidation(usernameMaxLengthValidator(MAX_USERNAME_LENGTH), username,
+                        "Username cannot contain more then " + MAX_USERNAME_LENGTH + " characters")
                 .addValidation(usernameAlreadyTakenValidator(), username, "Username already taken")
                 .addValidation(nameValidator(), firstName, "Invalid first name")
                 .addValidation(nameValidator(), lastName, "Invalid last name")
                 .addValidation(numberValidator(), age, "Invalid age")
                 .addValidation(numberValidator(), weight, "Invalid weight")
                 .addValidation(numberValidator(), height, "Invalid height")
-                .addValidation(passwordValidator(), password, "Invalid password")
+                .addValidation(passwordMinLengthValidator(MIN_PASSWORD_LENGTH), password,
+                        "Password must contain at least " + MIN_PASSWORD_LENGTH + " characters")
                 .addValidation(passwordConfirmValidator(passwordConfirm), password, "The two passwords do not match")
                 .addValidation(emailValidator(), email, "Invalid email or email already taken")
                 .addValidation(emailAlreadyTakenValidator(), email, "Email already taken");
@@ -133,19 +140,19 @@ public class Controller implements ViewsObserver {
 
     @Override
     public List<String> setUserData() {
-        final String newFirstName = views.getUserSettingsView().getNewName();
-        final String newLastName = views.getUserSettingsView().getNewSurname();
-        final String newPassword = views.getUserSettingsView().getNewPassword();
-        final int newAge = views.getUserSettingsView().getNewAge();
-        final String newPasswordasswordConfirm = views.getUserSettingsView().getPasswordConfirm();
-        final String newEmail = views.getUserSettingsView().getNewEmail();
+        final String newFirstName = view.getUserSettingsView().getNewName();
+        final String newLastName = view.getUserSettingsView().getNewSurname();
+        final String newPassword = view.getUserSettingsView().getNewPassword();
+        final int newAge = view.getUserSettingsView().getNewAge();
+        final String newPasswordasswordConfirm = view.getUserSettingsView().getPasswordConfirm();
+        final String newEmail = view.getUserSettingsView().getNewEmail();
 
         final Validator validator = new Validator()
                 .addValidation(nameValidator(), newFirstName, "Invalid first name")
                 .addValidation(nameValidator(), newLastName, "Invalid last name")
                 .addValidation(numberValidator(), newAge, "Invalid age")
                 .addValidation(emailValidator(), newEmail, "Invalid email")
-                .addValidation(passwordValidator(), newPassword, "Invalid password")
+                .addValidation(passwordMinLengthValidator(MIN_PASSWORD_LENGTH), newPassword, "Invalid password")
                 .addValidation(passwordConfirmValidator(newPasswordasswordConfirm), newPassword,
                         "The two passwords do not match")
                 .addValidation(emailAlreadyTakenValidator().or(e -> getCurrentUserData().get("email").equals(e)),
@@ -189,8 +196,8 @@ public class Controller implements ViewsObserver {
                 .mapToInt(m -> (int) m.get("routineIndex"))
                 .max()
                 .orElse(0) + 1);
-        routine.put("description", views.getCreateRoutineView().getRoutineDescription());
-        final List<Map<String, Object>> workouts = views.getCreateRoutineView()
+        routine.put("description", view.getCreateRoutineView().getRoutineDescription());
+        final List<Map<String, Object>> workouts = view.getCreateRoutineView()
                 .getRoutine().entrySet().stream()
                 .map(w -> {
                     final Map<String, Object> workout = new HashMap<>();
@@ -253,7 +260,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean addResults() {
-        final List<Pair<String, Pair<List<Integer>, Integer>>> userResults = views
+        final List<Pair<String, Pair<List<Integer>, Integer>>> userResults = view
                 .getSelectRoutineView()
                 .getUserResults();
         final List<Map<String, Object>> results = userResults.stream()
@@ -273,7 +280,7 @@ public class Controller implements ViewsObserver {
 
     @Override
     public boolean deleteRoutine() {
-        final int routineIndex = views.getSelectRoutineView().getRoutineIndex();
+        final int routineIndex = view.getSelectRoutineView().getRoutineIndex();
         final Map<String, Object> deleteParams = currentUsernameAsQueryParams();
         deleteParams.put("routineIndex", routineIndex);
         return getService(Collection.ROUTINES).deleteByParams(deleteParams) > 0;
@@ -359,19 +366,20 @@ public class Controller implements ViewsObserver {
 
     // Validation strategies
 
-    private static Predicate<String> usernameValidator() {
-        final int minUsernameLength = 8;
-        final int maxUsernameLength = 15;
-        return u -> !isNull(u) && (u.length() >= minUsernameLength && u.length() <= maxUsernameLength);
+    private static Predicate<String> usernameMinLengthValidator(final int minLength) {
+        return u -> !isNull(u) && (u.length() >= minLength);
+    }
+
+    private static Predicate<String> usernameMaxLengthValidator(final int maxLength) {
+        return u -> !isNull(u) && (u.length() <= maxLength);
     }
 
     private static Predicate<String> usernameAlreadyTakenValidator() {
         return u -> !checkIfUserExists(u);
     }
 
-    private static Predicate<String> passwordValidator() {
-        final int minPasswordLength = 6;
-        return p -> !isNull(p) && p.length() > minPasswordLength;
+    private static Predicate<String> passwordMinLengthValidator(final int minLength) {
+        return p -> !isNull(p) && p.length() >= minLength;
     }
 
     private static Predicate<String> passwordConfirmValidator(final String other) {

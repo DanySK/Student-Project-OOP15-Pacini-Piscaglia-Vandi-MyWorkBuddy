@@ -1,7 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
-import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewsHandler.getObserver;
+import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
 import java.util.LinkedList;
 import java.util.List;

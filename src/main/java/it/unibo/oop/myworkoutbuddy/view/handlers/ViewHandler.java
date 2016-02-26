@@ -5,21 +5,21 @@ import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.getHandle
 import java.util.Objects;
 
 import it.unibo.oop.myworkoutbuddy.view.AccessView;
-import it.unibo.oop.myworkoutbuddy.view.AppViews;
+import it.unibo.oop.myworkoutbuddy.view.AppView;
 import it.unibo.oop.myworkoutbuddy.view.CreateRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.RegistrationView;
 import it.unibo.oop.myworkoutbuddy.view.SelectRoutineView;
 import it.unibo.oop.myworkoutbuddy.view.UserSettingsView;
-import it.unibo.oop.myworkoutbuddy.view.ViewsObserver;
+import it.unibo.oop.myworkoutbuddy.view.ViewObserver;
 
 /**
  * 
  * All views of the application to pass to Controller.
  *
  */
-public final class ViewsHandler implements AppViews {
+public final class ViewHandler implements AppView {
 
-    private static ViewsObserver observer;
+    private static ViewObserver observer;
 
     @Override
     public AccessView getAccessView() {
@@ -47,7 +47,7 @@ public final class ViewsHandler implements AppViews {
     }
 
     @Override
-    public void setViewsObserver(final ViewsObserver viewObserver) {
+    public void setViewsObserver(final ViewObserver viewObserver) {
         observer = Objects.requireNonNull(viewObserver);
     }
 
@@ -56,7 +56,7 @@ public final class ViewsHandler implements AppViews {
      * 
      * @return view observer.
      */
-    public static ViewsObserver getObserver() {
+    public static ViewObserver getObserver() {
         return observer;
     }
 
