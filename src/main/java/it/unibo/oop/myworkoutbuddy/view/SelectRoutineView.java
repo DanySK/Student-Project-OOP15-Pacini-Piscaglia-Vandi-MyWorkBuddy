@@ -23,4 +23,10 @@ public interface SelectRoutineView {
      */
     int getRoutineIndex();
 
+    /**
+     * 
+     * @return the inserted user weight updated.
+     */
+    double getWeight();
+
 }

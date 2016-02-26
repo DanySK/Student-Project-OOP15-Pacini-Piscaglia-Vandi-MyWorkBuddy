@@ -105,4 +105,11 @@ public interface ViewObserver {
      */
     boolean deleteRoutine();
 
+    /**
+     * Ask controller to update the inserted user weight.
+     * 
+     * @return true if the inserted weight is correct.
+     */
+    boolean updateWeight();
+
 }

@@ -22,6 +22,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 
@@ -40,6 +41,9 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private Label messageLabel;
+
+    @FXML
+    private TextField txtKg;
 
     @FXML
     private Button btnDeleteRoutine;
@@ -78,11 +82,11 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private void insertData() {
-        if (getObserver().addResults()) {
+        if (getObserver().addResults() && getObserver().updateWeight()) {
             showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
-            showDialog("Error!", "There was an error!", Optional.empty(), AlertType.ERROR);
+            showDialog("Error!", "Your routine data hasn't been saved", Optional.empty(), AlertType.ERROR);
         }
     }
 
@@ -132,6 +136,16 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             messageLabel.setTranslateY(NO_ROUTINE_MESSAGE_Y);
             messageLabel.setText("Create a new routine from the item in the menu!");
         }
+    }
+
+    @Override
+    public double getWeight() {
+        try {
+            return Double.parseDouble(txtKg.getText());
+        } catch (NumberFormatException e) {
+            showDialog("Error", "You haven't inserted a correct weight!", Optional.empty(), AlertType.ERROR);
+        }
+        return -1;
     }
 
 }

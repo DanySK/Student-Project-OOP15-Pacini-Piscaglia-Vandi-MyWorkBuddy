@@ -22,8 +22,10 @@
          <children>
             <HBox prefHeight="50.0" prefWidth="652.0" translateY="20.0">
                <children>
-                  <Label id="borderedLabel" text="Description" translateX="140.0" translateY="20.0" />
-                  <TextArea fx:id="txtDescription" editable="false" prefHeight="26.0" prefWidth="200.0" translateX="250.0" />
+                  <Label id="borderedLabel" text="Description" translateX="50.0" translateY="20.0" />
+                  <TextArea fx:id="txtDescription" editable="false" prefHeight="26.0" prefWidth="200.0" translateX="70.0" />
+                  <Label text="KG" translateX="160.0" translateY="20.0" />
+                  <TextField fx:id="txtKg" prefHeight="25.0" prefWidth="65.0" translateX="180.0" translateY="15.0" />
                </children>
             </HBox>
             <HBox prefHeight="70.0" prefWidth="652.0">

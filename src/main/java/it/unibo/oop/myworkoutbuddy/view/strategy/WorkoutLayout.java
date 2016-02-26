@@ -84,7 +84,6 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         private final SimpleStringProperty rep1;
         private final SimpleStringProperty rep2;
         private final SimpleStringProperty rep3;
-        private final ObservableList<Integer> reps;
         private final SimpleStringProperty kg;
 
         private Exercise(final String exName, final List<Integer> repetitions, final String kg) {
@@ -93,7 +92,6 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
             rep2 = new SimpleStringProperty(repetitions.get(1).toString());
             rep3 = new SimpleStringProperty(repetitions.get(2).toString());
             this.kg = new SimpleStringProperty(kg);
-            reps = FXCollections.observableArrayList(repetitions);
         }
 
         /**
