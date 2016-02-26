@@ -6,11 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 /**
- * 
- * the principal class of model.
+ * principal class of model.
+ *
  */
 public interface MyWorkoutBuddyModel {
-
     /**
      * Add a new Account.
      * @param userName String

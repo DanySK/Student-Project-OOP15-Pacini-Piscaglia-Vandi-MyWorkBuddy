@@ -22,7 +22,6 @@ public class UserImpl implements User {
 
     private final Account account;
     private final Person person;
-
     private Body body;
 
     private List<BodyData> measureList;     // list of body periodic measure
@@ -37,7 +36,6 @@ public class UserImpl implements User {
     public UserImpl(final Account account, final Person person, final Body body) {
         this.account = account;
         this.person = person;
-
         this.body = body;
 
         this.measureList = new ArrayList<>();
@@ -113,7 +111,7 @@ public class UserImpl implements User {
         final Map<String, Double> scoreMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<String, Double> tempMap = i.getPercentuageParts();
-            this.mapSumGen(scoreMap, tempMap, (d1, d2) -> {
+            this.mapSum(scoreMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
         });
@@ -126,7 +124,7 @@ public class UserImpl implements User {
         final Map<String, Double> timeMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<String, Double> tempMap = i.getTimeParts();
-            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+            this.mapSum(timeMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
         });
@@ -149,7 +147,7 @@ public class UserImpl implements User {
         final Map<String, Double> scoreMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<String, Double> tempMap = i.getScoreTools();
-            this.mapSumGen(scoreMap, tempMap, (d1, d2) -> {
+            this.mapSum(scoreMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
         });
@@ -162,7 +160,7 @@ public class UserImpl implements User {
         final Map<String, Double> timeMap = new HashMap<>();
         this.getWorkoutList().forEach(i-> {
             final Map<String, Double> tempMap = i.getTimeTools();
-            this.mapSumGen(timeMap, tempMap, (d1, d2) -> {
+            this.mapSum(timeMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
             });
         });
@@ -198,7 +196,7 @@ public class UserImpl implements User {
      * @param destMap
      * @param sourceMap
      */
-    private <X, Y> void mapSumGen(final Map<X, Y> destMap, final Map<X, Y> sourceMap, final BiFunction<Y, Y, Y> function) {
+    private <X, Y> void mapSum(final Map<X, Y> destMap, final Map<X, Y> sourceMap, final BiFunction<Y, Y, Y> function) {
         sourceMap.keySet().forEach(t -> {
             final Y oldValue = destMap.get(t);
             final Y newValue = sourceMap.get(t);

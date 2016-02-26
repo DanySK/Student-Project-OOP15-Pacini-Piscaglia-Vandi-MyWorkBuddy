@@ -2,7 +2,6 @@ package it.unibo.oop.myworkoutbuddy.model;
 
 /**
  * Class to access system.
- * -------------------------------------------------------------
  */
 public interface Account {
     /**

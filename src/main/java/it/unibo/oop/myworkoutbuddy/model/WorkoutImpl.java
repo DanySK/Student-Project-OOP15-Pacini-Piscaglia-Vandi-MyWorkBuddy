@@ -72,7 +72,6 @@ public class WorkoutImpl implements Workout {
                     stream().map(i -> this.scoreMap.get(i)).
                     collect(Collectors.toList());
         }
-
         return new ArrayList<>();
     }
 
@@ -80,12 +79,11 @@ public class WorkoutImpl implements Workout {
     public Double getWorkoutScore() {
         if (this.isRoutine()) {
             final List<Double> listScore = this.getRoutine().getExerciseList().
-                    stream().map(i -> this.normalizedScore(i)).
+                    stream().map(i -> this.scoreExercise(i)).
                     collect(Collectors.toList());
 
             return listScore.stream().mapToDouble(i->i.doubleValue()).average().getAsDouble();
         }
-
         return SCORE_NULL;
     }
 
@@ -103,7 +101,7 @@ public class WorkoutImpl implements Workout {
         }
         final List<Exercise> listExercise = this.getRoutine().getExerciseList();
         listExercise.forEach(i -> {
-            final Double score = this.normalizedScore(i);
+            final Double score = this.scoreExercise(i);
             final Map<String, Double> percentageMap = i.getGymTool().getBodyMap();
             this.percentageMapping(scoreMap, percentageMap, score);
             this.countMap(timesMap, percentageMap);
@@ -151,7 +149,7 @@ public class WorkoutImpl implements Workout {
         }
         this.getRoutine().getExerciseList().forEach(i -> {
             final String code = i.getGymTool().getCode();
-            final Double score = this.normalizedScore(i);
+            final Double score = this.scoreExercise(i);
             this.mergeMap(scoreMap, code, score, (d1, d2) -> {
                 return scoreMap.get(code) + score;
             });
@@ -183,7 +181,7 @@ public class WorkoutImpl implements Workout {
      * @param exerc an exercise
      * @return a Double
      */
-    private Double normalizedScore(final Exercise exerc) {
+    private Double scoreExercise(final Exercise exerc) {
         final Integer score = this.scoreMap.get(exerc);
 
         if (!this.checkScore(score)) { // fare check score

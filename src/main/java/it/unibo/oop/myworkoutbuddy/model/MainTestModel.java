@@ -1,20 +1,10 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
-import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
-/**
- * 
- *
- */
 public class MainTestModel {
 
     //private final Integer SETTING_VALUE = 0;
@@ -69,6 +59,8 @@ public class MainTestModel {
         System.out.println("\n ==== WORKOUT LIST  ==== ");
         System.out.println(" WorkoutList = " + model.getWorkoutList());
 
+        // statisticMap(final String nameStatistic)
+
         System.out.println("\n ==== STATISTICS SCORES : ");
         System.out.println(" ScoreWorkout = " + model.scoreWorkout());
         System.out.println(" ScoreBodyPart = " + model.scoreBodyPart());
@@ -84,11 +76,12 @@ public class MainTestModel {
         System.out.println(" TrendBodyBMI = " + model.trendBodyBMI() + " ");
         System.out.println(" TrendBodyBMR = " + model.trendBodyBMR() + " [kcal/day]");
 
-        final Map<String, Double> mapGymTool = model.timeGymTool();
+        final Map<String, Double> mapGymTool = model.scoreBodyPart();
         mergeMap(mapGymTool);
 
         System.out.println("\n ==== LOGOUT USER : ");
         model.logoutUser();
+        
         }
 
         System.out.println("\n ==== GLOBAL STATISTICS : ");
@@ -170,8 +163,9 @@ public class MainTestModel {
         /*Add an init measure body: true(init) = new Measure*/
         model.addDataMeasure(LocalDate.now());
 
-        model.addBodyMeasure("HEIGHT", 1.80, true);
-        model.addBodyMeasure("WEIGHT", 70.00, true);
+        final Double height = 1.80;
+        model.addBodyMeasure("HEIGHT", height, true);
+        model.addBodyMeasure("WEIGHT", 65.00, true);
         model.addBodyMeasure("UPPER_BODY", VAL_MAX_DOUBLE, true);
         model.addBodyMeasure("LOWER_BODY", 60.00, true);
 
@@ -201,7 +195,7 @@ public class MainTestModel {
             /* set scores */
             for (int i = 0; i < model.getNumExercise("R1"); i++) {
                 /*exerciseScore : numExercise, scoreExercise*/
-                final int score = 1 + k + i;
+                final int score = 1 + (k + i);
                 model.addExerciseScore(i, score);
             }
         }
