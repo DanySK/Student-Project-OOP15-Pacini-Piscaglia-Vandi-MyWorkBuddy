@@ -1,0 +1,119 @@
+The Model is composed by different classes with relative interfaces, that are :
+- MyWorkoutBuddyModel
+
+- ManageWorkout
+- ManageUser
+
+- Workout with WorkoutImpl
+- Routine with RoutineImpl
+- Exercise with ExerciseImpl
+- GymTool with GymToolImpl
+
+- User with UserImpl
+- Account with AccountImpl
+- Person with PersonImpl
+
+- Body
+- BodyData
+
+MyWorkoutBuddyModel :
+ 	the main class of the application : it represents the model entity
+
+ManageWorkout :
+ 	It manage all the GymTool in the application and allows to add new measures and gives all application statistics.
+ 	Fields :
+ 	- listGymTool = list of all tools in the application
+ 	- mapGymTool = associations between each single tool name and corresponding tool
+ 	- currentWorkout = the current Workout of the application
+ 	- currentBodyData = the current BodyData of the application
+
+ManageUser :
+ 	It manage all users in the application.
+ 	Fields :
+ 	- listUser = list of all users in the application
+ 	- listAccount = list of all accounts in the application
+ 	- currentUser = the currentUser in the application
+ 	- currentAccount = the currentAccount in the application
+ 	- body = the body set for the application
+ 	- currentBodyZone = the currentZone of working in the application
+
+Workout :
+ 	It manages a User's Workout.
+ 	Fields :
+ 	- date = date of Workout
+ 	- time = hour of Workout
+ 	- state = (done/to do)
+ 	- routine = optional routine
+ 	- scoreMap = associations that for each single exercise of Workout contains the corresponding score
+
+Routine :
+ 	It performs the card for a single Workout.
+ 	Fields :
+ 	- code = alphabetic code of a routine
+ 	- name
+ 	- target = the Routine aim
+ 	- dayAweek = list of week days dedicated to do the Routine Workout
+    - exerciseList = list of exercise;
+
+Exercise :
+ 	It performs a user's exercise.
+ 	Fields :
+ 	- description = short description of an exercise
+    - gymTool = GymTool used
+    - settingValue = difficulty grade set
+    - repetition = repetitions number of an entire exercise
+    - time = duration of a repetition
+    - pause = minutes of pause between two consecutive repetitions
+    - numSession = cycles number of actions to perform in a single repetition
+    
+GymTool :
+ 	It performs a gym tool.
+ 	It allows user to use a generic GymTool.
+ 	Fields :
+ 	- code = alphabetic code of a tool
+ 	- name = name of a tool
+ 	- imageFile = Optional route to achieve the image file
+ 	- numTools = max number of available tools, of the same Tool type, in the Gym
+ 	- valueMin = minimum settable grade of difficulty
+ 	- valueMax = max settable grade of difficulty
+ 	- bodyMap = for each body muscle, already put, it has the percentage involvement value in the tool
+
+User :
+ 	It contains all user informations interesting for the application.
+ 	Fields :
+ 	- account = the user's account
+ 	- person = the user's person
+ 	- body = the user's body
+ 	- measureList = list with all the informations for each User's measurable features
+ 	- workoutList = list with all the informations for each User's Workouts
+ 	- routineList = list with all the informations for each User's Routines
+
+Account :
+ 	It performs a person' s account.
+ 	It allows a person the system logIn or the system access.
+ 	Fields :
+ 	- UserName = alphabetic identifier name
+ 	- Password
+ 	- Avatar = Alter ego of User
+
+Person :
+ 	It performs a user's person entity.
+ 	Fields :
+ 	- firstName = proper name
+ 	- lastName = proper surname
+ 	- age
+ 	- email = proper email
+
+Body :
+ 	It performs a user's body.
+ 	It allows to store the muscles which are supposed significant for the application.
+ 	Fields :
+ 	- bodyMap = associations between each single bodyZone with relative muscles
+ 	- measureSet = set of human feature considered measurable by the application
+
+BodyData :
+ 	It allows to store all the measurements done in the specified data, 
+ 	relative to a set of specific human features and with appropriate values.
+ 	Fields :
+ 	- data = date of measurement
+    - bodyMeasure = associations between each name in measureSet with appropriate measure

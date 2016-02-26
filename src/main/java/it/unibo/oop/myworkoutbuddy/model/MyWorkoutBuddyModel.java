@@ -77,11 +77,10 @@ public interface MyWorkoutBuddyModel {
     void addWorkout(final String nameRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state);
 
     /**
-     * add a new score for the specified exercise by the numEx.
-     * @param numEx Integer
-     * @param score Integer
+     * add a new List of scores.
+     * @param scoreList List<Integer>
      */
-    void addExerciseScore(final Integer numEx, final Integer score);
+    void addExerciseScore(final List<Integer> scoreList);
 
     /**
      * the default body.
@@ -148,10 +147,9 @@ public interface MyWorkoutBuddyModel {
 
     /**
      * give the dimension of an exercise list with codeRoutine.
-     * @param codeRoutine String
      * @return an Integer
      */
-    int getNumExercise(final String codeRoutine);
+    int getNumExercise();
 
     /**
      * give the current user's measure list.

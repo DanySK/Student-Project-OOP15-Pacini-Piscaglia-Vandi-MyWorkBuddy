@@ -8,7 +8,6 @@ import java.util.Map;
  * 
  * Informations about User's activities :
  * Account, Data, Measure, Training, TrainingCard.
- * -------------------------------------------------------------
  */
 public interface User {
 

@@ -1,8 +1,8 @@
 package it.unibo.oop.myworkoutbuddy.model;
 import java.util.List;
 /**
- * WorkoutRoutine : composed by an exercises list (Exercise list).
- * -------------------------------------------------------------
+ * Routine : composed by an exercises list (Exercise list).
+ * 
  */
 public interface Routine {
 

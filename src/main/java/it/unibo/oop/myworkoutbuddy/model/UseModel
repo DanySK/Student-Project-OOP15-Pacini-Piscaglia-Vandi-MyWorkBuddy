@@ -1,0 +1,10 @@
+The class MainTestModel contains all necessary informations for using the model.
+However the model logic is this one, (the ideal modus operandi) :
+1 create one or more new account/s
+2 create one or more new user/s
+3 make the login with correct name an password if you want to use the application
+4 set your personalize body
+5 set informations for your workouts, routines, exercises ..
+6 do some measures
+7 set the scores obtained for your exercises/workouts
+8 visualize your progresses

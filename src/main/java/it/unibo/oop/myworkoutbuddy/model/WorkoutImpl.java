@@ -70,7 +70,7 @@ public class WorkoutImpl implements Workout {
         if (this.isRoutine()) {
             return this.getRoutine().getExerciseList().
                     stream().map(i -> this.scoreMap.get(i)).
-                    collect(Collectors.toList());
+                    filter(t -> t != null).collect(Collectors.toList());
         }
         return new ArrayList<>();
     }
@@ -80,7 +80,7 @@ public class WorkoutImpl implements Workout {
         if (this.isRoutine()) {
             final List<Double> listScore = this.getRoutine().getExerciseList().
                     stream().map(i -> this.scoreExercise(i)).
-                    collect(Collectors.toList());
+                    filter(t -> t != null).collect(Collectors.toList());
 
             return listScore.stream().mapToDouble(i->i.doubleValue()).average().getAsDouble();
         }
@@ -162,18 +162,25 @@ public class WorkoutImpl implements Workout {
         this.state = state;
     }
 
-   @Override
-   public void addScore(final Integer index, final Integer score) {
-       if (this.isRoutine()) {
+    @Override
+    public void addScore(final List<Integer> scoreList) {
+        if (this.isRoutine()) {
+            final Integer dim = scoreList.size();
+            scoreList.stream().filter(i -> scoreList.indexOf(i) < dim).forEach(t -> {
+                final Integer pos = scoreList.indexOf(t);
+                this.addScoreIndex(pos, t);
+            });
+        }
+    }
+
+   private void addScoreIndex(final Integer index, final Integer score) {
            final Exercise exerc = this.getRoutine().getExerciseList().get(index);
            final GymTool gymTool = exerc.getGymTool();
            final Integer min = gymTool.getMinValue();
            final Integer max = gymTool.getMaxValue();
            // check score to be in : [min max]
            final Integer newScore = (score < min) ? min : (score > max) ? max : score;
-
            this.scoreMap.put(exerc, newScore);
-       }
    }
 
     /**

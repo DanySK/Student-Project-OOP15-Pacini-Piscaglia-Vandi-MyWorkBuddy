@@ -77,11 +77,10 @@ public interface Workout {
     Double getWorkoutScore();
 
     /**
-     * add a new Score with passed informations to a Workout.
-     * @param index Integer
-     * @param score Integer
+     * add a new scoreList.
+     * @param scoreList List<Integer>
      */
-    void addScore(final Integer index, final Integer score);
+    void addScore(final List<Integer> scoreList);
 
     /**
      * set the state of a Workout : done -> to do or to do -> done.

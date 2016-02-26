@@ -8,7 +8,6 @@ import java.util.Set;
 
 /**
  Class Body to manage a human body.
- -------------------------------------------------------------
 */
 public class Body {
     private Map<String, Set<String>> bodyMap;

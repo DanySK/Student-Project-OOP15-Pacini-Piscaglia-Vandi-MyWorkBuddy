@@ -12,13 +12,13 @@ import java.util.Optional;
  */
 public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
 
-    private final ManageWorkoutUserImpl manager;
+    private final ManageWorkout manager;
 
     /**
      * 
      */
     public MyWorkoutBuddyModelImpl() {
-        manager = new ManageWorkoutUserImpl();
+        manager = new ManageWorkout();
     }
 
     @Override
@@ -65,8 +65,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void addExerciseScore(final Integer numEx, final Integer score) {
-        manager.addExerciseScore(numEx, score);
+    public void addExerciseScore(final List<Integer> scoreList) {
+        manager.addExerciseScore(scoreList);
     }
 
     @Override
@@ -116,8 +116,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public int getNumExercise(final String codeRoutine) {
-        return manager.getNumExercise(codeRoutine);
+    public int getNumExercise() {
+        return manager.getNumExercise();
     }
 
     @Override
@@ -142,42 +142,42 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
 
     @Override
     public Map<String, Double> scoreBodyPart() {
-        return manager.statisticMap("Score_part");
+        return manager.statisticMap(MethodKey.SCORE_PART.toString());
     }
 
     @Override
     public Map<String, Double> scoreBodyZone() {
-        return manager.statisticMap("Score_zone");
+        return manager.statisticMap(MethodKey.SCORE_ZONE.toString());
     }
 
     @Override
     public Map<String, Double> scoreGymTool() {
-        return manager.statisticMap("Score_tool");
+        return manager.statisticMap(MethodKey.SCORE_TOOL.toString());
     }
 
     @Override
     public Map<String, Double> timeBodyPart() {
-        return manager.statisticMap("Time_part");
+        return manager.statisticMap(MethodKey.TIME_PART.toString());
     }
 
     @Override
     public Map<String, Double> timeBodyZone() {
-        return manager.statisticMap("Time_zone");
+        return manager.statisticMap(MethodKey.TIME_ZONE.toString());
     }
 
     @Override
     public Map<String, Double> timeGymTool() {
-        return manager.statisticMap("Time_tool");
+        return manager.statisticMap(MethodKey.TIME_TOOL.toString());
     }
 
     @Override
     public List<Double> trendBodyBMR() {
-        return manager.trendList("Trend_bmr");
+        return manager.trendList(MethodKey.TREND_BMR.toString());
     }
 
     @Override
     public List<Double> trendBodyBMI() {
-        return manager.trendList("Trend_bmi");
+        return manager.trendList(MethodKey.TREND_BMI.toString());
     }
 
 }
