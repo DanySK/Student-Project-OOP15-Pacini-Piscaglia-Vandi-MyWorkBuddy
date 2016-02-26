@@ -19,7 +19,7 @@ import com.mongodb.client.MongoCollection;
  */
 public final class MongoDriver {
 
-    private static final String CONFIG_FILE = "/it/unibo/oop/myworkoutbuddy/controller/db/config.yaml";
+    private static final String CONFIG_FILE = "/it/unibo/oop/myworkoutbuddy/controller/db/config/config.yaml";
 
     private static MongoClient client;
 

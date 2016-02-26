@@ -36,6 +36,7 @@ public class Controller implements ViewObserver {
     private static final int MIN_USERNAME_LENGTH = 8;
     private static final int MAX_USERNAME_LENGTH = 15;
     private static final int MIN_PASSWORD_LENGTH = 6;
+
     private final MyWorkoutBuddyModel model;
     private final AppView view;
 
@@ -97,7 +98,7 @@ public class Controller implements ViewObserver {
 
         final Validator validator = new Validator()
                 .addValidation(usernameMinLengthValidator(MIN_USERNAME_LENGTH), username,
-                       "Username must contain at least " + MIN_USERNAME_LENGTH + " characters")
+                        "Username must contain at least " + MIN_USERNAME_LENGTH + " characters")
                 .addValidation(usernameMaxLengthValidator(MAX_USERNAME_LENGTH), username,
                         "Username cannot contain more then " + MAX_USERNAME_LENGTH + " characters")
                 .addValidation(usernameAlreadyTakenValidator(), username, "Username already taken")
