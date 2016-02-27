@@ -54,10 +54,10 @@ public final class CRUDOperations {
      * @param collection
      *            the collection to use
      * @param elements
-     *            the elements insert
-     * @return True if the element is successfully created, false if some errors occurs.
+     *            the elements to insert
+     * @return true if the elements is successfully created, false if some errors occurs
      */
-    public static boolean createNewDocuments(
+    public static long createNewDocuments(
             final MongoCollection<Document> collection,
             final Collection<? extends Map<String, Object>> elements) {
         Objects.requireNonNull(collection);
@@ -67,10 +67,10 @@ public final class CRUDOperations {
             collection.insertMany(elements.stream()
                     .map(Document::new)
                     .collect(Collectors.toList()));
-            return true;
+            return elements.size();
         } catch (final MongoException e) {
             // Insert fail.
-            return false;
+            return -1;
         }
     }
 

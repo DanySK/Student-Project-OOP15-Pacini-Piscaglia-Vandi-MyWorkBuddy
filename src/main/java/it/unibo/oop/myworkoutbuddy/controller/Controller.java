@@ -124,7 +124,7 @@ public class Controller implements ViewObserver {
             newUser.put("height", height);
             newUser.put("weight", weight);
             newUser.put("age", age);
-            getService(Collection.USERS).create(newUser);
+            getService(DBCollectionName.USERS).create(newUser);
         });
         return validator.getErrorMessages();
     }
@@ -167,7 +167,7 @@ public class Controller implements ViewObserver {
             newUserData.put("surname", newLastName);
             newUserData.put("email", newEmail);
             newUserData.put("age", newAge);
-            getService(Collection.USERS).updateByParams(
+            getService(DBCollectionName.USERS).updateByParams(
                     currentUsernameAsQueryParams(),
                     newUserData);
         });
@@ -177,7 +177,7 @@ public class Controller implements ViewObserver {
     @Override
     public Map<String, Set<String>> getExercises() {
         final Map<String, Set<String>> exercises = new HashMap<>();
-        getService(Collection.EXERCISES).getAll().forEach(m -> {
+        getService(DBCollectionName.EXERCISES).getAll().forEach(m -> {
             final Set<String> s = new HashSet<>();
             s.add((String) m.get("name"));
             exercises.merge((String) m.get("mainTarget"), s, (o, n) -> {
@@ -191,7 +191,7 @@ public class Controller implements ViewObserver {
     @Override
     public boolean saveRoutine() {
         final Map<String, Object> routine = new HashMap<>();
-        final Service routines = getService(Collection.ROUTINES);
+        final Service routines = getService(DBCollectionName.ROUTINES);
         routine.put("username", getCurrentUsername());
         routine.put("routineIndex", routines.getAll().stream()
                 .mapToInt(m -> (int) m.get("routineIndex"))
@@ -223,7 +223,7 @@ public class Controller implements ViewObserver {
         final Map<String, Object> params = new HashMap<>();
         params.put("name", exerciseName);
         final Map<String, String> exerciseInfo = new HashMap<>();
-        getService(Collection.EXERCISES)
+        getService(DBCollectionName.EXERCISES)
                 .getOneByParams(params)
                 .ifPresent(m -> {
                     exerciseInfo.put("description", (String) m.get("description"));
@@ -236,7 +236,7 @@ public class Controller implements ViewObserver {
     @Override
     public Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines() {
         final Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> routines = new HashSet<>();
-        getService(Collection.ROUTINES)
+        getService(DBCollectionName.ROUTINES)
                 .getByParams(currentUsernameAsQueryParams()).forEach(r -> {
                     final Map<String, Map<String, List<Integer>>> workouts = new HashMap<>();
                     ((List<Map<String, Object>>) r.get("workouts")).forEach(w -> {
@@ -275,8 +275,13 @@ public class Controller implements ViewObserver {
                     return result;
                 })
                 .collect(Collectors.toList());
-        return getService(Collection.RESULTS)
-                .create(results);
+        return getService(DBCollectionName.RESULTS)
+                .create(results) >= 0;
+    }
+
+    @Override
+    public boolean updateWeight() {
+        return false;
     }
 
     @Override
@@ -284,7 +289,7 @@ public class Controller implements ViewObserver {
         final int routineIndex = view.getSelectRoutineView().getRoutineIndex();
         final Map<String, Object> deleteParams = currentUsernameAsQueryParams();
         deleteParams.put("routineIndex", routineIndex);
-        return getService(Collection.ROUTINES).deleteByParams(deleteParams) > 0;
+        return getService(DBCollectionName.ROUTINES).deleteByParams(deleteParams) > 0;
     }
 
     @Override
@@ -307,7 +312,7 @@ public class Controller implements ViewObserver {
 
     @SuppressWarnings("unchecked")
     private Map<String, Number> getChartData(final String chartName) {
-        final Optional<Map<String, Object>> chartData = getService(Collection.CHARTS)
+        final Optional<Map<String, Object>> chartData = getService(DBCollectionName.CHARTS)
                 .getByParams(currentUsernameAsQueryParams())
                 .stream().findFirst();
         return chartData.isPresent()
@@ -324,26 +329,19 @@ public class Controller implements ViewObserver {
         return model.getCurrentNameAccount();
     }
 
-    /*
-     * private Optional<User> getCurrentUser() {
-     * // return model.getCurrentUser();
-     * return null;
-     * }
-     */
-
     private String getCurrentUsername() {
         // return getCurrentUser().get().getAccount().getUsername();
         return getCurrentUser().get();
-    }
-
-    private Map<String, Object> currentUsernameAsQueryParams() {
-        return usernameAsQueryParam(getCurrentUsername());
     }
 
     private static Map<String, Object> usernameAsQueryParam(final String username) {
         final Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         return params;
+    }
+
+    private Map<String, Object> currentUsernameAsQueryParams() {
+        return usernameAsQueryParam(getCurrentUsername());
     }
 
     private static boolean checkIfUserExists(final String username) {
@@ -353,15 +351,15 @@ public class Controller implements ViewObserver {
     private static boolean checkIfEmailExists(final String email) {
         final Map<String, Object> param = new HashMap<>();
         param.put("email", email);
-        return getService(Collection.USERS).getOneByParams(param).isPresent();
+        return getService(DBCollectionName.USERS).getOneByParams(param).isPresent();
     }
 
     private static Optional<Map<String, Object>> getUserData(final String username) {
-        return getService(Collection.USERS)
+        return getService(DBCollectionName.USERS)
                 .getOneByParams(usernameAsQueryParam(username));
     }
 
-    private static Service getService(final Collection service) {
+    private static Service getService(final DBCollectionName service) {
         return SERVICES.get(service);
     }
 
@@ -406,7 +404,7 @@ public class Controller implements ViewObserver {
     /**
      * An {@code enum} that represents all the collections used by this {@code Controller}.
      */
-    private enum Collection {
+    private enum DBCollectionName {
 
         EXERCISES, ROUTINES, CHARTS, USERS, RESULTS;
 
@@ -417,15 +415,15 @@ public class Controller implements ViewObserver {
 
     }
 
-    private static final Map<Collection, Service> SERVICES;
+    private static final Map<DBCollectionName, Service> SERVICES;
 
     static {
-        final Map<Collection, Service> services = new EnumMap<>(Collection.class);
-        services.put(Collection.EXERCISES, new MongoService(Collection.EXERCISES.toString()));
-        services.put(Collection.ROUTINES, new MongoService(Collection.ROUTINES.toString()));
-        services.put(Collection.CHARTS, new MongoService(Collection.CHARTS.toString()));
-        services.put(Collection.USERS, new MongoService(Collection.USERS.toString()));
-        services.put(Collection.RESULTS, new MongoService(Collection.RESULTS.toString()));
+        final Map<DBCollectionName, Service> services = new EnumMap<>(DBCollectionName.class);
+        services.put(DBCollectionName.EXERCISES, new MongoService(DBCollectionName.EXERCISES.toString()));
+        services.put(DBCollectionName.ROUTINES, new MongoService(DBCollectionName.ROUTINES.toString()));
+        services.put(DBCollectionName.CHARTS, new MongoService(DBCollectionName.CHARTS.toString()));
+        services.put(DBCollectionName.USERS, new MongoService(DBCollectionName.USERS.toString()));
+        services.put(DBCollectionName.RESULTS, new MongoService(DBCollectionName.RESULTS.toString()));
         SERVICES = Collections.unmodifiableMap(services);
     }
 

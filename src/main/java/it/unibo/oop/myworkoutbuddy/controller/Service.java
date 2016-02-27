@@ -25,9 +25,9 @@ public interface Service {
      * 
      * @param elements
      *            the elements to insert
-     * @return true if the element is successfully created, false if some errors occurs
+     * @return the number of inserted elements
      */
-    boolean create(Collection<? extends Map<String, Object>> elements);
+    long create(Collection<? extends Map<String, Object>> elements);
 
     /**
      * Retrieves a document that satisfies the query parameters.

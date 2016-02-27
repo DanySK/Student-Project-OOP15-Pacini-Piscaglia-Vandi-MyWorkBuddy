@@ -44,7 +44,7 @@ public class MongoService implements Service {
     }
 
     @Override
-    public boolean create(final Collection<? extends Map<String, Object>> elements) {
+    public long create(final Collection<? extends Map<String, Object>> elements) {
         Preconditions.checkArgument(!elements.contains(null));
         return createNewDocuments(collection, elements);
     }

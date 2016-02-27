@@ -6,11 +6,6 @@ syntax: glob
 *hs_err_pid*
 */bin/*
 
-# Eclipse
-.classpath
-.project
-.settings/
-
 # Mac
 .DS_Store
 
