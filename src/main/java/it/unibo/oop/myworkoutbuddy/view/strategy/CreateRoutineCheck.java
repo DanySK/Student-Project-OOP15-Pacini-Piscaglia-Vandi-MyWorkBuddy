@@ -106,11 +106,8 @@ public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
 
     @Override
     public boolean isWorkoutToBeSet(final Optional<VBox> workoutSelected, final MouseEvent event) {
-        if ((workoutSelected.isPresent() && workoutSelected.get() != event.getSource())
-                || !workoutSelected.isPresent()) {
-            return true;
-        }
-        return false;
+        return (workoutSelected.isPresent() && workoutSelected.get() != event.getSource())
+                || !workoutSelected.isPresent();
     }
 
     @Override

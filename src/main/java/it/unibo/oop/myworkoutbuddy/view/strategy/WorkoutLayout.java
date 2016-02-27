@@ -32,8 +32,8 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
     private static final double KG_FIELD_WIDTH = 136;
 
     private static final double REPS_FIELD_WIDTH = 100;
-
-    private TableBuildStrategy tableBuild = new TableBuild();
+    
+    private final TableBuildStrategy tableBuildStrategy = new TableBuild();
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
@@ -64,15 +64,19 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private TableView<Exercise> tableBuild(final ObservableList<Exercise> data) {
 
-        TableColumn<Exercise, String> exCol = tableBuild.buildColumn("Exercise Name", EXERCISE_FIELD_WIDTH,
+        final TableColumn<Exercise, String> exCol = tableBuildStrategy.buildColumn("Exercise Name",
+                EXERCISE_FIELD_WIDTH,
                 "exerciseName");
-        TableColumn<Exercise, String> repsCol = tableBuild.buildColumn("Repetitions", 0, "");
-        TableColumn<Exercise, String> kgCol = tableBuild.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
-        TableColumn<Exercise, String> rep1Col = tableBuild.buildRepColumn("Rep 1", REPS_FIELD_WIDTH, "rep1");
-        TableColumn<Exercise, String> rep2Col = tableBuild.buildRepColumn("Rep 2", REPS_FIELD_WIDTH, "rep2");
-        TableColumn<Exercise, String> rep3Col = tableBuild.buildRepColumn("Rep 3", REPS_FIELD_WIDTH, "rep3");
+        final TableColumn<Exercise, String> repsCol = tableBuildStrategy.buildColumn("Repetitions", 0, "");
+        final TableColumn<Exercise, String> kgCol = tableBuildStrategy.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
+        final TableColumn<Exercise, String> rep1Col = tableBuildStrategy.buildRepColumn("Rep 1", REPS_FIELD_WIDTH,
+                "rep1");
+        final TableColumn<Exercise, String> rep2Col = tableBuildStrategy.buildRepColumn("Rep 2", REPS_FIELD_WIDTH,
+                "rep2");
+        final TableColumn<Exercise, String> rep3Col = tableBuildStrategy.buildRepColumn("Rep 3", REPS_FIELD_WIDTH,
+                "rep3");
         repsCol.getColumns().addAll(Arrays.asList(rep1Col, rep2Col, rep3Col));
-        return tableBuild.build(Arrays.asList(exCol, repsCol, kgCol), data);
+        return tableBuildStrategy.build(Arrays.asList(exCol, repsCol, kgCol), data);
     }
 
     /**

@@ -112,11 +112,11 @@ public class MediaControl extends BorderPane {
 
         mediaBar.getChildren().add(playButton);
         // Add spacer
-        Label spacer = new Label("   ");
+        final Label spacer = new Label("   ");
         mediaBar.getChildren().add(spacer);
 
         // Add Time label
-        Label timeLabel = new Label("Time: ");
+        final Label timeLabel = new Label("Time: ");
         mediaBar.getChildren().add(timeLabel);
 
         // Add time slider
@@ -139,7 +139,7 @@ public class MediaControl extends BorderPane {
         mediaBar.getChildren().add(playTime);
 
         // Add the volume label
-        Label volumeLabel = new Label("Vol: ");
+        final Label volumeLabel = new Label("Vol: ");
         mediaBar.getChildren().add(volumeLabel);
 
         // Add Volume slider
@@ -167,10 +167,10 @@ public class MediaControl extends BorderPane {
     /**
      * 
      */
-    protected void updateValues() {
+    private void updateValues() {
         if (playTime != null && timeSlider != null && volumeSlider != null) {
             Platform.runLater(() -> {
-                Duration currentTime = mp.getCurrentTime();
+                final Duration currentTime = mp.getCurrentTime();
                 playTime.setText(formatTime(currentTime, duration));
                 timeSlider.setDisable(duration.isUnknown());
                 if (!timeSlider.isDisabled() && duration.greaterThan(Duration.ZERO) && !timeSlider.isValueChanging()) {
@@ -185,22 +185,22 @@ public class MediaControl extends BorderPane {
 
     private static String formatTime(final Duration elapsed, final Duration duration) {
         int intElapsed = (int) Math.floor(elapsed.toSeconds());
-        int elapsedHours = intElapsed / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
+        final int elapsedHours = intElapsed / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
         if (elapsedHours > 0) {
             intElapsed -= elapsedHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE;
         }
-        int elapsedMinutes = intElapsed / SEXADECIMAL_BASE;
-        int elapsedSeconds = intElapsed - elapsedHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
+        final int elapsedMinutes = intElapsed / SEXADECIMAL_BASE;
+        final int elapsedSeconds = intElapsed - elapsedHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
                 - elapsedMinutes * SEXADECIMAL_BASE;
 
         if (duration.greaterThan(Duration.ZERO)) {
             int intDuration = (int) Math.floor(duration.toSeconds());
-            int durationHours = intDuration / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
+            final int durationHours = intDuration / (SEXADECIMAL_BASE * SEXADECIMAL_BASE);
             if (durationHours > 0) {
                 intDuration -= durationHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE;
             }
-            int durationMinutes = intDuration / SEXADECIMAL_BASE;
-            int durationSeconds = intDuration - durationHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
+            final int durationMinutes = intDuration / SEXADECIMAL_BASE;
+            final int durationSeconds = intDuration - durationHours * SEXADECIMAL_BASE * SEXADECIMAL_BASE
                     - durationMinutes * SEXADECIMAL_BASE;
             if (durationHours > 0) {
                 return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds,

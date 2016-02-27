@@ -34,7 +34,7 @@ public class TableBuild implements TableBuildStrategy {
     @Override
     public TableColumn<Exercise, String> buildRepColumn(final String colName, final double width,
             final String propertyValue) {
-        TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
+        final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
         switch (propertyValue) {
         case "rep1":
             col.setOnEditCommit(t -> {
@@ -69,7 +69,7 @@ public class TableBuild implements TableBuildStrategy {
 
     private TableColumn<Exercise, String> createColumn(final String name, final double width,
             final String propertyValue) {
-        TableColumn<Exercise, String> col = new TableColumn<>(name);
+        final TableColumn<Exercise, String> col = new TableColumn<>(name);
         col.setPrefWidth(width);
         col.setCellFactory(TextFieldTableCell.forTableColumn());
         col.setCellValueFactory(new PropertyValueFactory<Exercise, String>(propertyValue));
