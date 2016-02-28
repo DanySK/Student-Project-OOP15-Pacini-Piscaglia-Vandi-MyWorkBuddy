@@ -1,7 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -28,6 +28,6 @@ public interface SelectRoutineView {
      * 
      * @return the inserted user weight updated, otherwise an empty optional.
      */
-    Optional<Double> getWeight();
+    OptionalDouble getWeight();
 
 }

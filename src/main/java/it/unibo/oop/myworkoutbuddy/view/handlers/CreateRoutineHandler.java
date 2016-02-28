@@ -202,16 +202,21 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         final Label newExercise = new Label(exerciseSelected.get().getText());
         newExercise.addEventHandler(MouseEvent.MOUSE_CLICKED, selectExerciseHandler);
         newExercise.setId("exerciseToSelect");
-        final List<TextField> repsField = new ArrayList<>();
-        IntStream.range(0, 3).forEach(i -> repsField.add(new TextField("0")));
-        IntStream.range(0, 3).forEach(i -> repsField.get(i).setTranslateY(REPS_FIELD_TRANSLATE_Y));
-        IntStream.range(0, 3).forEach(i -> repsField.get(i).setMaxWidth(REPS_MAX_WIDTH));
+        final List<TextField> repsField = buildRepFields();
         exBox.getChildren().add(newExercise);
         final Label repLabel = new Label(" - Repetitions: ");
         repLabel.setTranslateY(REP_LABEL_TRANSLATE_Y);
         exBox.getChildren().add(repLabel);
         IntStream.range(0, N_REPETITIONS).forEach(i -> exBox.getChildren().add(repsField.get(i)));
         return exBox;
+    }
+
+    private List<TextField> buildRepFields() {
+        final List<TextField> reps = new ArrayList<>();
+        IntStream.range(0, N_REPETITIONS).forEach(i -> reps.add(new TextField("0")));
+        IntStream.range(0, N_REPETITIONS).forEach(i -> reps.get(i).setTranslateY(REPS_FIELD_TRANSLATE_Y));
+        IntStream.range(0, N_REPETITIONS).forEach(i -> reps.get(i).setMaxWidth(REPS_MAX_WIDTH));
+        return reps;
     }
 
 }

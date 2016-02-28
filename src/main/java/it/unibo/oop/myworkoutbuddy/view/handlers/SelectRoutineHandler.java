@@ -6,6 +6,7 @@ import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -124,11 +125,11 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     @Override
-    public Optional<Double> getWeight() {
+    public OptionalDouble getWeight() {
         if (txtKg.getText().isEmpty()) {
-            return Optional.empty();
+            return OptionalDouble.empty();
         }
-        return Optional.of(Double.parseDouble(txtKg.getText()));
+        return OptionalDouble.of(Double.parseDouble(txtKg.getText()));
     }
 
     // User can insert its weight but it must be a correct number.
