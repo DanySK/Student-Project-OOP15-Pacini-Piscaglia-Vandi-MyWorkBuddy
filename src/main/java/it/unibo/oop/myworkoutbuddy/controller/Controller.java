@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
+import it.unibo.oop.myworkoutbuddy.util.DateConverter;
+import it.unibo.oop.myworkoutbuddy.util.DateFormats;
 import it.unibo.oop.myworkoutbuddy.view.AppView;
 import it.unibo.oop.myworkoutbuddy.view.ViewObserver;
 
@@ -94,8 +97,11 @@ public class Controller implements ViewObserver {
                     .forEach(m -> {
                 final Number height = (Number) m.get("height");
                 final double weight = (double) m.get("weight");
-                model.addBodyMeasure("height", height.doubleValue(), firstTime.get());
-                model.addBodyMeasure("weight", weight, firstTime.get());
+                final Date date = DateFormats.parseUTC(m.get("date").toString());
+                System.out.println(height + " " + weight + " " + firstTime.get());
+                model.addDataMeasure(DateConverter.dateToLocalDate(date));
+                model.addBodyMeasure("HEIGHT", height.doubleValue() / 100.0, firstTime.get());
+                model.addBodyMeasure("WEIGHT", weight, firstTime.get());
                 firstTime.map(b -> false);
             });
         });
@@ -144,6 +150,7 @@ public class Controller implements ViewObserver {
             getService(DBCollectionName.USERS).create(newUser);
             final Map<String, Object> newMeasure = new HashMap<>();
             newMeasure.put("username", username);
+            newMeasure.put("date", DateFormats.toUTCString(new Date()));
             newMeasure.put("height", height);
             newMeasure.put("weight", weight);
             getService(DBCollectionName.MEASURES).create(newMeasure);
@@ -235,7 +242,7 @@ public class Controller implements ViewObserver {
         final List<Map<String, Object>> workouts = view.getCreateRoutineView()
                 .getRoutine().entrySet().stream()
                 .map(w -> {
-                    model.addWorkout(w.getKey(), "", ""); // not used
+                    model.addWorkout(w.getKey(), w.getKey(), ""); // not used
                     final Map<String, Object> workout = new HashMap<>();
                     workout.put("name", w.getKey());
                     workout.put("exercises", w.getValue().entrySet().stream()
@@ -316,9 +323,10 @@ public class Controller implements ViewObserver {
                     .getOneByParams(currentUsernameAsQueryParams())
                     .get().get("height");
             newMeasure.put("height", height);
+            newMeasure.put("date", DateFormats.toUTCString(new Date()));
             model.addDataMeasure(LocalDate.now());
-            model.addBodyMeasure("weight", w, false);
-            model.addBodyMeasure("height", (double) height, false);
+            model.addBodyMeasure("HEIGHT", height / 100.0, false);
+            model.addBodyMeasure("WEIGHT", w, false);
         });
         return newMeasure.isEmpty() ? true // Nothing to do since the weight was't updated
                 : getService(DBCollectionName.MEASURES)
@@ -346,6 +354,9 @@ public class Controller implements ViewObserver {
         final Map<String, Number> indexes = new HashMap<>();
         final List<Double> bmi = model.trendBodyBMI();
         final List<Double> bmr = model.trendBodyBMR();
+
+        System.out.println(bmi);
+        System.out.println(bmr);
         indexes.put("BMI", bmi.get(bmi.size() - 1));
         indexes.put("BMR", bmr.get(bmr.size() - 1));
         return indexes;
