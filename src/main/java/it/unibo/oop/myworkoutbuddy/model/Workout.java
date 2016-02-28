@@ -1,90 +1,38 @@
 package it.unibo.oop.myworkoutbuddy.model;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Map;
-
 /**
- * User's data of a single training session. (WorkOut)
+ * Workout : composed by an exercises list (Exercise list).
+ * 
  */
 public interface Workout {
 
     /**
-     * give the data of Workout.
-     * @return a LocalDate
+     * give the alphabetic code of a Workout.
+     * @return a String
      */
-    LocalDate getDate();
+    String getCode();
 
     /**
-     * give the time of Workout.
-     * @return a LocalTime
+     * give the nameCard of a Workout.
+     * @return a String
      */
-    LocalTime getTime();
+    String getName();
 
     /**
-     * give true if the exercise is done.
-     * @return a boolean
+     * give the scope of Workout.
+     * @return a String
      */
-    boolean getState();
+    String getTarget();
 
     /**
-     * give the training card of an exercise.
-     * @return a Routine
+     * give the list of gymExercise in a Workout.
+     * @return a List<Exercise>
      */
-    Routine getRoutine();
+    List<Exercise> getExerciseList();
 
     /**
-     * give the list of scores of map.
-     * @return a List<Integer>
+     * add a new gymExercise for a workout.
+     * @param exercise Exercise
      */
-    List<Integer> getScoreList();
-
-    /**
-     * give the associations between muscles and the relative percentages.
-     * @return a Map<String, Double>
-     */
-    Map<String, Double> getPercentuageParts();
-
-    /**
-     * give the associations between muscles and the relative time of training.
-     * @return a Map<String, Double>
-     */
-    Map<String, Double> getTimeParts();
-
-    /**
-     * give the associations between codes and relative numbers of time used.
-     * @return a Map<String, Double>
-     */
-    Map<String, Double> getTimeTools();
-
-    /**
-     * give the associations between GymTools and relative numbers of score obtained.
-     * @return a Map<String, Double>
-     */
-    Map<String, Double> getScoreTools();
-
-    /**
-     * give the associations between Exercise and relative score.
-     * @return a Map<String, Double>
-     */
-    Map<Exercise, Integer> getScoreMap();
-
-    /**
-     * give the average of normalized scores.
-     * @return a Double
-     */
-    Double getWorkoutScore();
-
-    /**
-     * add a new scoreList.
-     * @param scoreList List<Integer>
-     */
-    void addScore(final List<Integer> scoreList);
-
-    /**
-     * set the state of a Workout : done -> to do or to do -> done.
-     * @param state boolean
-     */
-    void modifyState(final boolean state);
+    void addGymExcercise(final Exercise exercise);
 }

@@ -96,12 +96,12 @@ public class UserImpl implements User {
     }
 
     @Override
-    public List<Double> scoreWorkout() {
-    return this.getWorkoutList().stream().map(Workout::getWorkoutScore).collect(Collectors.toList());
+    public List<Double> scoreRoutine() {
+    return this.getRoutineList().stream().map(Routine::getRoutineScore).collect(Collectors.toList());
         /*
         final List<Double> newList = new ArrayList<>();
-        this.getWorkoutList().forEach(i-> {
-            newList.add(i.getWorkoutScore());
+        this.getRoutineList().forEach(i-> {
+            newList.add(i.getRoutineScore());
         });
         */
     }
@@ -109,7 +109,7 @@ public class UserImpl implements User {
     @Override
     public Map<String, Double> scoreBodyPart() {
         final Map<String, Double> scoreMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
+        this.getRoutineList().forEach(i-> {
             final Map<String, Double> tempMap = i.getPercentuageParts();
             this.mapSum(scoreMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
@@ -122,7 +122,7 @@ public class UserImpl implements User {
     @Override
     public Map<String, Double> timeBodyPart() {
         final Map<String, Double> timeMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
+        this.getRoutineList().forEach(i-> {
             final Map<String, Double> tempMap = i.getTimeParts();
             this.mapSum(timeMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
@@ -145,7 +145,7 @@ public class UserImpl implements User {
     @Override
     public Map<String, Double> scoreGymTool() {
         final Map<String, Double> scoreMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
+        this.getRoutineList().forEach(i-> {
             final Map<String, Double> tempMap = i.getScoreTools();
             this.mapSum(scoreMap, tempMap, (d1, d2) -> {
                 return d1 + d2;
@@ -158,7 +158,7 @@ public class UserImpl implements User {
     @Override
     public Map<String, Double> timeGymTool() {
         final Map<String, Double> timeMap = new HashMap<>();
-        this.getWorkoutList().forEach(i-> {
+        this.getRoutineList().forEach(i-> {
             final Map<String, Double> tempMap = i.getTimeTools();
             this.mapSum(timeMap, tempMap, (d1, d2) -> {
                 return d1 + d2;

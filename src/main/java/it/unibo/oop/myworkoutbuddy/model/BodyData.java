@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,16 +23,16 @@ public class BodyData {
 
     private static final double METER_TO_CM = 100.00;
 
-    private LocalDate data;     // date of measurement
+    private Date date;     // date of measurement
     private final Map<String, Double> bodyMeasure;  // value measure for each body measure
 
     /**
      * 
-     * @param data LocalDate
+     * @param localDate LocalDate
      * @throws NullPointerException exception for null values
      */
-    public BodyData(final LocalDate data) throws NullPointerException {
-        this.setData(data);
+    public BodyData(final LocalDate localDate) throws NullPointerException {
+        this.setData(date);
         this.bodyMeasure = new HashMap<>();
     }
 
@@ -39,8 +40,8 @@ public class BodyData {
      * 
      * @return date of measurement
      */
-    public LocalDate getDate() {
-        return this.data;
+    public Date getDate() {
+        return this.date;
     }
 
     /**
@@ -114,8 +115,8 @@ public class BodyData {
      * set the data of measure
      * @param data LocalDate
      */
-    private void setData(final LocalDate data) {
-        this.data = data;
+    private void setData(final Date date) {
+        this.date = date;
     }
 
     @Override

@@ -1,61 +1,77 @@
 package it.unibo.oop.myworkoutbuddy.model;
+
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
 /**
- * Routine : composed by an exercises list (Exercise list).
- * 
+ * User's data of a single training session.
  */
 public interface Routine {
 
     /**
-     * give the alphabetic code of a Routine.
-     * @return a String
+     * give the data of Routine.
+     * @return a LocalDate
      */
-    String getCode();
+    LocalDate getDate();
 
     /**
-     * give the nameCard of a Routine.
-     * @return a String
+     * give the training card of an exercise.
+     * @return a Routine
      */
-    String getName();
+    Workout getWorkout();
 
     /**
-     * give the scope of Workout.
-     * @return a String
+     * give the list of scores of map.
+     * @return a List<Integer>
      */
-    String getTarget();
+    List<Integer> getValueList();
 
     /**
-     * give the list of Day in a week.
-     * @return a List<DayInWeek>
+     * give the associations between muscles and the relative percentages.
+     * @return a Map<String, Double>
      */
-    List<DayInWeek> getDayAweek();
+    Map<String, Double> getPercentuageParts();
 
     /**
-     * give the list of gymExercise in a Workout.
-     * @return a List<Exercise>
+     * give the associations between muscles and the relative time of training.
+     * @return a Map<String, Double>
      */
-    List<Exercise> getExerciseList();
+    Map<String, Double> getTimeParts();
 
     /**
-     * add a week day for doing a workout.
-     * @param day DayInWeek
+     * give the associations between codes and relative numbers of time used.
+     * @return a Map<String, Double>
      */
-    void addDay(final DayInWeek day);
+    Map<String, Double> getTimeTools();
 
     /**
-     * add a new gymExercise for a workout.
-     * @param exercise Exercise
+     * give the associations between GymTools and relative numbers of score obtained.
+     * @return a Map<String, Double>
      */
-    void addGymExcercise(final Exercise exercise);
+    Map<String, Double> getScoreTools();
 
     /**
-     * enum of week day.
-     *
+     * give the associations between Exercise and relative score.
+     * @return a Map<String, Double>
      */
-    enum DayInWeek {
-       /**
-        * day of Week.
-        */
-       MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
-    }
+    Map<Exercise, Integer> getScoreMap();
+
+    /**
+     * give the average of normalized scores.
+     * @return a Double
+     */
+    Double getRoutineScore();
+
+    /**
+     * add a new scoreList.
+     * @param valueList List<Integer>
+     */
+    void addValue(final List<Integer> valueList);
+
+    /**
+     * return the Workout state.
+     * @return a boolean
+     */
+    boolean isState();
 }

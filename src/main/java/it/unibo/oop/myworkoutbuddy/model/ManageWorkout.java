@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +13,12 @@ import java.util.Optional;
  */
 public class ManageWorkout extends ManageUser {
 
+    private static final int TIME_SESSION = 2; // value used to estimate time of exercise: time == num session x time sessions
+
     private List<GymTool> listGymTool;
     private Map<String, GymTool> mapGymTool;
 
-    private Optional<Workout> currentWorkout = Optional.empty();
+    private Optional<Routine> currentRoutine = Optional.empty();
     private Optional<BodyData> currentBodyData = Optional.empty();
 
     /**
@@ -35,74 +36,76 @@ public class ManageWorkout extends ManageUser {
     public void logoutUser() {
         this.setCurrentAccount(Optional.empty());
         this.setCurrentUser(Optional.empty());
-        this.currentWorkout = Optional.empty();
+        this.currentRoutine = Optional.empty();
     }
 
     /**
-     * add a new routine for current user.
+     * add a new workout for current user.
      * @param code String
-     * @param nameRoutine String
+     * @param nameWorkout String
      * @param target String
      */
-    public void addRoutine(final String code, final String nameRoutine, final String target) {
+    public void addWorkout(final String code, final String nameWorkout, final String target) {
         if (this.checkCurrentUser()) {
-            final Routine newRoutine = new RoutineImpl(code, nameRoutine, target);
-            this.getCurrentUser().addRoutine(newRoutine);
+            final Workout newRoutine = new WorkoutImpl(code, nameWorkout, target);
+            this.getCurrentUser().addWorkout(newRoutine);
         }
     }
 
     /**
      * add a new Exercise.
-     * @param codeRoutine String
+     * @param codeWorkout String
      * @param target String
      * @param codeTool String
-     * @param settingValue Integer
-     * @param repetition Integer
-     * @param time Integer
-     * @param numSession Integer
-     * @param pause Integer
+     * @param sessions List<Integer> sessions number for each repetition
      */
-    public void addGymExcercise(final String codeRoutine, final String target, final String codeTool, 
-            final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
+    public void addGymExcercise(final String codeWorkout, final String target, final String codeTool, 
+            final List<Integer> sessions) {
         if (this.checkCurrentUser()) {
             final Optional<GymTool> optGymTool = this.getGymTool(codeTool);
             if (this.checkGymTool(optGymTool, codeTool)) {
-                final Exercise exercToadd = new ExerciseImpl.Builder().description(target).gymTool(optGymTool.get()).
-                        settingValue(settingValue).repetition(repetition).time(time).numSession(numSession).pause(pause).
-                        build();
-                final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine); // check valid routine
-                if (checkRoutine(optRoutine, codeRoutine)) {
-                    optRoutine.get().addGymExcercise(exercToadd);
+                final int repetitions = sessions.size();
+                final int numSession = sessions.stream().mapToInt(Integer::intValue).sum();
+                final int time = numSession * TIME_SESSION; // in lack of time input, i calculate an estimate time duration
+                final Exercise newExerc = new ExerciseImpl.Builder()
+                        .description(target)
+                        .gymTool(optGymTool.get())
+                        .repetition(repetitions)
+                        .sessions(numSession)
+                        .time(time)
+                        .build();
+                final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout); // check valid routine
+                if (checkWorkout(optWorkout, codeWorkout)) {
+                    optWorkout.get().addGymExcercise(newExerc);
                 }
             }
         }
     }
 
     /**
-     * add a new Workout for current User.
-     * @param codeRoutine String
+     * add a new Routine for current User.
+     * @param codeWorkout String
      * @param localDate LocalDate
-     * @param localTime LocalTime
      * @param state boolean
      */
-    public void addWorkout(final String codeRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state) {
+    public void addRoutine(final String codeWorkout, final LocalDate localDate, final boolean state) {
         if (this.checkCurrentUser()) {
-            final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine);
-            if (checkRoutine(optRoutine, codeRoutine)) {
-                final Workout newWorkout = new WorkoutImpl(optRoutine.get(), localDate, localTime, state);
-                this.getCurrentUser().addWorkout(newWorkout);
-                this.currentWorkout = Optional.of(newWorkout);
+            final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout);
+            if (checkWorkout(optWorkout, codeWorkout)) {
+                final Routine newRoutine = new RoutineImpl(optWorkout.get(), localDate, state);
+                this.getCurrentUser().addRoutine(newRoutine);
+                this.currentRoutine = Optional.of(newRoutine);
             }
         }
     }
 
     /**
-     * add a new scoreList.
-     * @param scoreList List<Integer>
+     * add a new valueList.
+     * @param valueList List<Integer>
      */
-    public void addExerciseScore(final List<Integer> scoreList) {
-        if (this.checkCurrentWorkout()) {
-            this.currentWorkout.get().addScore(scoreList);
+    public void addExerciseValue(final List<Integer> valueList) {
+        if (this.checkCurrentRoutine()) {
+            this.currentRoutine.get().addValue(valueList);
         }
     }
 
@@ -140,14 +143,13 @@ public class ManageWorkout extends ManageUser {
      * add a new GymTool.
      * @param description String
      * @param nameTool String
-     * @param nameImage String
      * @param num Integer
      * @param valueMin Integer
      * @param valueMax Integer
      */
-    public void addGymTool(final String description, final String nameTool, final String nameImage, final int num, final int valueMin, final int valueMax) {
+    public void addGymTool(final String description, final String nameTool, final int num, final int valueMin, final int valueMax) {
         final GymTool newTool = new GymToolImpl.Builder().code(description).name(nameTool).
-                imageFile(nameImage).numTools(num).valueMin(valueMin).valueMax(valueMax).build();
+                numTools(num).valueMin(valueMin).valueMax(valueMax).build(); // ecc.
         this.listGymTool.add(newTool);
         this.mapGymTool.put(newTool.getCode(), newTool);
     }
@@ -178,12 +180,12 @@ public class ManageWorkout extends ManageUser {
      * @return an Integer
      */
     public int getNumExercise() {
-        if (!checkCurrentUser()) {
+        if (!this.checkCurrentUser() || !this.checkCurrentRoutine()) {
             return 0;
         }
-        final String codeRoutine = this.currentWorkout.get().getRoutine().getCode();
-        final Optional<Routine> optRoutine = this.getRoutine(this.getCurrentUser(), codeRoutine);
-        return checkRoutine(optRoutine, codeRoutine) ? optRoutine.get().getExerciseList().size() : 0;
+        final String codeWorkout = this.currentRoutine.get().getWorkout().getCode();
+        final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout);
+        return checkWorkout(optWorkout, codeWorkout) ? optWorkout.get().getExerciseList().size() : 0;
     }
 
     /**
@@ -191,7 +193,7 @@ public class ManageWorkout extends ManageUser {
      * @return a List<BodyData>
      */
     public List<BodyData> getMeasureList() {
-        if (!checkCurrentUser()) {
+        if (!this.checkCurrentUser()) {
             return new ArrayList<>();
         }
         return this.getCurrentUser().getMeasureList();
@@ -202,7 +204,7 @@ public class ManageWorkout extends ManageUser {
      * @return a List<Routine>
      */
     public List<Routine> getRoutineList() {
-        if (!checkCurrentUser()) {
+        if (!this.checkCurrentUser()) {
             return new ArrayList<>();
         }
         return this.getCurrentUser().getRoutineList();
@@ -223,11 +225,11 @@ public class ManageWorkout extends ManageUser {
      * give the current user's Workout score list.
      * @return a List<Double>
      */
-    public List<Double> scoreWorkout() {
-        if (!this.checkCurrentWorkout()) {
+    public List<Double> scoreRoutine() {
+        if (!this.checkCurrentRoutine()) {
             return new ArrayList<>();
         }
-        return this.getCurrentUser().scoreWorkout();
+        return this.getCurrentUser().scoreRoutine();
     }
 
     /**
@@ -283,13 +285,13 @@ public class ManageWorkout extends ManageUser {
     }
 
     /**
-     * find any routine with code equal to passed code and that belongs to user
+     * find any workout with code equal to passed code and that belongs to user
      * @param user the passed user
      * @param code the passed routine code
      * @return a routine
      */
-    private Optional<Routine> getRoutine(final User user, final String code) {
-        return user.getRoutineList().stream().filter(i -> i.getCode().equals(code)).findAny();
+    private Optional<Workout> getWorkout(final User user, final String code) {
+        return user.getWorkoutList().stream().filter(i -> i.getCode().equals(code)).findAny();
     }
 
     /**
@@ -340,27 +342,27 @@ public class ManageWorkout extends ManageUser {
     }
 
     /**
-     * true if optRoutine exists and has name equal to codeRoutine
-     * @param optRoutine a routine in optional form
-     * @param codeRoutine name code of routine passed
+     * true if optWorkout exists and has name equal to codeWorkout
+     * @param optWorkout a workout in optional form
+     * @param codeWorkout name code of workout passed
      * @return a boolean
      */
-    private boolean checkRoutine(final Optional<Routine> optRoutine, final String codeRoutine) {
-        final boolean ok = checkOptValue(optRoutine);
+    private boolean checkWorkout(final Optional<Workout> optWorkout, final String codeWorkout) {
+        final boolean ok = checkOptValue(optWorkout);
         if (!ok) {
-            System.out.println("\n Routine Code not present : " + codeRoutine);
+            System.out.println("\n Workout Code not present : " + codeWorkout);
         }
         return ok;
     }
 
     /**
-     * true if it is set current Workout
+     * true if it is set current Routine
      * @return a boolean
      */
-    private boolean checkCurrentWorkout() {
-        final boolean ok = this.checkOptValue(this.currentWorkout);
+    private boolean checkCurrentRoutine() {
+        final boolean ok = this.checkOptValue(this.currentRoutine);
         if (!ok) {
-            System.out.println("\n Workout not set");
+            System.out.println("\n Routine not set");
         }
         return ok;
     }

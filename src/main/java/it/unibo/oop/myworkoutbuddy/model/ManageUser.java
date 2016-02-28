@@ -30,10 +30,9 @@ public class ManageUser {
      * Add a new Account.
      * @param userName String
      * @param password String
-     * @param avatar String
      */
-    public void addAccount(final String userName, final String password, final String avatar) {
-        final Account account = new AccountImpl(userName, password, avatar);
+    public void addAccount(final String userName, final String password) {
+        final Account account = new AccountImpl(userName, password);
         if (!this.isAccount(account)) {
             this.listAccount.add(account);
             this.currentAccount = Optional.of(account);

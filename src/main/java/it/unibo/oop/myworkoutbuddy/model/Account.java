@@ -15,10 +15,4 @@ public interface Account {
      * @return userPassword
      */
     String getPassword();
-
-    /**
-     * 
-     * @return avatar of Account
-     */
-    String getAvatar();
 }

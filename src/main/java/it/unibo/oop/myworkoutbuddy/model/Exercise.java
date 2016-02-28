@@ -19,12 +19,6 @@ public interface Exercise {
     GymTool getGymTool();
 
     /**
-     * give the difficulty grade of an Exercise.
-     * @return an integer
-     */
-    int getSettingValue();
-
-    /**
      * give the number of times to repeat.
      * @return an integer
      */
@@ -40,13 +34,7 @@ public interface Exercise {
      * give the number of Sessions to repeat.
      * @return an integer
      */
-    int getNumSession();
-
-    /**
-     * give the minutes of pause doing an exercise.
-     * @return an integer
-     */
-    int getPause();
+    int getSessions();
 
     /**
      * give the set of body parts.

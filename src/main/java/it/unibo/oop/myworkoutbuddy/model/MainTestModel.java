@@ -1,8 +1,8 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,17 +12,6 @@ import java.util.Map;
  * Here an example of using model utilities.
  */
 public final class MainTestModel {
-
-    /*
-     * value of try
-     */
-    private static final Integer AGE_TRY_1 = 20;
-    private static final Integer AGE_TRY_2 = 25;
-    private static final Integer AGE_TRY_3 = 30;
-    private static final Double VAL_MIN_DOUBLE_TRY = 20.00;
-    private static final Double VAL_MIN1_DOUBLE_TRY = 30.00;
-    private static final Double VAL_MID_DOUBLE_TRY = 50.00;
-    private static final Double VAL_MAX_DOUBLE_TRY = 80.00;
 
     private static final Map<String, Double> TIME_MAP = new HashMap<>();
 
@@ -71,10 +60,10 @@ public final class MainTestModel {
         System.out.println("\n ==== LOGIN USER ==== ");
         model.loginUser("account" + i, "password" + i);
 
-        System.out.println("\n currentAccount = " + model.getCurrentNameAccount());
+        System.out.println("\n currentAccount = " + model.getCurrentUserName());
 
         // WORKOUT DATE LOGIN USER: cycle of generation test data for login User
-        testLoginUser(model);
+        testLoginUser(model); //
 
         /* --- PRINTS USER DATA AND STATISTICS ------*/
         System.out.println("\n MeasureList = " + model.getMeasureList());
@@ -88,7 +77,7 @@ public final class MainTestModel {
         // statisticMap(final String nameStatistic)
 
         System.out.println("\n ==== STATISTICS SCORES : ");
-        System.out.println(" ScoreWorkout = " + model.scoreWorkout());
+        System.out.println(" ScoreRoutine = " + model.scoreRoutine());
         System.out.println(" ScoreBodyPart = " + model.scoreBodyPart());
         System.out.println(" ScoreBodyZone = " + model.scoreBodyZone());
         System.out.println(" ScoreGymTool = " + model.scoreGymTool());
@@ -122,30 +111,30 @@ public final class MainTestModel {
         /* 
          * You may create the body for the model also if the current user is not set
          */
-        model.body(); // new body
+        model.resetBody(); // new body
 
         /*
          * Here it is an example how to personalize your body
          */
-        model.body("HAMSTRINGS", "LEG"); // mapping: part -> zone
-        model.body("QUADRICEPS");
-        model.body("CALVES");
+        model.setBody("HAMSTRINGS", "LEG"); // mapping: part -> zone
+        model.setBody("QUADRICEPS");
+        model.setBody("CALVES");
 
-        model.body("BICEPS", "ARM"); // mapping: part -> zone
-        model.body("FORE_ARM");
+        model.setBody("BICEPS", "ARM"); // mapping: part -> zone
+        model.setBody("FORE_ARM");
 
-        model.body("PECTORALIS_MAJOR", "CHEST"); // mapping: part -> zone
-        model.body("PECTORALIS_MINOR");
-        model.body("ABDOMINALS");
+        model.setBody("PECTORALIS_MAJOR", "CHEST"); // mapping: part -> zone
+        model.setBody("PECTORALIS_MINOR");
+        model.setBody("ABDOMINALS");
         // end Body definition
 
         /* GYMTOOLS: load GymTool informations
          * At any time you may add a new Gym Tool with : description, name, route image file and integer values required by it
          */
-        // description, image, num, valueMin, valueMax
-        model.addGymTool("T1", "Tapis Roulant", "image1.png", 10, 1, 10);
-        model.addGymTool("T2", "Cyclette", "image2.png", 10, 1, 10);
-        model.addGymTool("T3", "Hand Weight", "image3.png", 10, 1, 10);
+        // description, num, valueMin, valueMax
+        model.addGymTool("T1", "Tapis Roulant", 10, 1, 10);
+        model.addGymTool("T2", "Cyclette", 10, 1, 10);
+        model.addGymTool("T3", "Hand Weight", 10, 1, 10);
 
         // setting body parts for each GymTool
         /*
@@ -154,16 +143,16 @@ public final class MainTestModel {
          * 2) the tools that use the body parts specified;
          * You may add a new percentage value for a set of body parts in the specified tools
          */
-        model.addBodyPart("T1", "HAMSTRINGS", VAL_MIN_DOUBLE_TRY);
-        model.addBodyPart("T1", "QUADRICEPS", VAL_MAX_DOUBLE_TRY);
+        model.addBodyPart("T1", "HAMSTRINGS", 20.00);
+        model.addBodyPart("T1", "QUADRICEPS", 80.00);
 
-        model.addBodyPart("T2", "HAMSTRINGS", VAL_MIN1_DOUBLE_TRY);
-        model.addBodyPart("T2", "CALVES", VAL_MID_DOUBLE_TRY);
-        model.addBodyPart("T2", "BICEPS", VAL_MIN_DOUBLE_TRY);
+        model.addBodyPart("T2", "HAMSTRINGS", 30.00);
+        model.addBodyPart("T2", "CALVES", 50.00);
+        model.addBodyPart("T2", "BICEPS", 20.00);
 
-        model.addBodyPart("T3", "BICEPS", VAL_MID_DOUBLE_TRY);
-        model.addBodyPart("T3", "PECTORALIS_MINOR", VAL_MIN_DOUBLE_TRY);
-        model.addBodyPart("T3", "PECTORALIS_MAJOR", VAL_MIN1_DOUBLE_TRY);
+        model.addBodyPart("T3", "BICEPS", 50.00);
+        model.addBodyPart("T3", "PECTORALIS_MINOR", 20.00);
+        model.addBodyPart("T3", "PECTORALIS_MAJOR", 30.00);
 
        /*
         *  USER: User (Account, Person)  make User Test data
@@ -172,14 +161,14 @@ public final class MainTestModel {
         * 
         * When you add a new User with appropriated Account you automatically set the current User
         */
-        model.addAccount("account1", "password1", "avatar1.png");
-        model.addUser("Paolo", "Rossi", AGE_TRY_1, "paolo.rossi@studio.unibo.it");
+        model.addAccount("account1", "password1");
+        model.addUser("Paolo", "Rossi", 20, "paolo.rossi@studio.unibo.it");
 
-        model.addAccount("account2", "password2", "avatar2.png");
-        model.addUser("Gino", "Bianchi", AGE_TRY_2, "gino.bianchi@studio.unibo.it");
+        model.addAccount("account2", "password2");
+        model.addUser("Gino", "Bianchi", 25, "gino.bianchi@studio.unibo.it");
 
-        model.addAccount("account3", "password3", "avatar3.png");
-        model.addUser("Mario", "Verdi", AGE_TRY_3, "mario.verdi@studio.unibo.it");
+        model.addAccount("account3", "password3");
+        model.addUser("Mario", "Verdi", 30, "mario.verdi@studio.unibo.it");
 
         /*
          * ... loading other users
@@ -199,7 +188,7 @@ public final class MainTestModel {
          * you may add all the measure you want, which refer to the corresponding human feature you want to give, if the current user is set
          */
         final Double height = 1.80;
-        final Double weight = 65.00;
+        final Double weight = 70.00;
         final Double upperBody = 80.00;
         final Double lowerBody = 60.00;
         model.addBodyMeasure("HEIGHT", height, true);
@@ -211,22 +200,20 @@ public final class MainTestModel {
          * ROUTINE: load Routines for Current User
          * You may add a new routine if the current user is set
          */
-        /* Routine: code , name, target(aim of routine) */
-        model.addRoutine("R1", "Routine1", "BODY_BUILDING");
+        /* Workout: code , name, target(aim of routine) */
+        model.addWorkout("W1", "Workout1", "BODY_BUILDING");
 
         /*
-         * add a new GymExercise to current user
+         * add a new GymExercise to current workout
          */
-        /* Exercise data for Routine: codeRoutine(identifier code), description(what the routine must do?), 
-         * codeGymTool(what's its name ?), settingValue(difficulty grade), repetition(how much i must repeat an entire exercise?), 
-         * time(how long does it last in a repetition?), numSession(how many minor cycles i have to do for complete a repetition?), pause
-         * (i have right a pause of N minutes ended a Session) */
-        final Integer settingValueTry = 5;
-        model.addGymExcercise("R1", "Warming", "T1", settingValueTry, 10, 3, 10, 2);
-        model.addGymExcercise("R1", "Running", "T1", settingValueTry, 10, 3, 10, 2);
-        model.addGymExcercise("R1", "Tonifing", "T2", settingValueTry, 10, 3, 10, 2);
-        model.addGymExcercise("R1", "Swimming", "T3", settingValueTry, 10, 3, 10, 2);
-        model.addGymExcercise("R1", "Swimming", "T2", settingValueTry, 10, 3, 10, 2);
+        /* Exercise data for Workout: codeWorkout(identifier code), description(what the routine must do?), 
+         * codeGymTool(what's its name ?)*/
+
+        model.addGymExcercise("W1", "Warming", "T1", new ArrayList<>(Arrays.asList(1, 2, 3)));
+        model.addGymExcercise("W1", "Running", "T1", new ArrayList<>(Arrays.asList(3, 4, 3)));
+        model.addGymExcercise("W1", "Tonifing", "T2", new ArrayList<>(Arrays.asList(4, 7, 8)));
+        model.addGymExcercise("W1", "Swimming", "T3", new ArrayList<>(Arrays.asList(1, 2, 3)));
+        model.addGymExcercise("W1", "Swimming", "T2", new ArrayList<>(Arrays.asList(1, 2, 3)));
 
         /* 
          * WORKOUT: Workout Cycle of current User
@@ -234,17 +221,17 @@ public final class MainTestModel {
          */
         final Integer numTryCycle = 5;
         for (int k = 0; k < numTryCycle; k++) {
-            /*Workout : codeRoutine, date, hour, state*/
-            model.addWorkout("R1", LocalDate.now(), LocalTime.now(), true);
+            /*Routine : codeWorkout, date*/
+            model.addRoutine("W1", LocalDate.now()); //
 
             /* set scores */
-            final List<Integer> scoreList = new ArrayList<>(); // new List of scores (it's an example)
-            for (int i = 0; i < model.getNumExercise(); i++) {
+            final List<Integer> valueList = new ArrayList<>(); // new List of scores (it's an example)
+            for (int i = 0; i < model.getNumExercise(); i++) { //
                 /*exerciseScore : numExercise, scoreExercise*/
-                final int score = 1 + (k + i);
-                scoreList.add(score); // add a new score to temporary list
+                final int value = 1 + (k + i);
+                valueList.add(value); // add a new score to temporary list
             }
-            model.addExerciseScore(scoreList); // add all temporary list scores
+            model.addExerciseValue(valueList); // add all temporary list scores
         }
 
         /*Add a new measure body*/

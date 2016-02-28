@@ -10,19 +10,16 @@ public class AccountImpl implements Account {
 
     private final String userName;
     private final String password;
-    private final String avatar;
 
     /**
      * 
      * @param userName String
      * @param password String
-     * @param avatar String
      */
-    public AccountImpl(final String userName, final String password, final String avatar) {
+    public AccountImpl(final String userName, final String password) {
 
         this.userName = userName;
         this.password = password;
-        this.avatar = avatar;
     }
 
     @Override
@@ -35,12 +32,7 @@ public class AccountImpl implements Account {
     }
 
     @Override
-    public String getAvatar() {
-        return this.avatar;
-    }
-
-    @Override
     public String toString() {
-        return "AccountImpl [userName = " + this.getUserName() + ", password = " + this.getPassword() + "Avatar = " + this.getAvatar() + "]";
+        return "AccountImpl [userName = " + this.getUserName() + ", password = " + this.getPassword() + "]";
     }
 }

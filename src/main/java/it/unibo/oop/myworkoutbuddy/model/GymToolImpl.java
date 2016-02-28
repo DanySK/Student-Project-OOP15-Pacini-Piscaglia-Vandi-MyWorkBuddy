@@ -18,12 +18,12 @@ public final class GymToolImpl implements GymTool {
 
     private String code;
     private String name;
-    private Optional<String> imageFile = Optional.empty();
     private int numTools;
     private final int valueMin;
     private final int valueMax;
 
     private Map<String, Double> bodyMap;
+    private Optional<String> imageFile = Optional.empty();
 
     /**
      * 
@@ -37,7 +37,7 @@ public final class GymToolImpl implements GymTool {
     private GymToolImpl(final String code, final String name, final String imageFile, final int numTools, final int valueMin, final int valueMax) {
         this.code = code;
         this.name = name;
-        this.imageFile = Optional.of(imageFile);
+        this.imageFile  = Optional.of(imageFile);
         this.numTools = numTools;
         this.valueMin = valueMin;
         this.valueMax = valueMax;
@@ -125,10 +125,11 @@ public final class GymToolImpl implements GymTool {
     public static class Builder {
         private String code;
         private String name;
-        private String imageFile;
         private int numTools;
         private int valueMin;
         private int valueMax;
+
+        private Optional<String> imageFile = Optional.empty();
 
         /**
          * 
@@ -146,16 +147,6 @@ public final class GymToolImpl implements GymTool {
          */
         public Builder name(final String name) {
             this.name = name;
-            return this;
-        }
-
-        /**
-         * 
-         * @param imageFile String
-         * @return a builder of GymTool
-         */
-        public Builder imageFile(final String imageFile) {
-            this.imageFile = imageFile;
             return this;
         }
 
@@ -189,6 +180,16 @@ public final class GymToolImpl implements GymTool {
             return this;
         }
 
+        /**
+         * 
+         * @param imageFile String
+         * @return a builder of Optional
+         */
+        public Builder imageFile(final String imageFile) {
+            this.imageFile = Optional.ofNullable(imageFile);
+            return this;
+        }
+
         private void checkNotNull(final Object object) throws NullPointerException {
             if (object == null) {
                 throw new NullPointerException();
@@ -203,13 +204,12 @@ public final class GymToolImpl implements GymTool {
         public GymToolImpl build() throws IllegalStateException {
             this.checkNotNull(this.code);
             this.checkNotNull(this.name);
-            this.checkNotNull(this.imageFile);
 
             if (this.numTools < 0) {
                 throw new IllegalStateException();
             }
 
-            return new GymToolImpl(this.code, this.name, this.imageFile, this.numTools, this.valueMin, this.valueMax);
+            return new GymToolImpl(this.code, this.name, this.imageFile.orElse("none"), this.numTools, this.valueMin, this.valueMax);
         }
     }
 }

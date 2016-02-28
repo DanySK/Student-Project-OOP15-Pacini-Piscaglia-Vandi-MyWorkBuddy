@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,8 +21,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void addAccount(final String userName, final String password, final String avatar) {
-        manager.addAccount(userName, password, avatar);
+    public void addAccount(final String userName, final String password) {
+        manager.addAccount(userName, password);
     }
 
     @Override
@@ -37,7 +36,7 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public Optional<String> getCurrentNameAccount() {
+    public Optional<String> getCurrentUserName() {
         return manager.getCurrentNameAccount();
     }
 
@@ -47,40 +46,38 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void addRoutine(final String code, final String nameRoutine, final String target) {
-        manager.addRoutine(code, nameRoutine, target);
+    public void addWorkout(final String code, final String nameWorkout, final String target) {
+        manager.addWorkout(code, nameWorkout, target);
     }
 
     @Override
     public void addGymExcercise(final String nameRoutine, final String target, 
-            final String nameTool, final int settingValue, final int repetition,
-            final int time, final int numSession, final int pause) {
-        manager.addGymExcercise(nameRoutine, target, nameTool, settingValue, repetition, time, numSession, pause);
+            final String nameTool, final List<Integer> numSessions) {
+        manager.addGymExcercise(nameRoutine, target, nameTool, numSessions);
     }
 
     @Override
-    public void addWorkout(final String nameRoutine, 
-            final LocalDate localDate, final LocalTime localTime, final boolean state) {
-        manager.addWorkout(nameRoutine, localDate, localTime, state);
+    public void addRoutine(final String nameWorkout, final LocalDate localDate) { // codeWorkout
+        manager.addRoutine(nameWorkout, localDate, true);
     }
 
     @Override
-    public void addExerciseScore(final List<Integer> scoreList) {
-        manager.addExerciseScore(scoreList);
+    public void addExerciseValue(final List<Integer> valueList) {
+        manager.addExerciseValue(valueList);
     }
 
     @Override
-    public void body() {
+    public void resetBody() {
         manager.body();
     }
 
     @Override
-    public void body(final String bodyPart, final String bodyZone) {
+    public void setBody(final String bodyPart, final String bodyZone) {
         manager.body(bodyPart, bodyZone);
     }
 
     @Override
-    public void body(final String bodyPart) {
+    public void setBody(final String bodyPart) {
         manager.body(bodyPart);
     }
 
@@ -95,9 +92,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public void addGymTool(final String description, final String nameTool, final String nameImage, 
-            final int num, final int valueMin, final int valueMax) {
-        manager.addGymTool(description, nameTool, nameImage, num, valueMin, valueMax);
+    public void addGymTool(final String description, final String nameTool, final int num, final int valueMin, final int valueMax) {
+        manager.addGymTool(description, nameTool, num, valueMin, valueMax); // ecc.
     }
 
     @Override
@@ -136,8 +132,8 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
-    public List<Double> scoreWorkout() {
-        return manager.scoreWorkout();
+    public List<Double> scoreRoutine() {
+        return manager.scoreRoutine();
     }
 
     @Override
@@ -179,5 +175,4 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     public List<Double> trendBodyBMI() {
         return manager.trendList(MethodKey.TREND_BMI.toString());
     }
-
 }

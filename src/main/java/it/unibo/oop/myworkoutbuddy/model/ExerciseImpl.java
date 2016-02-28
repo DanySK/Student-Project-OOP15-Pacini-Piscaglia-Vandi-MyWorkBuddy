@@ -16,11 +16,9 @@ public final class ExerciseImpl implements Exercise {
 
     private final String description;
     private final GymTool gymTool;
-    private int settingValue;
     private int repetition;
     private int time;
-    private int pause;
-    private int numSession;
+    private int sessions;
 
     /*
      * to make private x use of builder
@@ -28,20 +26,16 @@ public final class ExerciseImpl implements Exercise {
     /**
      * @param description String
      * @param gymTool GymTool
-     * @param settingValue int 
-     * @param repetition int 
      * @param time int 
+     * @param numRepetitons integer
      * @param numSession int 
-     * @param pause int 
      */
-    private ExerciseImpl(final String description, final GymTool gymTool, final int settingValue, final int repetition, final int time, final int numSession, final int pause) {
+    private ExerciseImpl(final String description, final GymTool gymTool, final int repetition, final int time, final int sessions) {
         this.description = description;
         this.gymTool = gymTool;
-        this.settingValue = settingValue;
         this.repetition = repetition;
+        this.sessions = sessions;
         this.time = time;
-        this.pause = pause;
-        this.numSession = numSession;
     }
 
     /**
@@ -51,11 +45,9 @@ public final class ExerciseImpl implements Exercise {
     public static class Builder {
         private String description;
         private GymTool gymTool;
-        private int settingValue;
         private int repetition;
+        private int sessions;
         private int time;
-        private int pause;
-        private int numSession;
 
         /**
          * add a description to an Exercise.
@@ -74,16 +66,6 @@ public final class ExerciseImpl implements Exercise {
          */
         public Builder gymTool(final GymTool gymTool) {
             this.gymTool = gymTool;
-            return this;
-        }
-
-        /**
-         * add a settingValue to an Exercise.
-         * @param settingValue integer
-         * @return a builder
-         */
-        public Builder settingValue(final int settingValue) {
-            this.settingValue = settingValue;
             return this;
         }
 
@@ -108,22 +90,12 @@ public final class ExerciseImpl implements Exercise {
         }
 
         /**
-         * add a pause to an Exercise.
-         * @param pause integer
-         * @return a builder
-         */
-        public Builder pause(final int pause) {
-            this.pause = pause;
-            return this;
-        }
-
-        /**
          * add a numSession to an Exercise.
-         * @param numSession integer
+         * @param sessions integer
          * @return a builder
          */
-        public Builder numSession(final int numSession) {
-            this.numSession = numSession;
+        public Builder sessions(final int sessions) {
+            this.sessions = sessions;
             return this;
         }
 
@@ -147,14 +119,11 @@ public final class ExerciseImpl implements Exercise {
         public ExerciseImpl build() throws IllegalStateException {
             this.checkNotNull(this.description);
             this.checkNotNull(this.gymTool);
-            this.checkNotNegative(this.numSession);
-            this.checkNotNegative(this.pause);
+            this.checkNotNegative(this.sessions);
             this.checkNotNegative(this.repetition);
-            this.checkNotNegative(this.settingValue);
             this.checkNotNegative(this.time);
 
-            /* Exercise data for Routine: codeRoutine, description, codeGymTool, settingValue, repetition, time, numSession, pause */
-            return new ExerciseImpl(this.description, this.gymTool, this.settingValue, this.repetition, this.time, this.numSession, this.pause);
+            return new ExerciseImpl(this.description, this.gymTool, this.repetition, this.time, this.sessions);
         }
     }
 
@@ -169,11 +138,6 @@ public final class ExerciseImpl implements Exercise {
     }
 
     @Override
-    public int getSettingValue() {
-        return settingValue;
-    }
-
-    @Override
     public int getRepetition() {
         return this.repetition;
     }
@@ -184,13 +148,8 @@ public final class ExerciseImpl implements Exercise {
     }
 
     @Override
-    public int getNumSession() {
-        return this.numSession;
-    }
-
-    @Override
-    public int getPause() {
-        return this.pause;
+    public int getSessions() {
+        return this.sessions;
     }
 
     @Override
@@ -210,8 +169,8 @@ public final class ExerciseImpl implements Exercise {
     public String toString() {
         return "\n\n ExerciseImpl " 
                 + " [description = " + this.getDescription() 
-                + "\n gymTool = " + this.getGymTool().getCode() + ", settingValue = " + this.getSettingValue()
-                + ", repetition = " + this.getRepetition() + ", time = " + this.getTime() + ", pause = " + this.getPause() + ", numSession = " + this.getNumSession()
+                + "\n gymTool = " + this.getGymTool().getCode()
+                + ", repetition = " + this.getRepetition() + ", time = " + this.getTime() + ", numSession = " + this.getSessions()
                 + "]";
     }
 }

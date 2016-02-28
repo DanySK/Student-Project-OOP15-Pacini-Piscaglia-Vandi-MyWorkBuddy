@@ -77,7 +77,7 @@ public interface User {
      * list of performance scores.
      * @return a List<Double>
      */
-    List<Double> scoreWorkout();
+    List<Double> scoreRoutine();
 
     /**
      * give the improved performance of body (muscles level).

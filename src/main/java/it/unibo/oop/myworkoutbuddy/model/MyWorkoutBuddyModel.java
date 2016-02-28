@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,9 +13,8 @@ public interface MyWorkoutBuddyModel {
      * Add a new Account.
      * @param userName String
      * @param password String
-     * @param avatar String
      */
-    void addAccount(final String userName, final String password, final String avatar);
+    void addAccount(final String userName, final String password);
 
     /**
      * Add a new User.
@@ -38,7 +36,7 @@ public interface MyWorkoutBuddyModel {
      * give alphabetic name of Current Account.
      * @return a String
      */
-    Optional<String> getCurrentNameAccount();
+    Optional<String> getCurrentUserName();
 
     /**
      * the current user's logout.
@@ -46,59 +44,53 @@ public interface MyWorkoutBuddyModel {
     void logoutUser();
 
     /**
-     * add a new routine for current user.
+     * add a new workout for current user.
      * @param code String
-     * @param nameRoutine String
+     * @param nameWorkout String
      * @param target String
      */
-    void addRoutine(final String code, final String nameRoutine, final String target);
+    void addWorkout(final String code, final String nameWorkout, final String target);
 
     /**
-     * add a new Exercise.
-     * @param nameRoutine String
+     * 
+     * @param nameWorkout String
      * @param target String
      * @param nameTool String
-     * @param settingValue Integer
-     * @param repetition Integer
-     * @param time Integer
-     * @param numSession Integer
-     * @param pause Integer
+     * @param numSessions List<Integer> sessions number for each repetitions
      */
-    void addGymExcercise(final String nameRoutine, final String target, final String nameTool, 
-            final int settingValue, final int repetition, final int time, final int numSession, final int pause);
+    void addGymExcercise(final String nameWorkout, final String target, final String nameTool, 
+            final List<Integer> numSessions);
 
     /**
-     * add a new Workout for current User.
+     * 
      * @param nameRoutine String
      * @param localDate LocalDate
-     * @param localTime LocalTime
-     * @param state boolean
      */
-    void addWorkout(final String nameRoutine, final LocalDate localDate, final LocalTime localTime, final boolean state);
+    void addRoutine(final String nameRoutine, final LocalDate localDate);
 
     /**
-     * add a new List of scores.
-     * @param scoreList List<Integer>
+     * add a new List of setting exercise values.
+     * @param valueList List<Integer>
      */
-    void addExerciseScore(final List<Integer> scoreList);
+    void addExerciseValue(final List<Integer> valueList);
 
     /**
      * the default body.
      */
-    void body();
+    void resetBody();
 
     /**
      * add a new bodyPart mapped in specific set of bodyZone.
      * @param bodyPart String
      * @param bodyZone String
      */
-    void body(final String bodyPart, final String bodyZone);
+    void setBody(final String bodyPart, final String bodyZone);
 
     /**
      * add a new bodyPart mapped in specific set of current bodyZone.
      * @param bodyPart String
      */
-    void body(final String bodyPart);
+    void setBody(final String bodyPart);
 
     /**
      * add a new data of measure.
@@ -118,20 +110,19 @@ public interface MyWorkoutBuddyModel {
      * add a new GymTool.
      * @param description String
      * @param nameTool String
-     * @param nameImage String
      * @param num Integer
      * @param valueMin Integer
      * @param valueMax Integer
      */
-    void addGymTool(final String description, final String nameTool, final String nameImage, final int num, final int valueMin, final int valueMax);
+    void addGymTool(final String description, final String nameTool, final int num, final int valueMin, final int valueMax);
 
     /**
      * add a new muscle with relative percentage measure in the tool specified by the toolCode.
-     * @param toolCode String
+     * @param toolName String
      * @param bodyPart String
      * @param percentage Double
      */
-    void addBodyPart(final String toolCode, final String bodyPart, final Double percentage);
+    void addBodyPart(final String toolName, final String bodyPart, final Double percentage);
 
     /**
      * give the list of GymTool in an application.
@@ -173,7 +164,7 @@ public interface MyWorkoutBuddyModel {
      * give the current user's Workout score list.
      * @return a List<Double>
      */
-    List<Double> scoreWorkout();
+    List<Double> scoreRoutine();
 
     /**
      * give the associations between muscles and relative scores obtained.
@@ -224,4 +215,8 @@ public interface MyWorkoutBuddyModel {
      * @return a List<Double>
      */
     List<Double> trendBodyBMI();
+
+    /*
+     * calcolo indice massa grassa e magra (opzionale).
+     */
 }
