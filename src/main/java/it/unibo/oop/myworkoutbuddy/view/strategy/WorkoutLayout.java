@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -26,6 +28,8 @@ import javafx.scene.layout.VBox;
  */
 public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
+    private static final int N_REPS = 3;
+
     private static final double EXERCISE_BOX_WIDTH = 638;
 
     private static final double EXERCISE_FIELD_WIDTH = 200;
@@ -41,7 +45,6 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         final VBox workout = new VBox();
         workout.setPrefWidth(EXERCISE_BOX_WIDTH);
         workouts.forEach((workName, exercises) -> {
-
             final ObservableList<Exercise> data = FXCollections.observableArrayList();
             exercises.forEach((exName, repetitions) -> {
                 data.add(new Exercise(exName, repetitions, 0));
@@ -57,8 +60,9 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         @SuppressWarnings("unchecked")
         final TableView<Exercise> table = (TableView<Exercise>) workout;
         table.getItems().forEach(ex -> {
-                results.add(new ImmutablePair<String, Pair<List<Integer>, Integer>>(ex.getExerciseName(),
-                        new ImmutablePair<>(ex.getReps(), ex.getKg())));
+            results.add(new ImmutablePair<String, Pair<List<Integer>, Integer>>(ex.getExerciseName(),
+                    new ImmutablePair<>(ex.getRepProperties().stream().map(i -> i.get()).collect(Collectors.toList()),
+                            ex.getKg())));
         });
         return results;
     }
@@ -70,13 +74,8 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
                 "exerciseName");
         final TableColumn<Exercise, String> repsCol = tableBuildStrategy.buildColumn("Repetitions", 0, "");
         final TableColumn<Exercise, String> kgCol = tableBuildStrategy.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
-        final TableColumn<Exercise, String> rep1Col = tableBuildStrategy.buildRepColumn("Rep 1", REPS_FIELD_WIDTH,
-                "rep1");
-        final TableColumn<Exercise, String> rep2Col = tableBuildStrategy.buildRepColumn("Rep 2", REPS_FIELD_WIDTH,
-                "rep2");
-        final TableColumn<Exercise, String> rep3Col = tableBuildStrategy.buildRepColumn("Rep 3", REPS_FIELD_WIDTH,
-                "rep3");
-        repsCol.getColumns().addAll(Arrays.asList(rep1Col, rep2Col, rep3Col));
+        IntStream.range(1, N_REPS).forEach(i -> repsCol.getColumns()
+                .add(tableBuildStrategy.buildRepColumn("Rep " + i, REPS_FIELD_WIDTH, "rep" + i, i)));
         return tableBuildStrategy.build(Arrays.asList(exCol, repsCol, kgCol), data);
     }
 
@@ -188,8 +187,8 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a list of repetitions.
          */
-        public List<Integer> getReps() {
-            return new LinkedList<>(Arrays.asList(getRep1(), getRep2(), getRep3()));
+        public List<SimpleIntegerProperty> getRepProperties() {
+            return new LinkedList<>(Arrays.asList(rep1, rep2, rep3));
         }
 
     }

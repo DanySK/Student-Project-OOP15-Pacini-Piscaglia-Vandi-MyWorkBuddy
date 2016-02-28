@@ -57,6 +57,8 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     private static final int REP_FIELD_START_INDEX = 2;
 
+    private static final int N_REPETITIONS = 3;
+
     private Optional<VBox> workoutSelected = Optional.empty();
 
     private Optional<Label> exerciseSelected = Optional.empty();
@@ -208,7 +210,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
         final Label repLabel = new Label(" - Repetitions: ");
         repLabel.setTranslateY(REP_LABEL_TRANSLATE_Y);
         exBox.getChildren().add(repLabel);
-        IntStream.range(0, 3).forEach(i -> exBox.getChildren().add(repsField.get(i)));
+        IntStream.range(0, N_REPETITIONS).forEach(i -> exBox.getChildren().add(repsField.get(i)));
         return exBox;
     }
 

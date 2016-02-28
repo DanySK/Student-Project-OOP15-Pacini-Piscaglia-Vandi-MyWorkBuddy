@@ -37,30 +37,12 @@ public class TableBuild implements TableBuildStrategy {
 
     @Override
     public TableColumn<Exercise, String> buildRepColumn(final String colName, final double width,
-            final String propertyValue) {
+            final String propertyValue, int colNumber) {
         final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
-        switch (propertyValue) {
-        case "rep1":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setRep1(parseCellInput(t.getNewValue()));
-            });
-            break;
-        case "rep2":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setRep2(parseCellInput(t.getNewValue()));
-            });
-            break;
-        case "rep3":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                        .setRep3(parseCellInput(t.getNewValue()));
-            });
-            break;
-        default:
-            break;
-        }
+        col.setOnEditCommit(t -> {
+            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).getRepProperties()
+                    .get(colNumber).set((parseCellInput(t.getNewValue())));
+        });
         return col;
     }
 

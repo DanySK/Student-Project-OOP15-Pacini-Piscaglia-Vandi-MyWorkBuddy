@@ -124,17 +124,26 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     @Override
-    public double getWeight() {
-        try {
-            return Double.parseDouble(txtKg.getText());
-        } catch (NumberFormatException e) {
-            showDialog("Error", "You haven't inserted a correct weight!", Optional.empty(), AlertType.ERROR);
+    public Optional<Double> getWeight() {
+        if (txtKg.getText().isEmpty()) {
+            return Optional.empty();
         }
-        return -1;
+        return Optional.of(Double.parseDouble(txtKg.getText()));
     }
-    
-    private boolean isWeightCorrect(){
-        return false;
+
+    // User can insert its weight but it must be a correct number.
+    private boolean isWeightCorrect() {
+        if (!txtKg.getText().isEmpty()) {
+            try {
+                Double.parseDouble(txtKg.getText());
+                return true;
+            } catch (NumberFormatException e) {
+                showDialog("Wrong weight", "Please insert a double value (e.g. 20.0)", Optional.empty(),
+                        AlertType.ERROR);
+                return false;
+            }
+        }
+        return true;
     }
 
     private void updateDescriptionField() {

@@ -47,7 +47,7 @@ public interface TableBuildStrategy {
      *            name of field in Exercise static class.
      * @return a table column with repetitions built with the passed features.
      */
-    TableColumn<Exercise, String> buildRepColumn(String colName, double width, String propertyValue);
+    TableColumn<Exercise, String> buildRepColumn(String colName, double width, String propertyValue, int colNumber);
 
     /**
      * 
