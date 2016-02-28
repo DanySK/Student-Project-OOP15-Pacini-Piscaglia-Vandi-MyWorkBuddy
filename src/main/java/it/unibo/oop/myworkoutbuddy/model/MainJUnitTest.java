@@ -18,20 +18,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 /*
- * CHECKSTYLE:OFF
- * disable check style for a better comprehension
+ * CHECKSTYLE:OFF to better comprehension
  */
 
 /**
- * class of model test with JUnit Test.
+ * 
  *
  */
-public class MainTestJUnitModel {
+public class MainJUnitTest {
 
     private static final MyWorkoutBuddyModel MODEL = new MyWorkoutBuddyModelImpl();
 
     /**
-     * first test method for load main data.
+     * first test.
      */
     @Before
     public void testLoadUsers() {
@@ -139,7 +138,7 @@ public class MainTestJUnitModel {
     }
 
     /**
-     * 
+     * second test.
      */
     @Test
     public void dataWorkoutUser() {
@@ -246,7 +245,7 @@ public class MainTestJUnitModel {
         final Double weightNew = 65.00;
         final Double upperBodyNew = 82.00;
         final Double lowerBodyNew = 63.00;
-        
+
         MODEL.addBodyMeasure(m1, heightNew, false);
         MODEL.addBodyMeasure(m2, weightNew, false);
         MODEL.addBodyMeasure(m3, upperBodyNew, false);
@@ -270,7 +269,7 @@ public class MainTestJUnitModel {
 
         assertTrue(dimR1 == (numTryCycle - numRoutineDel));
         assertTrue(dimR2 == 0);
-        
+
         MODEL.logoutUser();
         assertEquals(MODEL.getCurrentUserName(), Optional.empty());
         assertEquals(MODEL.getRoutineList(), new ArrayList<>());
