@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -62,9 +63,9 @@ public class Controller implements ViewObserver {
                     model.addGymTool(
                             (String) m.get("description"),
                             (String) m.get("name"),
-                            0, // Not known by the Controller
-                            0, // Not known by the Controller
-                            10); // Not known by the Controller
+                            1, // Not used at the moment
+                            1, // Not used at the moment
+                            10); // Not used at the moment
                 });
     }
 
@@ -90,17 +91,17 @@ public class Controller implements ViewObserver {
             model.addUser(firstName, lastName, age, email);
             model.loginUser(username, password);
             model.resetBody();
-            addRoutinesToCurrentUser();
+            addCurrentUserResults();
             final Optional<Boolean> firstTime = Optional.of(true);
             getService(DBCollectionName.MEASURES)
                     .getByParams(newParameter("username", username))
                     .forEach(m -> {
                 final Number height = (Number) m.get("height");
                 final double weight = (double) m.get("weight");
-                final Date date = DateFormats.parseUTC(m.get("date").toString());
+                final Date date = DateFormats.parseUTC((String) m.get("date"));
                 System.out.println(height + " " + weight + " " + firstTime.get());
                 model.addDataMeasure(DateConverter.dateToLocalDate(date));
-                model.addBodyMeasure("HEIGHT", height.doubleValue() / 100.0, firstTime.get());
+                model.addBodyMeasure("HEIGHT", height.doubleValue(), firstTime.get());
                 model.addBodyMeasure("WEIGHT", weight, firstTime.get());
                 firstTime.map(b -> false);
             });
@@ -239,25 +240,32 @@ public class Controller implements ViewObserver {
         routine.put("username", getCurrentUsername());
         routine.put("name", view.getCreateRoutineView().getRoutineName());
         routine.put("description", view.getCreateRoutineView().getRoutineDescription());
-        final List<Map<String, Object>> workouts = view.getCreateRoutineView()
-                .getRoutine().entrySet().stream()
-                .map(w -> {
-                    model.addWorkout(w.getKey(), w.getKey(), ""); // not used
-                    final Map<String, Object> workout = new HashMap<>();
-                    workout.put("name", w.getKey());
-                    workout.put("exercises", w.getValue().entrySet().stream()
-                            .map(e -> {
-                        final Map<String, Object> exercise = new HashMap<>();
-                        exercise.put("exerciseName", e.getKey());
-                        exercise.put("repetitions", e.getValue());
-                        return exercise;
+        routine.put("routineId", routines.getAll().stream()
+                .mapToInt(m -> (int) m.get("routineId"))
+                .max()
+                .orElse(0) + 1);
+        try {
+            final List<Map<String, Object>> workouts = view.getCreateRoutineView()
+                    .getRoutine().entrySet().stream()
+                    .map(w -> {
+                        final Map<String, Object> workout = new HashMap<>();
+                        workout.put("name", w.getKey());
+                        workout.put("exercises", w.getValue().entrySet().stream()
+                                .map(e -> {
+                            final Map<String, Object> exercise = new HashMap<>();
+                            exercise.put("exerciseName", e.getKey());
+                            exercise.put("repetitions", e.getValue());
+                            return exercise;
+                        })
+                                .collect(Collectors.toList()));
+                        return workout;
                     })
-                            .collect(Collectors.toList()));
-                    return workout;
-                })
-                .collect(Collectors.toList());
-        routine.put("workouts", workouts);
-        return routines.create(routine);
+                    .collect(Collectors.toList());
+            routine.put("workouts", workouts);
+            return routines.create(routine);
+        } catch (final NumberFormatException e) {
+            return false;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -289,27 +297,38 @@ public class Controller implements ViewObserver {
 
     @Override
     public boolean addResults() {
-        final List<Pair<String, Pair<List<Integer>, Integer>>> userResults = view
+        final Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> userResults = view
                 .getSelectRoutineView()
                 .getUserResults();
-        final List<Map<String, Object>> results = userResults.stream()
-                .map(e -> {
-                    final Map<String, Object> result = currentUsernameAsQueryParams();
-                    result.put("exerciseName", e.getKey());
-                    final Pair<List<Integer>, Integer> v = e.getValue();
-                    final List<Integer> repetitions = v.getLeft();
-                    final int weight = v.getRight();
-                    result.put("repetitions", repetitions);
-                    result.put("weight", weight);
+        final List<Map<String, Object>> results = new ArrayList<>();
+        userResults.entrySet().stream()
+                .map(e1 -> {
+                    return e1.getValue().stream()
+                            .map(e2 -> {
+                        final Map<String, Object> result = currentUsernameAsQueryParams();
+                        result.put("workoutName", e1.getKey());
+                        result.put("exerciseName", e2.getKey());
+                        final Pair<List<Integer>, Integer> v = e2.getValue();
+                        final List<Integer> repetitions = v.getLeft();
+                        final int weight = v.getRight();
+                        result.put("repetitions", repetitions);
+                        result.put("weight", weight);
+                        result.put("date", DateFormats.toUTCString(new Date()));
 
-                    model.addExerciseValue(repetitions.stream()
-                            .map(i -> weight)
-                            .collect(Collectors.toList()));
-                    return result;
+                        final int routineId = getService(DBCollectionName.ROUTINES)
+                                .getOneByParams(newParameter("name", null))
+                                .map(m -> (int) m.get("routineId"))
+                                .get();
+                        result.put("routineId", routineId);
+
+                        model.addExerciseValue(repetitions.stream()
+                                .map(i -> weight)
+                                .collect(Collectors.toList()));
+                        return result;
+                    });
                 })
                 .collect(Collectors.toList());
-        return getService(DBCollectionName.RESULTS)
-                .create(results) >= 0;
+        return getService(DBCollectionName.RESULTS).create(results) >= 0;
     }
 
     @Override
@@ -325,20 +344,22 @@ public class Controller implements ViewObserver {
             newMeasure.put("height", height);
             newMeasure.put("date", DateFormats.toUTCString(new Date()));
             model.addDataMeasure(LocalDate.now());
-            model.addBodyMeasure("HEIGHT", height / 100.0, false);
+            model.addBodyMeasure("HEIGHT", (double) height, false);
             model.addBodyMeasure("WEIGHT", w, false);
         });
-        return newMeasure.isEmpty() ? true // Nothing to do since the weight was't updated
-                : getService(DBCollectionName.MEASURES)
-                        .create(newMeasure);
+        return newMeasure.isEmpty() || getService(DBCollectionName.MEASURES).create(newMeasure);
     }
 
     @Override
     public boolean deleteRoutine() {
-        final String routineIndex = view.getSelectRoutineView().getSelectedRoutine();
+        final String routineName = view.getSelectRoutineView().getSelectedRoutine();
         final Map<String, Object> deleteParams = currentUsernameAsQueryParams();
-        deleteParams.put("name", routineIndex);
-        return getService(DBCollectionName.ROUTINES).deleteByParams(deleteParams) > 0;
+        deleteParams.put("name", routineName);
+        final Service routines = getService(DBCollectionName.ROUTINES);
+        routines.getOneByParams(deleteParams)
+                .map(m -> (int) m.get("routineId"))
+                .ifPresent(model::removeRoutine);
+        return routines.deleteByParams(deleteParams) > 0;
     }
 
     @Override
@@ -352,8 +373,8 @@ public class Controller implements ViewObserver {
     @Override
     public Map<String, Number> getIndexes() {
         final Map<String, Number> indexes = new HashMap<>();
-        final List<Double> bmi = model.trendBodyBMI();
-        final List<Double> bmr = model.trendBodyBMR();
+        final List<Double> bmi = model.trendBodyBMI(); // Current BMI
+        final List<Double> bmr = model.trendBodyBMR(); // Current BMR
 
         System.out.println(bmi);
         System.out.println(bmr);
@@ -387,40 +408,44 @@ public class Controller implements ViewObserver {
 
     /**
      * This method gets called in {@link Controller#loginUser}. Passes to the model all the routines and the workouts
-     * that the current user has done or is doing.
+     * that the current user has done.
      */
     @SuppressWarnings("unchecked")
-    private void addRoutinesToCurrentUser() {
-        getService(DBCollectionName.ROUTINES).getByParams(currentUsernameAsQueryParams()).forEach(r -> {
-            ((List<Map<String, Object>>) r.get("workouts")).forEach(w -> {
-                final String workoutName = (String) w.get("name"); // The name of the workout
-                model.addWorkout(workoutName, workoutName, "");
-                ((List<Map<String, Object>>) w.get("exercises")).forEach(e -> {
-                    final String exercise = (String) e.get("exerciseName");
-                    final Map<String, Object> params = new HashMap<>();
-                    params.put("name", exercise);
-                    // Get the default tool used in this exercise (if theres one)
-                    final String nameTool = getService(DBCollectionName.EXERCISES)
-                            .getOneByParams(params)
-                            .map(ex -> (String) ex.get("gymTool"))
-                            .orElse("");
-                    model.addGymExcercise(
-                            workoutName,
-                            exercise,
-                            nameTool,
-                            (List<Integer>) e.get("repetitions"));
+    private void addCurrentUserResults() {
+        final List<Map<String, Object>> results = getService(DBCollectionName.RESULTS)
+                .getByParams(currentUsernameAsQueryParams());
+        results.forEach(r -> { // A single result
+            final String currentWorkoutName = (String) r.get("workoutName");
+            model.addWorkout(currentWorkoutName, currentWorkoutName, ""); // Not used
+            final Map<String, Object> exercise = getService(DBCollectionName.EXERCISES)
+                    .getOneByParams(newParameter("name", r.get("exerciseName"))).get();
+            model.addGymExcercise(
+                    currentWorkoutName,
+                    (String) exercise.get("exerciseGoal"),
+                    (String) exercise.get("gymTool"),
+                    (List<Integer>) r.get("repetitions"));
+            if (!model.getWorkoutList().stream().anyMatch(w -> w.getCode().equals(currentWorkoutName))) {
+                results.stream()
+                        .filter(m -> m.get("workoutName").equals(currentWorkoutName))
+                        .forEach(r2 -> {
+                    final Date date = DateFormats.parseUTC((String) r2.get("date"));
+                    final LocalDate when = DateConverter.dateToLocalDate(date);
+                    model.addRoutine(
+                            (int) r2.get("routineId"),
+                            currentWorkoutName,
+                            when);
+                    final List<Integer> valueList = ((List<Integer>) r2.get("repetitions")).stream()
+                            .map(d -> (int) r2.get("weight"))
+                            .collect(Collectors.toList());
+                    model.addExerciseValue(valueList);
                 });
-            });
-            model.addRoutine(
-                    (String) r.get("name"), // The name of the routine
-                    LocalDate.now());
+            }
         });
     }
 
     private static Map<String, Object> usernameAsQueryParam(final String username) {
-        final Map<String, Object> params = new HashMap<>();
-        params.put("username", username);
-        return params;
+        final Map<String, Object> param = newParameter("username", username);
+        return param;
     }
 
     private Map<String, Object> currentUsernameAsQueryParams() {
@@ -432,8 +457,7 @@ public class Controller implements ViewObserver {
     }
 
     private static boolean checkIfEmailExists(final String email) {
-        final Map<String, Object> param = new HashMap<>();
-        param.put("email", email);
+        final Map<String, Object> param = newParameter("email", email);
         return getService(DBCollectionName.USERS).getOneByParams(param).isPresent();
     }
 

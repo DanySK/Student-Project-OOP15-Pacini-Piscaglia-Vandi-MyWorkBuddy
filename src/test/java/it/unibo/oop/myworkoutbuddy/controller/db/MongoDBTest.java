@@ -1,5 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.controller.db;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -10,7 +12,6 @@ import java.util.Map;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 import it.unibo.oop.myworkoutbuddy.controller.Service;
 import it.unibo.oop.myworkoutbuddy.util.DateFormats;
@@ -18,7 +19,7 @@ import it.unibo.oop.myworkoutbuddy.util.DateFormats;
 public class MongoDBTest {
 
     private final Service testService = new MongoService("tests");
-    
+
     @Before
     public void testCreate() {
         final List<Map<String, Object>> tests = new ArrayList<>();
@@ -44,12 +45,12 @@ public class MongoDBTest {
         testService.create(tests);
         assertEquals(testService.getAll().size(), tests.size());
     }
-    
+
     @After
     public void testDelete() {
         testService.deleteAll();
     }
-    
+
     @Test
     public void testDates() throws Exception {
         final Date date = new Date();
