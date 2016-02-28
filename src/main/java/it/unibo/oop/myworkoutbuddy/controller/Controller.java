@@ -92,9 +92,9 @@ public class Controller implements ViewObserver {
             getService(DBCollectionName.MEASURES)
                     .getByParams(newParameter("username", username))
                     .forEach(m -> {
-                final double height = (double) m.get("height");
+                final Number height = (Number) m.get("height");
                 final double weight = (double) m.get("weight");
-                model.addBodyMeasure("height", height, firstTime.get());
+                model.addBodyMeasure("height", height.doubleValue(), firstTime.get());
                 model.addBodyMeasure("weight", weight, firstTime.get());
                 firstTime.map(b -> false);
             });
