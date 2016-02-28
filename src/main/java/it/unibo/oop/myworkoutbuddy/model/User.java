@@ -62,6 +62,18 @@ public interface User {
     void addRoutine(Routine routine);
 
     /**
+     * remove the routine with the specified idRoutine.
+     * @param idRoutine integer
+     */
+    void removeRoutine(final int idRoutine);
+
+    /**
+     * remove the workout with the specified codeWorkout.
+     * @param codeWorkout String
+     */
+    void removeWorkout(final String codeWorkout);
+
+    /**
      * list of BMI calculated.
      * @return a List<Double>
      */

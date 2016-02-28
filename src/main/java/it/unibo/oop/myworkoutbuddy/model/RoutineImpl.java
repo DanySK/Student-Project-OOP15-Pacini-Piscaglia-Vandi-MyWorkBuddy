@@ -22,6 +22,7 @@ public class RoutineImpl implements Routine {
     private static final Double SCORE_NULL = 0.00;
     private static final int PERCENTAGE = 100;
 
+    private int idRoutine;
     private LocalDate localDate;
     private Optional<Workout> workout;
 
@@ -29,15 +30,22 @@ public class RoutineImpl implements Routine {
     private boolean state;
 
     /**
+     * @param idRoutine Integer
      * @param workout Workout
      * @param localDate LocalDate
      * @param state boolean
      */
-    public RoutineImpl(final Workout workout, final LocalDate localDate, final boolean state) {
+    public RoutineImpl(final int idRoutine, final Workout workout, final LocalDate localDate, final boolean state) {
+        this.idRoutine = idRoutine;
         this.localDate = localDate;
         this.workout = Optional.of(workout);
         this.valueMap = new HashMap<>();
         this.state = state;
+    }
+
+    @Override
+    public int getIdRoutine() {
+        return this.idRoutine;
     }
 
     @Override
@@ -266,7 +274,7 @@ public class RoutineImpl implements Routine {
 
     @Override
     public String toString() {
-        return "\n\n RoutineImpl [date = " + this.getDate()
+        return "\n\n RoutineImpl [ id = " + this.getIdRoutine() + " date = " + this.getDate()
                 + "\n Workout = " + this.getWorkout().getCode()
                 + "\n RoutineValue = " + this.getValueList()
                 + "\n RoutineScore = " + this.getRoutineScore()

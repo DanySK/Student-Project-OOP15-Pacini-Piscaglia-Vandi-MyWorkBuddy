@@ -7,8 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+ * CHECKSTYLE:OFF
+ */
+
 /**
  * class for testing.
+ * class for visualize a sequence of users that use the application
  * Here an example of using model utilities.
  */
 public final class MainTestModel {
@@ -21,10 +26,8 @@ public final class MainTestModel {
     /**
      * 
      * @param args parameters for the main
-     * @throws NullPointerException exception for nullPointer
-     * @throws IllegalArgumentException exception for not supported values
      */
-    public static void main(final String[] args) throws NullPointerException, IllegalArgumentException {
+    public static void main(final String[] args) {
 
         /*
          * declaration of Model Interface
@@ -170,6 +173,9 @@ public final class MainTestModel {
         model.addAccount("account3", "password3");
         model.addUser("Mario", "Verdi", 30, "mario.verdi@studio.unibo.it");
 
+        model.addAccount("account3", "password3");
+        model.addUser("Giulio", "Fumagalli", 30, "giulio.fumagalli@studio.unibo.it");
+
         /*
          * ... loading other users
          */
@@ -197,10 +203,10 @@ public final class MainTestModel {
         model.addBodyMeasure("LOWER_BODY", lowerBody, true);
 
         /* 
-         * ROUTINE: load Routines for Current User
-         * You may add a new routine if the current user is set
+         * WORKOUT: load Workouts for Current User
+         * You may add a new workout if the current user is set
          */
-        /* Workout: code , name, target(aim of routine) */
+        /* Workout: code , name, target */
         model.addWorkout("W1", "Workout1", "BODY_BUILDING");
 
         /*
@@ -216,13 +222,13 @@ public final class MainTestModel {
         model.addGymExcercise("W1", "Swimming", "T2", new ArrayList<>(Arrays.asList(1, 2, 3)));
 
         /* 
-         * WORKOUT: Workout Cycle of current User
+         * ROUTINE: Routine Cycle of current User
          * Here an example of exercise scores input
          */
         final Integer numTryCycle = 5;
         for (int k = 0; k < numTryCycle; k++) {
             /*Routine : codeWorkout, date*/
-            model.addRoutine("W1", LocalDate.now()); //
+            model.addRoutine(k, "W1", LocalDate.now()); //
 
             /* set scores */
             final List<Integer> valueList = new ArrayList<>(); // new List of scores (it's an example)
@@ -233,6 +239,8 @@ public final class MainTestModel {
             }
             model.addExerciseValue(valueList); // add all temporary list scores
         }
+
+        model.removeRoutine(2); // remove the routine with the specified id
 
         /*Add a new measure body*/
         model.addDataMeasure(LocalDate.now());

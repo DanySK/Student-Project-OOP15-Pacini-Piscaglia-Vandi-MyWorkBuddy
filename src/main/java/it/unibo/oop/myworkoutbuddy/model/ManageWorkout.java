@@ -13,12 +13,22 @@ import java.util.Optional;
  */
 public class ManageWorkout extends ManageUser {
 
+    private static final int ERR_ROUTINE_UNSET = 40;
+    private static final int ERR_WORKOUT_UNSET = 51;
+    private static final int ERR_WORKOUT_CODE = 50;
+    private static final int ERR_GYMTOOL_CODE = 60;
+    private static final int ERR_MEASURE_UNSET = 71;
+    private static final int ERR_BODY_UNSET = 81;
+
+    private static final boolean ERR_MSG = true; // with true it gives the possibility to print relative errors
+
     private static final int TIME_SESSION = 2; // value used to estimate time of exercise: time == num session x time sessions
 
     private List<GymTool> listGymTool;
     private Map<String, GymTool> mapGymTool;
 
     private Optional<Routine> currentRoutine = Optional.empty();
+    private Optional<Workout> currentWorkout = Optional.empty();
     private Optional<BodyData> currentBodyData = Optional.empty();
 
     /**
@@ -37,18 +47,33 @@ public class ManageWorkout extends ManageUser {
         this.setCurrentAccount(Optional.empty());
         this.setCurrentUser(Optional.empty());
         this.currentRoutine = Optional.empty();
+        this.currentWorkout = Optional.empty();
     }
 
     /**
      * add a new workout for current user.
-     * @param code String
+     * @param codeWorkout String
      * @param nameWorkout String
      * @param target String
      */
-    public void addWorkout(final String code, final String nameWorkout, final String target) {
+    public void addWorkout(final String codeWorkout, final String nameWorkout, final String target) {
         if (this.checkCurrentUser()) {
-            final Workout newRoutine = new WorkoutImpl(code, nameWorkout, target);
-            this.getCurrentUser().addWorkout(newRoutine);
+            final Workout newWorkout = new WorkoutImpl(codeWorkout, nameWorkout, target);
+            this.getCurrentUser().addWorkout(newWorkout);
+            this.currentWorkout = Optional.of(newWorkout);
+        }
+    }
+
+    /**
+     * 
+     * @param codeWorkout String
+     */
+    public void removeWorkout(final String codeWorkout) {
+        if (this.checkCurrentUser()) {
+            if (this.checkCurrentWorkout() && this.currentWorkout.get().getCode().equals(codeWorkout)) { // delete current workout
+                this.currentWorkout = Optional.empty();
+            }
+            this.getCurrentUser().removeWorkout(codeWorkout);
         }
     }
 
@@ -84,18 +109,43 @@ public class ManageWorkout extends ManageUser {
 
     /**
      * add a new Routine for current User.
+     * @param idRoutine Integer
      * @param codeWorkout String
      * @param localDate LocalDate
      * @param state boolean
      */
-    public void addRoutine(final String codeWorkout, final LocalDate localDate, final boolean state) {
+    public void addRoutine(final int idRoutine, final String codeWorkout, final LocalDate localDate, final boolean state) {
         if (this.checkCurrentUser()) {
             final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout);
             if (checkWorkout(optWorkout, codeWorkout)) {
-                final Routine newRoutine = new RoutineImpl(optWorkout.get(), localDate, state);
+                final Routine newRoutine = new RoutineImpl(idRoutine, optWorkout.get(), localDate, state);
                 this.getCurrentUser().addRoutine(newRoutine);
                 this.currentRoutine = Optional.of(newRoutine);
+                this.currentWorkout = optWorkout;
             }
+        }
+    }
+
+    /**
+     * function that removes a generic Routine.
+     * @param idRoutine Integer
+     */
+    public void removeRoutine(final int idRoutine) {
+        if (this.checkCurrentUser()) {
+            if (this.checkCurrentRoutine() && this.currentRoutine.get().getIdRoutine() == idRoutine) { // delete current routine
+                this.currentRoutine = Optional.empty();
+            }
+            this.getCurrentUser().removeRoutine(idRoutine);
+        }
+    }
+
+    /**
+     * 
+     * function that removes the current Routine.
+     */
+    public void removeRoutine() {
+        if (this.checkCurrentRoutine()) {
+            this.removeRoutine(this.currentRoutine.get().getIdRoutine());
         }
     }
 
@@ -180,12 +230,17 @@ public class ManageWorkout extends ManageUser {
      * @return an Integer
      */
     public int getNumExercise() {
-        if (!this.checkCurrentUser() || !this.checkCurrentRoutine()) {
+        if (!this.checkCurrentUser() || !checkCurrentWorkout()) {
             return 0;
         }
-        final String codeWorkout = this.currentRoutine.get().getWorkout().getCode();
+
+        return this.currentWorkout.get().getExerciseList().size();
+
+        /*
+        final String codeWorkout = this.currentWorkout.get().getCode();
         final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout);
         return checkWorkout(optWorkout, codeWorkout) ? optWorkout.get().getExerciseList().size() : 0;
+        */
     }
 
     /**
@@ -310,7 +365,7 @@ public class ManageWorkout extends ManageUser {
     private boolean checkBodyData() {
         final boolean ok = this.checkOptValue(this.currentBodyData);
         if (!ok) {
-            System.out.println("\n Body data not set");
+            this.outMsgError(ERR_BODY_UNSET, "");
         }
         return ok;
     }
@@ -322,7 +377,7 @@ public class ManageWorkout extends ManageUser {
     private boolean checkBodyMeasure(final String measureBody) {
         final boolean ok = this.checkOptValue(super.getBody().getMeasure(measureBody)); // fare f(x) in ManageUsersImpl
         if (!ok) {
-            System.out.println("\n Body Measure not set : " + measureBody);
+            this.outMsgError(ERR_MEASURE_UNSET, measureBody);
         }
         return ok;
     }
@@ -336,7 +391,7 @@ public class ManageWorkout extends ManageUser {
     private boolean checkGymTool(final Optional<GymTool> optGymTool, final String code) {
         final boolean ok = checkOptValue(optGymTool);
         if (!ok) {
-            System.out.println("\n GymTool not present code = " + code);
+            this.outMsgError(ERR_GYMTOOL_CODE, code);
         }
         return ok;
     }
@@ -350,7 +405,7 @@ public class ManageWorkout extends ManageUser {
     private boolean checkWorkout(final Optional<Workout> optWorkout, final String codeWorkout) {
         final boolean ok = checkOptValue(optWorkout);
         if (!ok) {
-            System.out.println("\n Workout Code not present : " + codeWorkout);
+            this.outMsgError(ERR_WORKOUT_CODE, codeWorkout);
         }
         return ok;
     }
@@ -362,9 +417,50 @@ public class ManageWorkout extends ManageUser {
     private boolean checkCurrentRoutine() {
         final boolean ok = this.checkOptValue(this.currentRoutine);
         if (!ok) {
-            System.out.println("\n Routine not set");
+            this.outMsgError(ERR_ROUTINE_UNSET, "");
         }
         return ok;
+    }
+
+    /**
+     * true if it is set current Routine
+     * @return a boolean
+     */
+    private boolean checkCurrentWorkout() {
+        final boolean ok = this.checkOptValue(this.currentWorkout);
+        if (!ok) {
+            this.outMsgError(ERR_WORKOUT_UNSET, "");
+        }
+        return ok;
+    }
+
+    private void outMsgError(final Integer errNum, final String msg) {
+        if (!ERR_MSG) {
+            return;
+        }
+        switch (errNum) {
+        case ERR_ROUTINE_UNSET :
+            System.out.println("ERROR: Routine not set " + msg);
+            break;
+        case ERR_WORKOUT_CODE :
+            System.out.println("ERROR: Workout not present code = " + msg);
+            break;
+        case ERR_WORKOUT_UNSET :
+            System.out.println("ERROR: Workout not set " + msg);
+            break;
+        case ERR_GYMTOOL_CODE :
+            System.out.println("ERROR: GymTool not present code = " + msg);
+            break;
+        case ERR_MEASURE_UNSET :
+            System.out.println("ERROR: Body Measure not set " + msg);
+            break;
+        case ERR_BODY_UNSET :
+            System.out.println("ERROR: Body data not set " + msg);
+            break;
+        default :
+            System.out.println("ERROR " + msg);
+            break;
+        }
     }
 }
 

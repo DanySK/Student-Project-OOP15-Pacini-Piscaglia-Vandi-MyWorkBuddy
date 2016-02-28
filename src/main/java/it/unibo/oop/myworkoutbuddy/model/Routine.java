@@ -10,6 +10,12 @@ import java.util.Map;
 public interface Routine {
 
     /**
+     * it gives the id of a specific Routine.
+     * @return an integer
+     */
+    int getIdRoutine();
+
+    /**
      * give the data of Routine.
      * @return a LocalDate
      */

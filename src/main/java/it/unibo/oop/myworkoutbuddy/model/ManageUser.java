@@ -9,6 +9,18 @@ import java.util.Optional;
  */
 public class ManageUser {
 
+    /*
+     * definition of error messages number
+     */
+    private static final int ERR_ACCOUNT = 10;
+    private static final int ERR_ACCOUNT_UNSET = 11;
+    private static final int ERR_USER = 20;
+    private static final int ERR_USER_UNSET = 21;
+
+    private static final int ERR_BODY_PART = 31;
+
+    private static final boolean ERR_MSG = true; // with true it gives the possibility to print relative errors
+
     private List<User> listUser;
     private List<Account> listAccount;
     private Optional<User> currentUser = Optional.empty();
@@ -36,6 +48,8 @@ public class ManageUser {
         if (!this.isAccount(account)) {
             this.listAccount.add(account);
             this.currentAccount = Optional.of(account);
+        } else {
+            this.outMsgError(ERR_ACCOUNT, userName);
         }
     }
 
@@ -49,9 +63,13 @@ public class ManageUser {
     public void addUser(final String firstName, final String secondName, final int age, final String email) {
         if (checkCurrentAccount()) {
             final Person person = new PersonImpl(firstName, secondName, age, email);
-            final User user = new UserImpl(getCurrentAccount(), person, this.body);
-            this.listUser.add(user);
-            this.currentUser = Optional.of(user);
+            if (!isUserAccount(getCurrentAccount())) {
+                final User user = new UserImpl(getCurrentAccount(), person, this.body);
+                this.listUser.add(user);
+                this.currentUser = Optional.of(user);
+            } else {
+                this.outMsgError(ERR_USER, firstName);
+            }
         }
     }
 
@@ -134,8 +152,9 @@ public class ManageUser {
      */
     protected boolean checkBodyPart(final String bodyPart) {
         final boolean ok = this.checkOptValue(this.body.getPartZone(bodyPart));
+
         if (!ok) {
-            System.out.println("\n Body Part not present : " + bodyPart);
+            this.outMsgError(ERR_BODY_PART, bodyPart);
         }
         return ok;
     }
@@ -160,7 +179,7 @@ public class ManageUser {
      * give the class body.
      * @return a Body
      */
-    protected Body getBody() {
+    public Body getBody() {
         return this.body;
     }
 
@@ -171,7 +190,7 @@ public class ManageUser {
     protected boolean checkCurrentAccount() {
         final boolean ok = this.checkOptValue(this.currentAccount);
         if (!ok) {
-            System.out.println("\n Account not set");
+            this.outMsgError(ERR_ACCOUNT_UNSET, "");
         }
         return ok;
     }
@@ -183,7 +202,7 @@ public class ManageUser {
     protected boolean checkCurrentUser() {
         final boolean ok = this.checkOptValue(this.currentUser);
         if (!ok) {
-            System.out.println("\n User not set");
+            this.outMsgError(ERR_USER_UNSET, "");
         }
         return ok;
     }
@@ -194,7 +213,7 @@ public class ManageUser {
      * @return a boolean
      */
     protected boolean isAccount(final Account account) {
-        return !this.listAccount.stream().noneMatch(i->i.equals(account));
+        return !this.listAccount.stream().noneMatch(i->i.getUserName().equals(account.getUserName()));
     }
 
     /**
@@ -204,5 +223,36 @@ public class ManageUser {
      */
     protected<X> boolean checkOptValue(final Optional<X> optvalue) {
         return optvalue.isPresent();
+    }
+
+    private boolean isUserAccount(final Account account) {
+        return !this.listUser.stream().noneMatch(i -> i.getAccount().equals(account));
+    }
+
+    private void outMsgError(final Integer errNum, final String msg) {
+        if (!ERR_MSG) {
+            return;
+        }
+
+        switch (errNum) {
+        case ERR_ACCOUNT :
+            System.out.println("ERROR: Account exists name = " + msg);
+            break;
+        case ERR_ACCOUNT_UNSET :
+            System.out.println("ERROR: Account not set " + msg);
+            break;
+        case ERR_USER :
+            System.out.println("ERROR: Account has alredy a user = " + msg);
+            break;
+        case ERR_USER_UNSET :
+            System.out.println("ERROR: User not set " + msg);
+            break;
+        case ERR_BODY_PART :
+            System.out.println("ERROR: Body Part not present : " + msg);
+            break;
+        default :
+            System.out.println("ERROR " + msg);
+            break;
+        }
     }
 }

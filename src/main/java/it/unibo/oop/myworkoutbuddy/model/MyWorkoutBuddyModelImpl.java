@@ -51,14 +51,29 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     }
 
     @Override
+    public void removeWorkout(final String code) {
+        manager.removeWorkout(code);
+    }
+
+    @Override
     public void addGymExcercise(final String nameRoutine, final String target, 
             final String nameTool, final List<Integer> numSessions) {
         manager.addGymExcercise(nameRoutine, target, nameTool, numSessions);
     }
 
     @Override
-    public void addRoutine(final String nameWorkout, final LocalDate localDate) { // codeWorkout
-        manager.addRoutine(nameWorkout, localDate, true);
+    public void addRoutine(final int idRoutine, final String codeWorkout, final LocalDate localDate) {
+        manager.addRoutine(idRoutine, codeWorkout, localDate, true);
+    }
+
+    @Override
+    public void removeRoutine(final int idRoutine) {
+        manager.removeRoutine(idRoutine);
+    }
+
+    @Override
+    public void removeRoutine() {
+        manager.removeRoutine();
     }
 
     @Override
@@ -99,6 +114,11 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     @Override
     public void addBodyPart(final String toolCode, final String bodyPart, final Double percentage) {
         manager.addBodyPart(toolCode, bodyPart, percentage);
+    }
+
+    @Override
+    public Body getApplicationBody() {
+        return manager.getBody();
     }
 
     @Override

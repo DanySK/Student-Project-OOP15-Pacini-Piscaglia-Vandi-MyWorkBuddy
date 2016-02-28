@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 /**
@@ -81,8 +82,25 @@ public class UserImpl implements User {
     }
 
     @Override
+    public void removeWorkout(final String codeWorkout) {
+        Optional<Workout> delWorkout = this.workoutList.stream().filter(i -> i.getCode().equals(codeWorkout)).findAny();
+        if (delWorkout.isPresent()) {
+            this.routineList.removeIf(i -> i.getWorkout().equals(delWorkout.get()));
+            this.workoutList.remove(delWorkout.get());
+        }
+    }
+
+    @Override
     public void addRoutine(final Routine routine) {
         this.routineList.add(routine);
+    }
+
+    @Override
+    public void removeRoutine(final int idRoutine) {
+        Optional<Routine> delRoutine = this.routineList.stream().filter(i -> i.getIdRoutine() == idRoutine).findAny();
+        if (delRoutine.isPresent()) {
+            this.routineList.remove(delRoutine.get());
+        }
     }
 
     @Override

@@ -45,11 +45,17 @@ public interface MyWorkoutBuddyModel {
 
     /**
      * add a new workout for current user.
-     * @param code String
+     * @param codeWorkout String
      * @param nameWorkout String
      * @param target String
      */
-    void addWorkout(final String code, final String nameWorkout, final String target);
+    void addWorkout(final String codeWorkout, final String nameWorkout, final String target);
+
+    /**
+     * remove a current user's routine with specified code.
+     * @param code String
+     */
+    void removeWorkout(final String code);
 
     /**
      * 
@@ -62,11 +68,23 @@ public interface MyWorkoutBuddyModel {
             final List<Integer> numSessions);
 
     /**
-     * 
-     * @param nameRoutine String
+     * @param idRoutine integer
+     * @param codeWorkout String
      * @param localDate LocalDate
      */
-    void addRoutine(final String nameRoutine, final LocalDate localDate);
+    void addRoutine(final int idRoutine, final String codeWorkout, final LocalDate localDate);
+
+    /**
+     * remove a Routine with the specified id.
+     * @param idRoutine Integer
+     */
+    void removeRoutine(final int idRoutine);
+
+    /**
+     * 
+     * it removes current user's current routine.
+     */
+    void removeRoutine();
 
     /**
      * add a new List of setting exercise values.
@@ -123,6 +141,12 @@ public interface MyWorkoutBuddyModel {
      * @param percentage Double
      */
     void addBodyPart(final String toolName, final String bodyPart, final Double percentage);
+
+    /**
+     * give the application body.
+     * @return a Body
+     */
+    Body getApplicationBody();
 
     /**
      * give the list of GymTool in an application.
