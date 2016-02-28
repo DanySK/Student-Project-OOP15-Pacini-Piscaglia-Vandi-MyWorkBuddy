@@ -1,9 +1,12 @@
 package it.unibo.oop.myworkoutbuddy.view.strategy;
 
 import java.util.List;
+import java.util.Optional;
 
+import it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory;
 import it.unibo.oop.myworkoutbuddy.view.strategy.WorkoutLayout.Exercise;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -26,34 +29,20 @@ public class TableBuild implements TableBuildStrategy {
             final String propertyValue) {
         final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
         col.setOnEditCommit(t -> {
-            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).setKg(t.getNewValue());
+            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow()))
+                    .setKg(parseCellInput(t.getNewValue()));
         });
         return col;
     }
 
     @Override
     public TableColumn<Exercise, String> buildRepColumn(final String colName, final double width,
-            final String propertyValue) {
+            final String propertyValue, int colNumber) {
         final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
-        switch (propertyValue) {
-        case "rep1":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).setRep1(t.getNewValue());
-            });
-            break;
-        case "rep2":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).setRep2(t.getNewValue());
-            });
-            break;
-        case "rep3":
-            col.setOnEditCommit(t -> {
-                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).setRep3(t.getNewValue());
-            });
-            break;
-        default:
-            break;
-        }
+        col.setOnEditCommit(t -> {
+            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).getRepProperties()
+                    .get(colNumber).set((parseCellInput(t.getNewValue())));
+        });
         return col;
     }
 
@@ -74,6 +63,16 @@ public class TableBuild implements TableBuildStrategy {
         col.setCellFactory(TextFieldTableCell.forTableColumn());
         col.setCellValueFactory(new PropertyValueFactory<Exercise, String>(propertyValue));
         return col;
+    }
+
+    private int parseCellInput(final String cellInput) {
+        try {
+            return Integer.parseInt(cellInput);
+        } catch (NumberFormatException e) {
+            FxWindowFactory.showDialog("Uncorrect field inserted", "Please insert an integer number!", Optional.empty(),
+                    AlertType.ERROR);
+        }
+        return 0;
     }
 
 }

@@ -65,7 +65,8 @@ public final class FxWindowFactory {
      */
     public static BorderPane openWindow(final String fxmlPath, final boolean isContained) {
         try {
-            loader = new FXMLLoader(FxWindowFactory.class.getResource(fxmlPath));
+            loader = new FXMLLoader(
+                    FxWindowFactory.class.getResource("/it/unibo/oop/myworkoutbuddy/view/structure/" + fxmlPath));
             final BorderPane root = (BorderPane) loader.load();
             if (isContained) {
                 return root;

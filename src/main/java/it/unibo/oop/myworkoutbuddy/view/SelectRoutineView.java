@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view;
 
 import java.util.List;
+import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -19,14 +20,14 @@ public interface SelectRoutineView {
     List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults();
 
     /**
-     * @return index of the select routine chosen by user.
+     * @return name of the selected routine chosen by user.
      */
-    int getRoutineIndex();
+    String getSelectedRoutine();
 
     /**
      * 
-     * @return the inserted user weight updated.
+     * @return the inserted user weight updated, otherwise an empty optional.
      */
-    double getWeight();
+    OptionalDouble getWeight();
 
 }

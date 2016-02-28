@@ -9,8 +9,10 @@
    <top>
       <HBox prefHeight="121.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Label id="borderedLabel" alignment="CENTER" prefHeight="28.0" prefWidth="231.0" text="Insert your routine description" translateX="70.0" translateY="50.0" />
-            <TextField fx:id="txtDescription" prefHeight="52.0" prefWidth="205.0" translateX="100.0" translateY="35.0" />
+            <Label id="borderedLabel" text="Insert Routine Name" translateX="20.0" translateY="50.0" />
+            <TextField fx:id="txtRoutineName" prefHeight="25.0" prefWidth="145.0" translateX="35.0" translateY="50.0" />
+            <Label id="borderedLabel" alignment="CENTER" prefHeight="28.0" prefWidth="192.0" text="Insert routine description" translateX="85.0" translateY="50.0" />
+            <TextField fx:id="txtDescription" prefHeight="25.0" prefWidth="181.0" translateX="95.0" translateY="50.0" />
          </children>
       </HBox>
    </top>
