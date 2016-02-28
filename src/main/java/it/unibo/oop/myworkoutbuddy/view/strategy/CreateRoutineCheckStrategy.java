@@ -100,7 +100,10 @@ public interface CreateRoutineCheckStrategy {
      * 
      * @param workoutBox
      *            to control.
-     * @return true if at least one workout has been added and routine has a name.
+     * @param routineName
+     *            to save.
+     * @return true if at least one workout has been added and routine has a
+     *         name.
      */
     boolean canRoutineBeenSaved(VBox workoutBox, TextField routineName);
 
@@ -114,4 +117,5 @@ public interface CreateRoutineCheckStrategy {
      *         false otherwise.
      */
     boolean isWorkoutAlreadyAdded(String workoutName, VBox workoutBox);
+
 }

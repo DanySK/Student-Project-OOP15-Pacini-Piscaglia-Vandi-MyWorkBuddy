@@ -142,7 +142,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     }
 
     @Override
-    public Map<String, Map<String, List<Integer>>> getRoutine() {
+    public Map<String, Map<String, List<Integer>>> getRoutine() throws NumberFormatException {
         workoutBox.getChildren().forEach(workouts -> {
             final TitledPane tPane = (TitledPane) workouts;
             final Map<String, List<Integer>> exercises = new HashMap<>();

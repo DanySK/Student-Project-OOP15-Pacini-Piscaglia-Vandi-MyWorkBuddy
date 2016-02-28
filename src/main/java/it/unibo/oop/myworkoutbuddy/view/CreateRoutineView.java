@@ -13,17 +13,20 @@ public interface CreateRoutineView {
     /**
      * Save the names of the exercises of the chosen routine by the user.
      * 
+     * @throws NumberFormatException
+     *             if user insert a string for repetition.
+     * 
      * @return routine map composed by a map <Routine description, Map <Exercise
      *         name, List <Exercise repetitions>>
      */
-    Map<String, Map<String, List<Integer>>> getRoutine();
+    Map<String, Map<String, List<Integer>>> getRoutine() throws NumberFormatException;
 
     /**
      * 
      * @return routine description inserted by user.
      */
     String getRoutineDescription();
-    
+
     /**
      * 
      * @return routine name inserted by user.
