@@ -42,6 +42,9 @@ public final class CreateRoutineHandler implements CreateRoutineView {
     @FXML
     private TextField txtDescription;
 
+    @FXML
+    private TextField txtRoutineName;
+
     private static final int REPS_MAX_WIDTH = 40;
 
     private static final int TAB_PANE_WIDTH = 250;
@@ -80,7 +83,7 @@ public final class CreateRoutineHandler implements CreateRoutineView {
 
     @FXML
     private void saveRoutine() {
-        if (checkStrategy.canRoutineBeenSaved(workoutBox) && checkStrategy.hasRoutineBeenSaved()) {
+        if (checkStrategy.canRoutineBeenSaved(workoutBox, txtRoutineName) && checkStrategy.hasRoutineBeenSaved()) {
             // clear routine fields after routine creation.
             workoutBox.getChildren().clear();
         }
@@ -154,6 +157,11 @@ public final class CreateRoutineHandler implements CreateRoutineView {
             routine.put(tPane.getText(), exercises);
         });
         return routine;
+    }
+
+    @Override
+    public String getRoutineName() {
+        return txtRoutineName.getText();
     }
 
     @Override

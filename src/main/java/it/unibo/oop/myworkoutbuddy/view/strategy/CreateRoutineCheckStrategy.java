@@ -3,6 +3,7 @@ package it.unibo.oop.myworkoutbuddy.view.strategy;
 import java.util.Optional;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -99,9 +100,9 @@ public interface CreateRoutineCheckStrategy {
      * 
      * @param workoutBox
      *            to control.
-     * @return true if at least one workout has been added.
+     * @return true if at least one workout has been added and routine has a name.
      */
-    boolean canRoutineBeenSaved(VBox workoutBox);
+    boolean canRoutineBeenSaved(VBox workoutBox, TextField routineName);
 
     /**
      * 

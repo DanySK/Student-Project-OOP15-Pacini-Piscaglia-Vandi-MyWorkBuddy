@@ -48,7 +48,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     @FXML
     private Button btnDeleteRoutine;
 
-    private int selectedRoutineIndex;
+    private String selectedRoutineName;
 
     private final WorkoutLayoutStrategy workoutLayout = new WorkoutLayout();
 
@@ -57,8 +57,8 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     private final EventHandler<Event> tabHandler = i -> {
         final Tab exs = (Tab) i.getSource();
 
-        // update routine selected index
-        selectedRoutineIndex = extractRoutineIndex(exs);
+        // update routine selected name
+        selectedRoutineName = exs.getText();
 
         // update description field
         updateDescriptionField();
@@ -73,7 +73,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     public void initialize() {
         routineCheck();
         getObserver().getRoutines().forEach(i -> {
-            final Tab newRoutine = new Tab("Routine - " + i.getLeft());
+            final Tab newRoutine = new Tab(i.getLeft());
             newRoutine.setOnSelectionChanged(tabHandler);
             newRoutine.setContent(workoutLayout.addWorkoutNodes(i.getRight()));
             tabRoutine.getTabs().add(newRoutine);
@@ -82,18 +82,19 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private void insertData() {
-        if (getObserver().addResults() && getObserver().updateWeight()) {
+        if (isWeightCorrect() && getObserver().addResults() && getObserver().updateWeight()) {
             showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
-            showDialog("Error!", "Your routine data hasn't been saved", Optional.empty(), AlertType.ERROR);
+            showDialog("Error!", "Your routine data hasn't been saved, check your results and weight inserted",
+                    Optional.empty(), AlertType.ERROR);
         }
     }
 
     @Override
     public List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults() {
         final List<Pair<String, Pair<List<Integer>, Integer>>> results = new LinkedList<>();
-        tabRoutine.getTabs().stream().filter(tab -> tab.getText().equals("Routine - " + selectedRoutineIndex))
+        tabRoutine.getTabs().stream().filter(tab -> tab.getText().equals(selectedRoutineName))
                 .map(i -> (ScrollPane) i.getContent()).map(i -> (VBox) i.getContent()).forEach(exsBox -> {
                     exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(workBox -> workBox.getContent())
                             .forEach(workout -> {
@@ -109,7 +110,7 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     private void deleteRoutine() {
         if (getObserver().deleteRoutine() && tabRoutine.getTabs().size() > 0) {
             tabRoutine.getTabs().remove(tabRoutine.getTabs().stream()
-                    .filter(tab -> selectedRoutineIndex == extractRoutineIndex(tab)).findAny().get());
+                    .filter(tab -> selectedRoutineName.equals(tab.getText())).findAny().get());
             routineCheck();
 
         } else {
@@ -118,24 +119,8 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     @Override
-    public int getRoutineIndex() {
-        return selectedRoutineIndex;
-    }
-
-    private int extractRoutineIndex(final Tab exs) {
-        return Integer.parseInt((exs.getText().split("- ")[1]));
-    }
-
-    private void updateDescriptionField() {
-        getObserver().getRoutines().stream().filter(r -> r.getLeft().equals(selectedRoutineIndex))
-                .map(r -> r.getMiddle()).findAny().ifPresent(des -> txtDescription.setText(des));
-    }
-
-    private void routineCheck() {
-        if (getObserver().getRoutines().isEmpty()) {
-            messageLabel.setTranslateY(NO_ROUTINE_MESSAGE_Y);
-            messageLabel.setText("Create a new routine from the item in the menu!");
-        }
+    public String getSelectedRoutine() {
+        return selectedRoutineName;
     }
 
     @Override
@@ -146,6 +131,22 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             showDialog("Error", "You haven't inserted a correct weight!", Optional.empty(), AlertType.ERROR);
         }
         return -1;
+    }
+    
+    private boolean isWeightCorrect(){
+        return false;
+    }
+
+    private void updateDescriptionField() {
+        getObserver().getRoutines().stream().filter(r -> r.getLeft().equals(selectedRoutineName))
+                .map(r -> r.getMiddle()).findAny().ifPresent(des -> txtDescription.setText(des));
+    }
+
+    private void routineCheck() {
+        if (getObserver().getRoutines().isEmpty()) {
+            messageLabel.setTranslateY(NO_ROUTINE_MESSAGE_Y);
+            messageLabel.setText("Create a new routine from the item in the menu!");
+        }
     }
 
 }

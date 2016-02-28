@@ -20,7 +20,13 @@ public interface CreateRoutineView {
 
     /**
      * 
-     * @return routine description.
+     * @return routine description inserted by user.
      */
     String getRoutineDescription();
+    
+    /**
+     * 
+     * @return routine name inserted by user.
+     */
+    String getRoutineName();
 }

@@ -44,12 +44,12 @@ public interface ViewObserver {
 
     /**
      * 
-     * @return the set of routines to show to user composed by a triple <index,
+     * @return the set of routines to show to user composed by a triple <name,
      *         description, Map<workout name, Map<exercise name, List of
      *         repetitions >>.
      * 
      */
-    Set<Triple<Integer, String, Map<String, Map<String, List<Integer>>>>> getRoutines();
+    Set<Triple<String, String, Map<String, Map<String, List<Integer>>>>> getRoutines();
 
     /**
      * 

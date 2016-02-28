@@ -8,6 +8,7 @@ import java.util.Optional;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -127,11 +128,14 @@ public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
     }
 
     @Override
-    public boolean canRoutineBeenSaved(final VBox workoutBox) {
-        if (!workoutBox.getChildren().isEmpty()) {
+    public boolean canRoutineBeenSaved(final VBox workoutBox, final TextField routineName) {
+        if (!workoutBox.getChildren().isEmpty() && !routineName.getText().isEmpty()) {
             return true;
+        } else if (workoutBox.getChildren().isEmpty()) {
+            showDialog("Error saving routine", "You can't save an empty routine", Optional.empty(), AlertType.ERROR);
+        } else if (routineName.getText().isEmpty()) {
+            showDialog("Error saving routine", "You have to insert a routine name", Optional.empty(), AlertType.ERROR);
         }
-        showDialog("Error saving routine", "You can't save an empty routine", Optional.empty(), AlertType.ERROR);
         return false;
     }
 

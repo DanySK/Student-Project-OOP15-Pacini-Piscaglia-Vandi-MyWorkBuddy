@@ -30,4 +30,5 @@ public interface WorkoutLayoutStrategy {
      * @return a list of pair exercise name, repetitions-kg.
      */
     List<Pair<String, Pair<List<Integer>, Integer>>> getExerciseResults(Node workout);
+
 }

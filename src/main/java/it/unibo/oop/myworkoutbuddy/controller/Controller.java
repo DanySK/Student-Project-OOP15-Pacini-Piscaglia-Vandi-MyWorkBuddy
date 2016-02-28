@@ -75,7 +75,7 @@ public class Controller implements ViewObserver {
             final Integer age = (int) user.get("age");
             // TODO: uncomment as soon as the model is ready
             // model.setPerson(firstName, lastName, email);
-            model.addAccount(username, password, "");
+            //model.addAccount(username, password, "");
             model.addUser(firstName, lastName, age, email);
             model.loginUser(username, password);
         });
