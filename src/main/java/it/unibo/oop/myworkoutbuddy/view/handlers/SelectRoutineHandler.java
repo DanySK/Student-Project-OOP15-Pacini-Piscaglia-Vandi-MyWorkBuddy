@@ -3,8 +3,9 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -93,15 +94,16 @@ public final class SelectRoutineHandler implements SelectRoutineView {
     }
 
     @Override
-    public List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults() {
-        final List<Pair<String, Pair<List<Integer>, Integer>>> results = new LinkedList<>();
+    public Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> getUserResults() {
+        final Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> results = new HashMap<>();
         tabRoutine.getTabs().stream().filter(tab -> tab.getText().equals(selectedRoutineName))
                 .map(i -> (ScrollPane) i.getContent()).map(i -> (VBox) i.getContent()).forEach(exsBox -> {
                     exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(workBox -> workBox.getContent())
                             .forEach(workout -> {
                         final List<Pair<String, Pair<List<Integer>, Integer>>> result = workoutLayout
                                 .getExerciseResults(workout);
-                        results.addAll(result);
+                        final TitledPane titled = (TitledPane) workout;
+                        results.put(titled.getText(), result);
                     });
                 });
         return results;
