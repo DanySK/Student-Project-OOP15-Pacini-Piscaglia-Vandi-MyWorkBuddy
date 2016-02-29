@@ -98,6 +98,7 @@
 #selectedExercise{
 	-fx-font-weight:bold;
 	-fx-background-color: orange;
+	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
 	-fx-text-fill:black;
 	-fx-font-size: 15.0;
 	-fx-padding:7.0;
