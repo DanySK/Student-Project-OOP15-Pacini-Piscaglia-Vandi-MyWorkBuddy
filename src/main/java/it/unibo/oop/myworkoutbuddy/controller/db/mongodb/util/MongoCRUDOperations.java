@@ -22,7 +22,7 @@ import com.mongodb.client.MongoCollection;
 /**
  * Utility class for CRUD operations.
  */
-public final class CRUDOperations {
+public final class MongoCRUDOperations {
 
     /**
      * Creates a new document to insert in the database.
@@ -182,7 +182,7 @@ public final class CRUDOperations {
         };
     }
 
-    private CRUDOperations() {
+    private MongoCRUDOperations() {
         throw new IllegalAccessError("No instances for " + getClass().getName());
     }
 

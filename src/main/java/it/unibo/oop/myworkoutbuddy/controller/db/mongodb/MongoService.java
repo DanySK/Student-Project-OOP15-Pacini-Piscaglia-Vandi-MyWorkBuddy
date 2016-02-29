@@ -1,11 +1,11 @@
 package it.unibo.oop.myworkoutbuddy.controller.db.mongodb;
 
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.createNewDocument;
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.createNewDocuments;
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.deleteDocumentsByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.getDocumentsByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.getOneDocumentByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.updateDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.createNewDocument;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.createNewDocuments;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.deleteDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.getDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.getOneDocumentByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.MongoCRUDOperations.updateDocumentsByParams;
 
 import java.util.Collection;
 import java.util.HashMap;

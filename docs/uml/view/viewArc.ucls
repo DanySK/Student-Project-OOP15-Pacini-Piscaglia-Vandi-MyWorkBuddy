@@ -4,7 +4,7 @@
   <interface id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.AccessView" project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/AccessView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="133" y="130"/>    
+    <position height="-1" width="-1" x="207" y="113"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -15,7 +15,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/CreateRoutineView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="194" y="433"/>    
+    <position height="-1" width="-1" x="240" y="425"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -26,7 +26,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/RegistrationView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1069" y="270"/>    
+    <position height="-1" width="-1" x="1034" y="254"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -37,7 +37,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/SelectRoutineView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="666" y="377"/>    
+    <position height="-1" width="-1" x="666" y="327"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -48,7 +48,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/UserSettingsView.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1333" y="135"/>    
+    <position height="-1" width="-1" x="1268" y="149"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -69,7 +69,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/AccessHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="131" y="292"/>    
+    <position height="-1" width="-1" x="205" y="273"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -80,7 +80,7 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/CreateRoutineHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="193" y="584"/>    
+    <position height="-1" width="-1" x="240" y="581"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
@@ -91,8 +91,8 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/SelectRoutineHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="668" y="560"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="666" y="553"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
@@ -102,8 +102,8 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/UserSettingsHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1337" y="352"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1272" y="373"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
@@ -113,53 +113,53 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/RegistrationHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1075" y="531"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="1037" y="515"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <dependency id="12">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="2"/>  
-  </dependency>  
-  <realization id="13">    
+  <realization id="12">    
     <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="1"/>  
   </realization>  
+  <realization id="13">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
   <dependency id="14">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="1"/>  
+    <end type="TARGET" refId="4"/>  
   </dependency>  
   <dependency id="15">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="5"/>  
-  </dependency>  
-  <dependency id="16">    
-    <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="3"/>  
   </dependency>  
+  <realization id="16">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
   <realization id="17">    
     <end type="SOURCE" refId="10"/>    
     <end type="TARGET" refId="5"/>  
   </realization>  
   <dependency id="18">    
     <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="4"/>  
+    <end type="TARGET" refId="2"/>  
   </dependency>  
   <realization id="19">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <realization id="20">    
     <end type="SOURCE" refId="9"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
-  <realization id="21">    
-    <end type="SOURCE" refId="8"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
+  <dependency id="20">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="21">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
