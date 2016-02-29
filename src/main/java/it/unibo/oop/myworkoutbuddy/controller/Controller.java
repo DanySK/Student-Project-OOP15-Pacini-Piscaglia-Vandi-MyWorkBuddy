@@ -36,7 +36,7 @@ import it.unibo.oop.myworkoutbuddy.view.ViewObserver;
 /**
  * Controller.
  */
-public class Controller implements ViewObserver {
+public final class Controller implements ViewObserver {
 
     private static final int MIN_USERNAME_LENGTH = 8;
     private static final int MAX_USERNAME_LENGTH = 15;
@@ -96,12 +96,12 @@ public class Controller implements ViewObserver {
             getService(DBCollectionName.MEASURES)
                     .getByParams(newParameter("username", username))
                     .forEach(m -> {
-                final Number height = (Number) m.get("height");
+                final double height = (double) m.get("height");
                 final double weight = (double) m.get("weight");
                 final Date date = DateFormats.parseUTC((String) m.get("date"));
                 System.out.println(height + " " + weight + " " + firstTime.get());
                 model.addDataMeasure(DateConverter.dateToLocalDate(date));
-                model.addBodyMeasure("HEIGHT", height.doubleValue(), firstTime.get());
+                model.addBodyMeasure("HEIGHT", height, firstTime.get());
                 model.addBodyMeasure("WEIGHT", weight, firstTime.get());
                 firstTime.map(b -> false);
             });
@@ -141,18 +141,16 @@ public class Controller implements ViewObserver {
         validator.validate();
         validator.ifValid(() -> {
             // Add the new user in the database
-            final Map<String, Object> newUser = new HashMap<>();
-            newUser.put("username", username);
+            final Map<String, Object> newUser = newParameter("username", username);
             newUser.put("password", password);
             newUser.put("name", firstName);
             newUser.put("surname", lastName);
             newUser.put("email", email);
             newUser.put("age", age);
             getService(DBCollectionName.USERS).create(newUser);
-            final Map<String, Object> newMeasure = new HashMap<>();
-            newMeasure.put("username", username);
+            final Map<String, Object> newMeasure = newParameter("username", username);
             newMeasure.put("date", DateFormats.toUTCString(new Date()));
-            newMeasure.put("height", height);
+            newMeasure.put("height", height / 100.0);
             newMeasure.put("weight", weight);
             getService(DBCollectionName.MEASURES).create(newMeasure);
         });
@@ -192,8 +190,7 @@ public class Controller implements ViewObserver {
         validator.validate();
         validator.ifValid(() -> {
             // Update the current user data
-            final Map<String, Object> newUserData = new HashMap<>();
-            newUserData.put("password", newPassword);
+            final Map<String, Object> newUserData = newParameter("password", newPassword);
             newUserData.put("name", newFirstName);
             newUserData.put("surname", newLastName);
             newUserData.put("email", newEmail);
@@ -221,8 +218,7 @@ public class Controller implements ViewObserver {
 
     @Override
     public Map<String, String> getExerciseInfo(final String exerciseName) {
-        final Map<String, Object> params = new HashMap<>();
-        params.put("name", exerciseName);
+        final Map<String, Object> params = newParameter("name", exerciseName);
         final Map<String, String> exerciseInfo = new HashMap<>();
         getService(DBCollectionName.EXERCISES)
                 .getOneByParams(params)
@@ -235,9 +231,8 @@ public class Controller implements ViewObserver {
 
     @Override
     public boolean saveRoutine() {
-        final Map<String, Object> routine = new HashMap<>();
+        final Map<String, Object> routine = currentUsernameAsQueryParams();
         final Service routines = getService(DBCollectionName.ROUTINES);
-        routine.put("username", getCurrentUsername());
         routine.put("name", view.getCreateRoutineView().getRoutineName());
         routine.put("description", view.getCreateRoutineView().getRoutineDescription());
         routine.put("routineId", routines.getAll().stream()
@@ -248,12 +243,10 @@ public class Controller implements ViewObserver {
             final List<Map<String, Object>> workouts = view.getCreateRoutineView()
                     .getRoutine().entrySet().stream()
                     .map(w -> {
-                        final Map<String, Object> workout = new HashMap<>();
-                        workout.put("name", w.getKey());
+                        final Map<String, Object> workout = newParameter("name", w.getKey());
                         workout.put("exercises", w.getValue().entrySet().stream()
                                 .map(e -> {
-                            final Map<String, Object> exercise = new HashMap<>();
-                            exercise.put("exerciseName", e.getKey());
+                            final Map<String, Object> exercise = newParameter("exerciseName", e.getKey());
                             exercise.put("repetitions", e.getValue());
                             return exercise;
                         })
@@ -306,21 +299,25 @@ public class Controller implements ViewObserver {
                     return e1.getValue().stream()
                             .map(e2 -> {
                         final Map<String, Object> result = currentUsernameAsQueryParams();
-                        result.put("workoutName", e1.getKey());
+                        final String workoutName = e1.getKey();
+                        result.put("workoutName", workoutName);
                         result.put("exerciseName", e2.getKey());
                         final Pair<List<Integer>, Integer> v = e2.getValue();
                         final List<Integer> repetitions = v.getLeft();
                         final int weight = v.getRight();
                         result.put("repetitions", repetitions);
                         result.put("weight", weight);
-                        result.put("date", DateFormats.toUTCString(new Date()));
+                        final Date date = new Date();
+                        result.put("date", DateFormats.toUTCString(date));
 
+                        final Map<String, Object> params = currentUsernameAsQueryParams();
+                        params.put("name", view.getSelectRoutineView().getSelectedRoutine());
                         final int routineId = getService(DBCollectionName.ROUTINES)
-                                .getOneByParams(newParameter("name", null))
+                                .getOneByParams(params)
                                 .map(m -> (int) m.get("routineId"))
                                 .get();
                         result.put("routineId", routineId);
-
+                        model.addRoutine(routineId, workoutName, DateConverter.dateToLocalDate(date));
                         model.addExerciseValue(repetitions.stream()
                                 .map(i -> weight)
                                 .collect(Collectors.toList()));
@@ -365,8 +362,22 @@ public class Controller implements ViewObserver {
     @Override
     public Map<String, Map<String, Number>> getChartsData() {
         final Map<String, Map<String, Number>> chartsData = new HashMap<>();
-        chartsData.put("weightChart", getChartData("pieChartData"));
-        chartsData.put("line", getChartData("pieChartData"));
+        final Map<String, Number> weightChart = getService(DBCollectionName.MEASURES)
+                .getByParams(currentUsernameAsQueryParams())
+                .stream()
+                .map(m -> new SimpleImmutableEntry<>(
+                        (String) m.get("date"),
+                        (double) m.get("weight")))
+                .sorted((e1, e2) -> {
+                    final Date p = DateFormats.parseUTC(e1.getKey());
+                    final Date q = DateFormats.parseUTC(e2.getKey());
+                    return p.before(q) ? -1
+                            : p.after(q) ? 1 : 0;
+                })
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+
+        chartsData.put("weightChart", weightChart);
+        chartsData.put("timePerformanceChart", getChartData("pieChartData"));
         return chartsData;
     }
 
@@ -398,12 +409,8 @@ public class Controller implements ViewObserver {
                 : Collections.emptyMap();
     }
 
-    private Optional<String> getCurrentUser() {
-        return model.getCurrentUserName();
-    }
-
     private String getCurrentUsername() {
-        return getCurrentUser().get();
+        return model.getCurrentUserName().get();
     }
 
     /**
@@ -444,8 +451,7 @@ public class Controller implements ViewObserver {
     }
 
     private static Map<String, Object> usernameAsQueryParam(final String username) {
-        final Map<String, Object> param = newParameter("username", username);
-        return param;
+        return newParameter("username", username);
     }
 
     private Map<String, Object> currentUsernameAsQueryParams() {
@@ -457,8 +463,9 @@ public class Controller implements ViewObserver {
     }
 
     private static boolean checkIfEmailExists(final String email) {
-        final Map<String, Object> param = newParameter("email", email);
-        return getService(DBCollectionName.USERS).getOneByParams(param).isPresent();
+        return getService(DBCollectionName.USERS)
+                .getOneByParams(newParameter("email", email))
+                .isPresent();
     }
 
     private static Optional<Map<String, Object>> getUserData(final String username) {
@@ -506,7 +513,7 @@ public class Controller implements ViewObserver {
 
     private static Map<String, Object> newParameter(final String name, final Object value) {
         final Map<String, Object> param = new HashMap<>();
-        param.put("username", value);
+        param.put(name, value);
         return param;
     }
 
