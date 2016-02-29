@@ -38,7 +38,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final double REPS_FIELD_WIDTH = 100;
 
-    private final InsertBoxBuildStrategy tableBuildStrategy = new InsertBoxBuild();
+    private final InsertBoxFactory tableBuildStrategy = new InsertBoxSimpleFactory();
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {

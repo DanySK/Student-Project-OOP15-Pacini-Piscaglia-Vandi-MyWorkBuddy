@@ -27,29 +27,29 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/SelectRoutineHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="364" y="162"/>    
+    <position height="-1" width="-1" x="335" y="162"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="4">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <association id="5">    
+  <association id="4">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="6" name="workoutLayout">        
+      <attribute id="5" name="workoutLayout">        
         <position height="0" width="0" x="564" y="78"/>      
       </attribute>      
-      <multiplicity id="7" minimum="0" maximum="1">        
+      <multiplicity id="6" minimum="0" maximum="1">        
         <position height="0" width="0" x="564" y="78"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="7">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

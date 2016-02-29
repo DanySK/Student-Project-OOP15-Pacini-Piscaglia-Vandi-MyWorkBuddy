@@ -12,7 +12,7 @@ import javafx.scene.control.TableView;
  * Strategy to build the routine table.
  * 
  */
-public interface InsertBoxBuildStrategy {
+public interface InsertBoxFactory {
 
     /**
      * 
