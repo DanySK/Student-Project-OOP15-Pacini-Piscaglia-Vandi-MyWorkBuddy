@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.controller;
+package it.unibo.oop.myworkoutbuddy.controller.validation;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -36,7 +36,7 @@ public class Validator {
     /**
      * Adds a new validation.
      * 
-     * @param validator
+     * @param validationStrategy
      *            the validator to perform on the {@code value}
      * @param value
      *            the value to validate
@@ -53,10 +53,13 @@ public class Validator {
      *             if the {@code errorMessage} is empty
      */
     @SuppressWarnings("unchecked")
-    public <T> Validator addValidation(final Predicate<? super T> validator, final T value, final String errorMessage) {
+    public <T> Validator addValidation(
+            final Predicate<? super T> validationStrategy,
+            final T value,
+            final String errorMessage) {
         checkValidationNotPerformed();
         checkArgument(requireNonNull(errorMessage).length() > 0);
-        validations.put((Predicate<Object>) requireNonNull(validator), value, errorMessage);
+        validations.put((Predicate<Object>) requireNonNull(validationStrategy), value, errorMessage);
         return this;
     }
 

@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.controller;
+package it.unibo.oop.myworkoutbuddy.controller.db;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,18 +7,18 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * A service to interact with the database.
+ * A service to perform CRUD (Create Read Update Delete) operations on elements in a database.
  */
-public interface Service {
+public interface DBService {
 
     /**
      * Inserts a new element in the database.
      * 
-     * @param fields
+     * @param element
      *            the element fields to insert
      * @return True if the user is successfully created, false if some errors occurs.
      */
-    boolean create(Map<String, Object> fields);
+    boolean create(Map<String, Object> element);
 
     /**
      * Inserts new elements in the database.
@@ -32,16 +32,16 @@ public interface Service {
     /**
      * Retrieves a document that satisfies the query parameters.
      * 
-     * @param queryParams
-     *            The filters to apply.
+     * @param query
+     *            the query to perform on the elements
      * @return all the elements stored in the database
      */
-    Optional<Map<String, Object>> getOneByParams(Map<String, Object> queryParams);
+    Optional<Map<String, Object>> getOneByParams(Map<String, Object> query);
 
     /**
-     * Retrieves all the elements stored in the database.
+     * Retrieves all the elements stored.
      * 
-     * @return all the elements stored in the database
+     * @return all the elements stored
      */
     List<Map<String, Object>> getAll();
 

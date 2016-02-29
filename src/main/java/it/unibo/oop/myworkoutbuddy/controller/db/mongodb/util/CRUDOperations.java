@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.controller.db.util;
+package it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

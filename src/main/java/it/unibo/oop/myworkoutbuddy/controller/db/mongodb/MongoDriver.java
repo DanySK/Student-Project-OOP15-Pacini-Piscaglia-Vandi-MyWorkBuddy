@@ -1,4 +1,4 @@
-package it.unibo.oop.myworkoutbuddy.controller.db;
+package it.unibo.oop.myworkoutbuddy.controller.db.mongodb;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -46,7 +46,7 @@ public final class MongoDriver {
     /**
      * @return The name of the database in use by this driver.
      */
-    public static String getDatabaseName() {
+    public static String getDefaultDatabaseName() {
         return dbName;
     }
 
@@ -73,7 +73,7 @@ public final class MongoDriver {
      * @return the specified collection.
      */
     public static MongoCollection<Document> getCollection(final String collectionName) {
-        return getCollection(getDatabaseName(), collectionName);
+        return getCollection(getDefaultDatabaseName(), collectionName);
     }
 
     /**

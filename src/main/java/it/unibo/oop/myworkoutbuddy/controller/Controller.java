@@ -1,32 +1,39 @@
 package it.unibo.oop.myworkoutbuddy.controller;
 
-import static java.util.Objects.isNull;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.BODY_ZONES;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.EXERCISES;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.GYM_TOOLS;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.MEASURES;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.RESULTS;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.ROUTINES;
+import static it.unibo.oop.myworkoutbuddy.controller.Service.USERS;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.alreadyTakenValidator;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.confirmValidator;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.emailValidator;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.maxLengthValidator;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.minLengthValidator;
+import static it.unibo.oop.myworkoutbuddy.controller.validation.ValidationStrategies.positiveNumberValidator;
 import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.OptionalDouble;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-import org.apache.commons.validator.routines.EmailValidator;
 
-import it.unibo.oop.myworkoutbuddy.controller.db.MongoService;
+import it.unibo.oop.myworkoutbuddy.controller.db.DBService;
+import it.unibo.oop.myworkoutbuddy.controller.validation.Validator;
 import it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel;
 import it.unibo.oop.myworkoutbuddy.util.DateConverter;
 import it.unibo.oop.myworkoutbuddy.util.DateFormats;
@@ -34,7 +41,8 @@ import it.unibo.oop.myworkoutbuddy.view.AppView;
 import it.unibo.oop.myworkoutbuddy.view.ViewObserver;
 
 /**
- * Controller.
+ * The main controller of the application. Responsible for the Responsible for the communication between model and
+ * the view application.
  */
 public final class Controller implements ViewObserver {
 
@@ -57,11 +65,11 @@ public final class Controller implements ViewObserver {
         this.model = requireNonNull(model);
         this.view = requireNonNull(view);
         view.setViewsObserver(this);
-        getService(DBCollectionName.GYM_TOOLS)
+        GYM_TOOLS.getDBService()
                 .getAll()
                 .forEach(m -> {
                     model.addGymTool(
-                            (String) m.get("description"),
+                            (String) m.get("name"),
                             (String) m.get("name"),
                             1, // Not used at the moment
                             1, // Not used at the moment
@@ -88,23 +96,12 @@ public final class Controller implements ViewObserver {
             final String email = (String) user.get("email");
             final int age = (int) user.get("age");
             model.addAccount(username, password);
+            model.resetBody();
             model.addUser(firstName, lastName, age, email);
             model.loginUser(username, password);
-            model.resetBody();
+            addCurrentUserMeasures();
+            resetCurrentUserBody();
             addCurrentUserResults();
-            final Optional<Boolean> firstTime = Optional.of(true);
-            getService(DBCollectionName.MEASURES)
-                    .getByParams(newParameter("username", username))
-                    .forEach(m -> {
-                final double height = (double) m.get("height");
-                final double weight = (double) m.get("weight");
-                final Date date = DateFormats.parseUTC((String) m.get("date"));
-                System.out.println(height + " " + weight + " " + firstTime.get());
-                model.addDataMeasure(DateConverter.dateToLocalDate(date));
-                model.addBodyMeasure("HEIGHT", height, firstTime.get());
-                model.addBodyMeasure("WEIGHT", weight, firstTime.get());
-                firstTime.map(b -> false);
-            });
         });
         return validator.getErrorMessages();
     }
@@ -123,21 +120,21 @@ public final class Controller implements ViewObserver {
         final double weight = view.getRegistrationView().getWeight();
 
         final Validator validator = new Validator()
-                .addValidation(usernameMinLengthValidator(MIN_USERNAME_LENGTH), username,
+                .addValidation(minLengthValidator(MIN_USERNAME_LENGTH), username,
                         "Username must contain at least " + MIN_USERNAME_LENGTH + " characters")
-                .addValidation(usernameMaxLengthValidator(MAX_USERNAME_LENGTH), username,
+                .addValidation(maxLengthValidator(MAX_USERNAME_LENGTH), username,
                         "Username cannot contain more then " + MAX_USERNAME_LENGTH + " characters")
-                .addValidation(usernameAlreadyTakenValidator(), username, "Username already taken")
-                .addValidation(nameValidator(), firstName, "Invalid first name")
-                .addValidation(nameValidator(), lastName, "Invalid last name")
-                .addValidation(numberValidator(), age, "Invalid age")
-                .addValidation(numberValidator(), weight, "Invalid weight")
-                .addValidation(numberValidator(), height, "Invalid height")
-                .addValidation(passwordMinLengthValidator(MIN_PASSWORD_LENGTH), password,
+                .addValidation(alreadyTakenValidator(Service.USERS, "username"), username, "Username already taken")
+                .addValidation(minLengthValidator(1), firstName, "Invalid first name")
+                .addValidation(minLengthValidator(1), lastName, "Invalid last name")
+                .addValidation(positiveNumberValidator(), age, "Invalid age")
+                .addValidation(positiveNumberValidator(), weight, "Invalid weight")
+                .addValidation(positiveNumberValidator(), height, "Invalid height")
+                .addValidation(minLengthValidator(MIN_PASSWORD_LENGTH), password,
                         "Password must contain at least " + MIN_PASSWORD_LENGTH + " characters")
-                .addValidation(passwordConfirmValidator(passwordConfirm), password, "The two passwords do not match")
+                .addValidation(confirmValidator(passwordConfirm), password, "The two passwords do not match")
                 .addValidation(emailValidator(), email, "Invalid email or email already taken")
-                .addValidation(emailAlreadyTakenValidator(), email, "Email already taken");
+                .addValidation(alreadyTakenValidator(Service.USERS, "email"), email, "Email already taken");
         validator.validate();
         validator.ifValid(() -> {
             // Add the new user in the database
@@ -147,12 +144,12 @@ public final class Controller implements ViewObserver {
             newUser.put("surname", lastName);
             newUser.put("email", email);
             newUser.put("age", age);
-            getService(DBCollectionName.USERS).create(newUser);
+            USERS.getDBService().create(newUser);
             final Map<String, Object> newMeasure = newParameter("username", username);
             newMeasure.put("date", DateFormats.toUTCString(new Date()));
             newMeasure.put("height", height / 100.0);
             newMeasure.put("weight", weight);
-            getService(DBCollectionName.MEASURES).create(newMeasure);
+            MEASURES.getDBService().create(newMeasure);
         });
         return validator.getErrorMessages();
     }
@@ -177,15 +174,16 @@ public final class Controller implements ViewObserver {
         final String newEmail = view.getUserSettingsView().getNewEmail();
 
         final Validator validator = new Validator()
-                .addValidation(nameValidator(), newFirstName, "Invalid first name")
-                .addValidation(nameValidator(), newLastName, "Invalid last name")
-                .addValidation(numberValidator(), newAge, "Invalid age")
+                .addValidation(minLengthValidator(1), newFirstName, "Invalid first name")
+                .addValidation(minLengthValidator(1), newLastName, "Invalid last name")
+                .addValidation(positiveNumberValidator(), newAge, "Invalid age")
                 .addValidation(emailValidator(), newEmail, "Invalid email")
-                .addValidation(passwordMinLengthValidator(MIN_PASSWORD_LENGTH), newPassword,
+                .addValidation(minLengthValidator(MIN_PASSWORD_LENGTH), newPassword,
                         "The password must contain at least " + MIN_PASSWORD_LENGTH + " characters")
-                .addValidation(passwordConfirmValidator(newPasswordasswordConfirm), newPassword,
+                .addValidation(confirmValidator(newPasswordasswordConfirm), newPassword,
                         "The two passwords do not match")
-                .addValidation(emailAlreadyTakenValidator().or(e -> getCurrentUserData().get("email").equals(e)),
+                .addValidation(alreadyTakenValidator(Service.USERS, "email")
+                        .or(e -> getCurrentUserData().get("email").equals(e)),
                         newEmail, "Email already taken");
         validator.validate();
         validator.ifValid(() -> {
@@ -195,7 +193,7 @@ public final class Controller implements ViewObserver {
             newUserData.put("surname", newLastName);
             newUserData.put("email", newEmail);
             newUserData.put("age", newAge);
-            getService(DBCollectionName.USERS).updateByParams(
+            USERS.getDBService().updateByParams(
                     currentUsernameAsQueryParams(),
                     newUserData);
         });
@@ -205,7 +203,7 @@ public final class Controller implements ViewObserver {
     @Override
     public Map<String, Set<String>> getExercises() {
         final Map<String, Set<String>> exercises = new HashMap<>();
-        getService(DBCollectionName.EXERCISES).getAll().forEach(m -> {
+        EXERCISES.getDBService().getAll().forEach(m -> {
             final Set<String> s = new HashSet<>();
             s.add((String) m.get("name"));
             exercises.merge((String) m.get("mainTarget"), s, (o, n) -> {
@@ -220,7 +218,7 @@ public final class Controller implements ViewObserver {
     public Map<String, String> getExerciseInfo(final String exerciseName) {
         final Map<String, Object> params = newParameter("name", exerciseName);
         final Map<String, String> exerciseInfo = new HashMap<>();
-        getService(DBCollectionName.EXERCISES)
+        EXERCISES.getDBService()
                 .getOneByParams(params)
                 .ifPresent(m -> {
                     exerciseInfo.put("description", (String) m.get("description"));
@@ -232,7 +230,7 @@ public final class Controller implements ViewObserver {
     @Override
     public boolean saveRoutine() {
         final Map<String, Object> routine = currentUsernameAsQueryParams();
-        final Service routines = getService(DBCollectionName.ROUTINES);
+        final DBService routines = ROUTINES.getDBService();
         routine.put("name", view.getCreateRoutineView().getRoutineName());
         routine.put("description", view.getCreateRoutineView().getRoutineDescription());
         routine.put("routineId", routines.getAll().stream()
@@ -265,7 +263,7 @@ public final class Controller implements ViewObserver {
     @Override
     public Set<Triple<String, String, Map<String, Map<String, List<Integer>>>>> getRoutines() {
         final Set<Triple<String, String, Map<String, Map<String, List<Integer>>>>> routines = new HashSet<>();
-        getService(DBCollectionName.ROUTINES)
+        ROUTINES.getDBService()
                 .getByParams(currentUsernameAsQueryParams()).forEach(r -> {
                     final Map<String, Map<String, List<Integer>>> workouts = new HashMap<>();
                     ((List<Map<String, Object>>) r.get("workouts")).forEach(w -> {
@@ -311,7 +309,7 @@ public final class Controller implements ViewObserver {
 
                         final Map<String, Object> params = currentUsernameAsQueryParams();
                         params.put("name", view.getSelectRoutineView().getSelectedRoutine());
-                        final int routineId = getService(DBCollectionName.ROUTINES)
+                        final int routineId = ROUTINES.getDBService()
                                 .getOneByParams(params)
                                 .map(m -> (int) m.get("routineId"))
                                 .get();
@@ -324,7 +322,7 @@ public final class Controller implements ViewObserver {
                     })
                             .collect(Collectors.toList());
                 })
-                .forEach(m -> getService(DBCollectionName.RESULTS).create(m));
+                .forEach(m -> RESULTS.getDBService().create(m));
         return true;
     }
 
@@ -336,7 +334,7 @@ public final class Controller implements ViewObserver {
             newMeasure.putAll(currentUsernameAsQueryParams());
             newMeasure.put("weight", w);
             // The height does't change
-            final double height = (double) getService(DBCollectionName.MEASURES)
+            final double height = (double) MEASURES.getDBService()
                     .getOneByParams(currentUsernameAsQueryParams())
                     .get().get("height");
             newMeasure.put("height", height);
@@ -345,7 +343,7 @@ public final class Controller implements ViewObserver {
             model.addBodyMeasure("HEIGHT", height, false);
             model.addBodyMeasure("WEIGHT", w, false);
         });
-        return newMeasure.isEmpty() || getService(DBCollectionName.MEASURES).create(newMeasure);
+        return newMeasure.isEmpty() || MEASURES.getDBService().create(newMeasure);
     }
 
     @Override
@@ -353,7 +351,7 @@ public final class Controller implements ViewObserver {
         final String routineName = view.getSelectRoutineView().getSelectedRoutine();
         final Map<String, Object> deleteParams = currentUsernameAsQueryParams();
         deleteParams.put("name", routineName);
-        final Service routines = getService(DBCollectionName.ROUTINES);
+        final DBService routines = ROUTINES.getDBService();
         routines.getOneByParams(deleteParams)
                 .map(m -> (int) m.get("routineId"))
                 .ifPresent(model::removeRoutine);
@@ -363,7 +361,7 @@ public final class Controller implements ViewObserver {
     @Override
     public Map<String, List<Pair<String, Number>>> getChartsData() {
         final Map<String, List<Pair<String, Number>>> chartsData = new HashMap<>();
-        final List<Pair<String, Number>> weightChart = getService(DBCollectionName.MEASURES)
+        final List<Pair<String, Number>> weightChart = MEASURES.getDBService()
                 .getByParams(currentUsernameAsQueryParams())
                 .stream()
                 .map(m -> (Pair<String, Number>) new ImmutablePair<>(
@@ -377,7 +375,7 @@ public final class Controller implements ViewObserver {
                 })
                 .collect(Collectors.toList());
 
-        chartsData.put("weightChart", weightChart);
+        chartsData.put("Weight Chart", weightChart);
         // chartsData.put("timePerformanceChart", getChartData("pieChartData"));
         return chartsData;
     }
@@ -392,25 +390,32 @@ public final class Controller implements ViewObserver {
         System.out.println(bmr);
         indexes.put("BMI", bmi.get(bmi.size() - 1));
         indexes.put("BMR", bmr.get(bmr.size() - 1));
+        System.out.println(model.timeBodyZone());
         return indexes;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Map<String, Number> getChartData(final String chartName) {
-        final Optional<Map<String, Object>> chartData = getService(DBCollectionName.CHARTS)
-                .getByParams(currentUsernameAsQueryParams())
-                .stream().findFirst();
-        return chartData.map(d -> ((List<Map<String, Object>>) d.get(chartName))
-                .stream()
-                .map(m -> new SimpleImmutableEntry<>(
-                        (String) m.get("bodyPart"),
-                        (Number) m.get("times")))
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue)))
-                .orElseGet(Collections::emptyMap);
     }
 
     private String getCurrentUsername() {
         return model.getCurrentUserName().get();
+    }
+
+    /**
+     * This method gets called in {@link Controller#loginUser}. Resets the current user body.
+     */
+    @SuppressWarnings("unchecked")
+    private void resetCurrentUserBody() {
+        final double defaultPercentage = 50.0;
+        BODY_ZONES.getDBService().getAll().stream()
+                .forEach(m -> {
+                    final String bodyZone = (String) m.get("name");
+                    ((List<String>) m.get("bodyParts")).forEach(p -> model.setBody(p, bodyZone));
+                });
+        EXERCISES.getDBService().getAll().stream()
+                .forEach(m -> {
+                    model.addBodyPart(
+                            (String) m.get("gymTool"),
+                            (String) m.get("mainTarget"),
+                            defaultPercentage); // percentage not used
+                });
     }
 
     /**
@@ -419,22 +424,23 @@ public final class Controller implements ViewObserver {
      */
     @SuppressWarnings("unchecked")
     private void addCurrentUserResults() {
-        final List<Map<String, Object>> results = getService(DBCollectionName.RESULTS)
+        final List<Map<String, Object>> results = RESULTS.getDBService()
                 .getByParams(currentUsernameAsQueryParams());
         results.forEach(r -> { // A single result
             final String currentWorkoutName = (String) r.get("workoutName");
             model.addWorkout(currentWorkoutName, currentWorkoutName, ""); // Not used
-            final Map<String, Object> exercise = getService(DBCollectionName.EXERCISES)
+            final Map<String, Object> exercise = EXERCISES.getDBService()
                     .getOneByParams(newParameter("name", r.get("exerciseName"))).get();
             model.addGymExcercise(
                     currentWorkoutName,
                     (String) exercise.get("exerciseGoal"),
                     (String) exercise.get("gymTool"),
                     (List<Integer>) r.get("repetitions"));
-            if (!model.getWorkoutList().stream().anyMatch(w -> w.getCode().equals(currentWorkoutName))) {
+            if (!model.getWorkoutList().stream().anyMatch(w -> w.getName().equals(currentWorkoutName))) {
                 results.stream()
-                        .filter(m -> m.get("workoutName").equals(currentWorkoutName))
+                        .filter(m -> ((String) m.get("workoutName")).equals(currentWorkoutName))
                         .forEach(r2 -> {
+                    System.out.println(r2);
                     final Date date = DateFormats.parseUTC((String) r2.get("date"));
                     final LocalDate when = DateConverter.dateToLocalDate(date);
                     model.addRoutine(
@@ -448,6 +454,28 @@ public final class Controller implements ViewObserver {
                 });
             }
         });
+        System.out.println(model.getWorkoutList());
+        System.out.println(model.getRoutineList());
+    }
+
+    /**
+     * This method gets called in {@link Controller#loginUser}. Passes to the model all the measures of the current user
+     * body.
+     */
+    private void addCurrentUserMeasures() {
+        final Optional<Boolean> firstTime = Optional.of(true);
+        MEASURES.getDBService()
+                .getByParams(currentUsernameAsQueryParams())
+                .forEach(m -> {
+                    final double height = (double) m.get("height");
+                    final double weight = (double) m.get("weight");
+                    final Date date = DateFormats.parseUTC((String) m.get("date"));
+                    System.out.println(height + " " + weight + " " + firstTime.get());
+                    model.addDataMeasure(DateConverter.dateToLocalDate(date));
+                    model.addBodyMeasure("HEIGHT", height, firstTime.get());
+                    model.addBodyMeasure("WEIGHT", weight, firstTime.get());
+                    firstTime.map(b -> false);
+                });
     }
 
     private static Map<String, Object> usernameAsQueryParam(final String username) {
@@ -458,94 +486,15 @@ public final class Controller implements ViewObserver {
         return usernameAsQueryParam(getCurrentUsername());
     }
 
-    private static boolean checkIfUserExists(final String username) {
-        return getUserData(username).isPresent();
-    }
-
-    private static boolean checkIfEmailExists(final String email) {
-        return getService(DBCollectionName.USERS)
-                .getOneByParams(newParameter("email", email))
-                .isPresent();
-    }
-
     private static Optional<Map<String, Object>> getUserData(final String username) {
-        return getService(DBCollectionName.USERS)
+        return USERS.getDBService()
                 .getOneByParams(usernameAsQueryParam(username));
-    }
-
-    // Validation strategies
-
-    private static Predicate<String> usernameMinLengthValidator(final int minLength) {
-        return u -> !isNull(u) && (u.length() >= minLength);
-    }
-
-    private static Predicate<String> usernameMaxLengthValidator(final int maxLength) {
-        return u -> !isNull(u) && (u.length() <= maxLength);
-    }
-
-    private static Predicate<String> usernameAlreadyTakenValidator() {
-        return u -> !checkIfUserExists(u);
-    }
-
-    private static Predicate<String> passwordMinLengthValidator(final int minLength) {
-        return p -> !isNull(p) && p.length() >= minLength;
-    }
-
-    private static Predicate<String> passwordConfirmValidator(final String other) {
-        return p -> p.equals(other);
-    }
-
-    private static Predicate<String> emailValidator() {
-        return e -> !isNull(e) && EmailValidator.getInstance().isValid(e);
-    }
-
-    private static Predicate<String> emailAlreadyTakenValidator() {
-        return e -> !checkIfEmailExists(e);
-    }
-
-    private static Predicate<String> nameValidator() {
-        return n -> !isNull(n) && n.length() > 0;
-    }
-
-    private static Predicate<Number> numberValidator() {
-        return n -> !isNull(n) && Double.compare(n.doubleValue(), 0) > 0;
     }
 
     private static Map<String, Object> newParameter(final String name, final Object value) {
         final Map<String, Object> param = new HashMap<>();
         param.put(name, value);
         return param;
-    }
-
-    private static Service getService(final DBCollectionName service) {
-        return SERVICES.get(service);
-    }
-
-    /**
-     * An {@code enum} that represents all the collections used by this {@code Controller}.
-     */
-    private enum DBCollectionName {
-
-        EXERCISES, ROUTINES, CHARTS, USERS, RESULTS, GYM_TOOLS, MEASURES;
-
-        @Override
-        public String toString() {
-            return super.toString().toLowerCase();
-        }
-
-    }
-
-    private static Service newService(final DBCollectionName collectionName) {
-        return new MongoService(collectionName.toString());
-    }
-
-    private static final Map<DBCollectionName, Service> SERVICES;
-
-    static {
-        final Map<DBCollectionName, Service> services = new EnumMap<>(DBCollectionName.class);
-        Arrays.stream(DBCollectionName.values())
-                .forEach(n -> services.put(n, newService(n)));
-        SERVICES = Collections.unmodifiableMap(services);
     }
 
 }
