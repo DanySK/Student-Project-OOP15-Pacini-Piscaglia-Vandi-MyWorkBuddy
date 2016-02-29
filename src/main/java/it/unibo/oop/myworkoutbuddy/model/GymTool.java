@@ -3,56 +3,56 @@ package it.unibo.oop.myworkoutbuddy.model;
 import java.util.Map;
 /**
  * GymTool available for training.
- * -------------------------------------------------------------
  */
 public interface GymTool {
 
     /**
-     * add a percentage value for a human body muscle.
-     * @param bodyPart String
+     * Add to BodyMap a specific body part with relative value of percentage
+     * Example : TapisRoulant = <m1, 20%>, <m2,30%>, <m5,20%>, ...
+     * @param bodyPart BodyPart
      * @param percentage Double
      */
     void addBodyPart(final String bodyPart, Double percentage);
 
     /**
-     * 
-     * @return code of GymTool
+     * give the code of GymTool.
+     * @return a String
      */
     String getCode();
 
     /**
-     * 
-     * @return toolName
+     * it gives the toolName.
+     * @return a String
      */
     String getNameTool();
 
     /**
-     * 
-     * @return path of file
+     * it gives the path of file.
+     * @return a String
      */
     String getImageFile();
 
     /**
-     * 
-     * @return the Max value for that exercise
+     * it gives the Max value for that exercise.
+     * @return an Integer
      */
     int getMaxValue();
 
     /**
-     * 
-     * @return the Max value for that exercise
+     * it gives the Minimum value for that exercise.
+     * @return an Integer
      */
     int getMinValue();
 
     /**
-     * 
-     * @return number Max of available tools in the gym.
+     * the number Max of available tools in the gym.
+     * @return an Integer
      */
     int getNumTools();
 
     /**
-     * 
-     * @return percentage grade of single muscle involvement
+     * it gives the percentage grade of single muscle involvement.
+     * @return a Map<String, Double>
      */
     Map<String, Double> getBodyMap();
 }

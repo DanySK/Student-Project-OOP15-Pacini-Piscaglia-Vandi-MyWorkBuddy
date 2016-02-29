@@ -151,7 +151,6 @@ public class RoutineImpl implements Routine {
         return scoreMap;
     }
 
-    // void addValue(final List<Integer> valueList);
     @Override
     public void addValue(final List<Integer> valueList) {
         if (this.isWorkout()) {

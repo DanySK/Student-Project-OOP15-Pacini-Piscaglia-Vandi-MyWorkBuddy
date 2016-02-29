@@ -114,9 +114,8 @@ public final class ExerciseImpl implements Exercise {
         /**
          * 
          * @return Builder
-         * @throws IllegalStateException exception
          */
-        public ExerciseImpl build() throws IllegalStateException {
+        public ExerciseImpl build() {
             this.checkNotNull(this.description);
             this.checkNotNull(this.gymTool);
             this.checkNotNegative(this.sessions);

@@ -45,60 +45,36 @@ public final class GymToolImpl implements GymTool {
         this.bodyMap = new HashMap<>(); // map to create with the specific add function
     }
 
-    /**
-     * Add to BodyMap a specific body part with relative value of percentage
-     * Example : TapisRoulant = <m1, 20%>, <m2,30%>, <m5,20%>, ...
-     * @param bodyPart BodyPart
-     * @param value Double
-     */
     @Override
     public void addBodyPart(final String bodyPart, final Double percentage) {
         this.bodyMap.put(bodyPart, percentage);
     }
 
-    /**
-     * return the alphabetic code of a GymTool.
-     */
     @Override
     public String getCode() {
         return this.code;
     }
 
-    /**
-     * return the name of the tool.
-     */
     @Override
     public String getNameTool() {
         return this.name;
     }
 
-    /**
-     * give the string pattern of tool image.
-     */
     @Override
     public String getImageFile() {
         return this.imageFile.orElse("none");
     }
 
-    /**
-     * @return the Max value for the tool
-     */
     @Override
     public int getNumTools() {
         return this.numTools;
     }
 
-    /**
-     * @return the Max value for the tool
-     */
     @Override
     public int getMinValue() {
         return this.valueMin;
     }
 
-    /**
-     * @return the Max value for the tool
-     */
     @Override
     public int getMaxValue() {
         return this.valueMax;
@@ -132,7 +108,7 @@ public final class GymToolImpl implements GymTool {
         private Optional<String> imageFile = Optional.empty();
 
         /**
-         * 
+         * it adds the GymTool code.
          * @param code String
          * @return a builder of GymTool
          */
@@ -141,7 +117,7 @@ public final class GymToolImpl implements GymTool {
             return this;
         }
         /**
-         * 
+         * it adds the GymTool name.
          * @param name String
          * @return a builder of GymTool
          */
@@ -151,7 +127,7 @@ public final class GymToolImpl implements GymTool {
         }
 
         /**
-         * 
+         * it adds the GymTool number of available tools in the gym.
          * @param numTools integer
          * @return a builder of GymTool
          */
@@ -161,7 +137,7 @@ public final class GymToolImpl implements GymTool {
         }
 
         /**
-         * 
+         * it adds the GymTool minimum value of setting.
          * @param valueMin integer
          * @return a builder of GymTool
          */
@@ -171,7 +147,7 @@ public final class GymToolImpl implements GymTool {
         }
 
         /**
-         * 
+         * it adds the GymTool maximum value of setting.
          * @param valueMax integer
          * @return a builder of GymTool
          */
@@ -181,7 +157,7 @@ public final class GymToolImpl implements GymTool {
         }
 
         /**
-         * 
+         * it add a route to arrive the GymTool image file.
          * @param imageFile String
          * @return a builder of Optional
          */

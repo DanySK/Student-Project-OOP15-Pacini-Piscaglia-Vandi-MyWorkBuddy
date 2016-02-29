@@ -22,7 +22,7 @@ public class ManageWorkout extends ManageUser {
 
     private static final boolean ERR_MSG = true; // with true it gives the possibility to print relative errors
 
-    private static final int TIME_SESSION = 2; // value used to estimate time of exercise: time == num session x time sessions
+    private static final int TIME_SESSION = 2; // value used to estimate time of exercise: time == number session per time sessions
 
     private List<GymTool> listGymTool;
     private Map<String, GymTool> mapGymTool;
@@ -65,7 +65,7 @@ public class ManageWorkout extends ManageUser {
     }
 
     /**
-     * 
+     * it removes the Workout with specified code.
      * @param codeWorkout String
      */
     public void removeWorkout(final String codeWorkout) {
@@ -235,12 +235,6 @@ public class ManageWorkout extends ManageUser {
         }
 
         return this.currentWorkout.get().getExerciseList().size();
-
-        /*
-        final String codeWorkout = this.currentWorkout.get().getCode();
-        final Optional<Workout> optWorkout = this.getWorkout(this.getCurrentUser(), codeWorkout);
-        return checkWorkout(optWorkout, codeWorkout) ? optWorkout.get().getExerciseList().size() : 0;
-        */
     }
 
     /**
@@ -342,17 +336,17 @@ public class ManageWorkout extends ManageUser {
     /**
      * find any workout with code equal to passed code and that belongs to user
      * @param user the passed user
-     * @param code the passed routine code
-     * @return a routine
+     * @param code the passed workout code
+     * @return a Optional<Workout>
      */
     private Optional<Workout> getWorkout(final User user, final String code) {
         return user.getWorkoutList().stream().filter(i -> i.getCode().equals(code)).findAny();
     }
 
     /**
-     * 
+     * it gives the version of a GymTool, mapped for the parameter code
      * @param code String
-     * @return Optional version of a GymTool, mapped for the param code
+     * @return Optional<GymTool>
      */
     private Optional<GymTool> getGymTool(final String code) {
         return Optional.ofNullable(this.mapGymTool.get(code));

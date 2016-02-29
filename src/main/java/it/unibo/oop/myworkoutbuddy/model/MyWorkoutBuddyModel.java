@@ -68,6 +68,7 @@ public interface MyWorkoutBuddyModel {
             final List<Integer> numSessions);
 
     /**
+     * it adds a new Routine with the given parameters at the current user.
      * @param idRoutine integer
      * @param codeWorkout String
      * @param localDate LocalDate
@@ -75,7 +76,7 @@ public interface MyWorkoutBuddyModel {
     void addRoutine(final int idRoutine, final String codeWorkout, final LocalDate localDate);
 
     /**
-     * remove a Routine with the specified id.
+     * remove a Routine with the specified id at the current user.
      * @param idRoutine Integer
      */
     void removeRoutine(final int idRoutine);
@@ -239,8 +240,4 @@ public interface MyWorkoutBuddyModel {
      * @return a List<Double>
      */
     List<Double> trendBodyBMI();
-
-    /*
-     * calcolo indice massa grassa e magra (opzionale).
-     */
 }

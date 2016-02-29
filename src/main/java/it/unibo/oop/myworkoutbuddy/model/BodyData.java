@@ -37,18 +37,16 @@ public class BodyData {
     }
 
     /**
-     * 
-     * @return date of measurement
+     * give the date of measurement.
+     * @return a Date
      */
     public Date getDate() {
         return this.date;
     }
 
     /**
-     * 
-     * @return bodyMass a Double
-     * @throws NullPointerException exception for null values
-     * @throws IllegalArgumentException exception for invalid values
+     * give the bodyMass.
+     * @return a Double
      */
     public Double getBodyBMI() {
         final Double mass = getMassHeight("WEIGHT");
@@ -64,7 +62,7 @@ public class BodyData {
     /**
      * calculation of BMI(Body Mass Index).
      * @param age Integer
-     * @return bodyBMI
+     * @return a Double
      */
     public Double getBodyBMR(final Integer age) {
         if (age == null || age <= ZERO_INTEGER) {
@@ -83,7 +81,7 @@ public class BodyData {
 
     /**
      * give a map of measurable body zone and relatives measurement.
-     * @return Map<String, Double>
+     * @return a Map<String, Double>
      */
     public Map<String, Double> getBodyMeasure() {
         return this.bodyMeasure;
@@ -99,7 +97,7 @@ public class BodyData {
     }
 
     /**
-     * return mass or height according to the measure
+     * return mass or height according to the measure.
      * @param measure String
      * @return a Double
      */

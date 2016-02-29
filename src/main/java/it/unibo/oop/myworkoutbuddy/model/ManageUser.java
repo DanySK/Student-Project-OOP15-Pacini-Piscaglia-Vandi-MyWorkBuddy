@@ -208,7 +208,7 @@ public class ManageUser {
     }
 
     /**
-     * return true if the account param is present.
+     * return true if the account parameter is present.
      * @param account Account
      * @return a boolean
      */
