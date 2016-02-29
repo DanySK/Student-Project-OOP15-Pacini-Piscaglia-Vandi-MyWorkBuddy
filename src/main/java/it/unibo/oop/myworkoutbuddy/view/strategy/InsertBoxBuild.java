@@ -16,32 +16,37 @@ import javafx.scene.control.cell.TextFieldTableCell;
  * Implementation of the build strategy of the routine table.
  *
  */
-public class TableBuild implements TableBuildStrategy {
+public class InsertBoxBuild implements InsertBoxBuildStrategy {
 
     @Override
-    public TableColumn<Exercise, String> buildColumn(final String colName, final double width,
-            final String propertyValue) {
+    public TableColumn<Exercise, String> buildStringColumn(final String colName, final double width,
+            final Optional<String> propertyValue) {
         return createColumn(colName, width, propertyValue);
     }
 
     @Override
     public TableColumn<Exercise, String> buildKgColumn(final String colName, final double width,
             final String propertyValue) {
-        final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
+        final TableColumn<Exercise, String> col = createColumn(colName, width, Optional.of(propertyValue));
+        col.setCellFactory(TextFieldTableCell.forTableColumn());
         col.setOnEditCommit(t -> {
-            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow()))
-                    .setKg(parseCellInput(t.getNewValue()));
+            if (checkCellInput(t.getNewValue())) {
+                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).setKg(t.getNewValue());
+            }
         });
         return col;
     }
 
     @Override
     public TableColumn<Exercise, String> buildRepColumn(final String colName, final double width,
-            final String propertyValue, int colNumber) {
-        final TableColumn<Exercise, String> col = createColumn(colName, width, propertyValue);
+            final String propertyValue, final int colNumber) {
+        final TableColumn<Exercise, String> col = createColumn(colName, width, Optional.of(propertyValue));
+        col.setCellFactory(TextFieldTableCell.forTableColumn());
         col.setOnEditCommit(t -> {
-            ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).getRepProperties()
-                    .get(colNumber).set((parseCellInput(t.getNewValue())));
+            if (checkCellInput(t.getNewValue())) {
+                ((Exercise) t.getTableView().getItems().get(t.getTablePosition().getRow())).getRepProperties()
+                        .get(colNumber - 1).set(t.getNewValue());
+            }
         });
         return col;
     }
@@ -57,22 +62,24 @@ public class TableBuild implements TableBuildStrategy {
     }
 
     private TableColumn<Exercise, String> createColumn(final String name, final double width,
-            final String propertyValue) {
+            final Optional<String> propertyValue) {
         final TableColumn<Exercise, String> col = new TableColumn<>(name);
         col.setPrefWidth(width);
-        col.setCellFactory(TextFieldTableCell.forTableColumn());
-        col.setCellValueFactory(new PropertyValueFactory<Exercise, String>(propertyValue));
+        propertyValue.ifPresent(p -> {
+            col.setCellValueFactory(new PropertyValueFactory<Exercise, String>(p));
+        });
         return col;
     }
 
-    private int parseCellInput(final String cellInput) {
+    private boolean checkCellInput(final String cellInput) {
         try {
-            return Integer.parseInt(cellInput);
+            Integer.parseInt(cellInput);
         } catch (NumberFormatException e) {
             FxWindowFactory.showDialog("Uncorrect field inserted", "Please insert an integer number!", Optional.empty(),
                     AlertType.ERROR);
+            return false;
         }
-        return 0;
+        return true;
     }
 
 }

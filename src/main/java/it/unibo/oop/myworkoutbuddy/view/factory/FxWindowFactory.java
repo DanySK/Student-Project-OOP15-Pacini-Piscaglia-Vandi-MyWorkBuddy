@@ -73,9 +73,10 @@ public final class FxWindowFactory {
             }
             final Stage stage = new Stage();
             final Scene scene = new Scene(root);
-            scene.getStylesheets().add(FxWindowFactory.class.getResource(cssSheetPath).toExternalForm());
+            scene.getStylesheets().add(FxWindowFactory.class
+                    .getResource("/it/unibo/oop/myworkoutbuddy/view/style/" + cssSheetPath).toExternalForm());
             stage.setTitle("MyWorkoutBuddy");
-            stage.getIcons().add(new Image("http://clementbatifoulier.com/here/wp-content/uploads/Icon-Workout.png"));
+            stage.getIcons().add(new Image("/it/unibo/oop/myworkoutbuddy/view/icons/Icon-Workout.png"));
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

@@ -54,13 +54,17 @@
 
 #statBox{
 	-fx-background-color:lightBlue;
-	-fx-background-radius: 20.0;
 }
 
 #indexLabel{
 	-fx-padding: 15.0;
 	-fx-font-weight: bold;
 	-fx-font-size: 18.0;
+}
+
+#indexNameLabel{
+	-fx-font: bold italic 18.0pt "Serif";
+	-fx-padding: 15.0;
 }
 
 #selectedExercise{

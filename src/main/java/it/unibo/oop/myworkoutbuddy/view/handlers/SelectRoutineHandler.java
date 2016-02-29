@@ -3,8 +3,9 @@ package it.unibo.oop.myworkoutbuddy.view.handlers;
 import static it.unibo.oop.myworkoutbuddy.view.factory.FxWindowFactory.showDialog;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
@@ -83,25 +84,38 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private void insertData() {
-        if (isWeightCorrect() && getObserver().addResults() && getObserver().updateWeight()) {
+        if (getObserver().addResults()) {
             showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
-            showDialog("Error!", "Your routine data hasn't been saved, check your results and weight inserted",
+            showDialog("Error!", "Your routine data hasn't been saved, check your results inserted", Optional.empty(),
+                    AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void insertWeight() {
+        if (isWeightCorrect() && getObserver().updateWeight()) {
+            showDialog("Weight inserted!", "Your data has been successfully inserted!", Optional.empty(),
+                    AlertType.INFORMATION);
+        } else {
+            showDialog("Wrong Weight!", "You have insert a wrong weight! Please insert a double number (e.g. 20.0)",
                     Optional.empty(), AlertType.ERROR);
         }
     }
 
     @Override
-    public List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults() {
-        final List<Pair<String, Pair<List<Integer>, Integer>>> results = new LinkedList<>();
+    public Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> getUserResults() {
+        final Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> results = new HashMap<>();
         tabRoutine.getTabs().stream().filter(tab -> tab.getText().equals(selectedRoutineName))
                 .map(i -> (ScrollPane) i.getContent()).map(i -> (VBox) i.getContent()).forEach(exsBox -> {
                     exsBox.getChildren().stream().map(workT -> (TitledPane) workT).map(workBox -> workBox.getContent())
                             .forEach(workout -> {
                         final List<Pair<String, Pair<List<Integer>, Integer>>> result = workoutLayout
                                 .getExerciseResults(workout);
-                        results.addAll(result);
+                        final TitledPane titled = (TitledPane) workout.getParent().getParent();
+                        System.out.println(titled.getText());
+                        results.put(titled.getText(), result);
                     });
                 });
         return results;

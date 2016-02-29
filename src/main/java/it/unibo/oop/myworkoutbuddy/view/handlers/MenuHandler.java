@@ -130,20 +130,20 @@ public final class MenuHandler {
 
         case "Create Routine":
             image = new Image(
-                    "https://chakraos.org/wiki/images/thumb/0/0d/Address-book-new.png/48px-Address-book-new.png");
+                    "it/unibo/oop/myworkoutbuddy/view/icons/create.png");
             break;
 
         case "Select Routine":
             image = new Image(
-                    "http://files.softicons.com/download/application-icons/minicons-icons-by-kyo-tux/png/48/Forward.png");
+                    "it/unibo/oop/myworkoutbuddy/view/icons/Forward.png");
             break;
 
         case "Statistics":
-            image = new Image("http://www.fancyicons.com/free-icons/103/office/png/48/chart_48.png");
+            image = new Image("it/unibo/oop/myworkoutbuddy/view/icons/Chart.png");
             break;
 
         case "Settings":
-            image = new Image("http://www.mytechlogy.com/view/images/Settings.png");
+            image = new Image("it/unibo/oop/myworkoutbuddy/view/icons/settings.png");
             break;
 
         default:

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 /**
@@ -56,7 +57,7 @@ public interface ViewObserver {
      * @return series of data in a map <chartName, Map<name,value>> to show in
      *         the chart.
      */
-    Map<String, Map<String, Number>> getChartsData();
+    Map<String, List<Pair<String, Number>>> getChartsData();
 
     /**
      * 

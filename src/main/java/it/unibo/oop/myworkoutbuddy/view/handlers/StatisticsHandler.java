@@ -76,8 +76,9 @@ public final class StatisticsHandler {
         getObserver().getIndexes().forEach((name, value) -> {
             final HBox singleBox = new HBox();
             final Label nameLabel = new Label(name);
-            nameLabel.setId("indexLabel");
-            final Label valueLabel = new Label(value.toString());
+            nameLabel.setId("indexNameLabel");
+            final Label valueLabel = new Label(
+                    String.valueOf(Math.round(value.doubleValue() * Math.pow(10, 2)) / Math.pow(10, 2)));
             valueLabel.setId("indexLabel");
             singleBox.getChildren().add(nameLabel);
             singleBox.getChildren().add(valueLabel);

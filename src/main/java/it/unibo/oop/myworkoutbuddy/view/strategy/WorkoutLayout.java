@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,7 +38,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
 
     private static final double REPS_FIELD_WIDTH = 100;
 
-    private final TableBuildStrategy tableBuildStrategy = new TableBuild();
+    private final InsertBoxBuildStrategy tableBuildStrategy = new InsertBoxBuild();
 
     @Override
     public Node addWorkoutNodes(final Map<String, Map<String, List<Integer>>> workouts) {
@@ -61,20 +61,20 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         final TableView<Exercise> table = (TableView<Exercise>) workout;
         table.getItems().forEach(ex -> {
             results.add(new ImmutablePair<String, Pair<List<Integer>, Integer>>(ex.getExerciseName(),
-                    new ImmutablePair<>(ex.getRepProperties().stream().map(i -> i.get()).collect(Collectors.toList()),
-                            ex.getKg())));
+                    new ImmutablePair<>(ex.getRepProperties().stream().map(i -> Integer.parseInt(i.get()))
+                            .collect(Collectors.toList()), Integer.parseInt(ex.getKg()))));
         });
         return results;
     }
 
     private TableView<Exercise> tableBuild(final ObservableList<Exercise> data) {
 
-        final TableColumn<Exercise, String> exCol = tableBuildStrategy.buildColumn("Exercise Name",
-                EXERCISE_FIELD_WIDTH,
-                "exerciseName");
-        final TableColumn<Exercise, String> repsCol = tableBuildStrategy.buildColumn("Repetitions", 0, "");
+        final TableColumn<Exercise, String> exCol = tableBuildStrategy.buildStringColumn("Exercise Name",
+                EXERCISE_FIELD_WIDTH, Optional.of("exerciseName"));
+        final TableColumn<Exercise, String> repsCol = tableBuildStrategy.buildStringColumn("Repetitions", 0,
+                Optional.empty());
         final TableColumn<Exercise, String> kgCol = tableBuildStrategy.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
-        IntStream.range(1, N_REPS).forEach(i -> repsCol.getColumns()
+        IntStream.range(1, N_REPS + 1).forEach(i -> repsCol.getColumns()
                 .add(tableBuildStrategy.buildRepColumn("Rep " + i, REPS_FIELD_WIDTH, "rep" + i, i)));
         return tableBuildStrategy.build(Arrays.asList(exCol, repsCol, kgCol), data);
     }
@@ -85,17 +85,17 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
     public static final class Exercise {
 
         private final SimpleStringProperty exerciseName;
-        private final SimpleIntegerProperty rep1;
-        private final SimpleIntegerProperty rep2;
-        private final SimpleIntegerProperty rep3;
-        private final SimpleIntegerProperty kg;
+        private final SimpleStringProperty rep1;
+        private final SimpleStringProperty rep2;
+        private final SimpleStringProperty rep3;
+        private final SimpleStringProperty kg;
 
         private Exercise(final String exName, final List<Integer> repetitions, final int kg) {
             this.exerciseName = new SimpleStringProperty(exName);
-            rep1 = new SimpleIntegerProperty(repetitions.get(0));
-            rep2 = new SimpleIntegerProperty(repetitions.get(1));
-            rep3 = new SimpleIntegerProperty(repetitions.get(2));
-            this.kg = new SimpleIntegerProperty(kg);
+            rep1 = new SimpleStringProperty(repetitions.get(0).toString());
+            rep2 = new SimpleStringProperty(repetitions.get(1).toString());
+            rep3 = new SimpleStringProperty(repetitions.get(2).toString());
+            this.kg = new SimpleStringProperty(String.valueOf(kg));
         }
 
         /**
@@ -119,7 +119,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a string representation of Kg.
          */
-        public int getKg() {
+        public String getKg() {
             return kg.get();
         }
 
@@ -128,7 +128,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * @param newKg
          *            registered by user to set.
          */
-        public void setKg(final int newKg) {
+        public void setKg(final String newKg) {
             kg.set(newKg);
         }
 
@@ -136,7 +136,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a string representation of repetition 1.
          */
-        public int getRep1() {
+        public String getRep1() {
             return rep1.get();
         }
 
@@ -145,7 +145,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * @param repetition
          *            string to set.
          */
-        public void setRep1(final int repetition) {
+        public void setRep1(final String repetition) {
             rep1.set(repetition);
         }
 
@@ -153,7 +153,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a string representation of repetition 2.
          */
-        public int getRep2() {
+        public String getRep2() {
             return rep2.get();
         }
 
@@ -162,7 +162,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * @param repetition
          *            string to set.
          */
-        public void setRep2(final int repetition) {
+        public void setRep2(final String repetition) {
             rep2.set(repetition);
         }
 
@@ -170,7 +170,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a string representation of repetition 3.
          */
-        public int getRep3() {
+        public String getRep3() {
             return rep3.get();
         }
 
@@ -179,7 +179,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * @param repetition
          *            string to set.
          */
-        public void setRep3(final int repetition) {
+        public void setRep3(final String repetition) {
             rep3.set(repetition);
         }
 
@@ -187,7 +187,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
          * 
          * @return a list of repetitions.
          */
-        public List<SimpleIntegerProperty> getRepProperties() {
+        public List<SimpleStringProperty> getRepProperties() {
             return new LinkedList<>(Arrays.asList(rep1, rep2, rep3));
         }
 

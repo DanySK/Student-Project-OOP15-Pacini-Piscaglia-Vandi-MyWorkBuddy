@@ -1,6 +1,7 @@
 package it.unibo.oop.myworkoutbuddy.view;
 
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -14,10 +15,10 @@ public interface SelectRoutineView {
 
     /**
      * 
-     * @return a map exercise name and pair of list of repetitions executed by
-     *         user - KG moved.
+     * @return a map workout name- list of pairs exercise name and pair of list
+     *         of repetitions executed by user - KG moved.
      */
-    List<Pair<String, Pair<List<Integer>, Integer>>> getUserResults();
+    Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> getUserResults();
 
     /**
      * @return name of the selected routine chosen by user.

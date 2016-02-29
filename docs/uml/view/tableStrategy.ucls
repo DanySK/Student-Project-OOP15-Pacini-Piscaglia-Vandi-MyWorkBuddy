@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.TableBuild" 
+  <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxBuild" 
     project="oop2015-myworkoutbuddy" 
-    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/TableBuild.java" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxBuild.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="902" y="387"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
@@ -12,9 +12,9 @@
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.TableBuildStrategy" 
+  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxBuildStrategy" 
     project="oop2015-myworkoutbuddy" 
-    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/TableBuildStrategy.java" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxBuildStrategy.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="904" y="166"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
@@ -25,7 +25,7 @@
   </interface>  
   <class id="3" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.WorkoutLayout" 
     project="oop2015-myworkoutbuddy" 
-    file="/oop2015-myworkoutbuddy/src/main/resources/it/unibo/oop/myworkoutbuddy/view/structure/WorkoutLayout.java" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/WorkoutLayout.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="317" y="167"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
@@ -34,18 +34,22 @@
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <realization id="4">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </realization>  
-  <association id="5">    
+  <association id="4">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="6" name="tableBuildStrategy"/>      
-      <multiplicity id="7" minimum="0" maximum="1"/>    
+      <attribute id="5" name="tableBuildStrategy">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="6" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <realization id="7">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
