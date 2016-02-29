@@ -6,8 +6,24 @@
     -fx-text-fill: white;
 }
 
+#login{
+	-fx-font: 13.0px "Serif";
+    -fx-padding: 10.0;
+    -fx-background-color: grey;
+    -fx-cursor: hand;
+    -fx-text-fill: black;
+}
+
+#register{
+	-fx-font: 13.0px "Serif";
+    -fx-padding: 10.0;
+    -fx-background-color: grey;
+    -fx-cursor: hand;
+    -fx-text-fill: black;
+}
+
 .label{
-	-fx-text-fill: white;
+	-fx-text-fill: black;
 }
 
 .root{
@@ -20,10 +36,8 @@
 
 .tab{
     -fx-padding: 10.0;
-    -fx-background-color: grey;
     -fx-cursor: hand;
-    -fx-background-radius: 30.0;
-    -fx-effect: dropshadow( one-pass-box , black , 5.0 , 3.0 , 0.0 , 0.0 );
+    -fx-background-color: lightBlue;
 }
 
 .tab-pane > .tab-header-area > .tab-header-background{
@@ -58,7 +72,6 @@
 
 #statBox{
 	-fx-background-color:lightBlue;
-	-fx-background-radius: 20.0;
 }
 
 #indexLabel{
@@ -78,7 +91,7 @@
 	-fx-font-size: 15.0;
 	-fx-font-weight:bold;
 	-fx-underline: true;
-	-fx-padding:10;
+	-fx-padding:10.0;
 	-fx-text-fill:black;
 }
 
@@ -87,9 +100,7 @@
 	-fx-background-color: orange;
 	-fx-text-fill:black;
 	-fx-font-size: 15.0;
-	-fx-background-radius: 20.0;
-	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
-	-fx-padding:7;
+	-fx-padding:7.0;
 }
 
 #indexLabel{

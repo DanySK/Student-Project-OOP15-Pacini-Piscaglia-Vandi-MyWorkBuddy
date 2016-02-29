@@ -84,11 +84,22 @@ public final class SelectRoutineHandler implements SelectRoutineView {
 
     @FXML
     private void insertData() {
-        if (isWeightCorrect() && getObserver().addResults() && getObserver().updateWeight()) {
+        if (getObserver().addResults()) {
             showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
-            showDialog("Error!", "Your routine data hasn't been saved, check your results and weight inserted",
+            showDialog("Error!", "Your routine data hasn't been saved, check your results inserted", Optional.empty(),
+                    AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void insertWeight() {
+        if (isWeightCorrect() && getObserver().updateWeight()) {
+            showDialog("Weight inserted!", "Your data has been successfully inserted!", Optional.empty(),
+                    AlertType.INFORMATION);
+        } else {
+            showDialog("Wrong Weight!", "You have insert a wrong weight! Please insert a double number (e.g. 20.0)",
                     Optional.empty(), AlertType.ERROR);
         }
     }
@@ -102,7 +113,8 @@ public final class SelectRoutineHandler implements SelectRoutineView {
                             .forEach(workout -> {
                         final List<Pair<String, Pair<List<Integer>, Integer>>> result = workoutLayout
                                 .getExerciseResults(workout);
-                        final TitledPane titled = (TitledPane) workout;
+                        final TitledPane titled = (TitledPane) workout.getParent().getParent();
+                        System.out.println(titled.getText());
                         results.put(titled.getText(), result);
                     });
                 });

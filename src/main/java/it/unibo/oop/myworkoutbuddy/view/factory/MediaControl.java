@@ -17,7 +17,8 @@ import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 /**
- * A media player pane used to play exercises videos.
+ * A media player pane used to play exercises videos fetched by
+ * https://docs.oracle.com/javafx/2/media/playercontrol.htm
  *
  */
 public class MediaControl extends BorderPane {

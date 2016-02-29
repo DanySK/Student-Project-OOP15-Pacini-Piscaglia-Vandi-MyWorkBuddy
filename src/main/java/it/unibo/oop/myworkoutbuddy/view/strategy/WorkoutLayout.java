@@ -74,7 +74,7 @@ public final class WorkoutLayout implements WorkoutLayoutStrategy {
         final TableColumn<Exercise, String> repsCol = tableBuildStrategy.buildStringColumn("Repetitions", 0,
                 Optional.empty());
         final TableColumn<Exercise, String> kgCol = tableBuildStrategy.buildKgColumn("Kg", KG_FIELD_WIDTH, "kg");
-        IntStream.range(1, N_REPS).forEach(i -> repsCol.getColumns()
+        IntStream.range(1, N_REPS + 1).forEach(i -> repsCol.getColumns()
                 .add(tableBuildStrategy.buildRepColumn("Rep " + i, REPS_FIELD_WIDTH, "rep" + i, i)));
         return tableBuildStrategy.build(Arrays.asList(exCol, repsCol, kgCol), data);
     }
