@@ -1,10 +1,9 @@
 package it.unibo.oop.myworkoutbuddy.view.handlers;
 
-import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildBarChart;
-import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildLineChart;
-import static it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory.buildPieChart;
 import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 
+import it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory;
+import it.unibo.oop.myworkoutbuddy.view.factory.SimpleChartFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -29,6 +28,8 @@ public final class StatisticsHandler {
 
     private static final int CHARTS_PER_TAB = 2;
 
+    private final ChartFactory charts = new SimpleChartFactory();
+
     /**
      * Called to initialize a controller after its root element has been
      * completely processed. In this class this method builds charts and indexes
@@ -51,21 +52,21 @@ public final class StatisticsHandler {
 
             switch (chart) {
             case "weightChart":
-                currentBox.getChildren().add(buildLineChart(data, chart));
+                currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 
             case "time performance":
-                currentBox.getChildren().add(buildPieChart(data, chart));
+                currentBox.getChildren().add(charts.buildPieChart(data, chart));
                 break;
 
             // not used
             case "bodyZone performance":
-                currentBox.getChildren().add(buildBarChart(data, chart));
+                currentBox.getChildren().add(charts.buildBarChart(data, chart));
                 break;
 
             // not used
             case "bodyPart performance":
-                currentBox.getChildren().add(buildBarChart(data, chart));
+                currentBox.getChildren().add(charts.buildBarChart(data, chart));
                 break;
 
             default:
