@@ -51,7 +51,7 @@ public final class StatisticsHandler {
             }
 
             switch (chart) {
-            case "weightChart":
+            case "Weight Chart":
                 currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 

@@ -18,7 +18,7 @@ import javafx.util.Duration;
 
 /**
  * A media player pane used to play exercises videos fetched by
- * https://docs.oracle.com/javafx/2/media/playercontrol.htm
+ * https://docs.oracle.com/javafx/2/media/playercontrol.htm.
  *
  */
 public class MediaControl extends BorderPane {
