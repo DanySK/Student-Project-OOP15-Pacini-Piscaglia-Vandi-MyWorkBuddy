@@ -87,7 +87,7 @@ public final class Controller implements ViewObserver {
         }
         final Map<String, Object> user = optUserData.get();
         final Validator validator = new Validator()
-                .addValidation(p -> user.get("password").equals(p), password, "Invalid password");
+                .addValidation(confirmValidator(user.get("password")), password, "Invalid password");
         validator.validate();
         // Login the user
         validator.ifValid(() -> {
@@ -124,17 +124,26 @@ public final class Controller implements ViewObserver {
                         "Username must contain at least " + MIN_USERNAME_LENGTH + " characters")
                 .addValidation(maxLengthValidator(MAX_USERNAME_LENGTH), username,
                         "Username cannot contain more then " + MAX_USERNAME_LENGTH + " characters")
-                .addValidation(alreadyTakenValidator(Service.USERS, "username"), username, "Username already taken")
-                .addValidation(minLengthValidator(1), firstName, "Invalid first name")
-                .addValidation(minLengthValidator(1), lastName, "Invalid last name")
-                .addValidation(positiveNumberValidator(), age, "Invalid age")
-                .addValidation(positiveNumberValidator(), weight, "Invalid weight")
-                .addValidation(positiveNumberValidator(), height, "Invalid height")
+                .addValidation(alreadyTakenValidator(Service.USERS, "username"), username,
+                        "Username already taken")
+                .addValidation(minLengthValidator(1), firstName,
+                        "Invalid first name")
+                .addValidation(minLengthValidator(1), lastName,
+                        "Invalid last name")
+                .addValidation(positiveNumberValidator(), age,
+                        "Invalid age")
+                .addValidation(positiveNumberValidator(), weight,
+                        "Invalid weight")
+                .addValidation(positiveNumberValidator(), height,
+                        "Invalid height")
                 .addValidation(minLengthValidator(MIN_PASSWORD_LENGTH), password,
                         "Password must contain at least " + MIN_PASSWORD_LENGTH + " characters")
-                .addValidation(confirmValidator(passwordConfirm), password, "The two passwords do not match")
-                .addValidation(emailValidator(), email, "Invalid email or email already taken")
-                .addValidation(alreadyTakenValidator(Service.USERS, "email"), email, "Email already taken");
+                .addValidation(confirmValidator(passwordConfirm), password,
+                        "The two passwords do not match")
+                .addValidation(emailValidator(), email,
+                        "Invalid email")
+                .addValidation(alreadyTakenValidator(Service.USERS, "email"), email,
+                        "Email already taken");
         validator.validate();
         validator.ifValid(() -> {
             // Add the new user in the database
@@ -436,23 +445,16 @@ public final class Controller implements ViewObserver {
                     (String) exercise.get("exerciseGoal"),
                     (String) exercise.get("gymTool"),
                     (List<Integer>) r.get("repetitions"));
-            if (!model.getWorkoutList().stream().anyMatch(w -> w.getName().equals(currentWorkoutName))) {
-                results.stream()
-                        .filter(m -> ((String) m.get("workoutName")).equals(currentWorkoutName))
-                        .forEach(r2 -> {
-                    System.out.println(r2);
-                    final Date date = DateFormats.parseUTC((String) r2.get("date"));
-                    final LocalDate when = DateConverter.dateToLocalDate(date);
-                    model.addRoutine(
-                            (int) r2.get("routineId"),
-                            currentWorkoutName,
-                            when);
-                    final List<Integer> valueList = ((List<Integer>) r2.get("repetitions")).stream()
-                            .map(d -> (int) r2.get("weight"))
-                            .collect(Collectors.toList());
-                    model.addExerciseValue(valueList);
-                });
-            }
+            final Date date = DateFormats.parseUTC((String) r.get("date"));
+            final LocalDate when = DateConverter.dateToLocalDate(date);
+            model.addRoutine(
+                    (int) r.get("routineId"),
+                    currentWorkoutName,
+                    when);
+            final List<Integer> valueList = ((List<Integer>) r.get("repetitions")).stream()
+                    .map(d -> (int) r.get("weight"))
+                    .collect(Collectors.toList());
+            model.addExerciseValue(valueList);
         });
         System.out.println(model.getWorkoutList());
         System.out.println(model.getRoutineList());
