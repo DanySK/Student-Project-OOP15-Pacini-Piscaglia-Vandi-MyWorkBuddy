@@ -334,13 +334,13 @@ public final class Controller implements ViewObserver {
         newWeight.ifPresent(w -> {
             newMeasure.putAll(currentUsernameAsQueryParams());
             newMeasure.put("weight", w);
-            final int height = (int) getService(DBCollectionName.MEASURES)
+            final double height = (double) getService(DBCollectionName.MEASURES)
                     .getOneByParams(currentUsernameAsQueryParams())
                     .get().get("height");
             newMeasure.put("height", height);
             newMeasure.put("date", DateFormats.toUTCString(new Date()));
             model.addDataMeasure(LocalDate.now());
-            model.addBodyMeasure("HEIGHT", (double) height, false);
+            model.addBodyMeasure("HEIGHT", height, false);
             model.addBodyMeasure("WEIGHT", w, false);
         });
         return newMeasure.isEmpty() || getService(DBCollectionName.MEASURES).create(newMeasure);
@@ -398,14 +398,13 @@ public final class Controller implements ViewObserver {
         final Optional<Map<String, Object>> chartData = getService(DBCollectionName.CHARTS)
                 .getByParams(currentUsernameAsQueryParams())
                 .stream().findFirst();
-        return chartData.isPresent()
-                ? ((List<Map<String, Object>>) chartData.get().get(chartName))
-                        .stream()
-                        .map(m -> new SimpleImmutableEntry<>(
-                                (String) m.get("bodyPart"),
-                                (Number) m.get("times")))
-                        .collect(Collectors.toMap(Entry::getKey, Entry::getValue))
-                : Collections.emptyMap();
+        return chartData.map(d -> ((List<Map<String, Object>>) d.get(chartName))
+                .stream()
+                .map(m -> new SimpleImmutableEntry<>(
+                        (String) m.get("bodyPart"),
+                        (Number) m.get("times")))
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue)))
+                .orElseGet(Collections::emptyMap);
     }
 
     private String getCurrentUsername() {
