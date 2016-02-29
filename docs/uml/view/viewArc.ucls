@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <interface id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.AccessView" project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/AccessView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="178" y="274"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.view.CreateRoutineView" 
+    project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/CreateRoutineView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="239" y="504"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="3" language="java" name="it.unibo.oop.myworkoutbuddy.view.RegistrationView" 
+    project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/RegistrationView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1051" y="488"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="4" language="java" name="it.unibo.oop.myworkoutbuddy.view.SelectRoutineView" 
+    project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/SelectRoutineView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="668" y="547"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="5" language="java" name="it.unibo.oop.myworkoutbuddy.view.UserSettingsView" 
+    project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/UserSettingsView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1311" y="285"/>    
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="6" language="java" name="it.unibo.oop.myworkoutbuddy.view.AppView" project="oop2015-myworkoutbuddy" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/AppView.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="155" width="250" x="543" y="33"/>    
+    <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <dependency id="7">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="8">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="9">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="11">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
