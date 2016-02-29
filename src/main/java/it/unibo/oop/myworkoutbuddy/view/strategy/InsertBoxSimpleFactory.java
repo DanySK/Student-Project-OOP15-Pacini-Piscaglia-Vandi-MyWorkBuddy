@@ -16,7 +16,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
  * Implementation of the build strategy of the routine table.
  *
  */
-public class InsertBoxBuild implements InsertBoxBuildStrategy {
+public class InsertBoxSimpleFactory implements InsertBoxFactory {
 
     @Override
     public TableColumn<Exercise, String> buildStringColumn(final String colName, final double width,

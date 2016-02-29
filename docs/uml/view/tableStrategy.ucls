@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxBuild" 
+  <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxSimpleFactory" 
     project="oop2015-myworkoutbuddy" 
-    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxBuild.java" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxSimpleFactory.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="902" y="387"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
@@ -12,9 +12,9 @@
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxBuildStrategy" 
+  <interface id="2" language="java" name="it.unibo.oop.myworkoutbuddy.view.strategy.InsertBoxFactory" 
     project="oop2015-myworkoutbuddy" 
-    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxBuildStrategy.java" 
+    file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/InsertBoxFactory.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="904" y="166"/>    
     <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
