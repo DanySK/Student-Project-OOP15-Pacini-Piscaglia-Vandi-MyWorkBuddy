@@ -5,7 +5,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.LocalDate;
 import java.util.AbstractMap.SimpleImmutableEntry;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -293,7 +292,6 @@ public final class Controller implements ViewObserver {
         final Map<String, List<Pair<String, Pair<List<Integer>, Integer>>>> userResults = view
                 .getSelectRoutineView()
                 .getUserResults();
-        final List<Map<String, Object>> results = new ArrayList<>();
         userResults.entrySet().stream()
                 .map(e1 -> {
                     return e1.getValue().stream()
@@ -322,10 +320,11 @@ public final class Controller implements ViewObserver {
                                 .map(i -> weight)
                                 .collect(Collectors.toList()));
                         return result;
-                    });
+                    })
+                            .collect(Collectors.toList());
                 })
-                .collect(Collectors.toList());
-        return getService(DBCollectionName.RESULTS).create(results) >= 0;
+                .forEach(m -> getService(DBCollectionName.RESULTS).create(m));
+        return true;
     }
 
     @Override
