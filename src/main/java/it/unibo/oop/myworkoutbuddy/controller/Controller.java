@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -334,6 +335,7 @@ public final class Controller implements ViewObserver {
         newWeight.ifPresent(w -> {
             newMeasure.putAll(currentUsernameAsQueryParams());
             newMeasure.put("weight", w);
+            // The height does't change
             final double height = (double) getService(DBCollectionName.MEASURES)
                     .getOneByParams(currentUsernameAsQueryParams())
                     .get().get("height");
@@ -359,24 +361,24 @@ public final class Controller implements ViewObserver {
     }
 
     @Override
-    public Map<String, Map<String, Number>> getChartsData() {
-        final Map<String, Map<String, Number>> chartsData = new HashMap<>();
-        final Map<String, Number> weightChart = getService(DBCollectionName.MEASURES)
+    public Map<String, List<Pair<String, Number>>> getChartsData() {
+        final Map<String, List<Pair<String, Number>>> chartsData = new HashMap<>();
+        final List<Pair<String, Number>> weightChart = getService(DBCollectionName.MEASURES)
                 .getByParams(currentUsernameAsQueryParams())
                 .stream()
-                .map(m -> new SimpleImmutableEntry<>(
+                .map(m -> (Pair<String, Number>) new ImmutablePair<>(
                         (String) m.get("date"),
-                        (double) m.get("weight")))
+                        (Number) m.get("weight")))
                 .sorted((e1, e2) -> {
-                    final Date p = DateFormats.parseUTC(e1.getKey());
-                    final Date q = DateFormats.parseUTC(e2.getKey());
+                    final Date p = DateFormats.parseUTC(e1.getLeft());
+                    final Date q = DateFormats.parseUTC(e2.getLeft());
                     return p.before(q) ? -1
                             : p.after(q) ? 1 : 0;
                 })
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                .collect(Collectors.toList());
 
         chartsData.put("weightChart", weightChart);
-        chartsData.put("timePerformanceChart", getChartData("pieChartData"));
+        // chartsData.put("timePerformanceChart", getChartData("pieChartData"));
         return chartsData;
     }
 
