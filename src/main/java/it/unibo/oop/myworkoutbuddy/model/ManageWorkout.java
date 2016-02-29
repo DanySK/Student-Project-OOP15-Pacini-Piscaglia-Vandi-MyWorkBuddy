@@ -20,7 +20,7 @@ public class ManageWorkout extends ManageUser {
     private static final int ERR_MEASURE_UNSET = 71;
     private static final int ERR_BODY_UNSET = 81;
 
-    private static final boolean ERR_MSG = true; // with true it gives the possibility to print relative errors
+    private static final boolean ERR_MSG = false; // with true it gives the possibility to print relative errors
 
     private static final int TIME_SESSION = 2; // value used to estimate time of exercise: time == number session per time sessions
 

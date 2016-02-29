@@ -1,4 +1,5 @@
 package it.unibo.oop.myworkoutbuddy.model;
+
 /**
  User's general data.
 

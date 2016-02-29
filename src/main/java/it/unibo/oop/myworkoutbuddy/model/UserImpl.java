@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+
 /**
  Informations about User's activities :
  Account, Data, Measure, Training, TrainingCard.

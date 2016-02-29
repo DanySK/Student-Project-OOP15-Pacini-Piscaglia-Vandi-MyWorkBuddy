@@ -19,7 +19,7 @@ public class ManageUser {
 
     private static final int ERR_BODY_PART = 31;
 
-    private static final boolean ERR_MSG = true; // with true it gives the possibility to print relative errors
+    private static final boolean ERR_MSG = false; // with true it gives the possibility to print relative errors
 
     private List<User> listUser;
     private List<Account> listAccount;
