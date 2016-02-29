@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.model.ManageWorkout" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ManageWorkout.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="375" width="300" x="426" y="-217"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.ManageUser" project="ProgettoProva01" 
+    file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ManageUser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="332" width="241" x="908" y="-196"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModelImpl" 
+    project="ProgettoProva01" file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/MyWorkoutBuddyModelImpl.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="363" width="300" x="426" y="-671"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="4" language="java" name="it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel" 
+    project="ProgettoProva01" file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/MyWorkoutBuddyModel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="238" width="300" x="67" y="-609"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <association id="5">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="6" name="manager"/>      
+      <multiplicity id="7" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="8">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <realization id="9">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
