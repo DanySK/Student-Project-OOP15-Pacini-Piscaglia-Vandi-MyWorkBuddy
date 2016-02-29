@@ -160,8 +160,7 @@ public final class FxWindowFactory {
         dialog.setContentText(message);
         final Optional<String> result = dialog.showAndWait();
         return result.orElseGet(() -> {
-            createInputDialog(title, message, inputText);
-            return "";
+            return "Workout";
         });
     }
 
