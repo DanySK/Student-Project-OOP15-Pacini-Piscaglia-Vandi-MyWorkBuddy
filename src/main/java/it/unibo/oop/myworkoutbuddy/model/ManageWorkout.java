@@ -316,6 +316,8 @@ public class ManageWorkout extends ManageUser {
                 return this.getCurrentUser().trendBodyBMI();
             } else if (nameStatistic.equals(MethodKey.TREND_BMR.toString())) {
                 return this.getCurrentUser().trendBodyBMR();
+            } else if (nameStatistic.equals(MethodKey.TREND_LBM.toString())) {
+                return this.getCurrentUser().trendBodyLBM();
             }
         }
             return new ArrayList<>();
@@ -461,7 +463,7 @@ public class ManageWorkout extends ManageUser {
 enum MethodKey {
     SCORE_PART, SCORE_ZONE, SCORE_TOOL,
     TIME_PART, TIME_ZONE, TIME_TOOL,
-    TREND_BMR, TREND_BMI;
+    TREND_BMR, TREND_BMI, TREND_LBM;
 
     public String toString() {
         return name().substring(0, 1).concat(name().substring(1).toLowerCase());

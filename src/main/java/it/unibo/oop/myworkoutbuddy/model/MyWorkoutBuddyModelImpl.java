@@ -195,4 +195,9 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     public List<Double> trendBodyBMI() {
         return manager.trendList(MethodKey.TREND_BMI.toString());
     }
+
+    @Override
+    public List<Double> trendBodyLBM() {
+        return manager.trendList(MethodKey.TREND_LBM.toString());
+    }
 }

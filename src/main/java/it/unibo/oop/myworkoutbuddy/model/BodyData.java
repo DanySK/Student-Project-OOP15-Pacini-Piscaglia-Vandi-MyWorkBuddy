@@ -1,7 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ public class BodyData {
 
     /*
      * BMR Formula : Mifflin St Jeor : Equation
+     * LEAN MASS Formula : James
      */
     private static final double FACTOR_WEIGHT = 10.0;
     private static final double FACTOR_HEIGHT = 6.25;
@@ -32,13 +32,13 @@ public class BodyData {
      * @throws NullPointerException exception for null values
      */
     public BodyData(final LocalDate localDate) throws NullPointerException {
-        this.setData(date);
+        this.setData(localDate);
         this.bodyMeasure = new HashMap<>();
     }
 
     /**
      * give the date of measurement.
-     * @return a LocalDate
+     * @return a Date
      */
     public LocalDate getDate() {
         return this.date;
@@ -77,6 +77,59 @@ public class BodyData {
         }
 
         return (factorBmr + valueTemp - (FACTOR_AGE * age));
+    }
+
+    /**
+     * calculation of Lean Body Mass.
+     * @return a Double
+     */
+    public Double getBodyLBM() {
+        final Double kg = getMassHeight("WEIGHT");
+        final Double m = getMassHeight("HEIGHT");
+
+        if (kg == null || m == null || (kg * m) <= ZERO_DOUBLE) {
+            return ZERO_DOUBLE;
+        }
+
+        final Double hcm = (m * 100);
+        // men
+        final Double k1 = 1.10;
+        final Double k2 = 128.00;
+
+        /* women
+        final Double k1 = 1.07;
+        final Double k2 = 148.00;
+        */
+
+        // formula James : (1.10 * kg) - 128 * ((kg)2 / (100 * h)2)
+        final Double value = (k1 * kg) - (k2 * ((kg * kg) / (hcm * hcm)));
+        return (value <= ZERO_DOUBLE) ? ZERO_DOUBLE : value;
+    }
+
+    /**
+     * calculation of Fat Body Mass.
+     * @return a Double
+     */
+    public Double getBodyFMI() {
+        final Double kg = getMassHeight("WEIGHT");
+        final Double m = getMassHeight("HEIGHT");
+        final Double h = (m * 100);
+
+        // men
+        final Double k1 = 1.10;
+        final Double k2 = 128.00;
+
+        /* women
+        final Double k1 = 1.07;
+        final Double k2 = 148.00;
+        */
+
+        // formula WillMore e Behnke : ( 495 / ( 1.0324 - ( 0.19077 * ( log ( vita - collo ) ) + 0.15456 * ( log( statura ) - 450 ) ) ) )
+        final Double value = (k1 * kg) - (k2 * ((kg * kg) / (h * h)));
+        if (value <= ZERO_DOUBLE) {
+            return ZERO_DOUBLE;
+        }
+        return value;
     }
 
     /**

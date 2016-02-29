@@ -240,4 +240,10 @@ public interface MyWorkoutBuddyModel {
      * @return a List<Double>
      */
     List<Double> trendBodyBMI();
+
+    /**
+     * give the current User's trending of LBM.
+     * @return a List<Double>
+     */
+    List<Double> trendBodyLBM();
 }

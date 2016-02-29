@@ -96,6 +96,7 @@ public final class MainTestModel {
         System.out.println("\n ==== STATISTICS BODY : ");
         System.out.println(" TrendBodyBMI = " + model.trendBodyBMI() + " ");
         System.out.println(" TrendBodyBMR = " + model.trendBodyBMR() + " [kcal/day]");
+        System.out.println(" TrendBodyLBM = " + model.trendBodyLBM() + " [%]");
 
         final Map<String, Double> mapGymTool = model.timeGymTool();
         mergeMap(mapGymTool);

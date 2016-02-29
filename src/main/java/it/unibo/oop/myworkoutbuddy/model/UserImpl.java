@@ -114,6 +114,11 @@ public class UserImpl implements User {
     }
 
     @Override
+    public List<Double> trendBodyLBM() {
+        return this.getMeasureList().stream().map(BodyData::getBodyLBM).collect(Collectors.toList());
+    }
+
+    @Override
     public List<Double> scoreRoutine() {
     return this.getRoutineList().stream().map(Routine::getRoutineScore).collect(Collectors.toList());
         /*

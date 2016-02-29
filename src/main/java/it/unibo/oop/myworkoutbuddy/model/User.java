@@ -86,6 +86,12 @@ public interface User {
     List<Double> trendBodyBMI();
 
     /**
+     * give a double array of trend values for a human body.
+     * @return a List<Double>
+     */
+    List<Double> trendBodyLBM();
+
+    /**
      * list of performance scores.
      * @return a List<Double>
      */
