@@ -58,10 +58,12 @@ public final class StatisticsHandler {
                 currentBox.getChildren().add(buildPieChart(data, chart));
                 break;
 
+            // not used
             case "bodyZone performance":
                 currentBox.getChildren().add(buildBarChart(data, chart));
                 break;
 
+            // not used
             case "bodyPart performance":
                 currentBox.getChildren().add(buildBarChart(data, chart));
                 break;
