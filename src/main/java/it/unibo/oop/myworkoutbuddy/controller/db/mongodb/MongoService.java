@@ -1,11 +1,11 @@
-package it.unibo.oop.myworkoutbuddy.controller.db;
+package it.unibo.oop.myworkoutbuddy.controller.db.mongodb;
 
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.createNewDocument;
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.createNewDocuments;
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.deleteDocumentsByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.getDocumentsByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.getOneDocumentByParams;
-import static it.unibo.oop.myworkoutbuddy.controller.db.util.CRUDOperations.updateDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.createNewDocument;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.createNewDocuments;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.deleteDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.getDocumentsByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.getOneDocumentByParams;
+import static it.unibo.oop.myworkoutbuddy.controller.db.mongodb.util.CRUDOperations.updateDocumentsByParams;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,12 +18,12 @@ import org.bson.Document;
 import com.google.common.base.Preconditions;
 import com.mongodb.client.MongoCollection;
 
-import it.unibo.oop.myworkoutbuddy.controller.Service;
+import it.unibo.oop.myworkoutbuddy.controller.db.AbstractDBService;
 
 /**
  * A generic service to make Create Read Update Delete operations on MongoDB.
  */
-public class MongoService implements Service {
+public class MongoService extends AbstractDBService {
 
     private final MongoCollection<Document> collection;
 
@@ -34,7 +34,8 @@ public class MongoService implements Service {
      *            the name of the collection to use
      */
     public MongoService(final String collectionName) {
-        collection = MongoDriver.getCollection(collectionName);
+        super(collectionName);
+        collection = MongoDriver.getCollection(getTableName());
     }
 
     @Override

@@ -13,12 +13,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import it.unibo.oop.myworkoutbuddy.controller.Service;
+import it.unibo.oop.myworkoutbuddy.controller.db.mongodb.MongoService;
 import it.unibo.oop.myworkoutbuddy.util.DateFormats;
 
 public class MongoDBTest {
 
-    private final Service testService = new MongoService("tests");
+    private final DBService testService = new MongoService("tests");
 
     @Before
     public void testCreate() {
@@ -54,7 +54,7 @@ public class MongoDBTest {
     @Test
     public void testDates() throws Exception {
         final Date date = new Date();
-        final Service datesTesting = new MongoService("date_tetsting");
+        final DBService datesTesting = new MongoService("date_tetsting");
         final Map<String, Object> map = new HashMap<>();
         map.put("date", DateFormats.toUTCString(date));
         System.out.println(map);

@@ -1,84 +1,60 @@
 package it.unibo.oop.myworkoutbuddy.controller;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import it.unibo.oop.myworkoutbuddy.controller.db.DBService;
+import it.unibo.oop.myworkoutbuddy.controller.db.mongodb.MongoService;
 
 /**
- * A service to interact with the database.
+ * An enum that describes all the services that the controller needs.
  */
-public interface Service {
+public enum Service {
 
     /**
-     * Inserts a new element in the database.
-     * 
-     * @param fields
-     *            the element fields to insert
-     * @return True if the user is successfully created, false if some errors occurs.
+     * The service for interact with the body zones collection.
      */
-    boolean create(Map<String, Object> fields);
+    BODY_ZONES,
+    /**
+     * The service for interact with the exercises collection.
+     */
+    EXERCISES,
+    /**
+     * The service for interact with the gym tools collection.
+     */
+    GYM_TOOLS,
+    /**
+     * The service for interact with the user's measures collection.
+     */
+    MEASURES,
+    /**
+     * The service for interact with the results collection.
+     */
+    RESULTS,
+    /**
+     * The service for interact with the routines collection.
+     */
+    ROUTINES,
+    /**
+     * The service for interact with the users collection.
+     */
+    USERS;
+
+    private final DBService service;
+
+    Service() {
+        service = new MongoService(toString());
+    }
 
     /**
-     * Inserts new elements in the database.
+     * Returns the {@link DBService} associated to this enum value.
      * 
-     * @param elements
-     *            the elements to insert
-     * @return the number of inserted elements
+     * @return the {@link DBService} associated to this enum value
      */
-    long create(Collection<? extends Map<String, Object>> elements);
+    public DBService getDBService() {
+        return service;
+    }
 
-    /**
-     * Retrieves a document that satisfies the query parameters.
-     * 
-     * @param queryParams
-     *            The filters to apply.
-     * @return all the elements stored in the database
-     */
-    Optional<Map<String, Object>> getOneByParams(Map<String, Object> queryParams);
-
-    /**
-     * Retrieves all the elements stored in the database.
-     * 
-     * @return all the elements stored in the database
-     */
-    List<Map<String, Object>> getAll();
-
-    /**
-     * Retrieves an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise.
-     * 
-     * @param queryParams
-     *            The filters to apply.
-     * @return an {@link Collections#emptyList} if no element was found, a non-empty {@link List} otherwise
-     */
-    List<Map<String, Object>> getByParams(Map<String, Object> queryParams);
-
-    /**
-     * Updates all the elements that match the specified parameters with the new ones.
-     * 
-     * @param queryParams
-     *            the query filters
-     * @param updateParams
-     *            the fields to update with the new value.
-     * @return the number of modified documents
-     */
-    long updateByParams(final Map<String, Object> queryParams, final Map<String, Object> updateParams);
-
-    /**
-     * Deletes all the elements in database.
-     * 
-     * @return The number of deleted elements.
-     */
-    long deleteAll();
-
-    /**
-     * Deletes all the elements which match the specified parameters.
-     * 
-     * @param params
-     *            The filters to apply.
-     * @return The number of deleted elements.
-     */
-    long deleteByParams(Map<String, Object> params);
+    @Override
+    public String toString() {
+        return super.toString().toLowerCase();
+    }
 
 }
