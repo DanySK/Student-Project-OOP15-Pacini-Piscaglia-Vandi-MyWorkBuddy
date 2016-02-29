@@ -29,6 +29,8 @@ public final class MainTestModel {
      */
     public static void main(final String[] args) {
 
+        System.out.println("\n ==== ROUTINE LIST xxxxxxxxxxxxxxxxxxx ==== ");
+        
         /*
          * declaration of Model Interface
          */
@@ -52,7 +54,7 @@ public final class MainTestModel {
         System.out.println("\n ==== USERS LIST ==== ");
         System.out.println(model.getUserList());
 
-        final int num = model.getUserList().size();
+        final int num =1; // model.getUserList().size();
 
         for (int i = 1; i <= num; i++) { // Cycle to test all accounts
 
