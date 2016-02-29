@@ -23,7 +23,7 @@ public class BodyData {
 
     private static final double METER_TO_CM = 100.00;
 
-    private Date date;     // date of measurement
+    private LocalDate date;     // date of measurement
     private final Map<String, Double> bodyMeasure;  // value measure for each body measure
 
     /**
@@ -38,9 +38,9 @@ public class BodyData {
 
     /**
      * give the date of measurement.
-     * @return a Date
+     * @return a LocalDate
      */
-    public Date getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
@@ -113,7 +113,7 @@ public class BodyData {
      * set the data of measure
      * @param data LocalDate
      */
-    private void setData(final Date date) {
+    private void setData(final LocalDate date) {
         this.date = date;
     }
 
