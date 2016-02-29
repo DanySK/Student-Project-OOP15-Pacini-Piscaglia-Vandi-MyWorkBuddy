@@ -11,7 +11,7 @@
 }
 
 .root{
-	-fx-background-image: url("http://www.paosfitworld.com/wp-content/uploads/2015/02/One-time-Consultation-Background.jpg");
+	-fx-background-image: url("/it/unibo/oop/myworkoutbuddy/view/backgrounds/darkBackground.jpg");
 	-fx-background-repeat: stretch;
     -fx-background-size: auto;
     -fx-background-position: center center;
@@ -90,6 +90,17 @@
 	-fx-background-radius: 20.0;
 	-fx-effect: dropshadow( one-pass-box , black , 8.0 , 0.0 , 0.0 , 0.0 );
 	-fx-padding:7;
+}
+
+#indexLabel{
+	-fx-padding: 15.0;
+	-fx-font-weight: bold;
+	-fx-font-size: 18.0;
+}
+
+#indexNameLabel{
+	-fx-font: bold italic 18.0pt "Serif";
+	-fx-padding: 15.0;
 }
 
 #exerciseSection{
