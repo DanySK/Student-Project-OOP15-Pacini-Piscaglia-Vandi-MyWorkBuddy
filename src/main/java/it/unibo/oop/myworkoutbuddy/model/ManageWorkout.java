@@ -150,7 +150,7 @@ public class ManageWorkout extends ManageUser {
     }
 
     /**
-     * add a new valueList.
+     * add a new list of gymTools setting.
      * @param valueList List<Integer>
      */
     public void addExerciseValue(final List<Integer> valueList) {

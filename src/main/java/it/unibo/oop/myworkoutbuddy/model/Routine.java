@@ -70,7 +70,7 @@ public interface Routine {
     Double getRoutineScore();
 
     /**
-     * add a new scoreList.
+     * add a new list of gymTools setting.
      * @param valueList List<Integer>
      */
     void addValue(final List<Integer> valueList);
