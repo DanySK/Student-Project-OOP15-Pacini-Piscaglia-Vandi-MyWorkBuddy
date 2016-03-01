@@ -155,12 +155,9 @@ public final class SelectRoutineHandler implements SelectRoutineView {
                 Double.parseDouble(txtKg.getText());
                 return true;
             } catch (NumberFormatException e) {
-                showDialog("Wrong weight", "Please insert a double value (e.g. 20.0)", Optional.empty(),
-                        AlertType.ERROR);
-                return false;
             }
         }
-        return true;
+        return false;
     }
 
     private void updateDescriptionField() {
