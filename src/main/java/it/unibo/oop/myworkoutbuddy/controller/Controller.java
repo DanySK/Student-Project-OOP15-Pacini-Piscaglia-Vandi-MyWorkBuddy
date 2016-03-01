@@ -377,7 +377,11 @@ public final class Controller implements ViewObserver {
     public boolean updateWeight() {
         final Map<String, Object> newMeasure = new HashMap<>();
         final OptionalDouble newWeight = view.getSelectRoutineView().getWeight();
-        newWeight.ifPresent(w -> {
+        if (newWeight.isPresent()) {
+            final double w = newWeight.getAsDouble();
+            if (w <= 0) {
+                return false;
+            }
             newMeasure.putAll(currentUsernameAsQueryParams());
             newMeasure.put("weight", w);
             // The height does't change
@@ -389,7 +393,7 @@ public final class Controller implements ViewObserver {
             model.addDataMeasure(LocalDate.now());
             model.addBodyMeasure("HEIGHT", height, false);
             model.addBodyMeasure("WEIGHT", w, false);
-        });
+        }
         return newMeasure.isEmpty() || MEASURES.getDBService().create(newMeasure);
     }
 
