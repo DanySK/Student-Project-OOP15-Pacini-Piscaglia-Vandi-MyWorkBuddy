@@ -200,4 +200,9 @@ public class MyWorkoutBuddyModelImpl implements MyWorkoutBuddyModel {
     public List<Double> trendBodyLBM() {
         return manager.trendList(MethodKey.TREND_LBM.toString());
     }
+
+    @Override
+    public String getStatisticsName() {
+        return manager.getStatisticsName();
+    }
 }

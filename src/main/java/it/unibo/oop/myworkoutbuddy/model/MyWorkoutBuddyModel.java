@@ -246,4 +246,10 @@ public interface MyWorkoutBuddyModel {
      * @return a List<Double>
      */
     List<Double> trendBodyLBM();
+
+    /**
+     * give all statistics name functions.
+     * @return a String
+     */
+    String getStatisticsName();
 }
