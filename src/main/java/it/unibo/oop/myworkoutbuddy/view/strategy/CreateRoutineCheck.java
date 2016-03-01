@@ -122,7 +122,7 @@ public final class CreateRoutineCheck implements CreateRoutineCheckStrategy {
             showDialog("Routine saved!", "Your routine has been saved!", Optional.empty(), AlertType.INFORMATION);
             return true;
         } else {
-            showDialog("Error saving routine", "You have inserted wrong data! Remember to insert integer numbers.",
+            showDialog("Error saving routine", "You have inserted wrong data! Remember to insert positive numbers.",
                     Optional.empty(), AlertType.ERROR);
         }
         return false;
