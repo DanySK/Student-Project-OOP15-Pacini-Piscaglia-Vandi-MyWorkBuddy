@@ -328,11 +328,11 @@ public class ManageWorkout extends ManageUser {
      * @return a String
      */
     public String getStatisticsName() {
-        final String statisticsName = "";
+        final StringBuilder sb = new StringBuilder();
         for (MethodKey key : MethodKey.values()) {
-            statisticsName.concat(key.toString()).concat(" ");
+            sb.append(key.toString()).append(" ");
         }
-        return statisticsName;
+        return sb.toString();
     }
 
     /**
