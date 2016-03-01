@@ -50,28 +50,28 @@
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/controller/db/mongodb/util/MongoCRUDOperations.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="62" y="450"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="false" protected="false" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <generalization id="6">    
-    <end type="SOURCE" refId="2"/>    
-    <end type="TARGET" refId="1"/>  
-  </generalization>  
+  <realization id="6">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="3"/>  
+  </realization>  
   <dependency id="7">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="5"/>  
   </dependency>  
-  <realization id="8">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="3"/>  
-  </realization>  
-  <dependency id="9">    
+  <dependency id="8">    
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
   </dependency>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="false" protected="false" private="false" static="true"/>    
