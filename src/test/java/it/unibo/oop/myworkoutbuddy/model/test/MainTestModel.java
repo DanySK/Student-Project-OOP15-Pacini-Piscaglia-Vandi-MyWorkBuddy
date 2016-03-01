@@ -81,6 +81,8 @@ public final class MainTestModel {
         System.out.println(" WorkoutList = " + model.getWorkoutList());
 
         // statisticMap(final String nameStatistic)
+        
+        System.out.println("\n ==== MAIN STATISTICS NAMES : " + model.getStatisticsName());
 
         System.out.println("\n ==== STATISTICS SCORES : ");
         System.out.println(" ScoreRoutine = " + model.scoreRoutine());
