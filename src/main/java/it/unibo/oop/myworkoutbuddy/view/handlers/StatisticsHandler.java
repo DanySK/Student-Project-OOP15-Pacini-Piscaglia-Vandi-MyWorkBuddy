@@ -24,7 +24,7 @@ public final class StatisticsHandler {
 
     private int nCharts;
 
-    private static final int CHARTS_PER_TAB = 2;
+    private static final int CHARTS_PER_TAB = 1;
 
     private final ChartFactory charts = new SimpleChartFactory();
 
@@ -43,7 +43,7 @@ public final class StatisticsHandler {
                 // to add dynamically tab considering chart number.
                 currentBox = new VBox();
                 currentBox.setId("statBox");
-                final Tab newChartTab = new Tab("Charts");
+                final Tab newChartTab = new Tab(chart);
                 newChartTab.setContent(currentBox);
                 tabPane.getTabs().add(newChartTab);
             }
@@ -53,7 +53,7 @@ public final class StatisticsHandler {
                 currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 
-            case "bodyZone performance":
+            case "Time Body Zone":
                 currentBox.getChildren().add(charts.buildPieChart(data, chart));
                 break;
 

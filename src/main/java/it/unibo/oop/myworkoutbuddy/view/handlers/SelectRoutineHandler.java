@@ -88,8 +88,10 @@ public final class SelectRoutineHandler implements SelectRoutineView {
             showDialog("Data inserted!", "Your data has been successfully inserted!", Optional.empty(),
                     AlertType.INFORMATION);
         } else {
-            showDialog("Error!", "Your routine data hasn't been saved, check your results inserted", Optional.empty(),
-                    AlertType.ERROR);
+            showDialog("Error!",
+                    "Your routine data hasn't been saved, check your results inserted."
+                            + " Remember that you must insert an integer above 0 for kg",
+                    Optional.empty(), AlertType.ERROR);
         }
     }
 
