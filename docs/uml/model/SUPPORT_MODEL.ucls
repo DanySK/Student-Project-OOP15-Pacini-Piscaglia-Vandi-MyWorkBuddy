@@ -4,26 +4,26 @@
   <class id="1" language="java" name="it.unibo.oop.myworkoutbuddy.model.ManageWorkout" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ManageWorkout.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="375" width="300" x="426" y="-217"/>    
+    <position height="457" width="310" x="485" y="-670"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
   <class id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.ManageUser" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ManageUser.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="332" width="241" x="908" y="-196"/>    
+    <position height="404" width="246" x="872" y="-643"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
   <class id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModelImpl" 
     project="ProgettoProva01" file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/MyWorkoutBuddyModelImpl.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="363" width="300" x="426" y="-671"/>    
+    <position height="80" width="300" x="490" y="-1029"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -33,29 +33,33 @@
   <interface id="4" language="java" name="it.unibo.oop.myworkoutbuddy.model.MyWorkoutBuddyModel" 
     project="ProgettoProva01" file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/MyWorkoutBuddyModel.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="238" width="300" x="67" y="-609"/>    
+    <position height="709" width="300" x="129" y="-1344"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <association id="5">    
+  <realization id="5">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <generalization id="6">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <association id="7">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="6" name="manager"/>      
-      <multiplicity id="7" minimum="0" maximum="1"/>    
+      <attribute id="8" name="manager">        
+        <position height="0" width="0" x="59" y="-403"/>      
+      </attribute>      
+      <multiplicity id="9" minimum="0" maximum="1">        
+        <position height="0" width="0" x="59" y="-403"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="8">    
-    <end type="SOURCE" refId="1"/>    
-    <end type="TARGET" refId="2"/>  
-  </generalization>  
-  <realization id="9">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="4"/>  
-  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
