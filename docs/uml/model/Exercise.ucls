@@ -12,7 +12,7 @@
   </interface>  
   <class id="2" language="java" name="it.unibo.oop.myworkoutbuddy.model.ExerciseImpl.Builder" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ExerciseImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="157" y="525"/>    
+    <position height="-1" width="-1" x="157" y="388"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -21,7 +21,7 @@
   </class>  
   <class id="3" language="java" name="it.unibo.oop.myworkoutbuddy.model.ExerciseImpl" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/ExerciseImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="54" width="200" x="57" y="304"/>    
+    <position height="54" width="200" x="57" y="205"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -39,7 +39,7 @@
   </interface>  
   <class id="5" language="java" name="it.unibo.oop.myworkoutbuddy.model.GymToolImpl" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/GymToolImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="54" width="193" x="582" y="295"/>    
+    <position height="54" width="193" x="582" y="196"/>    
     <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
@@ -48,41 +48,41 @@
   </class>  
   <class id="6" language="java" name="it.unibo.oop.myworkoutbuddy.model.GymToolImpl.Builder" project="ProgettoProva01" 
     file="/ProgettoProva01/src/it/unibo/oop/myworkoutbuddy/model/GymToolImpl.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="679" y="525"/>    
+    <position height="-1" width="-1" x="679" y="388"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="false" package="false" protected="false" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
     </display>  
   </class>  
-  <nesting id="7">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="6"/>  
-  </nesting>  
-  <realization id="8">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="1"/>  
-  </realization>  
-  <nesting id="9">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="2"/>  
-  </nesting>  
-  <realization id="10">    
+  <realization id="7">    
     <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="4"/>  
   </realization>  
-  <association id="11">    
+  <nesting id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="6"/>  
+  </nesting>  
+  <association id="9">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="12" name="gymTool">        
+      <attribute id="10" name="gymTool">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="13" minimum="0" maximum="1">        
+      <multiplicity id="11" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <nesting id="12">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </nesting>  
+  <realization id="13">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
