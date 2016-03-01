@@ -1,5 +1,6 @@
 package it.unibo.oop.myworkoutbuddy.controller;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static it.unibo.oop.myworkoutbuddy.controller.Service.BODY_ZONES;
 import static it.unibo.oop.myworkoutbuddy.controller.Service.EXERCISES;
 import static it.unibo.oop.myworkoutbuddy.controller.Service.GYM_TOOLS;
@@ -307,49 +308,54 @@ public final class Controller implements ViewObserver {
                 .getSelectRoutineView()
                 .getUserResults();
         final Date date = new Date();
-        userResults.entrySet().stream()
-                .map(e1 -> {
-                    return e1.getValue().stream()
-                            .map(e2 -> {
-                        final Map<String, Object> result = currentUsernameAsQueryParams();
-                        final String workoutName = e1.getKey();
-                        result.put("workoutName", workoutName);
-                        result.put("exerciseName", e2.getKey());
-                        final Pair<List<Integer>, Integer> v = e2.getValue();
-                        final List<Integer> repetitions = v.getLeft();
-                        final int weight = v.getRight();
-                        result.put("repetitions", repetitions);
-                        result.put("weight", weight);
-                        result.put("date", DateFormats.toUTCString(date));
+        try {
+            userResults.entrySet().stream()
+                    .map(e1 -> {
+                        return e1.getValue().stream()
+                                .map(e2 -> {
+                            final Map<String, Object> result = currentUsernameAsQueryParams();
+                            final String workoutName = e1.getKey();
+                            result.put("workoutName", workoutName);
+                            result.put("exerciseName", e2.getKey());
+                            final Pair<List<Integer>, Integer> v = e2.getValue();
+                            final List<Integer> repetitions = v.getLeft();
+                            final int weight = v.getRight();
+                            result.put("repetitions", repetitions);
+                            checkArgument(weight > 0);
+                            result.put("weight", weight);
+                            result.put("date", DateFormats.toUTCString(date));
 
-                        final Map<String, Object> params = currentUsernameAsQueryParams();
-                        params.put("name", view.getSelectRoutineView().getSelectedRoutine());
-                        final int routineId = ROUTINES.getDBService()
-                                .getOneByParams(params)
-                                .map(m -> (int) m.get("routineId"))
-                                .get();
-                        result.put("routineId", routineId);
-                        model.addRoutine(routineId, workoutName, DateConverter.dateToLocalDate(date));
-                        model.addExerciseValue(repetitions.stream()
-                                .map(i -> weight)
-                                .collect(Collectors.toList()));
-                        return result;
+                            final Map<String, Object> params = currentUsernameAsQueryParams();
+                            params.put("name", view.getSelectRoutineView().getSelectedRoutine());
+                            final int routineId = ROUTINES.getDBService()
+                                    .getOneByParams(params)
+                                    .map(m -> (int) m.get("routineId"))
+                                    .get();
+                            result.put("routineId", routineId);
+                            model.addRoutine(routineId, workoutName, DateConverter.dateToLocalDate(date));
+                            model.addExerciseValue(repetitions.stream()
+                                    .map(i -> weight)
+                                    .collect(Collectors.toList()));
+                            return result;
+                        })
+                                .collect(Collectors.toList());
                     })
-                            .collect(Collectors.toList());
-                })
-                .forEach(l -> {
-                    RESULTS.getDBService().create(l);
-                    l.forEach(m -> {
-                        addCurrentUserResult(
-                                (int) m.get("routineId"),
-                                (String) m.get("workoutName"),
-                                DateConverter.dateToLocalDate(date),
-                                ((List<Integer>) m.get("repetitions")).stream()
-                                        .map(e -> (int) m.get("weight"))
-                                        .collect(Collectors.toList()));
+                    .forEach(l -> {
+                        RESULTS.getDBService().create(l);
+                        l.forEach(m -> {
+                            addCurrentUserResult(
+                                    (int) m.get("routineId"),
+                                    (String) m.get("workoutName"),
+                                    DateConverter.dateToLocalDate(date),
+                                    ((List<Integer>) m.get("repetitions")).stream()
+                                            .map(e -> (int) m.get("weight"))
+                                            .collect(Collectors.toList()));
+                        });
                     });
-                });
-        return true;
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override
@@ -395,9 +401,9 @@ public final class Controller implements ViewObserver {
                 .map(d -> new ImmutablePair<>("", (Number) d))
                 .collect(Collectors.toList());
 
-        chartsData.put("Thrend BMI", listToPairList.apply(bmi));
-        chartsData.put("Thrend BMR", listToPairList.apply(bmr));
-        chartsData.put("Thrend LBM", listToPairList.apply(lbm));
+        chartsData.put("Trend BMI", listToPairList.apply(bmi));
+        chartsData.put("Trend BMR", listToPairList.apply(bmr));
+        chartsData.put("Trend LBM", listToPairList.apply(lbm));
 
         final List<Pair<String, Number>> weightChart = MEASURES.getDBService()
                 .getByParams(currentUsernameAsQueryParams())
@@ -413,7 +419,7 @@ public final class Controller implements ViewObserver {
                 })
                 .collect(Collectors.toList());
         chartsData.put("Weight Chart", weightChart);
-        chartsData.put("bodyZone performance", model.timeBodyZone().entrySet().stream()
+        chartsData.put("Performance Body Zone", model.timeBodyZone().entrySet().stream()
                 .map(e -> new ImmutablePair<>(
                         e.getKey(),
                         (Number) e.getValue()))
