@@ -44,7 +44,7 @@ public final class ValidationStrategies {
      *            the type of the value
      */
     public static <T> Predicate<? super T> alreadyTakenValidator(final Service service, final String fieldName) {
-        return v -> service.getDBService()
+        return v -> !service.getDBService()
                 .getOneByParams(newParameter(fieldName, v))
                 .isPresent();
     }
@@ -57,7 +57,7 @@ public final class ValidationStrategies {
      *            the type of the Predicate and the {@code other} value
      */
     public static <T> Predicate<? super T> confirmValidator(final T other) {
-        return v -> v.equals(other);
+        return Predicate.isEqual(other);
     }
 
     /**
