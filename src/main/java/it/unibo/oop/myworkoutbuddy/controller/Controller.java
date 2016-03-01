@@ -28,6 +28,7 @@ import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
@@ -397,8 +398,8 @@ public final class Controller implements ViewObserver {
         final List<Double> bmr = model.trendBodyBMR(); // Current BMR
         final List<Double> lbm = model.trendBodyLBM(); // Current LBM
 
-        final Function<List<Double>, List<Pair<String, Number>>> listToPairList = l -> l.stream()
-                .map(d -> new ImmutablePair<>("", (Number) d))
+        final Function<List<Double>, List<Pair<String, Number>>> listToPairList = l -> IntStream.range(0, l.size())
+                .mapToObj(i -> new ImmutablePair<>(Integer.toString(i + 1), (Number) l.get(i)))
                 .collect(Collectors.toList());
 
         chartsData.put("Trend BMI", listToPairList.apply(bmi));
