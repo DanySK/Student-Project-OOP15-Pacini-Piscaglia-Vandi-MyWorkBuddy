@@ -37,7 +37,7 @@ public final class MainTestModel {
          */
         final MyWorkoutBuddyModel model;
 
-        System.out.println("\n Start Model");
+        System.out.println("\n Start Model Ver. finale");
         /*
          * a new Model object
          */
