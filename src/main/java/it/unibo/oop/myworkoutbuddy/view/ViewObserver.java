@@ -96,12 +96,6 @@ public interface ViewObserver {
 
     /**
      * 
-     * @return a map index name - index value.
-     */
-    Map<String, Number> getIndexes();
-
-    /**
-     * 
      * @return true if routine has been deleted successfully.
      */
     boolean deleteRoutine();

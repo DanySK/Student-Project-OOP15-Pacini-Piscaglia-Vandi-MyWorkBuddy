@@ -5,10 +5,8 @@ import static it.unibo.oop.myworkoutbuddy.view.handlers.ViewHandler.getObserver;
 import it.unibo.oop.myworkoutbuddy.view.factory.ChartFactory;
 import it.unibo.oop.myworkoutbuddy.view.factory.SimpleChartFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -74,20 +72,6 @@ public final class StatisticsHandler {
             default:
                 break;
             }
-        });
-
-        // initializing indexes
-        indexBox.setId("statBox");
-        getObserver().getIndexes().forEach((name, value) -> {
-            final HBox singleBox = new HBox();
-            final Label nameLabel = new Label(name);
-            nameLabel.setId("indexNameLabel");
-            final Label valueLabel = new Label(
-                    String.valueOf(Math.round(value.doubleValue() * Math.pow(10, 2)) / Math.pow(10, 2)));
-            valueLabel.setId("indexLabel");
-            singleBox.getChildren().add(nameLabel);
-            singleBox.getChildren().add(valueLabel);
-            indexBox.getChildren().add(singleBox);
         });
     }
 
