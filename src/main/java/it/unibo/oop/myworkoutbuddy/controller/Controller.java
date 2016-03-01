@@ -267,6 +267,7 @@ public final class Controller implements ViewObserver {
                                             EXERCISES.getDBService()
                                                     .getOneByParams(newParameter("name", exerciseName))
                                                     .ifPresent(e -> {
+                                                        repetitions.forEach(i -> checkArgument(i > 0));
                                                         model.addGymExcercise(
                                                                 workoutName,
                                                                 (String) e.get("exerciseGoal"),
@@ -283,7 +284,7 @@ public final class Controller implements ViewObserver {
                     .collect(Collectors.toList());
             routine.put("workouts", workouts);
             return routines.create(routine);
-        } catch (final NumberFormatException e) {
+        } catch (final IllegalArgumentException e) {
             return false;
         }
     }
