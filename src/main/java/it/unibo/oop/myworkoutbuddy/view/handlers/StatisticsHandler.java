@@ -55,18 +55,20 @@ public final class StatisticsHandler {
                 currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 
-            case "time performance":
+            case "bodyZone performance":
                 currentBox.getChildren().add(charts.buildPieChart(data, chart));
                 break;
 
-            // not used
-            case "bodyZone performance":
-                currentBox.getChildren().add(charts.buildBarChart(data, chart));
+            case "Trend BMI":
+                currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 
-            // not used
-            case "bodyPart performance":
-                currentBox.getChildren().add(charts.buildBarChart(data, chart));
+            case "Trend BMR":
+                currentBox.getChildren().add(charts.buildLineChart(data, chart));
+                break;
+
+            case "Trend LBM":
+                currentBox.getChildren().add(charts.buildLineChart(data, chart));
                 break;
 
             default:

@@ -5,8 +5,8 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/strategy/CreateRoutineCheckStrategy.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="775" y="201"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="227" width="329" x="614" y="88"/>    
+    <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -27,8 +27,8 @@
     project="oop2015-myworkoutbuddy" 
     file="/oop2015-myworkoutbuddy/src/main/java/it/unibo/oop/myworkoutbuddy/view/handlers/CreateRoutineHandler.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="323" y="201"/>    
-    <display autosize="true" stereotype="false" package="true" initial-value="false" signature="true" 
+    <position height="137" width="280" x="214" y="133"/>    
+    <display autosize="false" stereotype="false" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="false" static="true"/>      
       <operations public="true" package="true" protected="true" private="false" static="true"/>    
@@ -40,8 +40,12 @@
   </realization>  
   <association id="5">    
     <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="6" name="checkStrategy"/>      
-      <multiplicity id="7" minimum="0" maximum="1"/>    
+      <attribute id="6" name="checkStrategy">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="7" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
